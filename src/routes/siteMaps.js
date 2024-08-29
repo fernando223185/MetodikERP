@@ -34,7 +34,7 @@ export const appRoutes = {
       children: [
         {
           name: 'Usuarios',
-          to: '/email/inbox',
+          to: '/configuration/users',
           active: true
         },
         {

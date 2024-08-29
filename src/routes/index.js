@@ -197,7 +197,10 @@ import Reports from 'components/app/support-desk/reports/Reports';
 import InputMaskExample from 'components/doc-components/InputMaskExample';
 import RangeSlider from 'components/doc-components/RangeSlider';
 
-const FalconRoutes = () => {
+/* IMPORTS FOR THE NEW APP */
+import Users from '../components/Usuarios/Index'
+
+const MetodikRoutes = () => {
   return (
     <Routes>
       <Route path="landing" element={<Landing />} />
@@ -565,14 +568,18 @@ const FalconRoutes = () => {
         <Route path="documentation/faq" element={<Faq />} />
         <Route path="documentation/design-file" element={<DesignFile />} />
         <Route path="changelog" element={<Changelog />} />
+              {/*ROUTES FOR THE NEW APP METODIK*/}
+        <Route path="configuration/users" element={<Users />} />
       </Route>
 
       {/* //--- MainLayout end  */}
 
       {/* <Navigate to="/errors/404" /> */}
       <Route path="*" element={<Navigate to="/errors/404" replace />} />
+
+
     </Routes>
   );
 };
 
-export default FalconRoutes;
+export default MetodikRoutes;
