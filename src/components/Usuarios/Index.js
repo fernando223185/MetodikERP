@@ -1,6 +1,8 @@
-import React from 'react';
-import { Col, Row, Container } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Col, Row, Container, Modal, Card } from 'react-bootstrap';
 import TableUsers from './tables/tableUsers';
+import ModalUser from './modalUser';
+
 
 
 const UsersHeader = () => {
@@ -17,14 +19,51 @@ const UsersHeader = () => {
 };
 
 const Users = () => {
+  const [lgShow, setLgShow] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [formToShow, setFormToShow] = useState(''); 
+
+
+  const handleEditClick = (user, formType) => {
+    setSelectedUser(user);
+    setFormToShow(formType); 
+    setLgShow(true);
+  };
+
+  const handleCloseModal = () => {
+    setLgShow(false);
+    setSelectedUser(null);
+  };
+
+  const handleSaveChanges = () => {
+    // Lógica para guardar los cambios
+    console.log('Usuario actualizado:', selectedUser);
+    setLgShow(false);
+  };
+
   return (
     <>
       <UsersHeader />
       <Row className="g-3 mb-3">
         <Col lg={12}>
-          <TableUsers />
+          <Card>
+            <Card.Body>
+              <TableUsers onEditClick={handleEditClick} />
+            </Card.Body>
+          </Card>        
         </Col>
       </Row>
+
+      <ModalUser
+        id={selectedUser ? selectedUser.id : null}
+        formToShow={formToShow}
+        openModal={lgShow}
+        handleCloseModal={handleCloseModal}
+        warehouseID={null}
+        selectedUser={selectedUser}
+        setSelectedUser={setSelectedUser}
+        handleSaveChanges={handleSaveChanges}
+      />
     </>
   );
 };

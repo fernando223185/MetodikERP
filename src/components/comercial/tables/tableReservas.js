@@ -17,7 +17,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const columns = [
   {
     accessor: 'acciones',
-    Header: 'Editar',
+    Header: '',
     headerProps: { className: 'text-900' },
     cellProps: { className: 'text-center' }
   },
@@ -28,20 +28,40 @@ const columns = [
     cellProps: { className: 'text-center' }
   },
   {
-    accessor: 'nombre',
-    Header: 'Nombre',
+    accessor: 'Mov',
+    Header: 'Movimiento',
     headerProps: { className: 'text-900' }
   },
   {
-    accessor: 'usuario',
-    Header: 'Usuario',
+    accessor: 'cte',
+    Header: 'Cliente',
     headerProps: { className: 'text-900' }
   },
+  {
+    accessor: 'CreatedAt',
+    Header: 'Fecha Emision',
+    headerProps: { className: 'text-900' }
+  },
+  {
+    accessor: 'referencia',
+    Header: 'Referencia',
+    headerProps: { className: 'text-900' }
+  },
+  {
+    accessor: 'observaciones',
+    Header: 'Observaciones',
+    headerProps: { className: 'text-900' }
+  },
+  {
+    accessor: 'importe',
+    Header: 'Importe',
+    headerProps: { className: 'text-900' }
+  }
 ];
 
-function TableUsers({ onEditClick }) {
+function TableReservas() {
 
-  const { getUsers, users, isLoading } = useGetUsers();
+  const { getUsers, users, isLoading, pages } = useGetUsers();
   const [result, setResult] = useState([]);
   const [formToShow, setFormToShow] = useState(''); 
 
@@ -55,7 +75,7 @@ function TableUsers({ onEditClick }) {
       EstatusID: 1
     }
     getUsers({ data })
-  },[]);
+  }, [])
   
   useEffect(() => {
     if(users.status === 200)
@@ -79,8 +99,7 @@ function TableUsers({ onEditClick }) {
           <SubtleBadge pill bg="danger" className="fs--2">
             Inactive
           </SubtleBadge>
-        ),
-        rfc: u.RFC
+        )
       }));
       setResult(transformedData);
     }
@@ -107,18 +126,6 @@ function TableUsers({ onEditClick }) {
         <Col xs="auto">
           <AdvanceTableSearchBox table />
         </Col>
-        <Col xs="auto" sm={6} lg={4} className="ms-auto text-end">
-          <IconButton           
-          variant="primary"
-          icon="plus"
-          size="sm"
-          onClick={() => {
-            setFormToShow('NewUser'); 
-            onEditClick(null, 'NewUser'); 
-          }}
-        >
-        </IconButton>
-        </Col>
       </Row>
       <hr style={{ margin: '10px 0' }} />
       <AdvanceTable
@@ -144,4 +151,4 @@ function TableUsers({ onEditClick }) {
   );
 }
 
-export default TableUsers;
+export default TableReservas;

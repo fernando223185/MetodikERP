@@ -28,7 +28,7 @@ export const appRoutes = {
   children: [
 
     {
-      name: 'Configuracion',
+      name: 'Catalogos',
       icon: 'wrench',
       active: true,
       children: [

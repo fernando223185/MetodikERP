@@ -2,12 +2,12 @@ import React from 'react';
 import { Card } from 'react-bootstrap';
 import experiences from 'data/experiences';
 import FalconCardHeader from 'components/common/FalconCardHeader';
-import Experience from '../Experience';
+import Experience from '../../Experience';
 
-const Experiences = () => {
+const Empresas = () => {
   return (
     <Card className="mb-3">
-      <FalconCardHeader title="Empresa" light />
+      <FalconCardHeader title="Empresas" light />
       <Card.Body className="fs--1">
         {experiences.map((experience, index) => (
           <Experience
@@ -21,4 +21,4 @@ const Experiences = () => {
   );
 };
 
-export default Experiences;
+export default Empresas;

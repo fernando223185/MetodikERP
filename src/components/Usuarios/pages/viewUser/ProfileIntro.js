@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Card, Collapse, Row, Col } from 'react-bootstrap';
 
-const ProfileIntro = () => {
+const ProfileIntro = ({ userId }) => {
   const [collapsed, setCollapsed] = useState(false);
-
+  console.log("Usuario llega", userId)
   return (
     <Card className="mb-3">
       <Card.Header className="bg-body-tertiary">
@@ -14,29 +14,26 @@ const ProfileIntro = () => {
       <Card.Body className="text-1000">
         <Row>
           <Col md={4}>
-            <p><strong>Nombre:</strong> John</p>
+            <p><strong>Nombre:</strong> {userId?.Nombre}</p>
           </Col>
           <Col md={4}>
-            <p><strong>Apellido Paterno:</strong> Doe</p>
+            <p><strong>Apellido Paterno:</strong> {userId.ApellidoPaterno}</p>
           </Col>
           <Col md={4}>
-            <p><strong>Apellido Materno:</strong> Smith</p>
+            <p><strong>Apellido Materno:</strong> {userId.ApellidoMaterno}</p>
           </Col>
         </Row>
         <Row>
           <Col md={4}>
-            <p><strong>Email:</strong> john.doe@example.com</p>
+            <p><strong>Email:</strong> {userId.Correo}</p>
           </Col>
           <Col md={4}>
-            <p><strong>Teléfono:</strong> +1 (555) 123-4567</p>
-          </Col>
-          <Col md={4}>
-            <p><strong>Dirección:</strong> 123 Calle Principal, Ciudad, País</p>
+            <p><strong>Usuario:</strong> {userId.Usuario} </p>
           </Col>
         </Row>
         <Row>
           <Col md={12}>
-            <p><strong>Descripción:</strong> Dedicated, passionate, and accomplished Full Stack Developer with 9+ years of progressive experience working as an Independent Contractor...</p>
+            <p><strong>Notas: </strong>{userId.Notas}</p>
           </Col>
         </Row>
         <Collapse in={collapsed}>

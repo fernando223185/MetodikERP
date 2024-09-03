@@ -35,8 +35,8 @@ export const AdvanceTableFooter = ({
         {rowInfo && (
           <p className="mb-0">
             <span className="d-none d-sm-inline-block me-2">
-              {pageSize * pageIndex + 1} to {pageSize * pageIndex + page.length}{' '}
-              of {rowCount}
+              {pageSize * pageIndex + 1} al {pageSize * pageIndex + page.length}{' '}
+              de {rowCount}
             </span>
             {viewAllBtn && (
               <>
@@ -62,7 +62,7 @@ export const AdvanceTableFooter = ({
         )}
         {rowsPerPageSelection && (
           <>
-            <p className="mb-0 mx-2">Rows per page:</p>
+            <p className="mb-0 mx-2">Datos por pagina:</p>
             <Form.Select
               size="sm"
               className="w-auto"
@@ -86,7 +86,7 @@ export const AdvanceTableFooter = ({
             onClick={() => previousPage()}
             className={classNames({ disabled: !canPreviousPage })}
           >
-            Previous
+            Anterior
           </Button>
           <Button
             size="sm"
@@ -96,7 +96,7 @@ export const AdvanceTableFooter = ({
             })}
             onClick={() => nextPage()}
           >
-            Next
+            Siguiente
           </Button>
         </Flex>
       )}
