@@ -67,7 +67,7 @@ function TableEmpresas() {
                         size="sm"
                         variant="primary"
                         onClick={() => {
-                            navigate(`/configuration/empresas/editar/${e.Empresa}`);
+                            navigate(`/configuration/empresas/editar/${e.ID}`);
                         }}
                     />
                 ),
@@ -108,7 +108,7 @@ function TableEmpresas() {
           icon="plus"
           size="sm"
           onClick={() => {
-            
+            navigate('/configuration/empresa/nuevo');
           }}
         >
         </IconButton>
