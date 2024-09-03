@@ -34,12 +34,12 @@ const columns = [
     accessor: 'usuario',
     Header: 'Usuario',
     headerProps: { className: 'text-900' }
-  }
+  },
 ];
 
 function TableUsers() {
 
-  const { getUsers, users, isLoading, pages } = useGetUsers();
+  const { getUsers, users, isLoading } = useGetUsers();
   const [result, setResult] = useState([]);
 
 
@@ -51,7 +51,7 @@ function TableUsers() {
       EstatusID: 1
     }
     getUsers({ data })
-  }, [])
+  },[]);
   
   useEffect(() => {
     if(users.status === 200)
@@ -80,7 +80,8 @@ function TableUsers() {
           <SubtleBadge pill bg="danger" className="fs--2">
             Inactive
           </SubtleBadge>
-        )
+        ),
+        rfc: u.RFC
       }));
       setResult(transformedData);
     }
