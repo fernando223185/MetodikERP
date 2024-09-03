@@ -39,7 +39,7 @@ export const appRoutes = {
         },
         {
           name: 'Empresas',
-          to: '/email/email-detail',
+          to: '/configuration/empresas',
           active: true
         },
         {

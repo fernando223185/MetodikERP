@@ -199,6 +199,9 @@ import RangeSlider from 'components/doc-components/RangeSlider';
 
 /* IMPORTS FOR THE NEW APP */
 import Users from '../components/Usuarios/Index'
+import Empresas from 'components/empresas';
+import EmpresasSettings from 'components/empresas/Profile/EmpresaSettings';
+import CreateEmpresa from 'components/empresas/Profile/CreateEmpresa';
 import UserProfile from '../components/Usuarios/pages/viewUser/Profile'
 import EditarUsuario from '../components/Usuarios/pages/editUser/EditarUsuario'
 import Reservas from '../components/comercial/reservas/Index'
@@ -573,9 +576,11 @@ const MetodikRoutes = () => {
         <Route path="changelog" element={<Changelog />} />
               {/*ROUTES FOR THE NEW APP METODIK*/}
         <Route path="configuration/users" element={<Users />} />
+        <Route path="configuration/empresas" element={<Empresas />} />
+        <Route path="configuration/empresas/editar/:id" element={<EmpresasSettings />} />
+        <Route path="configuration/empresa/nuevo" element={<CreateEmpresa />} />
         <Route path="view-profile/users/:id" element={<UserProfile />} />
         <Route path="edit-information/users/:id" element={<EditarUsuario />} />
-        
       </Route>
 
       {/* //--- MainLayout end  */}
