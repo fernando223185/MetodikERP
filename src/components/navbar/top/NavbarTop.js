@@ -117,7 +117,7 @@ const NavbarTopElements = ({
         </button>
       </Navbar.Toggle>
 
-      <Logo at="navbar-top" textClass="text-primary" width={40} id="topLogo" />
+      <Logo at="navbar-top" textClass="text-primary" width={45} id="topLogo" />
 
       {navbarPosition === 'top' || navbarPosition === 'combo' ? (
         <Navbar.Collapse

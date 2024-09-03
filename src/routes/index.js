@@ -199,6 +199,9 @@ import RangeSlider from 'components/doc-components/RangeSlider';
 
 /* IMPORTS FOR THE NEW APP */
 import Users from '../components/Usuarios/Index'
+import UserProfile from '../components/Usuarios/pages/viewUser/Profile'
+import EditarUsuario from '../components/Usuarios/pages/editUser/EditarUsuario'
+import Reservas from '../components/comercial/reservas/Index'
 
 const MetodikRoutes = () => {
   return (
@@ -570,6 +573,9 @@ const MetodikRoutes = () => {
         <Route path="changelog" element={<Changelog />} />
               {/*ROUTES FOR THE NEW APP METODIK*/}
         <Route path="configuration/users" element={<Users />} />
+        <Route path="view-profile/users/:id" element={<UserProfile />} />
+        <Route path="edit-information/users/:id" element={<EditarUsuario />} />
+        
       </Route>
 
       {/* //--- MainLayout end  */}

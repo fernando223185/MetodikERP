@@ -4840,19 +4840,19 @@ fieldset:disabled .tox .tox-dialog__footer .tox-button--secondary,
 }
 
 .btn-outline-primary {
-  --falcon-btn-color: #2c7be5;
-  --falcon-btn-border-color: #2c7be5;
+  --falcon-btn-color: #A66595;
+  --falcon-btn-border-color: #A66595;
   --falcon-btn-hover-color: #fff;
-  --falcon-btn-hover-bg: #2c7be5;
-  --falcon-btn-hover-border-color: #2c7be5;
-  --falcon-btn-focus-shadow-rgb: 44, 123, 229;
+  --falcon-btn-hover-bg: #A66595;
+  --falcon-btn-hover-border-color: #A66595;
+  --falcon-btn-focus-shadow-rgb: 166, 101, 149; /* El RGB de #A66595 */
   --falcon-btn-active-color: #fff;
-  --falcon-btn-active-bg: #2c7be5;
-  --falcon-btn-active-border-color: #2c7be5;
+  --falcon-btn-active-bg: #A66595;
+  --falcon-btn-active-border-color: #A66595;
   --falcon-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  --falcon-btn-disabled-color: #2c7be5;
+  --falcon-btn-disabled-color: #A66595;
   --falcon-btn-disabled-bg: transparent;
-  --falcon-btn-disabled-border-color: #2c7be5;
+  --falcon-btn-disabled-border-color: #A66595;
   --falcon-gradient: none;
 }
 
