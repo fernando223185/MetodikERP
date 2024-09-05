@@ -69,7 +69,7 @@ const SettingsPanel = () => {
           <div className="d-flex justify-content-between align-items-center mb-1">
             <h5 className="text-white">
               <FontAwesomeIcon icon="palette" className="me-2 fs-0" />
-              Settings
+              Configuraciones
             </h5>
             <Button
               variant="primary"
@@ -85,18 +85,18 @@ const SettingsPanel = () => {
                 style={{ fontSize: '10px' }}
                 className="me-1"
               />
-              Reset
+              Restaurar
             </Button>
           </div>
           <p className="mb-0 fs--1 text-white opacity-75">
-            Set your own customized style
+              Personaliza a tu estilo y gusto.
           </p>
         </Offcanvas.Title>
       </Offcanvas.Header>
       {/* <ScrollBarCustom> */}
       <Offcanvas.Body className="scrollbar">
-        <h5 className="fs-0">Color Scheme</h5>
-        <p className="fs--1">Choose the perfect color mode for your app.</p>
+        <h5 className="fs-0">Tema </h5>
+        <p className="fs--1">Seleccion el modo de color perfecto para tu aplicacion.</p>
 
         <ButtonGroup className="btn-group-navbar-style">
           <RadioItem
@@ -132,7 +132,7 @@ const SettingsPanel = () => {
             className="me-2 h-100"
           />
           <div className="flex-1">
-            <h5 className="fs-0">RTL Mode</h5>
+            <h5 className="fs-0">RTL Modo</h5>
             <p className="fs--1 mb-0">Switch your language direction </p>
           </div>
           <Form.Check

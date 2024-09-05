@@ -25,7 +25,7 @@ const Banner = ({userId}) => {
             </h5>
             <p className="text-500">New York, USA</p>
             <Link
-              to={`/edit-information/users/${userId.ID}`}  
+              to={`/configuration/users/edit/${userId.ID}`}  
               className="btn btn-outline-primary rounded-pill me-2 mb-1"
             >   
               <FontAwesomeIcon icon="edit" />

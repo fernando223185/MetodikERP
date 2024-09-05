@@ -6,7 +6,6 @@ import ProfileSettings from './ProfileSettings';
 import ExperiencesSettings from './ExperiencesSettings';
 import EducationSettings from './EducationSettings';
 import AccountSettings from './AccountSettings';
-import BillingSettings from './BillingSettings';
 import ChangePassword from './ChangePassword';
 import DangerZone from './DangerZone';
 import coverSrc from 'assets/img/generic/4.jpg';
@@ -38,7 +37,7 @@ const getInitialValues = (userId) => {
     EmpresaID: 1,
     Sucursales: '',
     Almacenes: '',
-    PerfilID: 0,
+    PerfilID: 1,
     PersonalID: 1,
     ClienteID: 0
   }
@@ -129,7 +128,7 @@ const EditarUsuario = () => {
               ) : (
                   <div>
                       <Link
-                        to={`/view-profile/users/${userId.ID}`}  
+                        to={`/configuration/users`}  
                         className="btn btn-secondary rounded-pill me-1"
                       >
                       <FontAwesomeIcon icon={faReply} />
