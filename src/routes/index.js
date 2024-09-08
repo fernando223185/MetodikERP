@@ -204,6 +204,9 @@ import EmpresasSettings from 'components/empresas/Profile/EmpresaSettings';
 import CreateEmpresa from 'components/empresas/Profile/CreateEmpresa';
 import Sucursales from 'components/sucursales';
 import SucursalesSettings from 'components/sucursales/Profile/SucursalesSettings';
+import CreateVehiculo from 'components/vehiculos/Profile/CreateVehiculo';
+import Vehiculos from 'components/vehiculos';
+import VehiculosSettings from 'components/vehiculos/Profile/VehiculosSettings';
 import CreateSucursal from 'components/sucursales/Profile/CreateSucursal';
 import UserProfile from '../components/Usuarios/pages/viewUser/Profile'
 import EditarUsuario from '../components/Usuarios/pages/editUser/EditarUsuario'
@@ -586,6 +589,9 @@ const MetodikRoutes = () => {
         <Route path="configuration/sucursales" element={<Sucursales />} />
         <Route path="configuration/sucursales/editar/:id" element={<SucursalesSettings />} />
         <Route path="configuration/sucursal/nuevo" element={<CreateSucursal />} />
+        <Route path="configuration/vehiculos" element={<Vehiculos />} />
+        <Route path="configuration/vehiculos/editar/:id" element={<VehiculosSettings />} />
+        <Route path="configuration/vehiculo/nuevo" element={<CreateVehiculo />} />
         <Route path="configuration/users/view-profile/:id" element={<UserProfile />} />
         <Route path="configuration/users/edit/:id" element={<EditarUsuario />} />
         <Route path="comercial/reservas" element={<Reservas/>} />

@@ -50,6 +50,11 @@ export const appRoutes = {
           active: true
         },
         {
+          name: 'Vehiculos',
+          to: '/configuration/vehiculos',
+          active: true
+        },
+        {
           name: 'Monedas',
           to: '/email/compose',
           active: true
