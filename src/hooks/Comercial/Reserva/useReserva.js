@@ -4,7 +4,7 @@ import { getReservasAsync, newReservaAsync } from 'api/comercial/reservas/reserv
 export const useGetReservas = () => {
   const [reservas, setReservas] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);  // Añadimos control de errores
+  const [error, setError] = useState(null);  
   
   const getReservas = useCallback(async ({ data }) => {
     if (isLoading) return;
@@ -29,7 +29,7 @@ export const useGetReservas = () => {
 };
 
 export const useNewReserva = () => {
-    const [result, setResult] = useState({})
+    const [result, setResult] = useState({})    
     const [isLoading, setIsLoading] = useState(false)
     
     const newReserva = useCallback(async ({ data }) => {

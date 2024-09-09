@@ -1,4 +1,4 @@
-import { faBalanceScale, faBuilding, faWarehouse, faPersonBooth, faUsers, faTshirt, faBox, faPaperPlane, faCampground, faDesktop } from '@fortawesome/free-solid-svg-icons';
+import { faBalanceScale, faBuilding, faWarehouse, faPersonBooth, faUsers, faTshirt, faBox, faPaperPlane, faCampground, faDesktop, faBook } from '@fortawesome/free-solid-svg-icons';
 
 export const dashboardRoutes = {
   label: 'Dashboard',
@@ -31,7 +31,7 @@ export const appRoutes = {
 
     {
       name: 'Catalogos',
-      icon: 'wrench',
+      icon: faBook,
       active: true,
       children: [
         {

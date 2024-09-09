@@ -12,7 +12,6 @@ const container = document.getElementById('main');
 const root = createRoot(container);
 
 root.render(
-  <React.StrictMode>
     <Router>
       <AuthProvider>
         <Main>
@@ -30,5 +29,4 @@ root.render(
         </Main>
       </AuthProvider>
     </Router>
-  </React.StrictMode>
 );
