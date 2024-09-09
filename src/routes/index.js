@@ -207,6 +207,7 @@ import EditarUsuario from '../components/Usuarios/pages/editUser/EditarUsuario'
 import Reservas from '../components/comercial/reservas/Index'
 import ReservasD from '../components/comercial/reservas/pages/ReservasD'
 import Rutas from 'components/rutas/table/tableRutas'
+import Choferes from 'components/choferes/tableChoferes'
 
 const MetodikRoutes = () => {
   return (
@@ -586,7 +587,7 @@ const MetodikRoutes = () => {
         <Route path="comercial/reservas" element={<Reservas/>} />
         <Route path="comercial/reservas/reservaD/:id" element={<ReservasD/>} />
         <Route path="configuration/rutas" element={<Rutas />} />
-        
+        <Route path="configuration/choferes" element={<Choferes />} />
       </Route>
 
       {/* //--- MainLayout end  */}
