@@ -40,6 +40,11 @@ export const appRoutes = {
           active: true
         },
         {
+          name: 'Perfiles',
+          to: '/configuration/Profiles',
+          active: true
+        },
+        {
           name: 'Empresas',
           to: '/configuration/empresas',
           active: true
