@@ -46,7 +46,12 @@ export const appRoutes = {
         },
         {
           name: 'Sucursales',
-          to: '/email/compose',
+          to: '/configuration/sucursales',
+          active: true
+        },
+        {
+          name: 'Vehiculos',
+          to: '/configuration/vehiculos',
           active: true
         },
         {
