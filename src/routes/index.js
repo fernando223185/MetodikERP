@@ -205,6 +205,9 @@ import CreateEmpresa from 'components/empresas/Profile/CreateEmpresa';
 import UserProfile from '../components/Usuarios/pages/viewUser/Profile'
 import EditarUsuario from '../components/Usuarios/pages/editUser/EditarUsuario'
 import Reservas from '../components/comercial/reservas/Index'
+import ReservasD from '../components/comercial/reservas/pages/ReservasD'
+import Rutas from 'components/rutas/table/tableRutas'
+import Choferes from 'components/choferes/tableChoferes'
 
 const MetodikRoutes = () => {
   return (
@@ -579,8 +582,12 @@ const MetodikRoutes = () => {
         <Route path="configuration/empresas" element={<Empresas />} />
         <Route path="configuration/empresas/editar/:id" element={<EmpresasSettings />} />
         <Route path="configuration/empresa/nuevo" element={<CreateEmpresa />} />
-        <Route path="view-profile/users/:id" element={<UserProfile />} />
-        <Route path="edit-information/users/:id" element={<EditarUsuario />} />
+        <Route path="configuration/users/view-profile/:id" element={<UserProfile />} />
+        <Route path="configuration/users/edit/:id" element={<EditarUsuario />} />
+        <Route path="comercial/reservas" element={<Reservas/>} />
+        <Route path="comercial/reservas/reservaD/:id" element={<ReservasD/>} />
+        <Route path="configuration/rutas" element={<Rutas />} />
+        <Route path="configuration/choferes" element={<Choferes />} />
       </Route>
 
       {/* //--- MainLayout end  */}

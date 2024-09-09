@@ -37,8 +37,8 @@ const SettingsToggle = () => {
             </span>
           </div>
         </div>
-        <small className="text-uppercase text-primary fw-bold bg-primary-subtle py-2 pe-2 ps-1 rounded-end">
-          customize
+        <small className="text-uppercase text-secondary fw-bold bg-primary-subtle py-2 pe-2 ps-1 rounded-end">
+          Personaliza
         </small>
       </Card.Body>
     </Card>

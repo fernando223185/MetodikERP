@@ -111,7 +111,7 @@ const FooterStandard = () => {
           <Row className="justify-content-between">
             <Col xs={12} sm="auto">
               <p className="mb-0 text-600">
-                Thank you for creating with Falcon{' '}
+              Desarrollado por Metodik{' '}
                 <span className="d-none d-sm-inline-block">| </span>
                 <br className="d-sm-none" /> {new Date().getFullYear()} &copy;{' '}
                 <a

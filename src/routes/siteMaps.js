@@ -1,3 +1,5 @@
+import { faBalanceScale, faBuilding, faWarehouse, faPersonBooth, faUsers, faTshirt, faBox, faPaperPlane, faCampground, faDesktop } from '@fortawesome/free-solid-svg-icons';
+
 export const dashboardRoutes = {
   label: 'Dashboard',
   labelDisable: true,
@@ -81,7 +83,7 @@ export const appRoutes = {
         },
         {
           name: 'Reservas',
-          to: '/e-commerce/checkout',
+          to: '/comercial/reservas',
           active: true
         },
         {
@@ -136,7 +138,7 @@ export const appRoutes = {
     },
     {
       name: 'Fiscal',
-      icon: 'paperclip',
+      icon: faBalanceScale,
       to: '/app/kanban',
       active: true,
       children: [
@@ -171,7 +173,7 @@ export const appRoutes = {
     },
     {
       name: 'Financiero',
-      icon: 'ticket-alt',
+      icon: faBuilding,
       active: true,
       children: [
         {
@@ -203,7 +205,7 @@ export const appRoutes = {
     },
     {
       name: 'Logistica',
-      icon: 'bag-shopping',
+      icon: faWarehouse,
       active: true,
       children: [
         {
@@ -235,7 +237,7 @@ export const appRoutes = {
     },
     {
       name: 'RRHH',
-      icon: 'ticket-alt',
+      icon: faPersonBooth,
       active: true,
       children: [
         {
@@ -267,7 +269,7 @@ export const appRoutes = {
     },
     {
       name: 'CRM',
-      icon: 'ticket-alt',
+      icon: faUsers,
       active: true,
       children: [
         {
@@ -284,7 +286,7 @@ export const appRoutes = {
     },
     {
       name: 'PLM',
-      icon: 'ticket-alt',
+      icon: faTshirt,
       active: true,
       children: [
         {
@@ -301,25 +303,25 @@ export const appRoutes = {
     },
     {
       name: 'WMS',
-      icon: 'ticket-alt',
+      icon: faBox,
       to: '/support-desk/card-view',
       active: true
     },
     {
       name: 'Envios',
-      icon: 'ticket-alt',
+      icon: faPaperPlane,
       to: '/support-desk/card-view',
       active: true
     },
     {
       name: 'Campañas',
-      icon: 'ticket-alt',
+      icon: faCampground,
       to: '/support-desk/card-view',
       active: true
     },
     {
       name: 'Monitor de licencias Gral',
-      icon: 'ticket-alt',
+      icon: faDesktop,
       to: '/support-desk/card-view',
       active: true
     },
