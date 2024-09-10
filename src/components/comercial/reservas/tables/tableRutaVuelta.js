@@ -6,6 +6,8 @@ import AdvanceTableFooter from 'components/common/advance-table/AdvanceTableFoot
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AdvanceTableSearchBox from 'components/common/advance-table/AdvanceTableSearchBox';
+import FormRutaIda from '../modal/FormRutaIda'
+
 
 
 
@@ -34,10 +36,21 @@ const columns = [
   }
 ];
 
-function TableRutaVuelta({ rutaVuelta }) {
+function TableRutaVuelta({ rutaVuelta, setUpdateList}) {
 
   const [result, setResult] = useState([]);
   const [formToShow, setFormToShow] = useState('');
+  const [showModal, setShowModal] = useState(false); 
+  const [selectedItem, setSelectedItem] = useState(null); 
+
+  const handleOpenModal = (row) => {
+    setSelectedItem(row);
+    setShowModal(true); 
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false); 
+  };
 
   useEffect(() => {
     console.log("rutaIdV",rutaVuelta)
@@ -45,12 +58,13 @@ function TableRutaVuelta({ rutaVuelta }) {
     {
       const transformedData = rutaVuelta.map(u => ({
         acciones: (
-            <Link
-              to={`/comercial/reservas/reservaD/${u.ID}`}  
-              className="btn btn-outline-primary rounded-pill me-1 mb-1 btn-sm"
-            >
-              <FontAwesomeIcon icon="plus" />
-            </Link>
+          <button
+            className="btn btn-outline-primary rounded-pill me-1 mb-1 btn-sm"
+            onClick={() => handleOpenModal(u)} 
+          >
+
+            <FontAwesomeIcon icon="plus" />
+          </button>
         ),
         viaje: `${u.Clave}`,
         desc: u.Descripcion,
@@ -67,39 +81,50 @@ function TableRutaVuelta({ rutaVuelta }) {
 
 
   return (
-    <AdvanceTableWrapper
-      columns={columns}
-      data={result}
-      sortable
-      pagination
-      perPage={5}
-    >
-        <Row className="justify-content-start mb-3">
-            <Col xs="auto">
-            <AdvanceTableSearchBox table />
-            </Col>
-        </Row>
-      <hr style={{ margin: '10px 0' }} />
-      <AdvanceTable
-        table
-        headerClassName="bg-200 text-nowrap align-middle"
-        rowClassName="align-middle white-space-nowrap"
-        tableProps={{
-          bordered: true,
-          striped: true,
-          className: 'fs--1 mb-0 overflow-hidden'
-        }}
-      />
-      <div className="mt-3">
-        <AdvanceTableFooter
-          rowCount={result.length}
+    <>
+      <AdvanceTableWrapper
+        columns={columns}
+        data={result}
+        sortable
+        pagination
+        perPage={5}
+      >
+          <Row className="justify-content-start mb-3">
+              <Col xs="auto">
+              <AdvanceTableSearchBox table />
+              </Col>
+          </Row>
+        <hr style={{ margin: '10px 0' }} />
+        <AdvanceTable
           table
-          rowInfo
-          navButtons
-          rowsPerPageSelection
+          headerClassName="bg-200 text-nowrap align-middle"
+          rowClassName="align-middle white-space-nowrap"
+          tableProps={{
+            bordered: true,
+            striped: true,
+            className: 'fs--1 mb-0 overflow-hidden'
+          }}
         />
-      </div>
-    </AdvanceTableWrapper>
+        <div className="mt-3">
+          <AdvanceTableFooter
+            rowCount={result.length}
+            table
+            rowInfo
+            navButtons
+            rowsPerPageSelection
+          />
+        </div>
+      </AdvanceTableWrapper>
+      {showModal && (
+        <FormRutaIda 
+          show={showModal} 
+          handleClose={handleCloseModal} 
+          selectedItem={selectedItem} 
+          setUpdateList={setUpdateList}
+
+        />
+      )}
+    </>
   );
 }
 

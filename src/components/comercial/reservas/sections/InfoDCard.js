@@ -99,7 +99,7 @@ const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched 
           setHasFetched((prev) => !prev); 
         }, 1000)
     } else if (resultNew) {
-        toast.error(`Error al crear el cliente`, {
+        toast.error(`Error al guardar`, {
             theme: 'colored',
             position: 'top-right'
         });

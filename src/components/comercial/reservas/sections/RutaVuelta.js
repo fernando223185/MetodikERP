@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
 import TableRutaVuelta from '../tables/tableRutaVuelta'
 
-const RutaVuelta = ({ rutaVuelta }) => {
+const RutaVuelta = ({ rutaVuelta, setUpdateList}) => {
 
 
   return (
@@ -18,6 +18,8 @@ const RutaVuelta = ({ rutaVuelta }) => {
       <Card.Body>
         <TableRutaVuelta
             rutaVuelta={rutaVuelta}
+            setUpdateList={setUpdateList}
+
         />
       </Card.Body>
     </Card>

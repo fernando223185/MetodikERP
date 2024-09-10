@@ -2,7 +2,7 @@ import React from 'react';
 //import { Link } from 'react-router-dom';
 import LoginForm from 'components/authentication/LoginForm';
 import AuthSplitLayout from 'layouts/AuthSplitLayout';
-import bgImg from 'assets/img/generic/14.jpg';
+import bgImg from 'assets/img/generic/BannerInicio.jpg';
 import Flex from 'components/common/Flex';
 
 const Login = () => {

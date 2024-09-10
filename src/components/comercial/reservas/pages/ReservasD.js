@@ -7,7 +7,7 @@ import RutaIda from '../sections/RutaIda'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faReply, faBan } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import { useGetReservaID, useGetRutaIda, useGetRutaVuelta } from '../../../../hooks/Comercial/Reserva/useReservaD';
+import { useGetReservaID, useGetRutaIda, useGetRutaVuelta, useGetReservaD } from '../../../../hooks/Comercial/Reserva/useReservaD';
 import { useParams } from 'react-router-dom';
 import { useGetFiltroModulo } from '../../../../hooks/useFiltros'; 
 import RutaVuelta from '../sections/RutaVuelta'
@@ -46,11 +46,15 @@ const ReservasD = () => {
   const { id } = useParams();
   const { getReservaID, reservaId, isLoading, error } = useGetReservaID();
   const [hasFetched, setHasFetched] = useState(false); 
+  const [updateList, setUpdateList] = useState(false); 
+
   const { getFiltroModulo, isLoading: isLoadingFiltro } = useGetFiltroModulo();
   const [movimientos, setMovimientos] = useState([]);
   const [origenes, setOrigenes] = useState([]);
   const { getRutaIda, rutaIda, isLoading: isLoadingRutas } = useGetRutaIda();
   const { getRutaVuelta, rutaVuelta, isLoading: isLoadingRutasV } = useGetRutaVuelta();
+  const { getReservaD, reservaD, isLoading: isLoadingD } = useGetReservaD();
+
 
 
   useEffect(() =>{
@@ -63,6 +67,12 @@ const ReservasD = () => {
     getRutaIda({ id })
     getRutaVuelta({ id })
   }, [id, hasFetched])
+
+  useEffect(() => {
+    getReservaD({ id })
+  }, [id, updateList])
+
+
 
 
   useEffect(() => {
@@ -118,6 +128,8 @@ const ReservasD = () => {
                   <Col>
                       <RutaIda 
                         rutaIda={rutaIda}
+                        setUpdateList={setUpdateList}
+
                       />
                   </Col>
                 </Row>
@@ -125,12 +137,17 @@ const ReservasD = () => {
                   <Col>
                       <RutaVuelta 
                         rutaVuelta={rutaVuelta}
+                        setUpdateList={setUpdateList}
+
                       />
                   </Col>
                 </Row>
                 <Row className='mt-4'>
                   <Col>
-                      <DetalleViajeCard/>
+                      <DetalleViajeCard 
+                        reservaD={reservaD}
+                        setUpdateList={setUpdateList}
+                      />
                   </Col>
                 </Row>
             </Card.Body>

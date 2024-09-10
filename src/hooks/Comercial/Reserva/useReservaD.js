@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { getReservaIDAsync, avanzarReservaAsync, getRutaIdaAsync, getRutaVueltaAsync } from 'api/comercial/reservas/reservas';
+import { getReservaIDAsync, avanzarReservaAsync, getRutaIdaAsync, getRutaVueltaAsync, actReservaDAsync, getReservaDAsync, delRowAsync } from 'api/comercial/reservas/reservas';
 
 export const useGetReservaID = () => {
   const [reservaId, setReserva] = useState([]);
@@ -83,4 +83,55 @@ export const useGetRutaVuelta = () => {
 
   return { getRutaVuelta, rutaVuelta, isLoading, error };
 };
+
+export const useActReservaD = () => {
+  const [result, setResult] = useState({})    
+  const [isLoading, setIsLoading] = useState(false)
+  
+  const actReservaD = useCallback(async ({ data }) => {
+      setIsLoading(true);
+      const result = await actReservaDAsync({ data });
+      setResult(result);
+      setIsLoading(false);
+    }, [])
+  
+    return { actReservaD, result, isLoading };
+}
+
+export const useGetReservaD = () => {
+  const [reservaD, setReserva] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);  
+  
+  const getReservaD = useCallback(async ({ id }) => {
+    if (isLoading) return;
+    setIsLoading(true);
+    setError(null); 
+    try {
+      const result = await getReservaDAsync({ id });
+      setReserva(result); 
+      setError('Failed to fetch reservas');
+    } catch (error) {
+      setError('An error occurred while fetching reservas');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [isLoading]); 
+
+  return { getReservaD, reservaD, isLoading, error };
+};
+
+export const useDelRowReservaD = () => {
+  const [result, setResult] = useState({})    
+  const [isLoading, setIsLoading] = useState(false)
+  
+  const delRowReservaD = useCallback(async ({ id, RowID }) => {
+      setIsLoading(true);
+      const result = await delRowAsync({ id, RowID });
+      setResult(result);
+      setIsLoading(false);
+    }, [])
+  
+    return { delRowReservaD, result, isLoading };
+}
 

@@ -6,7 +6,7 @@ import AdvanceTableFooter from 'components/common/advance-table/AdvanceTableFoot
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AdvanceTableSearchBox from 'components/common/advance-table/AdvanceTableSearchBox';
-
+import FormRutaIda from '../modal/FormRutaIda'
 
 
 const columns = [
@@ -34,23 +34,33 @@ const columns = [
   }
 ];
 
-function TableRutaIda({ rutaIda }) {
+function TableRutaIda({ rutaIda, setUpdateList }) {
 
   const [result, setResult] = useState([]);
   const [formToShow, setFormToShow] = useState('');
+  const [showModal, setShowModal] = useState(false); 
+  const [selectedItem, setSelectedItem] = useState(null); 
+  const handleOpenModal = (row) => {
+    setSelectedItem(row);
+    setShowModal(true); 
+  };
 
+  const handleCloseModal = () => {
+    setShowModal(false); 
+  };
   useEffect(() => {
     console.log("rutaId",rutaIda)
     if (rutaIda) 
     {
       const transformedData = rutaIda.map(u => ({
         acciones: (
-            <Link
-              to={`/comercial/reservas/reservaD/${u.ID}`}  
-              className="btn btn-outline-primary rounded-pill me-1 mb-1 btn-sm"
-            >
-              <FontAwesomeIcon icon="plus" />
-            </Link>
+          <button
+            className="btn btn-outline-primary rounded-pill me-1 mb-1 btn-sm"
+            onClick={() => handleOpenModal(u)} 
+          >
+
+            <FontAwesomeIcon icon="plus" />
+          </button>
         ),
         viaje: `${u.HRutaID}`,
         desc: u.Descripcion,
@@ -67,6 +77,8 @@ function TableRutaIda({ rutaIda }) {
 
 
   return (
+  <>
+
     <AdvanceTableWrapper
       columns={columns}
       data={result}
@@ -100,6 +112,16 @@ function TableRutaIda({ rutaIda }) {
         />
       </div>
     </AdvanceTableWrapper>
+          {showModal && (
+            <FormRutaIda 
+              show={showModal} 
+              handleClose={handleCloseModal} 
+              selectedItem={selectedItem} 
+              setUpdateList={setUpdateList}
+            />
+          )}
+  </>
+
   );
 }
 

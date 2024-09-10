@@ -1,7 +1,10 @@
 import React from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
+import TableReservaD from '../tables/tableReservaD'
 
-const DetalleViajeCard = () => {
+
+const DetalleViajeCard = ({ reservaD, setUpdateList }) => {
+  console.log(reservaD)
   return (
     <Card className="mb-3">
       <Card.Header>
@@ -13,6 +16,10 @@ const DetalleViajeCard = () => {
         <hr />
       </Card.Header>
       <Card.Body>
+        <TableReservaD 
+          reservaD={reservaD}
+          setUpdateList={setUpdateList}
+        />
       </Card.Body>
     </Card>
   );
