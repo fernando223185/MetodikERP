@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { getVehiculosAsync } from 'api/catalogo/vehiculos/vehiculos';
 import { getVehiculoResumen } from 'api/catalogo/vehiculos/vehiculos';
+import { actVehiculo } from 'api/catalogo/vehiculos/vehiculos';
 
 export const useGetVehiculos = () => {
     const [vehiculos, setVehiculos] = useState([]);
@@ -30,4 +31,26 @@ export const useGetVehiculoResumen = () => {
     }, []);
   
     return { getResumen, vehiculoResumen, isLoading, setIsLoading };
+}
+
+export const useActVehiculo = () => {
+    const [isLoading, setIsLoading] = useState(false);
+    const [response, setResponse] = useState(null);
+    const [error, setError] = useState(null);
+
+    const submitVehiculo = useCallback(async ({data}) => {
+        setIsLoading(true);
+        setError(null);
+
+        try {
+            const result = await actVehiculo({ data });
+            setResponse(result);
+        } catch (error) {
+            setError(error);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
+    return { submitVehiculo, response, error, isLoading };
 }
