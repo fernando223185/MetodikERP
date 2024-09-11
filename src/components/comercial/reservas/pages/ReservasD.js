@@ -1,12 +1,21 @@
-import React, { useState } from 'react';
-import { Col, Row, Container, Modal, Card, Button } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Col, Row, Container, Modal, Card, Spinner } from 'react-bootstrap';
 import InfoCard from '../sections/InfoCard'
 import InfoDCard from '../sections/InfoDCard'
+import DetalleViajeCard from '../sections/DetalleViajeCard'
+import RutaIda from '../sections/RutaIda'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faReply, faBan } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import { useGetReservaID, useGetRutaIda, useGetRutaVuelta } from '../../../../hooks/Comercial/Reserva/useReservaD';
+import { useParams } from 'react-router-dom';
+import { useGetFiltroModulo } from '../../../../hooks/useFiltros'; 
+import RutaVuelta from '../sections/RutaVuelta'
+
+
 
 const ReservasHeader = () => {
+
     return (
       <Container fluid className="py-3 px-4 border-bottom mb-4">
         <Row className="align-items-center">
@@ -17,7 +26,7 @@ const ReservasHeader = () => {
             <Col md={4} className="text-end">
                 <Link
                     to={`/comercial/reservas`}  
-                    className="btn btn-outline-primary rounded-pill me-1 mb-1 btn-sm"
+                    className="btn btn-outline-primary rounded-pill me-1 btn-sm"
                 >
                     <FontAwesomeIcon icon={faReply} />
                 </Link>
@@ -34,6 +43,55 @@ const ReservasHeader = () => {
   };
 
 const ReservasD = () => {
+  const { id } = useParams();
+  const { getReservaID, reservaId, isLoading, error } = useGetReservaID();
+  const [hasFetched, setHasFetched] = useState(false); 
+  const { getFiltroModulo, isLoading: isLoadingFiltro } = useGetFiltroModulo();
+  const [movimientos, setMovimientos] = useState([]);
+  const [origenes, setOrigenes] = useState([]);
+  const { getRutaIda, rutaIda, isLoading: isLoadingRutas } = useGetRutaIda();
+  const { getRutaVuelta, rutaVuelta, isLoading: isLoadingRutasV } = useGetRutaVuelta();
+
+
+  useEffect(() =>{
+    if (id != null && id > 0) {
+      getReservaID({ id })
+    }
+  }, [id, hasFetched])
+
+  useEffect(() => {
+    getRutaIda({ id })
+    getRutaVuelta({ id })
+  }, [id, hasFetched])
+
+
+  useEffect(() => {
+    const fetchMovimientos = async () => {
+      const data = { Tipo: 'Movimientos', PersonaID: 1, Modulo: 'Reservas' };
+      const result = await getFiltroModulo(data);
+      setMovimientos(result); 
+    };
+
+    const fetchOrigenes = async () => {
+      const data = { Tipo: 'Destinos', PersonaID: 1, Modulo: 'Reservas' };
+      const result = await getFiltroModulo(data);
+      setOrigenes(result);
+    };
+
+    fetchMovimientos(); 
+    fetchOrigenes();  
+  }, []);
+
+
+  if (isLoading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', height: '100vh', marginTop: '100px' }}>
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -44,16 +102,42 @@ const ReservasD = () => {
             <Card.Body>
                 <Row>
                     <Col md={4}>
-                        <InfoCard/>
+                        <InfoCard reservaId={reservaId}/>
                     </Col>
                     <Col md={8}>
-                        <InfoDCard/>
+                        <InfoDCard
+                          reservaId={reservaId}
+                          movimientos={movimientos}
+                          isLoading={isLoadingFiltro}
+                          origenes={origenes}
+                          setHasFetched={setHasFetched} 
+                        />
                     </Col>
+                </Row>
+                <Row>
+                  <Col>
+                      <RutaIda 
+                        rutaIda={rutaIda}
+                      />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                      <RutaVuelta 
+                        rutaVuelta={rutaVuelta}
+                      />
+                  </Col>
+                </Row>
+                <Row className='mt-4'>
+                  <Col>
+                      <DetalleViajeCard/>
+                  </Col>
                 </Row>
             </Card.Body>
           </Card>        
         </Col>
       </Row>
+
     </>
   );
 };

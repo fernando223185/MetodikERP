@@ -202,12 +202,22 @@ import Users from '../components/Usuarios/Index'
 import Empresas from 'components/empresas';
 import EmpresasSettings from 'components/empresas/Profile/EmpresaSettings';
 import CreateEmpresa from 'components/empresas/Profile/CreateEmpresa';
+import Sucursales from 'components/sucursales';
+import SucursalesSettings from 'components/sucursales/Profile/SucursalesSettings';
+import CreateVehiculo from 'components/vehiculos/Profile/CreateVehiculo';
+import Vehiculos from 'components/vehiculos';
+import VehiculosSettings from 'components/vehiculos/Profile/VehiculosSettings';
+import CreateSucursal from 'components/sucursales/Profile/CreateSucursal';
 import UserProfile from '../components/Usuarios/pages/viewUser/Profile'
 import EditarUsuario from '../components/Usuarios/pages/editUser/EditarUsuario'
 import Reservas from '../components/comercial/reservas/Index'
 import ReservasD from '../components/comercial/reservas/pages/ReservasD'
 import Rutas from 'components/rutas/table/tableRutas'
 import Choferes from 'components/choferes/tableChoferes'
+import EditChofer from 'components/choferes/edit/EditChofer';
+import CreateChofer from 'components/choferes/create/CreateChofer';
+import Profiles from 'components/Perfiles/index'
+import ViewProfile from 'components/choferes/ViewProfile/ViewChofer';
 
 const MetodikRoutes = () => {
   return (
@@ -582,12 +592,23 @@ const MetodikRoutes = () => {
         <Route path="configuration/empresas" element={<Empresas />} />
         <Route path="configuration/empresas/editar/:id" element={<EmpresasSettings />} />
         <Route path="configuration/empresa/nuevo" element={<CreateEmpresa />} />
+        <Route path="configuration/sucursales" element={<Sucursales />} />
+        <Route path="configuration/sucursales/editar/:id" element={<SucursalesSettings />} />
+        <Route path="configuration/sucursal/nuevo" element={<CreateSucursal />} />
+        <Route path="configuration/vehiculos" element={<Vehiculos />} />
+        <Route path="configuration/vehiculos/editar/:id" element={<VehiculosSettings />} />
+        <Route path="configuration/vehiculo/nuevo" element={<CreateVehiculo />} />
         <Route path="configuration/users/view-profile/:id" element={<UserProfile />} />
         <Route path="configuration/users/edit/:id" element={<EditarUsuario />} />
         <Route path="comercial/reservas" element={<Reservas/>} />
         <Route path="comercial/reservas/reservaD/:id" element={<ReservasD/>} />
         <Route path="configuration/rutas" element={<Rutas />} />
         <Route path="configuration/choferes" element={<Choferes />} />
+        <Route path="configuration/choferes/view-profile/:id" element={<ViewProfile />} />
+        <Route path="configuration/choferes/edit/:id" element={<EditChofer />} />
+        <Route path="configuration/choferes/nuevo" element={<CreateChofer />} />
+        <Route path="configuration/Profiles" element={<Profiles />} />
+
       </Route>
 
       {/* //--- MainLayout end  */}

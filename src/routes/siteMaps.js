@@ -1,4 +1,4 @@
-import { faBalanceScale, faBuilding, faWarehouse, faPersonBooth, faUsers, faTshirt, faBox, faPaperPlane, faCampground, faDesktop } from '@fortawesome/free-solid-svg-icons';
+import { faBalanceScale, faBuilding, faWarehouse, faPersonBooth, faUsers, faTshirt, faBox, faPaperPlane, faCampground, faDesktop, faBook } from '@fortawesome/free-solid-svg-icons';
 
 export const dashboardRoutes = {
   label: 'Dashboard',
@@ -31,12 +31,17 @@ export const appRoutes = {
 
     {
       name: 'Catalogos',
-      icon: 'wrench',
+      icon: faBook,
       active: true,
       children: [
         {
           name: 'Usuarios',
           to: '/configuration/users',
+          active: true
+        },
+        {
+          name: 'Perfiles',
+          to: '/configuration/Profiles',
           active: true
         },
         {
@@ -46,7 +51,22 @@ export const appRoutes = {
         },
         {
           name: 'Sucursales',
-          to: '/email/compose',
+          to: '/configuration/sucursales',
+          active: true
+        },
+        {
+          name: 'Vehiculos',
+          to: '/configuration/vehiculos',
+          active: true
+        },
+        {
+          name: 'Rutas',
+          to: '/configuration/rutas',
+          active: true
+        },
+        {
+          name: 'Choferes',
+          to: '/configuration/choferes',
           active: true
         },
         {

@@ -22,3 +22,45 @@ export async function newReservaAsync({data}){
         return error;
     }
 }
+
+export async function getReservaIDAsync({id = 0}){
+    try{
+        const response = await axios.get(`${endpoints.key}/Reservas/verReservaID?ID=${id}`)
+        return response.data[0]
+    }catch(error){
+        console.error('Error fetching reservas:', error);
+        return error;
+    }
+}
+
+export async function avanzarReservaAsync({ data })
+{
+    try{
+        const response = await axios.post(`${endpoints.key}/Reservas/avanzarReserva`, data)
+        return response;
+    }catch(error)
+    {
+        console.error('Error fetching reservas:', error);
+        return error;
+    }
+}
+
+export async function getRutaIdaAsync({id = 0}){
+    try{
+        const response = await axios.get(`${endpoints.key}/Reservas/verViajesDisponiblesIda?ID=${id}`)
+        return response.data
+    }catch(error){
+        console.error('Error fetching reservas:', error);
+        return error;
+    }
+}
+
+export async function getRutaVueltaAsync({id = 0}){
+    try{
+        const response = await axios.get(`${endpoints.key}/Reservas/verViajesDisponiblesVuelta?ID=${id}`)
+        return response.data
+    }catch(error){
+        console.error('Error fetching reservas:', error);
+        return error;
+    }
+}

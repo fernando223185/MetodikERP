@@ -8,7 +8,7 @@ import SubtleBadge from 'components/common/SubtleBadge';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
-import { faPaperPlane, faCheck, faPen, faRedo, faBan, faSpinner } from '@fortawesome/free-solid-svg-icons'; 
+import { faPaperPlane, faCheck, faStream, faPen, faBan, faSpinner } from '@fortawesome/free-solid-svg-icons'; 
 import { useNewReserva } from '../../../../hooks/Comercial/Reserva/useReserva';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
@@ -116,11 +116,11 @@ function TableReservas({reservas}) {
       case 'BORRADOR':
         return faPen;
       case 'PENDIENTE':
-        return faSpinner;
+        return faStream;
       case 'CANCELADO':
         return faBan;
       case 'SINAFECTAR':
-        return faRedo;
+        return faSpinner;
       default:
         return faPaperPlane;
     }

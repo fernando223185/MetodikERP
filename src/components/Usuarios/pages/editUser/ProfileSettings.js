@@ -6,6 +6,7 @@ import { FormikProvider } from 'formik';
 const ProfileSettings = ({ formik }) => {
 
   const { values, errors, touched, handleChange, handleSubmit, getFieldProps } = formik;
+  
   return (
     <Card>
       <FalconCardHeader title="Informacion general" />
