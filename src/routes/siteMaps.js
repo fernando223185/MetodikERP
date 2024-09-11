@@ -60,6 +60,16 @@ export const appRoutes = {
           active: true
         },
         {
+          name: 'Almacenes',
+          to: '/configuration/almacenes',
+          active: true
+        },
+        {
+          name: 'Destinos',
+          to: '/configuration/destinos',
+          active: true
+        },
+        {
           name: 'Monedas',
           to: '/email/compose',
           active: true
