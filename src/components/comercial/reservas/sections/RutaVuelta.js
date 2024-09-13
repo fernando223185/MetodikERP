@@ -19,7 +19,6 @@ const RutaVuelta = ({ rutaVuelta, setUpdateList}) => {
         <TableRutaVuelta
             rutaVuelta={rutaVuelta}
             setUpdateList={setUpdateList}
-
         />
       </Card.Body>
     </Card>

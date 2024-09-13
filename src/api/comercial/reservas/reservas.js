@@ -95,3 +95,34 @@ export async function delRowAsync({ id = 0, RowID = 0}){
     }
 }
 
+export async function getAsientosAsync({ data }){
+    try{
+        const response = await axios.post(`${endpoints.key}/Reservas/verAsientosDispoblesRuta`, data)
+        return response.data
+    }catch(error){
+        console.error('Error fetching reservas:', error);
+        return error;
+    }
+}
+
+export async function agregarAsientoAsync({ data })
+{
+    try{
+        const response = await axios.post(`${endpoints.key}/Reservas/agregarAsientos`, data)
+        return response;
+    }catch(error)
+    {
+        console.error('Error fetching reservas:', error);
+        return error;
+    }
+}
+
+export async function getPersonaReservaAsync({ data }){
+    try{
+        const response = await axios.get(`${endpoints.key}/Reservas/verPersonasReserva?ID=${data.ID}&HorarioRutaID=${data.HorarioRutaID}&RenglonID=${data.RenglonID}`)
+        return response.data
+    }catch(error){
+        console.error('Error fetching reservas:', error);
+        return error;
+    }
+}

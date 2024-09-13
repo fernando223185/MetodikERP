@@ -92,6 +92,7 @@ const SearchBox = ({ autoCompleteItem }) => {
             className="rounded-pill search-input"
             value={searchInputValue}
             onChange={({ target }) => setSearchInputValue(target.value)}
+            disabled
           />
           <FontAwesomeIcon
             icon="search"

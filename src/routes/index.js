@@ -215,6 +215,7 @@ import ReservasD from '../components/comercial/reservas/pages/ReservasD'
 import Rutas from 'components/rutas/table/tableRutas'
 import Choferes from 'components/choferes/tableChoferes'
 import Profiles from 'components/Perfiles/index'
+import PasajeroD from '../components/comercial/reservas/pages/PasajeroD'
 
 const MetodikRoutes = () => {
   return (
@@ -602,6 +603,7 @@ const MetodikRoutes = () => {
         <Route path="configuration/rutas" element={<Rutas />} />
         <Route path="configuration/choferes" element={<Choferes />} />
         <Route path="configuration/Profiles" element={<Profiles />} />
+        <Route path="comercial/reservas/reservaD/pasajerosD/:id" element={<PasajeroD/>} />
 
       </Route>
 

@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
     const response = await axios.post('/login', { Correo: userData.user, Contrasena: userData.password, Empresa: 0 });
     localStorage.setItem('user', JSON.stringify(response.data.user_data));
     localStorage.setItem('access_token', response.data.access_token)
-    navigate('/'); 
+    navigate('/comercial/reservas'); 
   };
 
   const logout = () => {

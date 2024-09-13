@@ -46,6 +46,7 @@ const ReservasD = () => {
   const { id } = useParams();
   const { getReservaID, reservaId, isLoading, error } = useGetReservaID();
   const [hasFetched, setHasFetched] = useState(false); 
+  const [showRutas, setUpdtRutas] = useState(false); 
   const [updateList, setUpdateList] = useState(false); 
 
   const { getFiltroModulo, isLoading: isLoadingFiltro } = useGetFiltroModulo();
@@ -54,6 +55,8 @@ const ReservasD = () => {
   const { getRutaIda, rutaIda, isLoading: isLoadingRutas } = useGetRutaIda();
   const { getRutaVuelta, rutaVuelta, isLoading: isLoadingRutasV } = useGetRutaVuelta();
   const { getReservaD, reservaD, isLoading: isLoadingD } = useGetReservaD();
+  const [showDateRegreso, setShowDateRegreso] = useState(true);
+
 
 
 
@@ -64,9 +67,13 @@ const ReservasD = () => {
   }, [id, hasFetched])
 
   useEffect(() => {
-    getRutaIda({ id })
-    getRutaVuelta({ id })
-  }, [id, hasFetched])
+    if (showRutas) {
+      getRutaIda({ id });
+      if (showDateRegreso) {
+        getRutaVuelta({ id });
+      }
+    }
+  }, [id, showRutas, showDateRegreso]);
 
   useEffect(() => {
     getReservaD({ id })
@@ -93,7 +100,7 @@ const ReservasD = () => {
   }, []);
 
 
-  if (isLoading) {
+  if (isLoading && !showRutas) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', height: '100vh', marginTop: '100px' }}>
         <Spinner animation="border" role="status">
@@ -121,27 +128,35 @@ const ReservasD = () => {
                           isLoading={isLoadingFiltro}
                           origenes={origenes}
                           setHasFetched={setHasFetched} 
+                          setUpdtRutas={setUpdtRutas}
+                          setShowDateRegreso={setShowDateRegreso}
+                          showDateRegreso={showDateRegreso}
                         />
                     </Col>
                 </Row>
-                <Row>
-                  <Col>
-                      <RutaIda 
+                {showRutas && (
+                <>
+                  <Row>
+                    <Col>
+                      <RutaIda
                         rutaIda={rutaIda}
                         setUpdateList={setUpdateList}
-
                       />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                      <RutaVuelta 
+                    </Col>
+                  </Row>
+                  { showDateRegreso && !isLoadingRutasV &&(                  
+                  <Row>
+                    <Col>
+                      <RutaVuelta
                         rutaVuelta={rutaVuelta}
                         setUpdateList={setUpdateList}
-
                       />
-                  </Col>
-                </Row>
+                    </Col>
+                  </Row>
+                  )}
+
+                </>
+              )}
                 <Row className='mt-4'>
                   <Col>
                       <DetalleViajeCard 
