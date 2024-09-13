@@ -2,12 +2,30 @@ import React, { useEffect, useState } from 'react';
 import { Col, Row, Spinner, Card, Form, Button } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGetDestinoResumen, useActDestino } from '../../../hooks/Catalogos/Destinos/useDestino';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSave, faReply, faEdit } from '@fortawesome/free-solid-svg-icons';
+import EmpresaSelect from '../../vehiculos/FormFields/Empresa.js'
+import EstatusSelect from '../../vehiculos/FormFields/Estatus.js'
+
+
+
 
 const DestinoSettings = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const { getResumen, destinoResumen, isLoading } = useGetDestinoResumen();
     const { submitDestino, response, error, isActLoading } = useActDestino();
+
+    const initialFormState = {
+        ID: '',
+        Nombre: '',
+        Ciudad: '',
+        Pais: '',
+        CodigoPostal: '',
+        Descripcion: '',
+        EstatusID: '',
+        EmpresaID: ''
+    }
 
     useEffect(() => {
         const data = { ID: id };
@@ -17,16 +35,11 @@ const DestinoSettings = () => {
     const { data = {} } = destinoResumen;
     console.log(data);
 
-    const [formData, setFormData] = useState({
-        ID: '',
-        Nombre: '',
-        Ciudad: '',
-        Pais: '',
-        CodigoPostal: '',
-        Descripcion: '',
-        EstatusID: '',
-        EmpresaID: ''
-    });
+    const [formData, setFormData] = useState(initialFormState);
+
+    const resetForm = () => {
+        setFormData(initialFormState)
+    }
 
     useEffect(() => {
         setFormData({
@@ -62,11 +75,6 @@ const DestinoSettings = () => {
 
         console.log(error);
 
-        if (!error) {
-            setTimeout(() => {
-                navigate('/configuration/destinos');
-            }, 800);
-        }
     };
 
     if (isLoading) {
@@ -90,7 +98,16 @@ const DestinoSettings = () => {
     return (
         <Card>
             <Card.Body className="p-lg-6">
-                <h3 className="text-primary text-center mb-4">Nuevo Destino</h3>
+                <Row>
+                    <Col>
+                        <h3 className="text-dark mb-4">Nuevo Destino</h3>
+                    </Col>
+                    <Col lg={6} className="text-end">
+                        <Button className="btn btn-secondary rounded-pill me-1" type="submit" onClick={() => { navigate('/configuration/destinos') }}>
+                            <FontAwesomeIcon icon={faReply} />
+                        </Button>
+                    </Col>
+                </Row>
                 <Form onSubmit={handleSubmit}>
                     <Row className="mb-3">
                         <Col lg={6}>
@@ -165,43 +182,27 @@ const DestinoSettings = () => {
                     </Row>
                     <Row>
                         <Col lg={6}>
-                            <Form.Group controlId="EstatusID">
-                                <Form.Label>Estatus</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="EstatusID"
-                                    value={formData.EstatusID}
-                                    onChange={handleChange}
-                                    placeholder="Ingresa el estatus"
-                                    required
-                                />
-                            </Form.Group>
+                            <EstatusSelect 
+                                value={formData.EstatusID}
+                                onChange={handleChange}
+                            />
                         </Col>
                         <Col lg={6}>
-                            <Form.Group controlId="EmpresaID">
-                                <Form.Label>Empresa</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="EmpresaID"
-                                    value={formData.EmpresaID}
-                                    onChange={handleChange}
-                                    placeholder="Ingresa la empresa"
-                                    required
-                                />
-                            </Form.Group>
+                            <EmpresaSelect 
+                                value={formData.EmpresaID}
+                                onChange={handleChange}
+                            />
                         </Col>
 
                     </Row>
 
                     <Row className="mt-4">
-                        <Col className="text-center">
-                            <Button variant="primary" type="submit" disabled={isLoading}>
-                                {isLoading ? 'Guardando...' : 'Guardar'}
+                        <Col className="text-end">
+                            <Button variant="primary" type="submit" className="rounded-pill me-2" disabled={isLoading}>
+                                {isLoading ? 'Guardando...' : <FontAwesomeIcon icon={faSave} /> }
                             </Button>
-                        </Col>
-                        <Col className="text-center">
-                            <Button variant="danger" type="submit" onClick={() => { navigate('/configuration/destinos') }}>
-                                Regresar
+                            <Button variant="secondary" onClick={resetForm} className="rounded-pill" disabled={isLoading}>
+                                {isLoading ? 'Limpiando...' : <FontAwesomeIcon icon={faEdit} /> }
                             </Button>
                         </Col>
                     </Row>
@@ -209,6 +210,7 @@ const DestinoSettings = () => {
             </Card.Body>
         </Card>
     );
+
 };
 
 export default DestinoSettings;

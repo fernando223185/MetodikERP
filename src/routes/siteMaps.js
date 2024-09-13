@@ -73,11 +73,6 @@ export const appRoutes = {
           name: 'Monedas',
           to: '/email/compose',
           active: true
-        },
-        {
-          name: 'Almacenes',
-          to: '/email/compose',
-          active: true
         }
       ]
     },
