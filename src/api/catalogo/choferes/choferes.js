@@ -14,6 +14,18 @@ export async function getChoferesAsync(){
     }
 }
 
+export async function getChoferById(id){
+    try{
+        console.log(id)
+        const response = await axios.get(`${endpoints.key}/verChoferID?ID=${id}`)
+        console.log(response)
+        return response
+    } catch(error){
+        console.error("Error: ", error);
+        throw error;
+    }
+}
+
 export async function actChoferes({data}){
     try{
         console.log(data)

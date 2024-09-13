@@ -214,8 +214,12 @@ import Reservas from '../components/comercial/reservas/Index'
 import ReservasD from '../components/comercial/reservas/pages/ReservasD'
 import Rutas from 'components/rutas/table/tableRutas'
 import Choferes from 'components/choferes/tableChoferes'
+import EditChofer from 'components/choferes/edit/EditChofer';
+import CreateChofer from 'components/choferes/create/CreateChofer';
 import Profiles from 'components/Perfiles/index'
 import PasajeroD from '../components/comercial/reservas/pages/PasajeroD'
+import ViewProfile from 'components/choferes/ViewProfile/ViewChofer';
+
 
 const MetodikRoutes = () => {
   return (
@@ -602,6 +606,9 @@ const MetodikRoutes = () => {
         <Route path="comercial/reservas/reservaD/:id" element={<ReservasD/>} />
         <Route path="configuration/rutas" element={<Rutas />} />
         <Route path="configuration/choferes" element={<Choferes />} />
+        <Route path="configuration/choferes/view-profile/:id" element={<ViewProfile />} />
+        <Route path="configuration/choferes/edit/:id" element={<EditChofer />} />
+        <Route path="configuration/choferes/nuevo" element={<CreateChofer />} />
         <Route path="configuration/Profiles" element={<Profiles />} />
         <Route path="comercial/reservas/reservaD/pasajerosD/:id" element={<PasajeroD/>} />
 
