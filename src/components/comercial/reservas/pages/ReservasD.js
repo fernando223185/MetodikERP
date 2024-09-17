@@ -54,7 +54,7 @@ const ReservasHeader = ({setHasFetched, estatus}) => {
       setFormasPago(resultFiltro)
       setShowModal(true); 
     } else {
-      //handleAfectar(); 
+      handleAfectar(); 
     }
   };
 
@@ -66,7 +66,6 @@ const ReservasHeader = ({setHasFetched, estatus}) => {
       FormaPagoID: selectedFormaPago,
       Referencia: referencia
     }
-    console.log(JSON.stringify(data))
     await agregarFormaPago({data})
   };
 
