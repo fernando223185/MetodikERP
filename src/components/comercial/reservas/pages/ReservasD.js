@@ -64,20 +64,12 @@ const ReservasHeader = ({setHasFetched}) => {
                 >
                     <FontAwesomeIcon icon={faReply} />
                 </Link>
-                {isLoading ? (
-                  <Spinner animation="border" role="status" className="me-1">
-                    <span className="visually-hidden">Loading...</span>
-                  </Spinner>
-                ) : (
-                  <>
-                    <button className="btn btn-outline-primary rounded-pill btn-sm me-1">
-                      <FontAwesomeIcon icon={faPlay} />
-                    </button>
-                    <button onClick={handleCancel} className="btn btn-outline-primary rounded-pill btn-sm">
-                      <FontAwesomeIcon icon={faBan} />
-                    </button>
-                  </>
-                )}
+                <button type="submit" className="btn btn-outline-primary rounded-pill btn-sm me-1">
+                    <FontAwesomeIcon icon={faPlay} />
+                </button>
+                <button type="submit" className="btn btn-outline-primary rounded-pill btn-sm">
+                    <FontAwesomeIcon icon={faBan}  />
+                </button>
             </Col>
         </Row>
       </Container>
@@ -123,6 +115,7 @@ const ReservasD = () => {
 
 
   useEffect(() => {
+
     const fetchMovimientos = async () => {
       const data = { Tipo: 'Movimientos', PersonaID: 1, Modulo: 'Reservas' };
       const result = await getFiltroModulo(data);

@@ -9,14 +9,13 @@ import AdvanceTableFooter from 'components/common/advance-table/AdvanceTableFoot
 import SubtleBadge from 'components/common/SubtleBadge';
 import IconButton from 'components/common/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import FormRutas  from '../modals/FormRutas';
-
+import  { Link } from 'react-router-dom';
 
 
 const columns = [
     {
       accessor: 'acciones',
-      Header: 'Editar',
+      Header: 'Acciones',
       headerProps: { className: 'text-900' },
       cellProps: { className: 'text-center' }
     },
@@ -97,20 +96,37 @@ function TableRutas(){
     useEffect(() => {
         getRutas();
     },[]);
-
+    
     useEffect(() => {
       console.log(rutas);
         if(rutas.status === 200){
 
             const transformedData = rutas.data.map(r => ({
                 acciones: (
-                  
-                   <FontAwesomeIcon icon="eye" variant="secondary" onClick={() => 
-                    {handleShowModal(r)}} // open modal on click
-                    />
+                <>
+                  <Link
+                    className="btn btn-outline-primary rounded-pill me-1 mb-1"
+                    to={`/configuration/rutas/edit/${r.ID}`}
+                  >
+                    <FontAwesomeIcon icon="eye"/>
+                  </Link>
+                  <Link
+                    className="btn btn-outline-primary rounded-pill me-1 mb-1"
+                    to={`/configuration/rutas/horarios/${r.ID}`}
+                  >
+                    <FontAwesomeIcon icon="clock"/>
+                  </Link>
+                </>
                 ),
-                estatus: 
-                <SubtleBadge variant={r.EstatusID === 1 ? 'success' : 'danger'}>{r.EstatusID === 1 ? 'Activo' : 'Inactivo'}</SubtleBadge>,
+                estatus: r.EstatusID === 1 ? (
+                  <SubtleBadge pill bg="success" className="fs--2" >
+                    Activo
+                  </SubtleBadge>
+                ) : (
+                  <SubtleBadge pill bg="danger" className="fs--2">
+                    Baja
+                  </SubtleBadge>
+                ),
                 ruta: r.Ruta,
                 destinoAID: r.DestinoAID,
                 destinoDID: r.DestinoDID,
@@ -143,19 +159,17 @@ function TableRutas(){
         pagination
         perPage={5}
      >
-        <Row className="justify-content-start">
+        <Row className="justify-content-start mb-3">
             <Col xs="auto">
                 <AdvanceTableSearchBox table />
             </Col>
             <Col xs="auto" sm={6} lg={4} className="ms-auto text-end">
-                <IconButton           variant="primary"
-                icon="plus"
-                size="sm"
-                onClick={() => {
-                    handleShowModal({}); // Open modal with empty data
-                }}
-            >
-            </IconButton>
+              <Link
+              to={`/configuration/rutas/nuevo`} // Open form with empty data
+              className='btn btn-outline-primary rounded-pill me-1 mb-1'
+              >
+              <FontAwesomeIcon icon="plus" />
+            </Link>
             </Col>
         </Row>
 
@@ -183,15 +197,6 @@ function TableRutas(){
         </div>
     </AdvanceTableWrapper>
     
-    {selectedRuta && (
-      <FormRutas 
-        showModal={showModal} 
-        handleShowModal={handleShowModal} 
-        handleCloseModal={handleCloseModal}
-        ruta={selectedRuta} 
-        />
-    )}
- 
     </>
     )
 
