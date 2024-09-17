@@ -1,69 +1,56 @@
 import AdvanceTable from 'components/common/advance-table/AdvanceTable';
 import AdvanceTableWrapper from 'components/common/advance-table/AdvanceTableWrapper';
-import { useGetVehiculos } from '../../../hooks/Catalogos/Vehiculos/useVehiculo' 
+import { useGetDestinos } from '../../../hooks/Catalogos/Destinos/useDestino' 
 import React, { useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { Col, Row } from 'react-bootstrap';
 import AdvanceTableSearchBox from 'components/common/advance-table/AdvanceTableSearchBox';
 import AdvanceTableFooter from 'components/common/advance-table/AdvanceTableFooter';
 import SubtleBadge from 'components/common/SubtleBadge';
+import IconButton from 'components/common/IconButton';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+
 const columns = [
     {
-      accessor: 'acciones',
-      Header: 'Editar',
-      headerProps: { className: 'text-900' },
-      cellProps: { className: 'text-center' }
+        accessor: 'acciones',
+        Header: 'Editar',
+        headerProps: { className: 'text-900' },
+        cellProps: { className: 'text-center' }
     },
     {
-      accessor: 'estatus',
-      Header: 'Estatus',
-      headerProps: { className: 'text-900' },
-      cellProps: { className: 'text-center' }
+        accessor: 'estatus',
+        Header: 'Estatus',
+        headerProps: { className: 'text-900' },
+        cellProps: { className: 'text-center' }
     },
     {
-      accessor: 'descripcion',
-      Header: 'Descripcion',
-      headerProps: { className: 'text-900' }
+        accessor: 'nombre',
+        Header: 'Nombre',
+        headerProps: { className: 'text-900' }
     },
     {
-      accessor: 'placas',
-      Header: 'Placas',
-      headerProps: { className: 'text-900' }
+        accessor: 'ubicacion',
+        Header: 'Ubicacion',
+        headerProps: { className: 'text-900' }
     },
     {
-      accessor: 'agente',
-      Header: 'Agente',
-      headerProps: { className: 'text-900' }
+        accessor:'descripcion',
+        Header: 'Descripcion',
+        headerProps: { className: 'text-900' }
     },
     {
-      accessor: 'ruta',
-      Header: 'Ruta',
-      headerProps: { className: 'text-900' }
-    },
-    {
-      accessor: 'proveedor',
-      Header: 'Proveedor',
-      headerProps: { className: 'text-900' }
-    },
-    {
-      accessor: 'condicion',
-      Header: 'Condicion',
-      headerProps: { className: 'text-900' }
-    },
-    {
-      accessor:'empresa',
-      Header: 'Empresa',
-      headerProps: { className: 'text-900' }
+        accessor: 'empresa',
+        Header: 'Empresa',
+        headerProps: { className: 'text-900' }
     }
   ];
 
-function TableVehiculos() {
+function TableDestinos() {
     
-    const { getVehiculos, vehiculos, isLoading } = useGetVehiculos();
+    const { getDestinos, destinos, isLoading } = useGetDestinos();
     const [result, setResult] = useState([]);
 
     const navigate = useNavigate();
@@ -74,17 +61,17 @@ function TableVehiculos() {
         const data = {
           ID: user.SucursalID,
         }
-        getVehiculos({ data });
+        getDestinos({ data });
     },[]);
 
     useEffect(() => {
-        if(vehiculos.status === 200)
+        if(destinos.status === 200)
         {   
-          console.log(vehiculos.data);
-            const transformedData = vehiculos.data.map(e => ({
+          console.log(destinos.data);
+            const transformedData = destinos.data.map(e => ({
                 acciones: (
-                    <Link
-                        to={`/configuration/vehiculos/editar/${e.ID}`}
+                   <Link
+                        to={`/configuration/destinos/editar/${e.ID}`}
                         className="btn btn-outline-primary rounded-pill me-1 mb-1"     
                     >
                         <FontAwesomeIcon icon="eye" />
@@ -92,11 +79,14 @@ function TableVehiculos() {
                 ),
                 estatus: 
                 <SubtleBadge className="fs--2" pill bg={e.EstatusID === 1 ? 'success' : 'danger'}>{e.EstatusID === 1 ? 'Alta' : 'Baja'}</SubtleBadge>,
-                descripcion: e.Descripcion, placas: e.Placas, agente: e.Agente, ruta: e.RutaID, proveedor: e.Proveedor, condicion: e.Condicion, empresa: e.EmpresaID,
+                nombre: e.Nombre,
+                ubicacion: `${e.Ciudad} ${e.Pais} ${e.CodigoPostal}`,
+                descripcion: e.Descripcion,
+                empresa: e.EmpresaID,
             }));
             setResult(transformedData);
         }
-    }, [vehiculos]);
+    }, [destinos]);
 
     if (isLoading) {
       return (
@@ -122,7 +112,7 @@ function TableVehiculos() {
         </Col>
         <Col xs="auto" sm={6} lg={4} className="ms-auto text-end">
             <Link
-                to={`/configuration/vehiculo/nuevo`}  
+                to={`/configuration/destino/nuevo`}  
                 className="btn btn-outline-primary rounded-pill me-1 mb-1"
                 >
             <FontAwesomeIcon icon="plus" />
@@ -153,4 +143,4 @@ function TableVehiculos() {
   );
 }
 
-export default TableVehiculos;
+export default TableDestinos;

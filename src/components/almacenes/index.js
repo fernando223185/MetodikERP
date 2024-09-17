@@ -1,27 +1,26 @@
 import React from 'react';
-import { Col, Row, Container, Card } from 'react-bootstrap';
-import TableUsers from './tables/tableVehiculos';
+import { Card, Col, Row, Container } from 'react-bootstrap';
+import TableUsers from './tables/tableAlmacenes';
 
 
-
-const VehiculosHeader = () => {
+const AlmacenesHeader = () => {
     return (
       <Container fluid className="py-3 px-4 border-bottom mb-4">
         <Row className="align-items-center">
           <Col>
-            <h2 className="mb-0">Vehiculos</h2>
-            <span className="text-muted">Módulo de administración de vehiculos</span>
+            <h2 className="mb-0">Almacenes</h2>
+            <span className="text-muted">Módulo de administración de almacenes</span>
           </Col>
         </Row>
       </Container>
     );
   };
   
-const Vehiculos = () => {
+const Almacenes = () => {
 
     return (
         <>
-            <VehiculosHeader />
+            <AlmacenesHeader />
             <Row className="g-3 mb-3">
                 <Col lg={12}>
                     <Card>
@@ -35,4 +34,4 @@ const Vehiculos = () => {
     );
 }
 
-export default Vehiculos;
+export default Almacenes;

@@ -1,69 +1,63 @@
 import AdvanceTable from 'components/common/advance-table/AdvanceTable';
 import AdvanceTableWrapper from 'components/common/advance-table/AdvanceTableWrapper';
-import { useGetVehiculos } from '../../../hooks/Catalogos/Vehiculos/useVehiculo' 
+import { useGetAlmacenes } from '../../../hooks/Catalogos/Almacenes/useAlmacen' 
 import React, { useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { Col, Row } from 'react-bootstrap';
 import AdvanceTableSearchBox from 'components/common/advance-table/AdvanceTableSearchBox';
 import AdvanceTableFooter from 'components/common/advance-table/AdvanceTableFooter';
 import SubtleBadge from 'components/common/SubtleBadge';
+import IconButton from 'components/common/IconButton';
 import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const columns = [
     {
-      accessor: 'acciones',
-      Header: 'Editar',
-      headerProps: { className: 'text-900' },
-      cellProps: { className: 'text-center' }
+        accessor: 'acciones',
+        Header: 'Editar',
+        headerProps: { className: 'text-900' },
+        cellProps: { className: 'text-center' }
     },
     {
-      accessor: 'estatus',
-      Header: 'Estatus',
-      headerProps: { className: 'text-900' },
-      cellProps: { className: 'text-center' }
+        accessor: 'estatus',
+        Header: 'Estatus',
+        headerProps: { className: 'text-900' },
+        cellProps: { className: 'text-center' }
     },
     {
-      accessor: 'descripcion',
-      Header: 'Descripcion',
-      headerProps: { className: 'text-900' }
+        accessor: 'almacen',
+        Header: 'Almacen',
+        headerProps: { className: 'text-900' }
     },
     {
-      accessor: 'placas',
-      Header: 'Placas',
-      headerProps: { className: 'text-900' }
+        accessor: 'nombre',
+        Header: 'Nombre',
+        headerProps: { className: 'text-900' }
     },
     {
-      accessor: 'agente',
-      Header: 'Agente',
-      headerProps: { className: 'text-900' }
+        accessor: 'grupo',
+        Header: 'Grupo',
+        headerProps: { className: 'text-900' }
     },
     {
-      accessor: 'ruta',
-      Header: 'Ruta',
-      headerProps: { className: 'text-900' }
+        accessor:'tipo',
+        Header: 'Tipo',
+        headerProps: { className: 'text-900' }
     },
     {
-      accessor: 'proveedor',
-      Header: 'Proveedor',
-      headerProps: { className: 'text-900' }
+        accessor: 'sucursal',
+        Header: 'Sucursal',
+        headerProps: { className: 'text-900' }
     },
     {
-      accessor: 'condicion',
-      Header: 'Condicion',
-      headerProps: { className: 'text-900' }
-    },
-    {
-      accessor:'empresa',
-      Header: 'Empresa',
-      headerProps: { className: 'text-900' }
+        accessor: 'empresa',
+        Header: 'Empresa',
+        headerProps: { className: 'text-900' }
     }
   ];
 
-function TableVehiculos() {
+function TableAlmacenes() {
     
-    const { getVehiculos, vehiculos, isLoading } = useGetVehiculos();
+    const { getAlmacenes, almacenes, isLoading } = useGetAlmacenes();
     const [result, setResult] = useState([]);
 
     const navigate = useNavigate();
@@ -74,29 +68,36 @@ function TableVehiculos() {
         const data = {
           ID: user.SucursalID,
         }
-        getVehiculos({ data });
+        getAlmacenes({ data });
     },[]);
 
     useEffect(() => {
-        if(vehiculos.status === 200)
+        if(almacenes.status === 200)
         {   
-          console.log(vehiculos.data);
-            const transformedData = vehiculos.data.map(e => ({
+          console.log(almacenes.data);
+            const transformedData = almacenes.data.map(e => ({
                 acciones: (
-                    <Link
-                        to={`/configuration/vehiculos/editar/${e.ID}`}
-                        className="btn btn-outline-primary rounded-pill me-1 mb-1"     
-                    >
-                        <FontAwesomeIcon icon="eye" />
-                    </Link>
+                    <IconButton
+                        icon="edit"
+                        size="sm"
+                        variant="primary"
+                        onClick={() => {
+                            navigate(`/configuration/almacenes/editar/${e.ID}`);
+                        }}
+                    />
                 ),
                 estatus: 
-                <SubtleBadge className="fs--2" pill bg={e.EstatusID === 1 ? 'success' : 'danger'}>{e.EstatusID === 1 ? 'Alta' : 'Baja'}</SubtleBadge>,
-                descripcion: e.Descripcion, placas: e.Placas, agente: e.Agente, ruta: e.RutaID, proveedor: e.Proveedor, condicion: e.Condicion, empresa: e.EmpresaID,
+                <SubtleBadge variant={e.EstatusID === 1 ? 'success' : 'danger'}>{e.EstatusID === 1 ? 'Activo' : 'Inactivo'}</SubtleBadge>,
+                almacen: e.Almacen,
+                nombre: e.Nombre,
+                grupo: e.GrupoID,
+                tipo: e.TipoID,
+                sucursal: e.SucursalID,
+                empresa: e.EmpresaID,
             }));
             setResult(transformedData);
         }
-    }, [vehiculos]);
+    }, [almacenes]);
 
     if (isLoading) {
       return (
@@ -121,12 +122,14 @@ function TableVehiculos() {
           <AdvanceTableSearchBox table />
         </Col>
         <Col xs="auto" sm={6} lg={4} className="ms-auto text-end">
-            <Link
-                to={`/configuration/vehiculo/nuevo`}  
-                className="btn btn-outline-primary rounded-pill me-1 mb-1"
-                >
-            <FontAwesomeIcon icon="plus" />
-            </Link>
+          <IconButton           variant="primary"
+          icon="plus"
+          size="sm"
+          onClick={() => {
+            navigate('/configuration/almacen/nuevo');
+          }}
+        >
+        </IconButton>
         </Col>
       </Row>
       <hr style={{ margin: '10px 0' }} />
@@ -153,4 +156,4 @@ function TableVehiculos() {
   );
 }
 
-export default TableVehiculos;
+export default TableAlmacenes;
