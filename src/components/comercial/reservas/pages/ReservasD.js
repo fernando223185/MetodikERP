@@ -338,7 +338,7 @@ const ReservasD = () => {
         getRutaVuelta({ id });
       }
     }
-  }, [id, showRutas, showDateRegreso]);
+  }, [id, showRutas, showDateRegreso, hasFetched]);
 
   useEffect(() => {
     getReservaD({ id })

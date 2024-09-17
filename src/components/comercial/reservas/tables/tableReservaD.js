@@ -103,12 +103,12 @@ function TableReservaD({ reservaD, setUpdateList }) {
                 <Spinner animation="border" size="sm" />
               ) : (
                 <>
-                  <button
+                  {/*<button
                     className="btn btn-outline-primary rounded-pill me-1 mb-1 btn-sm"
                     //onClick={() => handleOpenModal(u)} 
                   >
                     <FontAwesomeIcon icon="edit" />
-                  </button>
+              </button> */}
                   <button
                     className="btn btn-outline-primary rounded-pill me-1 mb-1 btn-sm"
                     onClick={() => handleOpenModal(u)} 
