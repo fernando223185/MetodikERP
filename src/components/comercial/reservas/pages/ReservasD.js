@@ -16,10 +16,19 @@ import { toast } from 'react-toastify';
 const ReservasHeader = ({setHasFetched}) => {
   const { id } = useParams();
   const { cancelarReserva, result, isLoading } = useCancelarReserva();
+  const user = JSON.parse(localStorage.getItem('user'));
+
 
   const handleCancel = async () => {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const data = {
+      ID: id,
+      UsuarioID: user.ID
+    }
     
+    await cancelarReserva({ data })
+  }
+
+  const handleAfectar = async () => {
     const data = {
       ID: id,
       UsuarioID: user.ID
@@ -29,11 +38,9 @@ const ReservasHeader = ({setHasFetched}) => {
   }
 
   useEffect(() => {
-    console.log(result)
     if (result && Object.keys(result).length === 0) {
       console.log("result es un array vacío:", result);
     } else if (result && result.status === 200) {
-      console.log("Hola else")
         toast[result.data[0].Tipo](`${result.data[0].Mensaje}`, {
             theme: 'colored',
             position: result.data[0].Posicion
@@ -48,7 +55,6 @@ const ReservasHeader = ({setHasFetched}) => {
         });
     }  
   }, [result])
-
 
     return (
       <Container fluid className="py-3 px-4 border-bottom mb-4">
@@ -70,7 +76,7 @@ const ReservasHeader = ({setHasFetched}) => {
                   </Spinner>
                 ) : (
                   <>
-                    <button className="btn btn-outline-primary rounded-pill btn-sm me-1">
+                    <button onClick={handleAfectar} className="btn btn-outline-primary rounded-pill btn-sm me-1">
                       <FontAwesomeIcon icon={faPlay} />
                     </button>
                     <button onClick={handleCancel} className="btn btn-outline-primary rounded-pill btn-sm">
@@ -118,9 +124,6 @@ const ReservasD = () => {
   useEffect(() => {
     getReservaD({ id })
   }, [id, updateList])
-
-
-
 
   useEffect(() => {
     const fetchMovimientos = async () => {

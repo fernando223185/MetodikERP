@@ -146,3 +146,13 @@ export async function cancelarReservaAsync ({ data }){
         return error;
     }
 }
+
+export async function afectarReservaAsync ({ data }){
+    try{
+        const response = await axios.post(`${endpoints.key}/Reservas/afectarReserva`, data)
+        return response
+    }catch(error){
+        console.error('Error fetching reservas:', error);
+        return error;
+    }
+}
