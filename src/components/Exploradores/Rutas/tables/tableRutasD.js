@@ -89,22 +89,28 @@ function TableExploradorRutasD(ID) {
           } else if (u.Estatus === "Confirmado") {
             return (
               <SubtleBadge pill bg="success" className="fs--2">
-                Inactive
+                Confirmado
               </SubtleBadge>
             );
           } else if (u.Estatus === "Pagado") {
             return (
               <SubtleBadge pill bg="success" className="fs--2">
-                Pending
+                Pagado
               </SubtleBadge>
             );
           } else if (u.Estatus === "No confirmado") {
             return (
               <SubtleBadge pill bg="danger" className="fs--2">
-                Pending
+                No Confirmado
               </SubtleBadge>
             );
-          }
+          } else if (u.Estatus === "Abordado") {
+            return (
+              <SubtleBadge pill bg="success" className="fs--2">
+                Abordado
+              </SubtleBadge>
+            );
+          } 
         })(),
       }));
       setResult(transformedData);
