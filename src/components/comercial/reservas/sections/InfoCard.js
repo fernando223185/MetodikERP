@@ -54,7 +54,18 @@ const InfoCard = ({ reservaId }) => {
           </SubtleBadge>  
         </p>      
         <hr />
-        <p><strong>Situacion:</strong> <span className="text-muted">{reservaId.Situacion}</span></p>
+        <p><strong>Situacion:</strong> 
+          <SubtleBadge pill           
+            bg={classNames({
+            success:  reservaId.Situacion === 'Confirmado' || reservaId.Situacion === 'Pagado' || reservaId.Situacion === 'Abordado',
+            warning: reservaId.Situacion  === 'Por Confirmar',
+            danger: reservaId.Situacion === 'No confirmado'
+          })}
+          className="fs--2 ms-2 " 
+          >
+            {reservaId.Situacion} 
+          </SubtleBadge>  
+        </p>
         <p><strong>Folio:</strong> <span className="text-muted">{reservaId.Folio}</span></p>
         <p><strong>Fecha Emisión:</strong> <span className="text-muted">{reservaId.FechaEmision}</span></p>
         <p><strong>Agente:</strong> <span className="text-muted">{reservaId.Agente}</span></p>

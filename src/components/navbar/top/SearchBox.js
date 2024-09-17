@@ -87,7 +87,7 @@ const SearchBox = ({ autoCompleteItem }) => {
         <Form className="position-relative">
           <Form.Control
             type="search"
-            placeholder="Search..."
+            placeholder="Buscar..."
             aria-label="Search"
             className="rounded-pill search-input"
             value={searchInputValue}
