@@ -35,19 +35,19 @@ const SettingsPanel = () => {
 
   const [navbars] = useState([
     {
-      name: 'transparent',
+      name: 'Transparente',
       image: transparentImg
     },
     {
-      name: 'inverted',
+      name: 'Invertido',
       image: invertedImg
     },
     {
-      name: 'card',
+      name: 'Tarjeta',
       image: cardImg
     },
     {
-      name: 'vibrant',
+      name: 'Vibrante',
       image: vibrantImg
     }
   ]);
@@ -133,7 +133,7 @@ const SettingsPanel = () => {
           />
           <div className="flex-1">
             <h5 className="fs-0">RTL Modo</h5>
-            <p className="fs--1 mb-0">Switch your language direction </p>
+            <p className="fs--1 mb-0">Cambia la dirección de tu idioma </p>
           </div>
           <Form.Check
             type="switch"
@@ -147,8 +147,8 @@ const SettingsPanel = () => {
         <Flex justifyContent="between">
           <img src={arrowsH} alt="" width={20} className="me-2 h-100" />
           <div className="flex-1">
-            <h5 className="fs-0">Fluid Layout</h5>
-            <p className="fs--1 mb-0">Toggle container layout system</p>
+            <h5 className="fs-0">Disposición fluida</h5>
+            <p className="fs--1 mb-0">Alternar sistema de diseño de contenedores</p>
           </div>
           <Form.Check
             type="switch"
@@ -163,13 +163,13 @@ const SettingsPanel = () => {
           <img src={paragraph} alt="" width={20} className="me-2 h-100" />
           <div>
             <Flex alignItems="center" tag="h5" className="fs-0">
-              Navigation Position
+            Posición de navegación
               <SubtleBadge bg="success" pill className="fs--2 ms-2">
-                New
+                Nuevo
               </SubtleBadge>
             </Flex>
             <p className="fs--1 mb-2">
-              Select a suitable navigation system for your web application
+            Seleccione un sistema de navegación adecuado para su aplicación web
             </p>
             <Form.Select
               className="mb-3"
@@ -194,9 +194,9 @@ const SettingsPanel = () => {
 
         <hr />
         <h5 className="fs-0 d-flex align-items-center">
-          Vertical Navbar Style{' '}
+        Estilo de barra de navegación vertical{' '}
         </h5>
-        <p className="fs--1">Switch between styles for your vertical navbar</p>
+        <p className="fs--1">Cambia entre estilos para tu barra de navegación vertical</p>
         <ButtonGroup className="btn-group-navbar-style">
           {navbars.slice(0, 2).map(item => (
             <RadioItem
@@ -222,7 +222,7 @@ const SettingsPanel = () => {
           ))}
         </ButtonGroup>
         <hr />
-        <div className="text-center mt-5">
+        {/*<div className="text-center mt-5">
           <img src={settings} alt="settings" width={120} className="mb-4" />
           <h5>Like What You See?</h5>
           <p className="fs--1">
@@ -235,7 +235,7 @@ const SettingsPanel = () => {
           >
             Purchase
           </Button>
-        </div>
+        </div>*/}
       </Offcanvas.Body>
       {/* </ScrollBarCustom> */}
     </Offcanvas>
