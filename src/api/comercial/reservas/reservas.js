@@ -156,3 +156,13 @@ export async function afectarReservaAsync ({ data }){
         return error;
     }
 }
+
+export async function agregarFormaPagoAsync ({ data }){
+    try{
+        const response = await axios.post(`${endpoints.key}/Reservas/agregarPagoReserva`, data)
+        return response
+    }catch(error){
+        console.error('Error fetching reservas:', error);
+        return error;
+    }
+}
