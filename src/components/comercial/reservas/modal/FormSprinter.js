@@ -91,7 +91,7 @@ const FormSprinter = ({ asientos, onConfirm }) => {
             width: '60px', 
             height: '50px', 
             cursor: isReserved ? 'not-allowed' : 'pointer',
-            backgroundColor: isReserved ? 'darkgray' : (isSelected ? '#A66595' : 'white'), 
+            backgroundColor: isReserved ? 'darkgray' : (isSelected ? '#A66595' : 'transparent'), 
             borderRadius: '5px', 
             padding: '2px',
             opacity: isReserved ? 0.6 : 1,  

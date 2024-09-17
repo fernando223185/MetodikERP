@@ -120,6 +120,7 @@ const ReservasHeader = ({setHasFetched, estatus}) => {
         });
         setTimeout(() => {
           handleModalCloseSituacion(false);
+          setHasFetched((prev) => !prev); 
         }, 1000)
     } else if (situacion) {
         toast.error(`Error al guardar`, {

@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
-import { toast } from 'react-toastify';
 import { useAuth } from '../../hooks/Auth/useAuth';
 import { Formik, Form as FormFormik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 
 const SignupSchema = Yup.object().shape({
   email: Yup.string().email('Correo inválido').required('Correo es requerido'),
@@ -13,6 +15,9 @@ const SignupSchema = Yup.object().shape({
 
 const LoginForm = ({ hasLabel = false, layout = 'simple' }) => {
   const { login } = useAuth();
+  const [formError, setFormError] = useState('');  
+  const navigate = useNavigate();
+
 
   return (
     <Formik
@@ -22,15 +27,27 @@ const LoginForm = ({ hasLabel = false, layout = 'simple' }) => {
         remember: false,
       }}
       validationSchema={SignupSchema}
-      onSubmit={(values) => {
+      onSubmit={async (values) => {
         const userData = {
           user: values.email,
           password: values.password,
         };
-        login(userData);
-        toast.success(`Logged in as ${values.email}`, {
-          theme: 'colored',
-        });
+
+        try {
+          const errorMessage = await login(userData);
+          console.log(errorMessage)
+
+          if (errorMessage) {
+            setFormError(errorMessage);  
+          } else {
+            setFormError(''); 
+            toast.success(`Inicio sesión como ${values.email}`, { theme: 'colored' });
+
+          }
+        } catch (error) {
+          setFormError('Ocurrió un error al iniciar sesión. Por favor, intenta de nuevo.');
+          console.error('Error en el bloque catch:', error);
+        }
       }}
     >
       {({ values, handleChange, handleSubmit, isValid }) => (
@@ -77,6 +94,12 @@ const LoginForm = ({ hasLabel = false, layout = 'simple' }) => {
               </Form.Check>
             </Col>
           </Row>
+
+          {formError && (
+            <div className="text-danger mb-3">
+              {formError}
+            </div>
+          )}
 
           <Form.Group>
             <Button

@@ -1,5 +1,5 @@
-import coverSrc from 'assets/img/generic/4.jpg';
-import avatar from 'assets/img/team/2.jpg';
+import coverSrc from 'assets/img/illustrations/LogoMetodik_transparent_resized.png';
+import avatar from 'assets/img/illustrations/Mo.png';
 import Flex from 'components/common/Flex';
 import VerifiedBadge from 'components/common/VerifiedBadge';
 import React, { useState } from 'react';

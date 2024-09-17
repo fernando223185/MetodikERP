@@ -54,6 +54,7 @@ const InfoCard = ({ reservaId }) => {
           </SubtleBadge>  
         </p>      
         <hr />
+        <p><strong>Situacion:</strong> <span className="text-muted">{reservaId.Situacion}</span></p>
         <p><strong>Folio:</strong> <span className="text-muted">{reservaId.Folio}</span></p>
         <p><strong>Fecha Emisión:</strong> <span className="text-muted">{reservaId.FechaEmision}</span></p>
         <p><strong>Agente:</strong> <span className="text-muted">{reservaId.Agente}</span></p>

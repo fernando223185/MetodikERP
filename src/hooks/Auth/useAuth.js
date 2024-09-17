@@ -17,12 +17,24 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (userData) => {
-    setUser(userData);
-    //http://10.107.124.200:5001/login
-    const response = await axios.post('/login', { Correo: userData.user, Contrasena: userData.password, Empresa: 0 });
-    localStorage.setItem('user', JSON.stringify(response.data.user_data));
-    localStorage.setItem('access_token', response.data.access_token)
-    navigate('/comercial/reservas'); 
+    try {
+      const response = await axios.post('/login', { Correo: userData.user, Contrasena: userData.password, Empresa: 0 });
+      
+      localStorage.setItem('user', JSON.stringify(response.data.user_data));
+      localStorage.setItem('access_token', response.data.access_token);
+      navigate('/comercial/reservas'); 
+  
+      return null; 
+    } catch (error) {
+      console.log('Error en la solicitud:', error.response); 
+      
+      if (error.response) {
+        const errorMessage = error.response.data.Mensaje || 'Correo o contraseña incorrectos';
+        console.log('Mensaje de error recibido:', errorMessage);
+        return errorMessage;
+      }
+      return 'Error desconocido, intenta de nuevo';
+    }
   };
 
   const logout = () => {

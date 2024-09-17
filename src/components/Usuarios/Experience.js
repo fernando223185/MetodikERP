@@ -27,12 +27,6 @@ const Experience = ({ experience, isLast }) => {
           {title}
           {verified && <VerifiedBadge />}
         </h6>
-        <p className="mb-1">
-          <Link to="#!">{company}</Link>
-        </p>
-        <p className="text-1000 mb-0">
-          {`${startDate} - ${endDate} • ${duration}`}
-        </p>
         <p className="text-1000 mb-0">{location}</p>
         {!isLast && <div className="border-dashed border-bottom my-3" />}
       </div>
@@ -43,7 +37,6 @@ Experience.propTypes = {
   experience: PropTypes.shape({
     logo: PropTypes.string,
     title: PropTypes.string,
-    company: PropTypes.string,
     startDate: PropTypes.string,
     endDate: PropTypes.string,
     duration: PropTypes.string,
