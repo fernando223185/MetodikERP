@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Row, Spinner, Card, Form, Button } from 'react-bootstrap';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useGetVehiculoResumen, useActVehiculo } from '../../../hooks/Catalogos/Vehiculos/useVehiculo';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSave, faReply, faEdit } from '@fortawesome/free-solid-svg-icons';
+import TipoVehiculoSelect from '../FormFields/TipoVehiculo.js';
+import RutaSelect from '../FormFields/Ruta.js';
+import EstatusSelect from '../FormFields/Estatus.js'
+import EmpresaSelect from '../FormFields/Empresa.js'
+
+
+
 
 const VehiculoSettings = () => {
     const navigate = useNavigate();
@@ -14,10 +23,7 @@ const VehiculoSettings = () => {
         getResumen({ data });
     }, [id, getResumen]);
 
-    const { data = {} } = vehiculoResumen;
-    console.log(data);
-
-    const [formData, setFormData] = useState({
+    const initialFormStatus = {
         ID: '',
         Vehiculo: '',
         Descripcion: '',
@@ -38,7 +44,16 @@ const VehiculoSettings = () => {
         CapacidadVol: '',
         EmpresaID: '',
         TipoVehiculo: ''
-    });
+    }
+
+    const { data = {} } = vehiculoResumen;
+    console.log(data);
+
+    const [formData, setFormData] = useState(initialFormStatus);
+
+    const resetForm = () => {
+        setFormData(initialFormStatus);
+    }
 
 
     useEffect(() => {
@@ -83,18 +98,21 @@ const VehiculoSettings = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        formData.TipoVehiculo = parseInt(formData.TipoVehiculo);
+        formData.EstatusID = parseInt(formData.EstatusID);
+        formData.RutaID = parseInt(formData.RutaID);
+        formData.EmpresaID = parseInt(formData.EmpresaID);
+        formData.Ano = parseInt(formData.Ano);
+        formData.CapacidadPeso = parseInt(formData.CapacidadPeso);
+        formData.CapacidadVol = parseInt(formData.CapacidadVol);
+        formData.Peso = parseFloat(formData.Peso);
+        formData.Volumen = parseFloat(formData.Volumen);
+        formData.NoEco = parseInt(formData.NoEco);
+        
         await submitVehiculo({ data: formData });
-
-        console.log(error);
-
-        if (!error) {
-            setTimeout(() => {
-                navigate('/configuration/vehiculos');
-            }, 800);
-        }
     };
 
-    // Manejo de estado de carga
     if (isLoading) {
         return (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -105,7 +123,6 @@ const VehiculoSettings = () => {
         );
     }
 
-    // Manejo de errores en la carga de datos
     if (!vehiculoResumen || vehiculoResumen.status !== 200) {
         return (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -117,21 +134,23 @@ const VehiculoSettings = () => {
     return (
         <Card>
             <Card.Body className="p-lg-6">
-                <h3 className="text-primary text-center mb-4">Nuevo Vehiculo</h3>
+                <Row className="mb-3">
+                    <Col lg={6}>
+                        <h3 className="text-dark mb-4">Actualizar Vehiculo</h3>
+                    </Col>
+                    <Col lg={6} className="text-end">
+                        <Button className="btn btn-secondary rounded-pill me-1" type="submit" onClick={() => { navigate('/configuration/vehiculos') }}>
+                            <FontAwesomeIcon icon={faReply} />
+                        </Button>
+                    </Col>
+                </Row>
                 <Form onSubmit={handleSubmit}>
                     <Row className="mb-3">
                         <Col lg={6}>
-                            <Form.Group controlId="Vehiculo">
-                                <Form.Label>Vehiculo</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="Vehiculo"
-                                    value={formData.Vehiculo}
-                                    onChange={handleChange}
-                                    placeholder="Ingresa un vehiculo"
-                                    required
-                                />
-                            </Form.Group>
+                            <TipoVehiculoSelect 
+                                value={formData.TipoVehiculo}
+                                onChange={handleChange}
+                            />
                         </Col>
                         <Col lg={6}>
                             <Form.Group controlId="Descripcion">
@@ -149,6 +168,12 @@ const VehiculoSettings = () => {
                     </Row>
                     <Row className="mb-3">
                         <Col lg={6}>
+                            <EstatusSelect 
+                                value={formData.EstatusID}
+                                onChange={handleChange}
+                            />
+                        </Col>
+                        <Col lg={6}>
                             <Form.Group controlId="Placas">
                                 <Form.Label>Placas</Form.Label>
                                 <Form.Control
@@ -157,19 +182,6 @@ const VehiculoSettings = () => {
                                     value={formData.Placas}
                                     onChange={handleChange}
                                     placeholder="Ingresa las placas"
-                                    required
-                                />
-                            </Form.Group>
-                        </Col>
-                        <Col lg={6}>
-                            <Form.Group controlId="Volumen">
-                                <Form.Label>Volumen</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="Volumen"
-                                    value={formData.Volumen}
-                                    onChange={handleChange}
-                                    placeholder="Ingresa el volumen"
                                     required
                                 />
                             </Form.Group>
@@ -202,31 +214,22 @@ const VehiculoSettings = () => {
                             </Form.Group>
                         </Col>
                         <Col lg={6}>
-                            <Form.Group controlId="RutaID">
-                                <Form.Label>RutaID</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="RutaID"
-                                    value={formData.RutaID}
-                                    onChange={handleChange}
-                                    placeholder="Ingresa la ruta"
-                                    required
-                                />
-                            </Form.Group>
+                            <RutaSelect 
+                                value={formData.RutaID}
+                                onChange={handleChange}
+                            />
                         </Col>
-
                     </Row>
-
                     <Row className="mb-3">
                         <Col lg={6}>
-                            <Form.Group controlId="EstatusID">
-                                <Form.Label>EstatusID</Form.Label>
+                            <Form.Group controlId="Volumen">
+                                <Form.Label>Volumen</Form.Label>
                                 <Form.Control
                                     type="text"
-                                    name="EstatusID"
-                                    value={formData.EstatusID}
+                                    name="Volumen"
+                                    value={formData.Volumen}
                                     onChange={handleChange}
-                                    placeholder="Ingresa el estatus"
+                                    placeholder="Ingresa el volumen"
                                     required
                                 />
                             </Form.Group>
@@ -317,13 +320,13 @@ const VehiculoSettings = () => {
                         </Col>
                         <Col lg={6}>
                             <Form.Group controlId="Ano">
-                                <Form.Label>Ano</Form.Label>
+                                <Form.Label>Año</Form.Label>
                                 <Form.Control
                                     type="text"
                                     name="Ano"
                                     value={formData.Ano}
                                     onChange={handleChange}
-                                    placeholder="Ingresa el ano"
+                                    placeholder="Ingresa el año"
                                     required
                                 />
                             </Form.Group>
@@ -359,42 +362,20 @@ const VehiculoSettings = () => {
                     </Row>
                     <Row className="mb-3">
                         <Col lg={6}>
-                            <Form.Group controlId="EmpresaID">
-                                <Form.Label>Empresa</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="EmpresaID"
-                                    value={formData.EmpresaID}
-                                    onChange={handleChange}
-                                    placeholder="Ingresa la empresa"
-                                    required
-                                />
-                            </Form.Group>
-                        </Col>
-                        <Col lg={6}>
-                            <Form.Group controlId="TipoVehiculo">
-                                <Form.Label>Tipo Vehiculo</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="TipoVehiculo"
-                                    value={formData.TipoVehiculo}
-                                    onChange={handleChange}
-                                    placeholder="Ingresa el tipo de vehiculo"
-                                    required
-                                />
-                            </Form.Group>
+                            <EmpresaSelect 
+                                value={formData.EmpresaID}
+                                onChange={handleChange}
+                            />
                         </Col>
                     </Row>
 
                     <Row className="mt-4">
-                        <Col className="text-center">
-                            <Button variant="primary" type="submit" disabled={isLoading}>
-                                {isLoading ? 'Guardando...' : 'Actualizar'}
+                        <Col className="text-end">
+                            <Button variant="primary" type="submit" className="rounded-pill me-2" disabled={isLoading}>
+                                {isLoading ? 'Guardando...' : <FontAwesomeIcon icon={faSave} /> }
                             </Button>
-                        </Col>
-                        <Col className="text-center">
-                            <Button variant="danger" type="submit" onClick={() => { navigate('/configuration/vehiculos') }}>
-                                Regresar
+                            <Button variant="secondary" onClick={resetForm} className="rounded-pill" disabled={isLoading}>
+                                {isLoading ? 'Limpiando...' : <FontAwesomeIcon icon={faEdit} /> }
                             </Button>
                         </Col>
                     </Row>

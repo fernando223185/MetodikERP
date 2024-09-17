@@ -14,12 +14,12 @@ export async function getFiltroModuloAsync({ data }){
     }
 }
 
-export async function getFiltroCatalogoAsync({data}){
+export async function getFiltroCatalogosAsync({ data }){
     try{
-        const response = await axios.post(`${endpoints.key}/Catalogos`, data)
-        return response
-    }catch(error){
-        console.error('Error fetching catalogos:', error);
+        const response = await axios.post(`${endpoints.key}/Catalogos`, data);
+        return response;
+    }catch(error) {
+        console.log('Error fetching catalogos: ', error);
         return error;
     }
 }

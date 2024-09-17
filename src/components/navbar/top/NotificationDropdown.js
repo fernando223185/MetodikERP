@@ -52,7 +52,7 @@ const NotificationDropdown = () => {
   };
 
   return (
-    <Dropdown navbar={true} as="li" show={isOpen} onToggle={handleToggle}>
+    <Dropdown navbar={true} as="li" show={isOpen} onToggle={handleToggle} >
       <Dropdown.Toggle
         bsPrefix="toggle"
         as={Link}
@@ -60,6 +60,7 @@ const NotificationDropdown = () => {
         className={classNames('px-0 nav-link', {
           'notification-indicator notification-indicator-primary': !isAllRead
         })}
+        disabled
       >
         <FontAwesomeIcon icon="bell" transform="shrink-6" className="fs-4" />
       </Dropdown.Toggle>

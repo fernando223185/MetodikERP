@@ -7,12 +7,49 @@ import RutaIda from '../sections/RutaIda'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faReply, faBan } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import { useGetReservaID, useGetRutaIda, useGetRutaVuelta, useGetReservaD } from '../../../../hooks/Comercial/Reserva/useReservaD';
+import { useGetReservaID, useGetRutaIda, useGetRutaVuelta, useGetReservaD, useCancelarReserva } from '../../../../hooks/Comercial/Reserva/useReservaD';
 import { useParams } from 'react-router-dom';
 import { useGetFiltroModulo } from '../../../../hooks/useFiltros'; 
 import RutaVuelta from '../sections/RutaVuelta'
+import { toast } from 'react-toastify';
 
-const ReservasHeader = () => {
+const ReservasHeader = ({setHasFetched}) => {
+  const { id } = useParams();
+  const { cancelarReserva, result, isLoading } = useCancelarReserva();
+
+  const handleCancel = async () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    
+    const data = {
+      ID: id,
+      UsuarioID: user.ID
+    }
+    
+    await cancelarReserva({ data })
+  }
+
+  useEffect(() => {
+    console.log(result)
+    if (result && Object.keys(result).length === 0) {
+      console.log("result es un array vacío:", result);
+    } else if (result && result.status === 200) {
+      console.log("Hola else")
+        toast[result.data[0].Tipo](`${result.data[0].Mensaje}`, {
+            theme: 'colored',
+            position: result.data[0].Posicion
+        });
+        setTimeout(() => {
+          setHasFetched((prev) => !prev); 
+        }, 1000)
+    } else if (result) {
+        toast.error(`Error al guardar`, {
+            theme: 'colored',
+            position: 'top-right'
+        });
+    }  
+  }, [result])
+
+
     return (
       <Container fluid className="py-3 px-4 border-bottom mb-4">
         <Row className="align-items-center">
@@ -31,18 +68,19 @@ const ReservasHeader = () => {
                     <FontAwesomeIcon icon={faPlay} />
                 </button>
                 <button type="submit" className="btn btn-outline-primary rounded-pill btn-sm">
-                    <FontAwesomeIcon icon={faBan} />
+                    <FontAwesomeIcon icon={faBan}  />
                 </button>
             </Col>
         </Row>
       </Container>
     );
-  };
+};
 
 const ReservasD = () => {
   const { id } = useParams();
   const { getReservaID, reservaId, isLoading, error } = useGetReservaID();
   const [hasFetched, setHasFetched] = useState(false); 
+  const [showRutas, setUpdtRutas] = useState(false); 
   const [updateList, setUpdateList] = useState(false); 
 
   const { getFiltroModulo, isLoading: isLoadingFiltro } = useGetFiltroModulo();
@@ -51,7 +89,7 @@ const ReservasD = () => {
   const { getRutaIda, rutaIda, isLoading: isLoadingRutas } = useGetRutaIda();
   const { getRutaVuelta, rutaVuelta, isLoading: isLoadingRutasV } = useGetRutaVuelta();
   const { getReservaD, reservaD, isLoading: isLoadingD } = useGetReservaD();
-
+  const [showDateRegreso, setShowDateRegreso] = useState(true);
 
 
   useEffect(() =>{
@@ -61,9 +99,13 @@ const ReservasD = () => {
   }, [id, hasFetched])
 
   useEffect(() => {
-    getRutaIda({ id })
-    getRutaVuelta({ id })
-  }, [id, hasFetched])
+    if (showRutas) {
+      getRutaIda({ id });
+      if (showDateRegreso) {
+        getRutaVuelta({ id });
+      }
+    }
+  }, [id, showRutas, showDateRegreso]);
 
   useEffect(() => {
     getReservaD({ id })
@@ -91,7 +133,7 @@ const ReservasD = () => {
   }, []);
 
 
-  if (isLoading) {
+  if (isLoading && !showRutas) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', height: '100vh', marginTop: '100px' }}>
         <Spinner animation="border" role="status">
@@ -103,7 +145,9 @@ const ReservasD = () => {
 
   return (
     <>
-      <ReservasHeader />
+      <ReservasHeader 
+      setHasFetched={setHasFetched}
+      />
       <Row className="g-3 mb-3">
         <Col lg={12}>
           <Card style={{ backgroundColor: 'transparent', border: 'none' }}>
@@ -119,27 +163,35 @@ const ReservasD = () => {
                           isLoading={isLoadingFiltro}
                           origenes={origenes}
                           setHasFetched={setHasFetched} 
+                          setUpdtRutas={setUpdtRutas}
+                          setShowDateRegreso={setShowDateRegreso}
+                          showDateRegreso={showDateRegreso}
                         />
                     </Col>
                 </Row>
-                <Row>
-                  <Col>
-                      <RutaIda 
+                {showRutas && (
+                <>
+                  <Row>
+                    <Col>
+                      <RutaIda
                         rutaIda={rutaIda}
                         setUpdateList={setUpdateList}
-
                       />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                      <RutaVuelta 
+                    </Col>
+                  </Row>
+                  { showDateRegreso && !isLoadingRutasV &&(                  
+                  <Row>
+                    <Col>
+                      <RutaVuelta
                         rutaVuelta={rutaVuelta}
                         setUpdateList={setUpdateList}
-
                       />
-                  </Col>
-                </Row>
+                    </Col>
+                  </Row>
+                  )}
+
+                </>
+              )}
                 <Row className='mt-4'>
                   <Col>
                       <DetalleViajeCard 

@@ -5,11 +5,11 @@ import { Col, Row, Spinner } from 'react-bootstrap';
 import AdvanceTableFooter from 'components/common/advance-table/AdvanceTableFooter';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AdvanceTableSearchBox from 'components/common/advance-table/AdvanceTableSearchBox';
-import { faBus } from '@fortawesome/free-solid-svg-icons'; 
+import { faBus, faUsers } from '@fortawesome/free-solid-svg-icons'; 
 import { useDelRowReservaD } from '../../../../hooks/Comercial/Reserva/useReservaD'
 import { toast } from 'react-toastify';
-
-
+import ModalAsientos from '../modal/ModalAsientos'
+import { Link } from 'react-router-dom';
 
 const columns = [
   {
@@ -37,11 +37,6 @@ const columns = [
   {
     accessor: 'cant',
     Header: 'Cantidad',
-    headerProps: { className: 'text-900' }
-  },
-  {
-    accessor: 'price',
-    Header: 'Precio',
     headerProps: { className: 'text-900' }
   },
   {
@@ -116,23 +111,32 @@ function TableReservaD({ reservaD, setUpdateList }) {
                   </button>
                   <button
                     className="btn btn-outline-primary rounded-pill me-1 mb-1 btn-sm"
-                    //onClick={() => handleOpenModal(u)} 
+                    onClick={() => handleOpenModal(u)} 
+                    title='Seleccionar Asientos'
                   >
                     <FontAwesomeIcon icon={faBus} />
                   </button>
                   <button
                     className="btn btn-outline-danger rounded-pill me-1 mb-1 btn-sm"
                     onClick={() => handleDeletedRow(u.ID, u.RenglonID)} 
+                    title='Eliminar Renglon'
                   >
                     <FontAwesomeIcon icon="trash" />
                   </button>
+                  <Link
+                    to={`/comercial/reservas/reservaD/pasajerosD/${u.ID}`}  
+                    state={u}
+                    className="btn btn-outline-primary rounded-pill me-1 mb-1 btn-sm"
+                    title='Informacion de pasajero'
+                  >
+                    <FontAwesomeIcon icon={faUsers} />
+                  </Link>
                 </>
               )}
             </>
         ),
         tipo: `${u.Tipo}`,
         desc: u.Descripcion,
-        price: u.Precio,
         asiento: u.Asientos,
         cant: u.Cantidad,
         priceT: u.PrecioTotal
@@ -183,6 +187,15 @@ function TableReservaD({ reservaD, setUpdateList }) {
         />
       </div>
     </AdvanceTableWrapper>
+      {showModal && (
+        <ModalAsientos 
+          show={showModal} 
+          selectedItem={selectedItem}
+          handleClose={handleCloseModal} 
+          setUpdateList={setUpdateList}
+          
+        />
+      )}
   </>
 
   );
