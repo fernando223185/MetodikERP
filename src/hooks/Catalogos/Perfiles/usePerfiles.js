@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { getProfilesAsync, ActUsersAsync, getUsersByIdAsync } from 'api/catalogo/perfiles/perfiles';
+import { getProfilesAsync, ActProfilerAsync, getUsersByIdAsync } from 'api/catalogo/perfiles/perfiles';
 
 
 export const useGetProfiles = () => {
@@ -17,13 +17,13 @@ export const useGetProfiles = () => {
     return { getProfiles, profiles, isLoading, setIsLoading };
 };
 
-export const useActUsers = () => {
+export const useActProfil = () => {
     const [result, setResult] = useState({})
     const [isLoading, setIsLoading] = useState(false)
   
-    const actUsers= useCallback(async ({ data }) => {
+    const actProfiles= useCallback(async ({ data }) => {
       setIsLoading(true);
-      const result = await ActUsersAsync({ data });
+      const result = await ActProfilerAsync({ data });
   
       setTimeout(() => {
         setResult(result);
@@ -31,7 +31,7 @@ export const useActUsers = () => {
       }, 1_000);
     }, [])
   
-    return { actUsers, result, isLoading };
+    return { actProfiles, result, isLoading };
 };
 
 export const useGetUserById = () => {

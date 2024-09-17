@@ -1,145 +1,192 @@
-import AdvanceTable from 'components/common/advance-table/AdvanceTable';
-import AdvanceTableWrapper from 'components/common/advance-table/AdvanceTableWrapper';
-import { useGetProfiles } from '../../../hooks/Catalogos/Perfiles/usePerfiles' 
-import React, { useEffect, useState } from 'react';
-import { Spinner } from 'react-bootstrap';
-import { Col, Row } from 'react-bootstrap';
-import AdvanceTableSearchBox from 'components/common/advance-table/AdvanceTableSearchBox';
-import AdvanceTableFooter from 'components/common/advance-table/AdvanceTableFooter';
-import SubtleBadge from 'components/common/SubtleBadge';
-import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import AdvanceTable from "components/common/advance-table/AdvanceTable";
+import AdvanceTableWrapper from "components/common/advance-table/AdvanceTableWrapper";
+import { useGetProfiles } from "../../../hooks/Catalogos/Perfiles/usePerfiles";
+import React, { useEffect, useState } from "react";
+import { Spinner } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
+import AdvanceTableSearchBox from "components/common/advance-table/AdvanceTableSearchBox";
+import AdvanceTableFooter from "components/common/advance-table/AdvanceTableFooter";
+import SubtleBadge from "components/common/SubtleBadge";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ModalProfiler from "../modalProfiler";
 
 const columns = [
   {
-    accessor: 'acciones',
-    Header: 'Acciones',
-    headerProps: { className: 'text-900' },
-    cellProps: { className: 'text-center' }
+    accessor: "acciones",
+    Header: "Acciones",
+    headerProps: { className: "text-900" },
+    cellProps: { className: "text-center" },
   },
   {
-    accessor: 'estatus',
-    Header: 'Estatus',
-    headerProps: { className: 'text-900' },
-    cellProps: { className: 'text-center' }
+    accessor: "estatus",
+    Header: "Estatus",
+    headerProps: { className: "text-900" },
+    cellProps: { className: "text-center" },
   },
   {
-    accessor: 'nombre',
-    Header: 'Nombre',
-    headerProps: { className: 'text-900' }
+    accessor: "nombre",
+    Header: "Nombre",
+    headerProps: { className: "text-900" },
   },
   {
-    accessor: 'notas',
-    Header: 'Notas',
-    headerProps: { className: 'text-900' }
+    accessor: "notas",
+    Header: "Notas",
+    headerProps: { className: "text-900" },
   },
   {
-    accessor: 'empresa',
-    Header: 'Empresa',
-    headerProps: { className: 'text-900' }
+    accessor: "empresa",
+    Header: "Empresa",
+    headerProps: { className: "text-900" },
   },
 ];
 
-function TableProfiles({ onEditClick }) {
-
+function TableProfiles() {
   const { getProfiles, profiles, isLoading } = useGetProfiles();
   const [result, setResult] = useState([]);
-  const [formToShow, setFormToShow] = useState(''); 
+  const [lgShow, setLgShow] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [formToShow, setFormToShow] = useState("");
+  const [EmpresaID, setEmpresaID] = useState(0);
 
+  const handleCloseModal = () => {
+    setLgShow(false);
+    setSelectedUser(null);
+    setFormToShow("");
+  };
 
+  const handleNewUserClick = () => {
+    setFormToShow("NewUser");
+    setSelectedUser(null); // Usuario nuevo
+    setLgShow(true); // Abre el modal
+  };
+
+  const handleEditUserClick = (user) => {
+    setFormToShow("EditUser");
+    setSelectedUser(user); // Selecciona el usuario para editar
+    setLgShow(true); // Abre el modal
+  };
 
   useEffect(() => {
-    var user = JSON.parse(localStorage.getItem('user'))
-    console.log(user)
+    var user = JSON.parse(localStorage.getItem("user"));
+    setEmpresaID(user.EmpresaID) 
+    console.log(user);
     const data = {
       EmpresaID: user.EmpresaID,
-      EstatusID: 1
-    }
-    getProfiles({ data })
-  },[]);
-  
+      EstatusID: 1,
+    };
+    getProfiles({ data });
+  }, []);
+
   useEffect(() => {
-    if(profiles.status === 200)
-    {
-      const transformedData = profiles.data.map(u => ({
+    if (profiles.status === 200) {
+      const transformedData = profiles.data.map((u) => ({
         acciones: (
-            <Link
-              to={`/configuration/users/view-profile/${u.ID}`}  
+          <>
+            <button
               className="btn btn-outline-primary rounded-pill me-1 mb-1"
+              onClick={() => handleEditUserClick(u)}
             >
               <FontAwesomeIcon icon="eye" />
-            </Link>
+            </button>
+          </>
         ),
         nombre: `${u.Nombre}`,
         notas: u.Notas,
         empresa: u.EmpresaNombre,
-        estatus: u.EstatusID === 1 ? (
-          <SubtleBadge pill bg="success" className="fs--2" >
-            {u.Estatus}
-          </SubtleBadge>
-        ) : (
-          <SubtleBadge pill bg="danger" className="fs--2">
-            Inactive
-          </SubtleBadge>
-        ),
-        rfc: u.RFC
+        estatus:
+          u.EstatusID === 1 ? (
+            <SubtleBadge pill bg="success" className="fs--2">
+              {u.Estatus}
+            </SubtleBadge>
+          ) : (
+            <SubtleBadge pill bg="danger" className="fs--2">
+              Inactive
+            </SubtleBadge>
+          ),
+        rfc: u.RFC,
       }));
       setResult(transformedData);
     }
-  },[profiles])
+  }, [profiles]);
 
   if (isLoading) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', height: '100vh', marginTop: '100px' }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "flex-start",
+          height: "100vh",
+          marginTop: "100px",
+        }}
+      >
         <Spinner animation="border" role="status">
           <span className="visually-hidden">Loading...</span>
         </Spinner>
       </div>
     );
   }
+
   return (
-    <AdvanceTableWrapper
-      columns={columns}
-      data={result}
-      sortable
-      pagination
-      perPage={5}
-    >
-      <Row className="justify-content-start mb-3">
-        <Col xs="auto">
-          <AdvanceTableSearchBox table />
-        </Col>
-        <Col xs="auto" sm={6} lg={4} className="ms-auto text-end">
-          <Link
-            to={`/configuration/users/edit/0`}  
-            className="btn btn-outline-primary rounded-pill me-1 mb-1"
-          >
-            <FontAwesomeIcon icon="plus" />
-          </Link>
-        </Col>
-      </Row>
-      <hr style={{ margin: '10px 0' }} />
-      <AdvanceTable
-        table
-        headerClassName="bg-200 text-nowrap align-middle"
-        rowClassName="align-middle white-space-nowrap"
-        tableProps={{
-          bordered: true,
-          striped: true,
-          className: 'fs--1 mb-0 overflow-hidden'
-        }}
-      />
-      <div className="mt-3">
-        <AdvanceTableFooter
-          rowCount={result.length}
+    <>
+      <AdvanceTableWrapper
+        columns={columns}
+        data={result}
+        sortable
+        pagination
+        perPage={5}
+      >
+        <Row className="justify-content-start mb-3">
+          <Col xs="auto">
+            <AdvanceTableSearchBox table />
+          </Col>
+          <Col xs="auto" sm={6} lg={4} className="ms-auto text-end">
+            <button
+              className="btn btn-outline-primary rounded-pill me-1 mb-1"
+              onClick={handleNewUserClick}
+            >
+              <FontAwesomeIcon icon="plus" />
+            </button>
+          </Col>
+        </Row>
+        <hr style={{ margin: "10px 0" }} />
+        <AdvanceTable
           table
-          rowInfo
-          navButtons
-          rowsPerPageSelection
+          headerClassName="bg-200 text-nowrap align-middle"
+          rowClassName="align-middle white-space-nowrap"
+          tableProps={{
+            bordered: true,
+            striped: true,
+            className: "fs--1 mb-0 overflow-hidden",
+          }}
         />
-      </div>
-    </AdvanceTableWrapper>
+        <div className="mt-3">
+          <AdvanceTableFooter
+            rowCount={result.length}
+            table
+            rowInfo
+            navButtons
+            rowsPerPageSelection
+          />
+        </div>
+      </AdvanceTableWrapper>
+
+      {/* ModalProfiler */}
+      {lgShow && (
+        <ModalProfiler
+          id={selectedUser ? selectedUser.ID : 0}
+          EmpresaID={EmpresaID}
+          formToShow={formToShow}
+          openModal={lgShow}
+          handleCloseModal={handleCloseModal}
+          warehouseID={null}
+          selectedUser={selectedUser}
+          setSelectedUser={setSelectedUser}
+          handleSaveChanges={null}
+        />
+      )}
+    </>
   );
 }
 
