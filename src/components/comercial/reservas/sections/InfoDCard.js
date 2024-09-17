@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Form, Row, Col, Button, Spinner } from 'react-bootstrap';
+import { Card, Form, Row, Col, Button, Spinner, InputGroup } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-solid-svg-icons';
 import Select from 'react-select';
@@ -17,6 +17,8 @@ const getInitialValues = (reservaId) => {
     destino: '',
     dateSalida: null,
     dateRegreso: null,
+    referencia: '',
+    observaciones: ''
   };
 
   if (reservaId) {
@@ -26,6 +28,8 @@ const getInitialValues = (reservaId) => {
       destino: reservaId.Destino || '',
       dateSalida: reservaId.FechaA ? moment(reservaId.FechaA, 'DD-MM-YYYY').toDate() : null,
       dateRegreso: reservaId.FechaD ? moment(reservaId.FechaD, 'DD-MM-YYYY').toDate() : null,
+      referencia: reservaId.Referencia,
+      observaciones: reservaId.Observaciones
     };
   }
   return initialForm;
@@ -39,7 +43,8 @@ const validationSchema = Yup.object().shape({
   dateRegreso: Yup.date().required('Fecha de regreso es obligatoria'),
 });
 
-const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched }) => {
+const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched, setUpdtRutas, setShowDateRegreso, showDateRegreso }) => {
+
   const { avanzarReserva, result: resultNew, isLoading: isLoadingNew } = useAvanzaReserva();
 
   const formik = useFormik({
@@ -55,6 +60,8 @@ const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched 
           DestinoID: values.destino,
           FechaSalida: values.dateSalida ? moment(values.dateSalida).format('YYYY-MM-DD 00:00:00') : null,
           FechaRegreso: values.dateRegreso ? moment(values.dateRegreso).format('YYYY-MM-DD 00:00:00') : null,
+          Referencia: values.referencia,
+          Observaciones: values.observaciones
         };
           
         console.log('Formulario enviado:', JSON.stringify(data));
@@ -97,6 +104,7 @@ const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched 
         });
         setTimeout(() => {
           setHasFetched((prev) => !prev); 
+          setUpdtRutas(true)
         }, 1000)
     } else if (resultNew) {
         toast.error(`Error al guardar`, {
@@ -104,6 +112,20 @@ const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched 
             position: 'top-right'
         });
     }  }, [resultNew])
+
+    const handleMovimientoChange = (option) => {
+      formik.setFieldValue('movimiento', option.value);
+  
+      if (option.value === 'Viaje Sencillo') {
+        setShowDateRegreso(false);
+        formik.setFieldValue('dateRegreso', null); 
+
+      } else {
+        setShowDateRegreso(true);
+      }
+    };
+
+    const { getFieldProps } = formik
 
   return (
     <FormikProvider value={formik}>
@@ -120,7 +142,7 @@ const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched 
                       value: item.Valor,
                       label: item.Dato,
                     }))}
-                    onChange={option => formik.setFieldValue('movimiento', option.value)}
+                    onChange={handleMovimientoChange}
                     isLoading={isLoading}
                     value={getOptionByValue(movimientos, formik.values.movimiento)} 
                   />
@@ -187,20 +209,54 @@ const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched 
                   )}
                 </Form.Group>
               </Col>
+              {showDateRegreso && (
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label>Fecha Regreso</Form.Label>
+                    <DatePicker
+                      selected={formik.values.dateRegreso}
+                      onChange={date => formik.setFieldValue('dateRegreso', date)}
+                      className="form-control"
+                      placeholderText="Selecciona una fecha"
+                      dateFormat="dd-MM-yyyy"
+                      locale="es"
+                    />
+                    {formik.touched.dateRegreso && formik.errors.dateRegreso && (
+                      <div className="text-danger">{formik.errors.dateRegreso}</div>
+                    )}
+                  </Form.Group>
+                </Col>
+              )}
+            </Row>
+            <Row className='mt-3'>
               <Col md={6}>
-                <Form.Group>
-                  <Form.Label>Fecha Regreso</Form.Label>
-                  <DatePicker
-                    selected={formik.values.dateRegreso}
-                    onChange={date => formik.setFieldValue('dateRegreso', date)}
-                    className="form-control"
-                    placeholderText="Selecciona una fecha"
-                    dateFormat="dd-MM-yyyy"
-                    locale="es"
-                  />
-                  {formik.touched.dateRegreso && formik.errors.dateRegreso && (
-                    <div className="text-danger">{formik.errors.dateRegreso}</div>
-                  )}
+                <Form.Group controlId="formObs">
+                  <Form.Label>Observaciones</Form.Label>
+                  <InputGroup>
+                    <Form.Control
+                      type="text"
+                      {...getFieldProps('observaciones')}
+                      isInvalid={!!formik.errors.Cantidad && formik.touched.Cantidad}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {formik.errors.Cantidad}
+                    </Form.Control.Feedback>
+                  </InputGroup>
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group controlId="formRef">
+                  <Form.Label>Referencia</Form.Label>
+                  <InputGroup>
+                    <Form.Control
+                      type="text"
+                      {...getFieldProps('referencia')}
+                      isInvalid={!!formik.errors.Cantidad && formik.touched.Cantidad}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {formik.errors.Cantidad}
+                    </Form.Control.Feedback>
+                  </InputGroup>
                 </Form.Group>
               </Col>
             </Row>
