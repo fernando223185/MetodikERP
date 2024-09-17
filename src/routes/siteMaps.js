@@ -1,33 +1,22 @@
-import { faBalanceScale, faBuilding, faWarehouse, faPersonBooth, faUsers, faTshirt, faBox, faPaperPlane, faCampground, faDesktop, faBook } from '@fortawesome/free-solid-svg-icons';
+import {
+  faUser,
+  faCompass,
+  faBook,
+  faTruck,
+  faRoute,
+  faScrewdriver,
+  faSearchLocation,
+  faStore
+} from "@fortawesome/free-solid-svg-icons";
 
 export const dashboardRoutes = {
-  label: 'Dashboard',
+  label: "Dashboard",
   labelDisable: true,
-  children: [
-    {
-      name: 'Dashboard',
-      active: true,
-      icon: 'chart-pie',
-      children: [
-        {
-          name: 'Default',
-          to: '/',
-          exact: true,
-          active: true
-        },
-        {
-          name: 'Comercial',
-          to: '/',
-          exact: true,
-          active: true
-        }
-      ]
-    }
-  ]
+  children: [],
 };
 export const appRoutes = {
-  label: 'Modules',
-  children: [
+  label: "Modules",
+  /*children: [
 
     {
       name: 'Catalogos',
@@ -366,7 +355,68 @@ export const appRoutes = {
       to: '/support-desk/card-view',
       active: true
     }
-  ]
+  ] */
+
+  children: [
+    {
+      name: "Catalogos",
+      icon: faBook,
+      active: true,
+      children: [
+        {
+          name: "Usuarios",
+          icon: faUser,
+          to: "/configuration/users",
+          active: true,
+        },
+        {
+          name: "Vehiculos",
+          icon: faTruck,
+          to: "/configuration/vehiculos",
+          active: true,
+        },
+
+        {
+          name: "Rutas",
+          icon: faRoute,
+          to: "/configuration/rutas",
+          active: true,
+        },
+        {
+          name: "Destinos",
+          icon: faSearchLocation,
+          to: "/configuration/destinos",
+          active: true,
+        },
+      ],
+    },
+    {
+      name: "Comercial",
+      icon: "dollar-sign",
+      active: true,
+      children: [
+        {
+          name: "Reservas",
+          icon: faStore,
+          to: "/comercial/reservas",
+          active: true,
+        }
+      ],
+    },
+    {
+      name: "Exploradores",
+      icon: "search",
+      active: true,
+      children: [
+        {
+          name: "Rutas",
+          icon: faRoute,
+          to: "/Explorador/ExploradorRutas",
+          active: true,
+        },
+      ],
+    }
+  ],
 };
 
 /*
