@@ -110,7 +110,6 @@ const NavbarVertical = () => {
                 </Nav>
               </div>
             )}
-            <PurchaseCard />
           </>
         </div>
       </Navbar.Collapse>
