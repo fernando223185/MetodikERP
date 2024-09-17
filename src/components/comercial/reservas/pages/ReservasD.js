@@ -12,10 +12,7 @@ import { useParams } from 'react-router-dom';
 import { useGetFiltroModulo } from '../../../../hooks/useFiltros'; 
 import RutaVuelta from '../sections/RutaVuelta'
 
-
-
 const ReservasHeader = () => {
-
     return (
       <Container fluid className="py-3 px-4 border-bottom mb-4">
         <Row className="align-items-center">
@@ -34,7 +31,7 @@ const ReservasHeader = () => {
                     <FontAwesomeIcon icon={faPlay} />
                 </button>
                 <button type="submit" className="btn btn-outline-primary rounded-pill btn-sm">
-                    <FontAwesomeIcon icon={faBan}  />
+                    <FontAwesomeIcon icon={faBan} />
                 </button>
             </Col>
         </Row>
@@ -76,6 +73,7 @@ const ReservasD = () => {
 
 
   useEffect(() => {
+
     const fetchMovimientos = async () => {
       const data = { Tipo: 'Movimientos', PersonaID: 1, Modulo: 'Reservas' };
       const result = await getFiltroModulo(data);
