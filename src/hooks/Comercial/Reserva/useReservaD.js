@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { getReservaIDAsync, avanzarReservaAsync, getRutaIdaAsync, getRutaVueltaAsync, actReservaDAsync, getReservaDAsync, delRowAsync, getAsientosAsync, agregarAsientoAsync, getPersonaReservaAsync } from 'api/comercial/reservas/reservas';
+import { getReservaIDAsync, avanzarReservaAsync, getRutaIdaAsync, getRutaVueltaAsync, actReservaDAsync, getReservaDAsync, delRowAsync, getAsientosAsync, agregarAsientoAsync, getPersonaReservaAsync, guardarDatosPersonaAsync, cancelarReservaAsync } from 'api/comercial/reservas/reservas';
 
 export const useGetReservaID = () => {
   const [reservaId, setReserva] = useState([]);
@@ -195,3 +195,30 @@ export const useGetPersonasReserva = () => {
   return { getPersonasReserva, personas, isLoading, error };
 };
 
+export const useActDatosPasajero= () => {
+  const [result, setResult] = useState({})    
+  const [isLoading, setIsLoading] = useState(false)
+  
+  const actDatosAsync = useCallback(async ({ data }) => {
+      setIsLoading(true);
+      const result = await guardarDatosPersonaAsync({ data });
+      setResult(result);
+      setIsLoading(false);
+    }, [])
+  
+    return { actDatosAsync, result, isLoading };
+}
+
+export const useCancelarReserva= () => {
+  const [result, setResult] = useState({})    
+  const [isLoading, setIsLoading] = useState(false)
+  
+  const cancelarReserva = useCallback(async ({ data }) => {
+      setIsLoading(true);
+      const result = await cancelarReservaAsync({ data });
+      setResult(result);
+      setIsLoading(false);
+    }, [])
+  
+    return { cancelarReserva, result, isLoading };
+}

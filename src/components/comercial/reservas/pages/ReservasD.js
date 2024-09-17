@@ -7,14 +7,48 @@ import RutaIda from '../sections/RutaIda'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faReply, faBan } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import { useGetReservaID, useGetRutaIda, useGetRutaVuelta, useGetReservaD } from '../../../../hooks/Comercial/Reserva/useReservaD';
+import { useGetReservaID, useGetRutaIda, useGetRutaVuelta, useGetReservaD, useCancelarReserva } from '../../../../hooks/Comercial/Reserva/useReservaD';
 import { useParams } from 'react-router-dom';
 import { useGetFiltroModulo } from '../../../../hooks/useFiltros'; 
 import RutaVuelta from '../sections/RutaVuelta'
+import { toast } from 'react-toastify';
 
+const ReservasHeader = ({setHasFetched}) => {
+  const { id } = useParams();
+  const { cancelarReserva, result, isLoading } = useCancelarReserva();
 
+  const handleCancel = async () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    
+    const data = {
+      ID: id,
+      UsuarioID: user.ID
+    }
+    
+    await cancelarReserva({ data })
+  }
 
-const ReservasHeader = () => {
+  useEffect(() => {
+    console.log(result)
+    if (result && Object.keys(result).length === 0) {
+      console.log("result es un array vacío:", result);
+    } else if (result && result.status === 200) {
+      console.log("Hola else")
+        toast[result.data[0].Tipo](`${result.data[0].Mensaje}`, {
+            theme: 'colored',
+            position: result.data[0].Posicion
+        });
+        setTimeout(() => {
+          setHasFetched((prev) => !prev); 
+        }, 1000)
+    } else if (result) {
+        toast.error(`Error al guardar`, {
+            theme: 'colored',
+            position: 'top-right'
+        });
+    }  
+  }, [result])
+
 
     return (
       <Container fluid className="py-3 px-4 border-bottom mb-4">
@@ -30,17 +64,25 @@ const ReservasHeader = () => {
                 >
                     <FontAwesomeIcon icon={faReply} />
                 </Link>
-                <button type="submit" className="btn btn-outline-primary rounded-pill btn-sm me-1">
-                    <FontAwesomeIcon icon={faPlay} />
-                </button>
-                <button type="submit" className="btn btn-outline-primary rounded-pill btn-sm">
-                    <FontAwesomeIcon icon={faBan}  />
-                </button>
+                {isLoading ? (
+                  <Spinner animation="border" role="status" className="me-1">
+                    <span className="visually-hidden">Loading...</span>
+                  </Spinner>
+                ) : (
+                  <>
+                    <button className="btn btn-outline-primary rounded-pill btn-sm me-1">
+                      <FontAwesomeIcon icon={faPlay} />
+                    </button>
+                    <button onClick={handleCancel} className="btn btn-outline-primary rounded-pill btn-sm">
+                      <FontAwesomeIcon icon={faBan} />
+                    </button>
+                  </>
+                )}
             </Col>
         </Row>
       </Container>
     );
-  };
+};
 
 const ReservasD = () => {
   const { id } = useParams();
@@ -56,8 +98,6 @@ const ReservasD = () => {
   const { getRutaVuelta, rutaVuelta, isLoading: isLoadingRutasV } = useGetRutaVuelta();
   const { getReservaD, reservaD, isLoading: isLoadingD } = useGetReservaD();
   const [showDateRegreso, setShowDateRegreso] = useState(true);
-
-
 
 
   useEffect(() =>{
@@ -112,7 +152,9 @@ const ReservasD = () => {
 
   return (
     <>
-      <ReservasHeader />
+      <ReservasHeader 
+      setHasFetched={setHasFetched}
+      />
       <Row className="g-3 mb-3">
         <Col lg={12}>
           <Card style={{ backgroundColor: 'transparent', border: 'none' }}>

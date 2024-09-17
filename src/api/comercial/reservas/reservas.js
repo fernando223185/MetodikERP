@@ -126,3 +126,23 @@ export async function getPersonaReservaAsync({ data }){
         return error;
     }
 }
+
+export async function guardarDatosPersonaAsync({ data }){
+    try{
+        const response = await axios.post(`${endpoints.key}/Reservas/guardarDatosPersona`, data)
+        return response
+    }catch(error){
+        console.error('Error fetching reservas:', error);
+        return error;
+    }
+}
+
+export async function cancelarReservaAsync ({ data }){
+    try{
+        const response = await axios.post(`${endpoints.key}/Reservas/cancelarReserva`, data)
+        return response
+    }catch(error){
+        console.error('Error fetching reservas:', error);
+        return error;
+    }
+}

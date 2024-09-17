@@ -7,118 +7,175 @@ import { toast } from 'react-toastify';
 import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-solid-svg-icons';
-
+import { useActDatosPasajero } from '../../../../hooks/Comercial/Reserva/useReservaD'
 
 const getInitialValues = (pasajero) => {
-    const initialForm = {
-        ID: 0,
-        RenglonID: 0,
-        HorarioRutaID: 0,
-        Nombre: '',
-        Email: '',
-        FechaNacimiento: null,
-        Telefono: '',
-        Curp: ''
-    };
-  
-    if (pasajero) {
-      return {
-        ID: pasajero.ID,
-        RenglonID: pasajero.RenglonID,
-        HorarioRutaID: pasajero.HorarioRutaID,
-        Nombre: pasajero.Nombre || '',
-        Email: pasajero.Email || '',
-        FechaNacimiento: pasajero.FechaNacimiento ? moment(pasajero.FechaNacimiento, 'DD-MM-YYYY').toDate() : null,
-        Telefono: pasajero.Telefono,
-        Curp: pasajero.Curp
-      };
-    }
-    return initialForm;
+  return {
+    ID: pasajero?.ID || 0,
+    RenglonID: pasajero?.RenglonID || 0,
+    HorarioRutaID: pasajero?.HorarioRutaID || 0,
+    Nombre: pasajero?.Nombre || '',
+    Email: pasajero?.Email || '',
+    FechaNacimiento: pasajero?.FechaNacimiento ? moment(pasajero.FechaNacimiento, 'DD-MM-YYYY').toDate() : null,
+    Telefono: pasajero?.Telefono || '',
+    Curp: pasajero?.Curp || '',
+    Asiento: pasajero?.Asiento || 0
   };
+};
 
-  const validationSchema = Yup.object().shape({
-    Nombre: Yup.string().required('Nombre es obligatorio'),
-    FechaNacimiento: Yup.date().required('Fecha de nacimiento es obligatoria'),
-  });
-  
-  
+const validationSchema = Yup.object().shape({
+  Nombre: Yup.string().required('Nombre es obligatorio'),
+  FechaNacimiento: Yup.date().required('Fecha de nacimiento es obligatoria'),
+  Email: Yup.string()
+    .required('El email es obligatorio')
+    .email('El formato del email no es válido'),
+});
 
 const PasajeroInfo = ({ index, pasajero }) => {
-    console.log("Pasa",pasajero)
+  const { actDatosAsync, result, isLoading } = useActDatosPasajero();
 
-    useEffect(() => {
-        if (pasajero) {
-          formik.setValues(getInitialValues(pasajero));
-        }
-      }, [pasajero]);
+  const formik = useFormik({
+    initialValues: getInitialValues(pasajero),
+    validationSchema,
+    enableReinitialize: true, 
+    onSubmit: async (values) => {
+      try {
+        console.log('Formulario enviado:', JSON.stringify(values));
+        await actDatosAsync({ data: values });
 
-    const formik = useFormik({
-        initialValues: getInitialValues(pasajero),
-        validationSchema,
-        enableReinitialize: true, 
-        onSubmit: async (values) => {
-          try {
- 
-            console.log('Formulario enviado:', JSON.stringify(values));
-            //avanzarReserva({ data: values });
-    
-          } catch (error) {
-            console.error('Error enviando el formulario', error);
-            toast.error('Error al enviar el formulario', {
-              theme: 'colored',
-              position: 'top-right',
-            });
-          }
-        },
-    });
+      } catch (error) {
+        console.error('Error enviando el formulario', error);
+        toast.error('Error al enviar el formulario', {
+          theme: 'colored',
+          position: 'top-right',
+        });
+      }
+    },
+  });
 
-    return (
-      <Accordion defaultActiveKey="0">
-        <Card className="mb-3">
-          <Accordion.Item eventKey={index.toString()}>
-            <Accordion.Header>
-              <Row className="align-items-center">
-                <Col>
-                  <h5>Pasajero #{index + 1} - No. Asiento: { pasajero.Asiento }</h5>
-                </Col>
-              </Row>
-            </Accordion.Header>
-            <Accordion.Body>
+  useEffect(() => {
+    console.log(result)
+    if (result && Object.keys(result).length === 0) {
+      console.log("result es un array vacío:", result);
+    } else if (result && result.status === 200) {
+        toast[result.data[0].Tipo](`${result.data[0].Mensaje}`, {
+            theme: 'colored',
+            position: result.data[0].Posicion
+        });
+
+    } else if (!result) {
+        toast.error(`Error al guardar`, {
+            theme: 'colored',
+            position: 'top-right'
+        });
+    }  }, [result])
+
+  return (
+    <Accordion defaultActiveKey="0">
+      <Card className="mb-3">
+        <Accordion.Item eventKey={index.toString()}>
+          <Accordion.Header>
+            <Row className="align-items-center">
+              <Col>
+                <h5>Pasajero #{index + 1} - No. Asiento: { pasajero.Asiento }</h5>
+              </Col>
+            </Row>
+          </Accordion.Header>
+          <Accordion.Body>
             <FormikProvider value={formik}>
-                <Form onSubmit={formik.handleSubmit}>
-                    <Form.Group controlId="nombre">
-                    <Form.Label>Nombre</Form.Label>
-                    <Form.Control type="text" defaultValue={pasajero.nombre} readOnly />
-                    </Form.Group>
-                    <Form.Group controlId="edad">
-                    <Form.Label>Edad</Form.Label>
-                    <Form.Control type="text" defaultValue={pasajero.edad} readOnly />
-                    </Form.Group>
-                    <Form.Group controlId="email">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control type="text" defaultValue={pasajero.email} readOnly />
-                    </Form.Group>
-                    <div className="d-flex justify-content-start mt-2">
-                    {true ? (
-                        <Spinner animation="border" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                        </Spinner>
-                    ) : (
-                        <button type="submit" className="btn btn-outline-primary rounded-pill">
-                        <FontAwesomeIcon icon={faSave} />
-                        </button>
-                    )}
-                    </div>
-                </Form>
+              <Form onSubmit={formik.handleSubmit}>
+                <Form.Group controlId="nombre">
+                  <Form.Label>Nombre</Form.Label>
+                  <Form.Control 
+                    type="text" 
+                    name="Nombre" 
+                    value={formik.values.Nombre} 
+                    onChange={formik.handleChange} 
+                    onBlur={formik.handleBlur}
+                    isInvalid={formik.touched.Nombre && formik.errors.Nombre}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {formik.errors.Nombre}
+                  </Form.Control.Feedback>
+                </Form.Group>
+
+                <Form.Group controlId="curp">
+                  <Form.Label>CURP</Form.Label>
+                  <Form.Control 
+                    type="text" 
+                    name="Curp" 
+                    value={formik.values.Curp} 
+                    onChange={formik.handleChange} 
+                    onBlur={formik.handleBlur}
+                    isInvalid={formik.touched.Curp && formik.errors.Curp}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {formik.errors.Curp}
+                  </Form.Control.Feedback>
+                </Form.Group>
+
+                <Form.Group controlId="email">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control 
+                    type="text" 
+                    name="Email" 
+                    value={formik.values.Email} 
+                    onChange={formik.handleChange} 
+                    onBlur={formik.handleBlur}
+                    isInvalid={formik.touched.Email && formik.errors.Email}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {formik.errors.Email}
+                  </Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group controlId="email">
+                  <Form.Label>Telefono</Form.Label>
+                  <Form.Control 
+                    type="text" 
+                    name="Telefono" 
+                    value={formik.values.Telefono} 
+                    onChange={formik.handleChange} 
+                    onBlur={formik.handleBlur}
+                    isInvalid={formik.touched.Telefono && formik.errors.Telefono}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {formik.errors.Telefono}
+                  </Form.Control.Feedback>
+                </Form.Group>
+
+                <Form.Group>
+                  <Form.Label>Fecha Nacimiento</Form.Label>
+                  <DatePicker
+                    selected={formik.values.FechaNacimiento}
+                    onChange={date => formik.setFieldValue('FechaNacimiento', date)}
+                    className="form-control"
+                    placeholderText="Selecciona una fecha"
+                    dateFormat="dd-MM-yyyy"
+                    locale="es"
+                  />
+                  {formik.touched.FechaNacimiento && formik.errors.FechaNacimiento && (
+                    <div className="text-danger">{formik.errors.FechaNacimiento}</div>
+                  )}
+                </Form.Group>
+
+                <div className="d-flex justify-content-start mt-2">
+                  {isLoading ? (
+                    <Spinner animation="border" role="status">
+                      <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                  ) : (
+                    <button type="submit" className="btn btn-outline-primary rounded-pill">
+                      <FontAwesomeIcon icon={faSave} />
+                    </button>
+                  )}
+                </div>
+              </Form>
             </FormikProvider>
+          </Accordion.Body>
+        </Accordion.Item>
+      </Card>
+    </Accordion>
+  );
+};
 
-            </Accordion.Body>
-          </Accordion.Item>
-        </Card>
-      </Accordion>
-    );
-  };
-  
-
-export default PasajeroInfo
-  
+export default PasajeroInfo;

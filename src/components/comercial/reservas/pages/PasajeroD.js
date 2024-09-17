@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Row, Container, Modal, Card, Spinner } from 'react-bootstrap';
-import InfoCard from '../sections/InfoCard'
-import InfoDCard from '../sections/InfoDCard'
-import DetalleViajeCard from '../sections/DetalleViajeCard'
-import RutaIda from '../sections/RutaIda'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faReply, faBan } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
@@ -14,6 +10,7 @@ import { useLocation } from 'react-router-dom';
 
 
 const PasajerosHeader = () => {
+  const { id } = useParams();
 
     return (
       <Container fluid className="py-3 px-4 border-bottom mb-4">
@@ -21,6 +18,14 @@ const PasajerosHeader = () => {
           <Col md={8}>
             <h2 className="mb-0">Datos Pasajero</h2>
             <span className="text-muted">Informacion del pasajero</span>
+          </Col>
+          <Col md={4} className="text-end">
+              <Link
+                  to={`/comercial/reservas/reservaD/${id}`}  
+                  className="btn btn-outline-primary rounded-pill me-1 btn-sm"
+              >
+                  <FontAwesomeIcon icon={faReply} />
+              </Link>
           </Col>
         </Row>
       </Container>
