@@ -27,7 +27,7 @@ const Logo = ({ at, width, className, textClass, ...rest }) => {
         )}
       >
         <img className="me-2" src={logo} alt="Logo" style={{ width: width, flexShrink: 0 }} />
-        <span className="font-sans-serif text-secondary" >Metodik</span>
+        <span className="font-sans-serif text-secondary" >RTN</span>
       </div>
     </Link>
   );
