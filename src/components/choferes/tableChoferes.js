@@ -7,9 +7,8 @@ import { Col, Row } from 'react-bootstrap';
 import AdvanceTableSearchBox from 'components/common/advance-table/AdvanceTableSearchBox';
 import AdvanceTableFooter from 'components/common/advance-table/AdvanceTableFooter';
 import SubtleBadge from 'components/common/SubtleBadge';
-import IconButton from 'components/common/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import { Link } from 'react-router-dom';
 
 const columns = [
     {
@@ -66,7 +65,7 @@ function TableChoferes(){
     
     useEffect(() => {
         getChoferes();
-    }, [getChoferes]);
+    }, []);
 
     useEffect(() => {
         console.log(choferes);
@@ -74,10 +73,12 @@ function TableChoferes(){
   
               const transformedData = choferes.data.map(c => ({
                   acciones: (
-                    
-                     <FontAwesomeIcon icon="eye" variant="secondary" onClick={() => 
-                      {}} // open modal on click
-                      />
+                    <Link
+                    to={`/configuration/choferes/view-profile/${c.ID}`}  
+                    className="btn btn-outline-primary rounded-pill me-1 mb-1"
+                  >
+                    <FontAwesomeIcon icon="edit" />
+                  </Link>
                   ),
                   estatus: 
                   <SubtleBadge variant={c.EstatusID === 1 ? 'success' : 'danger'}>{c.EstatusID === 1 ? 'Activo' : 'Inactivo'}</SubtleBadge>,
@@ -116,14 +117,12 @@ function TableChoferes(){
                 <AdvanceTableSearchBox table />
             </Col>
             <Col xs="auto" sm={6} lg={4} className="ms-auto text-end">
-                <IconButton           variant="primary"
-                icon="plus"
-                size="sm"
-                onClick={() => {
-                    console.log('The button was clicked'); // Open modal with empty data
-                }}
-            >
-            </IconButton>
+              <Link
+                to={`/configuration/choferes/nuevo`} // Open modal with empty data
+                className="btn btn-outline-primary rounded-pill me-1 mb-1"
+              >
+              <FontAwesomeIcon icon="plus" />
+              </Link>
             </Col>
         </Row>
 

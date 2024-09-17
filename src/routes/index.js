@@ -207,6 +207,14 @@ import SucursalesSettings from 'components/sucursales/Profile/SucursalesSettings
 import CreateVehiculo from 'components/vehiculos/Profile/CreateVehiculo';
 import Vehiculos from 'components/vehiculos';
 import VehiculosSettings from 'components/vehiculos/Profile/VehiculosSettings';
+
+import CreateAlmacen from 'components/almacenes/Profile/CreateAlmacen';
+import Almacenes from 'components/almacenes';
+import AlmacenSettings from 'components/almacenes/Profile/AlmacenSettings';
+import CreateDestino from 'components/destinos/Profile/CreateDestino';
+import Destinos from 'components/destinos';
+import DestinoSettings from 'components/destinos/Profile/DestinoSettings';
+
 import CreateSucursal from 'components/sucursales/Profile/CreateSucursal';
 import UserProfile from '../components/Usuarios/pages/viewUser/Profile'
 import EditarUsuario from '../components/Usuarios/pages/editUser/EditarUsuario'
@@ -214,9 +222,13 @@ import Reservas from '../components/comercial/reservas/Index'
 import ReservasD from '../components/comercial/reservas/pages/ReservasD'
 import Rutas from 'components/rutas/table/tableRutas'
 import Choferes from 'components/choferes/tableChoferes'
+import EditChofer from 'components/choferes/edit/EditChofer';
+import CreateChofer from 'components/choferes/create/CreateChofer';
 import Profiles from 'components/Perfiles/index'
 import ExploradorRutas from 'components/Exploradores/Rutas/index'
 import ExploradorRutasD from 'components/Exploradores/Rutas/index_rutasD'
+import PasajeroD from '../components/comercial/reservas/pages/PasajeroD'
+import ViewProfile from 'components/choferes/ViewProfile/ViewChofer';
 
 const MetodikRoutes = () => {
   return (
@@ -597,15 +609,28 @@ const MetodikRoutes = () => {
         <Route path="configuration/vehiculos" element={<Vehiculos />} />
         <Route path="configuration/vehiculos/editar/:id" element={<VehiculosSettings />} />
         <Route path="configuration/vehiculo/nuevo" element={<CreateVehiculo />} />
+        
+        <Route path="configuration/almacenes" element={<Almacenes />} />
+        <Route path="configuration/almacenes/editar/:id" element={<AlmacenSettings />} />
+        <Route path="configuration/almacen/nuevo" element={<CreateAlmacen />} />
+        <Route path="configuration/destinos" element={<Destinos />} />
+        <Route path="configuration/destinos/editar/:id" element={<DestinoSettings />} />
+        <Route path="configuration/destino/nuevo" element={<CreateDestino />} />
+        
+
         <Route path="configuration/users/view-profile/:id" element={<UserProfile />} />
         <Route path="configuration/users/edit/:id" element={<EditarUsuario />} />
         <Route path="comercial/reservas" element={<Reservas/>} />
         <Route path="comercial/reservas/reservaD/:id" element={<ReservasD/>} />
         <Route path="configuration/rutas" element={<Rutas />} />
         <Route path="configuration/choferes" element={<Choferes />} />
+        <Route path="configuration/choferes/view-profile/:id" element={<ViewProfile />} />
+        <Route path="configuration/choferes/edit/:id" element={<EditChofer />} />
+        <Route path="configuration/choferes/nuevo" element={<CreateChofer />} />
         <Route path="configuration/Profiles" element={<Profiles />} />
         <Route path="Explorador/ExploradorRutas" element={<ExploradorRutas />} />
         <Route path="Explorador/ExploradorRutas/:id" element={<ExploradorRutasD/>} />
+        <Route path="comercial/reservas/reservaD/pasajerosD/:id" element={<PasajeroD/>} />
 
       </Route>
 

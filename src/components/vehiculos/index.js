@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row, Container } from 'react-bootstrap';
+import { Col, Row, Container, Card } from 'react-bootstrap';
 import TableUsers from './tables/tableVehiculos';
 
 
@@ -24,7 +24,11 @@ const Vehiculos = () => {
             <VehiculosHeader />
             <Row className="g-3 mb-3">
                 <Col lg={12}>
-                    <TableUsers />
+                    <Card>
+                        <Card.Body>
+                            <TableUsers />
+                        </Card.Body>
+                    </Card>
                 </Col>
             </Row>
         </>

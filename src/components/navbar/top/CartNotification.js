@@ -20,6 +20,7 @@ const CartNotification = () => {
           'notification-indicator notification-indicator-warning position-relative notification-indicator-fill':
             getProductsQuantity(cartItems)
         })}
+        disabled
       >
         {cartItems.length > 0 && (
           <span className="notification-indicator-number">

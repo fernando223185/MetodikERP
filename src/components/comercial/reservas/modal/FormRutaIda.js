@@ -22,7 +22,8 @@ const FormRutaIda = ({ show, handleClose, selectedItem, setUpdateList }) => {
         HorarioRutaID: selectedItem ? selectedItem.HRutaID : 0,
         Precio: selectedItem ? selectedItem.Precio : 0,
         descripcion: selectedItem ? selectedItem.Descripcion : '',
-        Cantidad: 0 
+        Cantidad: 0 ,
+        TipoViaje: selectedItem ? selectedItem.TipoViaje : ''
     },
     validationSchema: Yup.object({
         Cantidad: Yup.number()

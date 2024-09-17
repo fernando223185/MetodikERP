@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { getReservaIDAsync, avanzarReservaAsync, getRutaIdaAsync, getRutaVueltaAsync, actReservaDAsync, getReservaDAsync, delRowAsync } from 'api/comercial/reservas/reservas';
+import { getReservaIDAsync, avanzarReservaAsync, getRutaIdaAsync, getRutaVueltaAsync, actReservaDAsync, getReservaDAsync, delRowAsync, getAsientosAsync, agregarAsientoAsync, getPersonaReservaAsync, guardarDatosPersonaAsync, cancelarReservaAsync } from 'api/comercial/reservas/reservas';
 
 export const useGetReservaID = () => {
   const [reservaId, setReserva] = useState([]);
@@ -133,5 +133,92 @@ export const useDelRowReservaD = () => {
     }, [])
   
     return { delRowReservaD, result, isLoading };
+} 
+
+export const useGetAsientos = () => {
+  const [asientos, setAsientos] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);  
+  
+  const getAsientos = useCallback(async ({ data }) => {
+    if (isLoading) return;
+    setIsLoading(true);
+    setError(null); 
+    try {
+      const result = await getAsientosAsync({ data });
+      setAsientos(result); 
+      setError('Failed to fetch reservas');
+    } catch (error) {
+      setError('An error occurred while fetching reservas');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [isLoading]); 
+
+  return { getAsientos, asientos, isLoading, error };
+};
+
+export const useAgregarAsiento = () =>{
+  const [result, setResult] = useState({})    
+  const [isLoading, setIsLoading] = useState(false)
+  
+  const agregarAsiento = useCallback(async ({ data }) => {
+      setIsLoading(true);
+      const result = await agregarAsientoAsync({ data });
+      setResult(result);
+      setIsLoading(false);
+    }, [])
+  
+    return { agregarAsiento, result, isLoading };
 }
 
+export const useGetPersonasReserva = () => {
+  const [personas, setPersonas] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);  
+  
+  const getPersonasReserva = useCallback(async ({ data }) => {
+    if (isLoading) return;
+    setIsLoading(true);
+    setError(null); 
+    try {
+      const result = await getPersonaReservaAsync({ data });
+      setPersonas(result); 
+      setError('Failed to fetch reservas');
+    } catch (error) {
+      setError('An error occurred while fetching reservas');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [isLoading]); 
+
+  return { getPersonasReserva, personas, isLoading, error };
+};
+
+export const useActDatosPasajero= () => {
+  const [result, setResult] = useState({})    
+  const [isLoading, setIsLoading] = useState(false)
+  
+  const actDatosAsync = useCallback(async ({ data }) => {
+      setIsLoading(true);
+      const result = await guardarDatosPersonaAsync({ data });
+      setResult(result);
+      setIsLoading(false);
+    }, [])
+  
+    return { actDatosAsync, result, isLoading };
+}
+
+export const useCancelarReserva= () => {
+  const [result, setResult] = useState({})    
+  const [isLoading, setIsLoading] = useState(false)
+  
+  const cancelarReserva = useCallback(async ({ data }) => {
+      setIsLoading(true);
+      const result = await cancelarReservaAsync({ data });
+      setResult(result);
+      setIsLoading(false);
+    }, [])
+  
+    return { cancelarReserva, result, isLoading };
+}

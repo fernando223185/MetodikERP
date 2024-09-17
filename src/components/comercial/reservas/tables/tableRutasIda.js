@@ -17,12 +17,6 @@ const columns = [
     cellProps: { className: 'text-center' }
   },
   {
-    accessor: 'viaje',
-    Header: 'Viaje',
-    headerProps: { className: 'text-900' },
-    cellProps: { className: 'text-center' }
-  },
-  {
     accessor: 'desc',
     Header: 'Descripcion',
     headerProps: { className: 'text-900' }
@@ -62,9 +56,8 @@ function TableRutaIda({ rutaIda, setUpdateList }) {
             <FontAwesomeIcon icon="plus" />
           </button>
         ),
-        viaje: `${u.HRutaID}`,
         desc: u.Descripcion,
-        price: u.Precio
+        price: u.PrecioAdulto
       }));
       setResult(prevResult => {
         if (JSON.stringify(prevResult) !== JSON.stringify(transformedData)) {
