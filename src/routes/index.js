@@ -220,8 +220,10 @@ import UserProfile from '../components/Usuarios/pages/viewUser/Profile'
 import EditarUsuario from '../components/Usuarios/pages/editUser/EditarUsuario'
 import Reservas from '../components/comercial/reservas/Index'
 import ReservasD from '../components/comercial/reservas/pages/ReservasD'
-import Rutas from 'components/rutas/table/tableRutas'
-import Choferes from 'components/choferes/tableChoferes'
+import Rutas from 'components/rutas/index'
+import CreateRutas from 'components/rutas/forms/CreateRutas'
+import EditRutas from 'components/rutas/forms/EditRutas'
+import Choferes from 'components/choferes/index'
 import EditChofer from 'components/choferes/edit/EditChofer';
 import CreateChofer from 'components/choferes/create/CreateChofer';
 import Profiles from 'components/Perfiles/index'
@@ -229,6 +231,7 @@ import ExploradorRutas from 'components/Exploradores/Rutas/index'
 import ExploradorRutasD from 'components/Exploradores/Rutas/index_rutasD'
 import PasajeroD from '../components/comercial/reservas/pages/PasajeroD'
 import ViewProfile from 'components/choferes/ViewProfile/ViewChofer';
+import Horario from 'components/rutas/forms/HorarioForms';
 
 const MetodikRoutes = () => {
   return (
@@ -623,6 +626,9 @@ const MetodikRoutes = () => {
         <Route path="comercial/reservas" element={<Reservas/>} />
         <Route path="comercial/reservas/reservaD/:id" element={<ReservasD/>} />
         <Route path="configuration/rutas" element={<Rutas />} />
+        <Route path="configuration/rutas/nuevo" element={<CreateRutas />} />
+        <Route path="configuration/rutas/edit/:id" element={<EditRutas />} />
+        <Route path="configuration/rutas/horarios/:id" element={<Horario />} />
         <Route path="configuration/choferes" element={<Choferes />} />
         <Route path="configuration/choferes/view-profile/:id" element={<ViewProfile />} />
         <Route path="configuration/choferes/edit/:id" element={<EditChofer />} />

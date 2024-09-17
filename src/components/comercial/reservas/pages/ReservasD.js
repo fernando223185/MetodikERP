@@ -84,6 +84,7 @@ const ReservasHeader = ({setHasFetched}) => {
                     </button>
                   </>
                 )}
+
             </Col>
         </Row>
       </Container>
@@ -126,6 +127,7 @@ const ReservasD = () => {
   }, [id, updateList])
 
   useEffect(() => {
+
     const fetchMovimientos = async () => {
       const data = { Tipo: 'Movimientos', PersonaID: 1, Modulo: 'Reservas' };
       const result = await getFiltroModulo(data);

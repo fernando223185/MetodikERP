@@ -28,27 +28,27 @@ export const useGetFiltroModulo = () => {
 };
 
 export const useGetFiltroCatalogo = () => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-    const getFiltroCatalogo = useCallback(async (data) => {
-        setIsLoading(true);
-        setError(null);
-        try {
-            const result = await getFiltroCatalogosAsync({data});
-            if (result.status === 200) {
-                return result.data;
-            } else {
-                setError('Error al obtener los datos');
-                return[];
-            }
-        }catch(error) {
-            setError('Error en la peticion');
-            return [];
-        } finally {
-            setIsLoading(false);
-        }
-    }, []);
+  const getFiltroCatalogo = useCallback(async (data) => {
+      setIsLoading(true);
+      setError(null);
+      try {
+          const result = await getFiltroCatalogosAsync({data});
+          if (result.status === 200) {
+              return result.data;
+          } else {
+              setError('Error al obtener los datos');
+              return[];
+          }
+      }catch(error) {
+          setError('Error en la peticion');
+          return [];
+      } finally {
+          setIsLoading(false);
+      }
+  }, []);
 
-    return { getFiltroCatalogo, isLoading, error };
+  return { getFiltroCatalogo, isLoading, error };
 }

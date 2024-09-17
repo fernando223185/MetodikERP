@@ -99,7 +99,7 @@ function TableEmpresas() {
       pagination
       perPage={5}
     >
-      <Row className="justify-content-start ">
+      <Row className="justify-content-start mb-3">
         <Col xs="auto">
           <AdvanceTableSearchBox table />
         </Col>
