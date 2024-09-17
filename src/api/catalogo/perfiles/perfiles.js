@@ -13,9 +13,9 @@ export async function getProfilesAsync({data}){
     }
 }
 
-export async function ActUsersAsync({data}){
+export async function ActProfilerAsync({data}){
     try{
-        const response = await axios.post(`${endpoints.key}/actUsuarios`, data)
+        const response = await axios.post(`${endpoints.key}/actPerfil`, data)
         console.log(response)
         return response
     }catch(error){

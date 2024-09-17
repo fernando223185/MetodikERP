@@ -178,7 +178,12 @@ export const appRoutes = {
           name: 'Comercial',
           to: '/social/feed',
           active: true
-        }
+        },
+        {
+          name: 'Rutas',
+          to: '/Explorador/ExploradorRutas',
+          active: true
+        },
       ]
     },
     {
