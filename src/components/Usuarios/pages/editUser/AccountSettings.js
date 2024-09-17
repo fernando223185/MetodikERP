@@ -7,7 +7,7 @@ const AccountSettings = () => {
 
   return (
     <Card className="mb-3">
-      <FalconCardHeader title="Account Settings" />
+      <FalconCardHeader title="Configuracion de usuario" />
       <Card.Body className="bg-body-tertiary">
         <div>
           <h6 className="fw-bold">

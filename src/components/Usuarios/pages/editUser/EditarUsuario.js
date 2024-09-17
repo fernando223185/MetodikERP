@@ -3,14 +3,11 @@ import { useParams } from 'react-router-dom';
 import { useFormik, FormikProvider } from 'formik';
 import { Button, Row, Col, Spinner, Card } from 'react-bootstrap';
 import ProfileSettings from './ProfileSettings';
-import ExperiencesSettings from './ExperiencesSettings';
-import EducationSettings from './EducationSettings';
 import AccountSettings from './AccountSettings';
 import ChangePassword from './ChangePassword';
-import DangerZone from './DangerZone';
-import coverSrc from 'assets/img/generic/4.jpg';
+import coverSrc from 'assets/img/illustrations/LogoMetodik_transparent_resized.png';
 import ProfileBanner from '../../ProfileBanner';
-import avatar from 'assets/img/team/2.jpg';
+import avatar from 'assets/img/illustrations/Mo.png';
 import { useGetUserById } from '../../../../hooks/Catalogos/Usuarios/useUsuario';
 import * as Yup from 'yup';
 import _ from 'lodash';
@@ -144,20 +141,14 @@ const EditarUsuario = () => {
           <Row className="g-3">
             <Col lg={8}>
               <ProfileSettings formik={formik}/>
-              <ExperiencesSettings />
-              <EducationSettings />
             </Col>
             <Col lg={4}>
               <div className="sticky-sidebar">
                 <AccountSettings />
                 <ChangePassword formik={formik}/>
-                <DangerZone />
               </div>
             </Col>
           </Row>
-          <Button variant="primary" type="submit" className="rounded-pill me-1 mb-3 mt-1">
-           <FontAwesomeIcon icon={faSave} />         
-          </Button>
         </form>
       </FormikProvider>
     </>
