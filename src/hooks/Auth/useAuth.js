@@ -2,7 +2,6 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'utils/axios';
 
-
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -22,6 +21,9 @@ export const AuthProvider = ({ children }) => {
       
       localStorage.setItem('user', JSON.stringify(response.data.user_data));
       localStorage.setItem('access_token', response.data.access_token);
+
+      setUser(response.data.user_data);
+      
       navigate('/comercial/reservas'); 
   
       return null; 

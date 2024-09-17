@@ -4,7 +4,6 @@ import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useAuth } from '../../hooks/Auth/useAuth';
 import { Formik, Form as FormFormik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 
@@ -16,7 +15,6 @@ const SignupSchema = Yup.object().shape({
 const LoginForm = ({ hasLabel = false, layout = 'simple' }) => {
   const { login } = useAuth();
   const [formError, setFormError] = useState('');  
-  const navigate = useNavigate();
 
 
   return (
@@ -40,8 +38,8 @@ const LoginForm = ({ hasLabel = false, layout = 'simple' }) => {
           if (errorMessage) {
             setFormError(errorMessage);  
           } else {
-            setFormError(''); 
             toast.success(`Inicio sesión como ${values.email}`, { theme: 'colored' });
+            setFormError(''); 
 
           }
         } catch (error) {
