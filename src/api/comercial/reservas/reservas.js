@@ -166,3 +166,13 @@ export async function agregarFormaPagoAsync ({ data }){
         return error;
     }
 }
+
+export async function cambiarSituacionesAsync ({ data }){
+    try{
+        const response = await axios.post(`${endpoints.key}/Reservas/cambiarSituacion`, data)
+        return response
+    }catch(error){
+        console.error('Error fetching reservas:', error);
+        return error;
+    }
+}

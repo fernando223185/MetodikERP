@@ -5,9 +5,9 @@ import InfoDCard from '../sections/InfoDCard'
 import DetalleViajeCard from '../sections/DetalleViajeCard'
 import RutaIda from '../sections/RutaIda'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faReply, faBan, faSave, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faReply, faBan, faSave, faChevronLeft, faStar } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import { useGetReservaID, useGetRutaIda, useGetRutaVuelta, useGetReservaD, useCancelarReserva, useAfectarReserva, useAgregarFormaPago } from '../../../../hooks/Comercial/Reserva/useReservaD';
+import { useGetReservaID, useGetRutaIda, useGetRutaVuelta, useGetReservaD, useCancelarReserva, useAfectarReserva, useAgregarFormaPago, useCambiarSituaciones } from '../../../../hooks/Comercial/Reserva/useReservaD';
 import { useParams } from 'react-router-dom';
 import { useGetFiltroModulo } from '../../../../hooks/useFiltros'; 
 import RutaVuelta from '../sections/RutaVuelta'
@@ -20,12 +20,16 @@ const ReservasHeader = ({setHasFetched, estatus}) => {
   const { cancelarReserva, result, isLoading } = useCancelarReserva();
   const { afectarReserva, result: resultAfect, isLoading: isLoadingAfec } = useAfectarReserva();
   const { agregarFormaPago, result: pago, isLoading: isLoadingPago } = useAgregarFormaPago();
+  const { cambiarSituaciones, result: situacion, isLoading: isLoadingSit } = useCambiarSituaciones();
+
   const [showModal, setShowModal] = useState(false);
+  const [showModalSituacion, setShowModalSituacion] = useState(false); 
   const { getFiltroModulo, isLoading: isLoadingFiltro } = useGetFiltroModulo();
   const [selectedFormaPago, setSelectedFormaPago] = useState(null);
   const [formasPago, setFormasPago] = useState([]); 
   const [referencia, setReferencia] = useState('');
-
+  const [situaciones, setSituaciones] = useState([]); 
+  const [selectedSituacion, setSelectedSituacion] = useState(null);
 
   const user = JSON.parse(localStorage.getItem('user'));
 
@@ -58,7 +62,16 @@ const ReservasHeader = ({setHasFetched, estatus}) => {
     }
   };
 
+  const handleSituacionClick = async () => {
+    const data = { Tipo: 'Situaciones', PersonaID: 1, Modulo: 'Reservas' };
+    const resultFiltro = await getFiltroModulo(data); 
+    setSituaciones(resultFiltro); 
+    setShowModalSituacion(true); 
+  };
+
   const handleModalClose = () => setShowModal(false);
+  const handleModalCloseSituacion = () => setShowModalSituacion(false);
+
   const handleModalSave = async () => {
     const data = {
       ID: id,
@@ -67,6 +80,14 @@ const ReservasHeader = ({setHasFetched, estatus}) => {
       Referencia: referencia
     }
     await agregarFormaPago({data})
+  };
+  const handleModalSaveSituacion = async () => {
+    const data = {
+      ID: id,
+      Situacion: selectedSituacion
+    }
+
+    await cambiarSituaciones({data})
   };
 
   useEffect(() => {
@@ -88,6 +109,25 @@ const ReservasHeader = ({setHasFetched, estatus}) => {
         });
     }
   },[pago])
+
+  useEffect(() => {
+    if (situacion && Object.keys(situacion).length === 0) {
+      console.log("situacion es un array vacío:", situacion);
+    } else if (situacion && situacion.status === 200) {
+        toast[situacion.data[0].Tipo](`${situacion.data[0].Mensaje}`, {
+            theme: 'colored',
+            position: situacion.data[0].Posicion
+        });
+        setTimeout(() => {
+          handleModalCloseSituacion(false);
+        }, 1000)
+    } else if (situacion) {
+        toast.error(`Error al guardar`, {
+            theme: 'colored',
+            position: 'top-right'
+        });
+    }
+  },[situacion])
 
   useEffect(() => {
     if (result && Object.keys(result).length === 0) {
@@ -149,14 +189,23 @@ const ReservasHeader = ({setHasFetched, estatus}) => {
                 ) : (
                   <>
                     <button
+                      onClick={handleSituacionClick}
+                      className="btn btn-outline-primary rounded-pill btn-sm me-1"
+                      title='Cambiar situacion'
+                    >
+                      <FontAwesomeIcon icon={faStar} />
+                    </button>
+                    <button
                       onClick={handlePlayClick}
                       className="btn btn-outline-primary rounded-pill btn-sm me-1"
+                      title='Afectar'
                     >
                       <FontAwesomeIcon icon={faPlay} />
                     </button>
                     <button
                       onClick={handleCancel}
                       className="btn btn-outline-primary rounded-pill btn-sm"
+                      title='Cancelar'
                     >
                       <FontAwesomeIcon icon={faBan} />
                     </button>
@@ -214,6 +263,46 @@ const ReservasHeader = ({setHasFetched, estatus}) => {
           <FontAwesomeIcon icon={faSave} />
         </button>
       </Modal.Footer>
+      </Modal>
+      <Modal show={showModalSituacion} onHide={handleModalCloseSituacion}>
+        <Modal.Header closeButton>
+          <Modal.Title>Cambiar Situación</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {isLoadingFiltro ? (
+            <div className="d-flex justify-content-center">
+              <Spinner animation="border" role="status">
+                <span className="visually-hidden">Cargando...</span>
+              </Spinner>
+            </div>
+          ) : (
+            <Form>
+              <Form.Group>
+                <Form.Label>Seleccione una situación</Form.Label>
+                <Select
+                  classNamePrefix="react-select"
+                  options={situaciones.map((item) => ({
+                    value: item.Valor,
+                    label: item.Dato,
+                  }))}
+                  onChange={(option) => setSelectedSituacion(option.value)} 
+                  isLoading={isLoading}
+                />
+              </Form.Group>
+            </Form>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <button
+            className="btn btn-outline-secondary rounded-pill me-1 mb-1 btn-sm"
+            onClick={handleModalCloseSituacion}
+          >
+            <FontAwesomeIcon icon={faChevronLeft}/>
+          </button>
+          <button onClick={handleModalSaveSituacion} className="btn btn-outline-primary rounded-pill btn-sm">
+            <FontAwesomeIcon icon={faSave} />
+          </button>
+        </Modal.Footer>
       </Modal>
     </>
     );

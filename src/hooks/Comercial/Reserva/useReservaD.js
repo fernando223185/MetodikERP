@@ -12,7 +12,8 @@ import { getReservaIDAsync,
         guardarDatosPersonaAsync, 
         cancelarReservaAsync,
         afectarReservaAsync,
-        agregarFormaPagoAsync } from 'api/comercial/reservas/reservas';
+        agregarFormaPagoAsync,
+        cambiarSituacionesAsync } from 'api/comercial/reservas/reservas';
 
 export const useGetReservaID = () => {
   const [reservaId, setReserva] = useState([]);
@@ -262,5 +263,19 @@ export const useAgregarFormaPago = () => {
     }, [])
   
     return { agregarFormaPago, result, isLoading };
+}
+
+export const useCambiarSituaciones = () => {
+  const [result, setResult] = useState({})    
+  const [isLoading, setIsLoading] = useState(false)
+  
+  const cambiarSituaciones = useCallback(async ({ data }) => {
+      setIsLoading(true);
+      const result = await cambiarSituacionesAsync({ data });
+      setResult(result);
+      setIsLoading(false);
+    }, [])
+  
+    return { cambiarSituaciones, result, isLoading };
 }
 
