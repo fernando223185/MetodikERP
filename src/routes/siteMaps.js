@@ -13,7 +13,7 @@ export const dashboardRoutes = {
   children: [],
 };
 export const appRoutes = {
-  label: "Modules",
+  label: "Modulos",
   children: [
     {
       name: "Catalogos",
@@ -22,7 +22,7 @@ export const appRoutes = {
       children: [
         {
           name: "Usuarios",
-          icon: faUser,
+          ico: faUser,
           to: "/configuration/users",
           active: true,
         },
