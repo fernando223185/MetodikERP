@@ -4,7 +4,7 @@ import {
   faTruck,
   faRoute,
   faSearchLocation,
-  faStore
+  faStore,
 } from "@fortawesome/free-solid-svg-icons";
 
 export const dashboardRoutes = {
@@ -22,7 +22,7 @@ export const appRoutes = {
       children: [
         {
           name: "Usuarios",
-          ico: faUser,
+          icon: faUser,
           to: "/configuration/users",
           active: true,
         },
