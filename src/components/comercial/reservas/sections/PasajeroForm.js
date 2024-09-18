@@ -29,6 +29,12 @@ const validationSchema = Yup.object().shape({
   Email: Yup.string()
     .required('El email es obligatorio')
     .email('El formato del email no es válido'),
+    Curp: Yup.string()
+    .matches(
+      /^[A-Z]{4}\d{6}[HM][A-Z]{2}[A-Z0-9]{3}[A-Z0-9]\d$/,
+      'CURP no tiene el formato correcto'
+    )
+    .required('CURP es obligatoria')
 });
 
 const PasajeroInfo = ({ index, pasajero }) => {
