@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Modal, Spinner, Button } from 'react-bootstrap';
+import { Modal, Spinner } from 'react-bootstrap';
 import FormSprinter from './FormSprinter'; 
 import FormCamion from './FormCamion';
 import { useGetAsientos, useAgregarAsiento } from '../../../../hooks/Comercial/Reserva/useReservaD';
@@ -103,8 +103,8 @@ export default function ModalAsientos({ show, selectedItem, handleClose, setUpda
                     <Modal.Body>
                         {asientos[0].TipoCamion === "Sprinter" ? (
                             <FormSprinter asientos={asientos} onConfirm={handleSeatSelection} />
-                        ) : asientos[0].TipoCamion === "Camion" ? (
-                            <FormCamion totalSeats={asientos[0].NoAsientos} onConfirm={handleSeatSelection} />
+                        ) : asientos[0].TipoCamion === "Autobus" ? (
+                            <FormCamion asientos={asientos} onConfirm={handleSeatSelection} />
                         ) : (
                             <div>No se encontró el formulario adecuado.</div>
                         )}
