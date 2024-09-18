@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useGetFiltroCatalogo } from '../../../hooks/useFiltros'; // Ajusta la ruta
 import { Form } from 'react-bootstrap';
+import Select from 'react-select';
 
-
-const EstatusSelect = ({ value, onChange, tipo, modulo }) => {
+const EstatusSelect = ({ value, onChange }) => {
     const { getFiltroCatalogo, isLoading, error } = useGetFiltroCatalogo();
     const [estatus, setEstatus] = useState([]);
 
     useEffect(() => {
         const fetchEstatus = async () => {
             const data = {
-                Tipo: tipo,
+                Tipo: 'Estatus',
                 PersonaID: localStorage.getItem("ID"), // Ajusta este valor según sea necesario
-                Modulo: modulo,
+                Modulo: 'Vehiculos',
                 ModuloID: ''
             };
 
@@ -28,9 +28,19 @@ const EstatusSelect = ({ value, onChange, tipo, modulo }) => {
     return (
         <Form.Group controlId="EstatusID">
             <Form.Label>Estatus</Form.Label>
+            <Select 
+                className="react-select"
+                options={estatus.map(item =>({ 
+                    value: item.Valor, 
+                    label: item.Dato,
+                }))}
+                onChange={onChange}
+                isLoading={isLoading}
+                value={value}
+                required
+            />
             <Form.Control
                 as="select"
-                className="form-select"
                 name="EstatusID"
                 value={value}
                 onChange={onChange}

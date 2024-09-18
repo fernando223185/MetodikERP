@@ -9,6 +9,9 @@ import AdvanceTableFooter from 'components/common/advance-table/AdvanceTableFoot
 import SubtleBadge from 'components/common/SubtleBadge';
 import IconButton from 'components/common/IconButton';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 const columns = [
     {
@@ -77,17 +80,15 @@ function TableAlmacenes() {
           console.log(almacenes.data);
             const transformedData = almacenes.data.map(e => ({
                 acciones: (
-                    <IconButton
-                        icon="edit"
-                        size="sm"
-                        variant="primary"
-                        onClick={() => {
-                            navigate(`/configuration/almacenes/editar/${e.ID}`);
-                        }}
-                    />
+                     <Link
+                        to={`/configuration/almacenes/editar/${e.ID}`}
+                        className="btn btn-outline-primary rounded-pill me-1 mb-1"     
+                    >
+                        <FontAwesomeIcon icon="eye" />
+                    </Link>
                 ),
                 estatus: 
-                <SubtleBadge variant={e.EstatusID === 1 ? 'success' : 'danger'}>{e.EstatusID === 1 ? 'Activo' : 'Inactivo'}</SubtleBadge>,
+                <SubtleBadge className="fs--2" pill bg={e.EstatusID === 1 ? 'success' : 'danger'}>{e.EstatusID === 1 ? 'Alta' : 'Baja'}</SubtleBadge>,
                 almacen: e.Almacen,
                 nombre: e.Nombre,
                 grupo: e.GrupoID,
@@ -122,14 +123,12 @@ function TableAlmacenes() {
           <AdvanceTableSearchBox table />
         </Col>
         <Col xs="auto" sm={6} lg={4} className="ms-auto text-end">
-          <IconButton           variant="primary"
-          icon="plus"
-          size="sm"
-          onClick={() => {
-            navigate('/configuration/almacen/nuevo');
-          }}
-        >
-        </IconButton>
+          <Link
+                to={`/configuration/almacen/nuevo`}  
+                className="btn btn-outline-primary rounded-pill me-1 mb-1"
+                >
+            <FontAwesomeIcon icon="plus" />
+            </Link>
         </Col>
       </Row>
       <hr style={{ margin: '10px 0' }} />

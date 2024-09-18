@@ -3,45 +3,41 @@ import { useGetFiltroCatalogo } from '../../../hooks/useFiltros'; // Ajusta la r
 import { Form } from 'react-bootstrap';
 
 
-const TipoVehiculoSelect = ({ value, onChange }) => {
+const SucursalSelect = ({ value, onChange, tipo, modulo }) => {
     const { getFiltroCatalogo, isLoading, error } = useGetFiltroCatalogo();
-    const [vehicleTypes, setVehicleTypes] = useState([]);
-
-    const storedData = localStorage.getItem("user");
-    const parsedData = storedData ? JSON.parse(storedData) : {};
-    const personaID = parsedData.ID;
-
+    const [sucursal, setSucursal] = useState([]);
 
     useEffect(() => {
-        const fetchVehicleTypes = async () => {
+        const fetchEstatus = async () => {
             const data = {
-                Tipo: 'TipoVehiculo',
-                PersonaID: personaID,
-                Modulo: 'Vehiculos',
+                Tipo: tipo,
+                PersonaID: localStorage.getItem("ID"), // Ajusta este valor según sea necesario
+                Modulo: modulo,
                 ModuloID: ''
             };
 
             const result = await getFiltroCatalogo(data);
-            setVehicleTypes(result);
+            setSucursal(result);
         };
 
-        fetchVehicleTypes();
+        fetchEstatus();
     }, [getFiltroCatalogo]);
 
 
 
     return (
-        <Form.Group controlId="TipoVehiculo">
-            <Form.Label>Tipo Vehiculo</Form.Label>
+        <Form.Group controlId="SucursalID">
+            <Form.Label>Sucursal</Form.Label>
             <Form.Control
                 as="select"
                 className="form-select"
-                name="TipoVehiculo"
+                name="SuursalID"
                 value={value}
                 onChange={onChange}
                 required
             >
-                {vehicleTypes.map(option => (
+                <option value="">Seleccione una sucursal</option>
+                {sucursal.map(option => (
                     <option key={option.Valor} value={option.Valor}>
                         {option.Dato}
                     </option>
@@ -51,5 +47,5 @@ const TipoVehiculoSelect = ({ value, onChange }) => {
     );
 };
 
-export default TipoVehiculoSelect;
+export default SucursalSelect;
 

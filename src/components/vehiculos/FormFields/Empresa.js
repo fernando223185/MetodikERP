@@ -3,7 +3,7 @@ import { useGetFiltroCatalogo } from '../../../hooks/useFiltros'; // Ajusta la r
 import { Form } from 'react-bootstrap';
 
 
-const EmpresaSelect = ({ value, onChange }) => {
+const EmpresaSelect = ({ value, onChange, tipo, modulo }) => {
     const { getFiltroCatalogo, isLoading, error } = useGetFiltroCatalogo();
     const [ empresas, setEmpresas] = useState([]);
 
@@ -15,9 +15,9 @@ const EmpresaSelect = ({ value, onChange }) => {
     useEffect(() => {
         const fetchEmpresas = async () => {
             const data = {
-                Tipo: 'Empresa',
+                Tipo: tipo,
                 PersonaID: personaID, 
-                Modulo: 'Vehiculos',
+                Modulo: modulo,
                 ModuloID: ''
             };
 
@@ -35,6 +35,7 @@ const EmpresaSelect = ({ value, onChange }) => {
             <Form.Label>Empresa</Form.Label>
             <Form.Control
                 as="select"
+                className="form-select"
                 name="EmpresaID"
                 value={value}
                 onChange={onChange}

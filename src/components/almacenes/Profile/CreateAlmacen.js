@@ -2,21 +2,35 @@ import React, { useState } from 'react';
 import { Button, Card, Col, Row, Form } from 'react-bootstrap';
 import { useActAlmacen } from '../../../hooks/Catalogos/Almacenes/useAlmacen.js'
 import { useNavigate } from 'react-router-dom';
+import { BackButton, SaveButton, CleanButton } from '../../vehiculos/FormFields/FormButtons.js';
+import EmpresaSelect from '../../vehiculos/FormFields/Empresa.js';
+import EstatusSelect from '../../vehiculos/FormFields/Estatus.js';
+import SucursalSelect from '../../vehiculos/FormFields/Sucursal.js'
 
 const CreateAlmacen = () => {
     const navigate = useNavigate();
     const { submitAlmacen, response, error, isLoading } = useActAlmacen();
-    const [formData, setFormData] = useState({
+ 
+    const storedData = localStorage.getItem("user");
+    const parsedData = storedData ? JSON.parse(storedData) : {};
+    const empresaID = parsedData.EmpresaID;
+
+    const initialFormState = {
         ID: '',
         Almacen: '',
         Nombre: '',
         GrupoID: '',
         TipoID: '',
         SucursalID: '',
-        EstatusID: '',
-        EmpresaID: ''
-    });
+        EstatusID: 1,
+        EmpresaID: empresaID
+    }
 
+    const [formData, setFormData] = useState(initialFormState);
+
+    const resetForm = () => {
+        setFormData(initialFormState);
+    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -43,22 +57,16 @@ const CreateAlmacen = () => {
     return (
         <Card>
             <Card.Body className="p-lg-6">
-                <h3 className="text-primary text-center mb-4">Nuevo Almacen</h3>
+                <Row>
+                    <Col>
+                        <h3 className="text-dark mb-4">Nuevo Almacen</h3>
+                    </Col>
+                    <Col lg={6} className="text-end">
+                        <BackButton action={() => navigate('/configuration/almacenes')} />
+                    </Col>
+                </Row>
                 <Form onSubmit={handleSubmit}>
                     <Row className="mb-3">
-                        <Col lg={6}>
-                            <Form.Group controlId="Almacen">
-                                <Form.Label>Almacen</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="Almacen"
-                                    value={formData.Almacen}
-                                    onChange={handleChange}
-                                    placeholder="Ingresa la almacen"
-                                    required
-                                />
-                            </Form.Group>
-                        </Col>
                         <Col lg={6}>
                             <Form.Group controlId="Nombre">
                                 <Form.Label>Nombre</Form.Label>
@@ -71,6 +79,14 @@ const CreateAlmacen = () => {
                                     required
                                 />
                             </Form.Group>
+                        </Col>
+                        <Col lg={6}>
+                            <EstatusSelect
+                                tipo="Estatus"
+                                modulo="Almacenes"
+                                value={formData.EstatusID}
+                                onChange={handleChange}
+                            />
                         </Col>
                     </Row>
                     <Row className="mb-3">
@@ -102,57 +118,28 @@ const CreateAlmacen = () => {
                         </Col>
                     </Row>
                     <Row className="mb-3">
-                        <Col lg={4}>
-                            <Form.Group controlId="SucursalID">
-                                <Form.Label>SucursalID</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="SucursalID"
-                                    value={formData.SucursalID}
-                                    onChange={handleChange}
-                                    placeholder="Ingresa el sucursal id"
-                                    required
-                                />
-                            </Form.Group>
+                        <Col lg={6}>
+                            <SucursalSelect
+                                tipo="Sucursal"
+                                modulo="Almacenes"
+                                value={formData.EmpresaID}
+                                onChange={handleChange}
+                            />
                         </Col>
-                        <Col lg={4}>
-                            <Form.Group controlId="EstatusID">
-                                <Form.Label>Estatus</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="EstatusID"
-                                    value={formData.EstatusID}
-                                    onChange={handleChange}
-                                    placeholder="Ingresa el estatus"
-                                    required
-                                />
-                            </Form.Group>
-                        </Col>
-                        <Col lg={4}>
-                            <Form.Group controlId="EmpresaID">
-                                <Form.Label>Empresa</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="EmpresaID"
-                                    value={formData.EmpresaID}
-                                    onChange={handleChange}
-                                    placeholder="Ingresa la empresa"
-                                    required
-                                />
-                            </Form.Group>
+                        <Col lg={6}>
+                            <EmpresaSelect 
+                                tipo="Empresa"
+                                modulo="Almacenes"
+                                value={formData.EmpresaID}
+                                onChange={handleChange}
+                            />
                         </Col>
                     </Row>                       
                         
                     <Row className="mt-4">
-                        <Col className="text-center">
-                            <Button variant="primary" type="submit" disabled={isLoading}>
-                                {isLoading ? 'Guardando...' : 'Guardar'}
-                            </Button>
-                        </Col>
-                        <Col className="text-center">
-                            <Button variant="danger" type="submit" onClick={() => { navigate('/configuration/almacenes') }}>
-                                Regresar
-                            </Button>
+                        <Col className="text-end">
+                            <SaveButton isLoading={isLoading} />
+                            <CleanButton action={resetForm} isLoading={isLoading} />
                         </Col>
                     </Row>
                 </Form>

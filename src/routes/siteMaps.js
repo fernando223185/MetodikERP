@@ -6,7 +6,9 @@ import {
   faRoute,
   faScrewdriver,
   faSearchLocation,
-  faStore
+  faStore,
+  faBuilding,
+  faWarehouse
 } from "@fortawesome/free-solid-svg-icons";
 
 export const dashboardRoutes = {
@@ -368,6 +370,18 @@ export const appRoutes = {
           icon: faUser,
           to: "/configuration/users",
           active: true,
+        },
+        {
+            name: "Sucursales",
+            icon: faBuilding,
+            to: "/configuration/sucursales",
+            activate: true,
+        },
+        {
+            name: "Almacenes",
+            icon: faWarehouse,
+            to: "/configuration/almacenes",
+            activate: true,
         },
         {
           name: "Vehiculos",
