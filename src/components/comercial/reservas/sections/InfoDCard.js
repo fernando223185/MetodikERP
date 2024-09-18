@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Card, Form, Row, Col, Button, Spinner, InputGroup } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-solid-svg-icons';
@@ -40,7 +40,7 @@ const validationSchema = Yup.object().shape({
   origen: Yup.string().required('Origen es obligatorio'),
   destino: Yup.string().required('Destino es obligatorio'),
   dateSalida: Yup.date().required('Fecha de salida es obligatoria'),
-  //dateRegreso: Yup.date().required('Fecha de regreso es obligatoria'),
+  dateRegreso: Yup.date().required('Fecha de regreso es obligatoria'),
 });
 
 const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched, setUpdtRutas, setShowDateRegreso, showDateRegreso }) => {
