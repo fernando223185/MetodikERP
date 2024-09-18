@@ -40,7 +40,7 @@ const ProfileDropdown = () => {
           </Dropdown.Item>
           <Dropdown.Item href="#!">Feedback</Dropdown.Item>
           <Dropdown.Divider />
-          <Dropdown.Item as={Link} to="/user/settings">
+          <Dropdown.Item as={Link} to={`configuration/users/edit/${user.ID}`}>
             Configuracion
           </Dropdown.Item>
           <Dropdown.Item onClick={handleLogout}>
