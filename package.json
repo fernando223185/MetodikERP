@@ -1,7 +1,7 @@
 {
   "homepage": "frlive.prium.me",
   "name": "Metodik",
-  "version": "4.3.0",
+  "version": "3.0.0",
   "private": true,
   "dependencies": {
     "@changey/react-leaflet-markercluster": "^4.0.0-rc1",

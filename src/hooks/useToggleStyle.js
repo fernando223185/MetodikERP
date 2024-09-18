@@ -38,7 +38,7 @@ const useToggleStylesheet = (isRTL, isDark) => {
       'data-bs-theme',
       isDark ? 'dark' : 'light'
     );
-  }, []);
+  }, [isDark]);  
 
   return { isLoaded };
 };

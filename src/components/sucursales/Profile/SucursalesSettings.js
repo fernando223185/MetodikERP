@@ -2,21 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Col, Row, Spinner, Card, Form, Button } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGetSucursalResumen, useActSucursal } from '../../../hooks/Catalogos/Sucursales/useSucursal';
-import { SaveButton, BackButton, CleanButton } from '../../vehiculos/FormFields/FormButtons.js';
-import EstatusSelect from '../../vehiculos/FormFields/Estatus.js';
-import EmpresaSelect from '../../vehiculos/FormFields/Empresa.js';
-
-
 
 const SucursalesSettings = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const { getResumen, sucursalResumen, isLoading } = useGetSucursalResumen();
     const { submitSucursal, response, error, isActLoading } = useActSucursal();
-    const storedData = localStorage.getItem("user");
-    const parsedData = storedData ? JSON.parse(storedData) : {};
-    const empresaID = parsedData.EmpresaID;
-
 
     useEffect(() => {
         const data = { ID: id };
@@ -27,7 +18,8 @@ const SucursalesSettings = () => {
     const { data = {} } = sucursalResumen;
     console.log(data);
 
-    const initialFormState = {
+    // Estado inicial con valores vacíos
+    const [formData, setFormData] = useState({
         ID: '',
         Sucursal: '',
         Nombre: '',
@@ -42,19 +34,11 @@ const SucursalesSettings = () => {
         Pais: '',
         CodigoPostal: '',
         Telefonos: '',
-        EstatusID: 1,
+        EstatusID: '',
         RFC: '',
-        EmpresaID: empresaID,
+        EmpresaID: '',
         ZonaImpuestoID: '',
-
-    }
-
-    // Estado inicial con valores vacíos
-    const [formData, setFormData] = useState(initialFormState);
-
-    const resetForm = () => {
-        setFormData(initialFormState);
-    }
+    });
 
     useEffect(() => {
         setFormData({
@@ -130,16 +114,22 @@ const SucursalesSettings = () => {
     return (
         <Card>
             <Card.Body className="p-lg-6">
-                <Row>
-                    <Col lg={6}>
-                        <h3 className="text-dark mb-4">Actualizar Sucursal</h3>
-                    </Col>
-                    <Col lg={6} className="text-end">
-                        <BackButton action={() => navigate('/configuration/sucursales')} />
-                    </Col>
-                </Row>
+                <h3 className="text-primary text-center mb-4">Actualizar Sucursal</h3>
                 <Form onSubmit={handleSubmit}>
                     <Row className="mb-3">
+                        <Col lg={6}>
+                            <Form.Group controlId="Sucursal">
+                                <Form.Label>Sucursal</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="Sucursal"
+                                    value={formData.Sucursal}
+                                    onChange={handleChange}
+                                    placeholder="Ingresa la sucursal"
+                                    required
+                                />
+                            </Form.Group>
+                        </Col>
                         <Col lg={6}>
                             <Form.Group controlId="Nombre">
                                 <Form.Label>Nombre</Form.Label>
@@ -152,14 +142,6 @@ const SucursalesSettings = () => {
                                     required
                                 />
                             </Form.Group>
-                        </Col>
-                        <Col lg={6}>
-                            <EstatusSelect 
-                                tipo="Estatus"
-                                modulo="Sucursales"
-                                value={formData.EstatusID}
-                                onChange={handleChange}
-                            />
                         </Col>
                     </Row>
                     <Row className="mb-3">
@@ -217,18 +199,23 @@ const SucursalesSettings = () => {
                             </Form.Group>
                         </Col>
                         <Col lg={6}>
-                            <EmpresaSelect 
-                                tipo="Empresa"
-                                modulo="Sucursales"
-                                value={formData.EmpresaID}
-                                onChange={handleChange}
-                            />
+                            <Form.Group controlId="Delegacion">
+                                <Form.Label>Delegación</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="Delegacion"
+                                    value={formData.Delegacion}
+                                    onChange={handleChange}
+                                    placeholder="Ingresa la delegación"
+                                    required
+                                />
+                            </Form.Group>
                         </Col>
 
                     </Row>
 
                     <Row className="mb-3">
-                        <Col lg={4}>
+                        <Col lg={6}>
                             <Form.Group controlId="Colonia">
                                 <Form.Label>Colonia</Form.Label>
                                 <Form.Control
@@ -241,7 +228,7 @@ const SucursalesSettings = () => {
                                 />
                             </Form.Group>
                         </Col>
-                        <Col lg={4}>
+                        <Col lg={6}>
                             <Form.Group controlId="Poblacion">
                                 <Form.Label>Poblacion</Form.Label>
                                 <Form.Control
@@ -250,19 +237,6 @@ const SucursalesSettings = () => {
                                     value={formData.Poblacion}
                                     onChange={handleChange}
                                     placeholder="Ingresa la poblacion"
-                                    required
-                                />
-                            </Form.Group>
-                        </Col>
-                        <Col lg={4}>
-                            <Form.Group controlId="Delegacion">
-                                <Form.Label>Delegación</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="Delegacion"
-                                    value={formData.Delegacion}
-                                    onChange={handleChange}
-                                    placeholder="Ingresa la delegación"
                                     required
                                 />
                             </Form.Group>
@@ -328,6 +302,19 @@ const SucursalesSettings = () => {
                     </Row>
                     <Row className="mb-3">
                         <Col lg={6}>
+                            <Form.Group controlId="EstatusID">
+                                <Form.Label>Estatus</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="EstatusID"
+                                    value={formData.EstatusID}
+                                    onChange={handleChange}
+                                    placeholder="Ingresa el estatus"
+                                    required
+                                />
+                            </Form.Group>
+                        </Col>
+                        <Col lg={6}>
                             <Form.Group controlId="RFC">
                                 <Form.Label>RFC</Form.Label>
                                 <Form.Control
@@ -336,6 +323,21 @@ const SucursalesSettings = () => {
                                     value={formData.RFC}
                                     onChange={handleChange}
                                     placeholder="Ingresa el RFC"
+                                    required
+                                />
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                    <Row className="mb-3">
+                        <Col lg={6}>
+                            <Form.Group controlId="EmpresaID">
+                                <Form.Label>Empresa</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="EmpresaID"
+                                    value={formData.EmpresaID}
+                                    onChange={handleChange}
+                                    placeholder="Ingresa la empresa"
                                     required
                                 />
                             </Form.Group>
@@ -354,10 +356,17 @@ const SucursalesSettings = () => {
                             </Form.Group>
                         </Col>
                     </Row>
+
                     <Row className="mt-4">
-                        <Col className="text-end">
-                            <SaveButton isLoading={isLoading} />
-                            <CleanButton action={resetForm} isLoading={isLoading} />
+                        <Col className="text-center">
+                            <Button variant="primary" type="submit" disabled={isLoading}>
+                                {isLoading ? 'Actualizando...' : 'Actualizar'}
+                            </Button>
+                        </Col>
+                        <Col className="text-center">
+                            <Button variant="danger" type="submit" onClick={() => { navigate('/configuration/sucursales') }}>
+                                Regresar
+                            </Button>
                         </Col>
                     </Row>
                 </Form>

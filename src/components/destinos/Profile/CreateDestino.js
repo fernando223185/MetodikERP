@@ -6,8 +6,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faReply, faEdit } from '@fortawesome/free-solid-svg-icons';
 import EmpresaSelect from '../../vehiculos/FormFields/Empresa.js'
 import EstatusSelect from '../../vehiculos/FormFields/Estatus.js'
-import { BackButton, SaveButton, CleanButton } from '../../vehiculos/FormFields/FormButtons.js';
-
 
 const CreateDestino = () => {
     const navigate = useNavigate();
@@ -60,7 +58,9 @@ const CreateDestino = () => {
                         <h3 className="text-dark mb-4">Nuevo Destino</h3>
                     </Col>
                     <Col lg={6} className="text-end">
-                        <BackButton action={() => navigate('/configuration/destinos')} />
+                        <Button className="btn btn-secondary rounded-pill me-1" type="submit" onClick={() => { navigate('/configuration/destinos') }}>
+                            <FontAwesomeIcon icon={faReply} />
+                        </Button>
                     </Col>
                 </Row>
                 <Form onSubmit={handleSubmit}>
@@ -138,16 +138,12 @@ const CreateDestino = () => {
                     <Row>
                         <Col lg={6}>
                             <EstatusSelect 
-                                tipo="Estatus"
-                                modulo="Destinos"
                                 value={formData.EstatusID}
                                 onChange={handleChange}
                             />
                         </Col>
                         <Col lg={6}>
                             <EmpresaSelect 
-                                tipo="Empresa"
-                                modulo="Destinos"
                                 value={formData.EmpresaID}
                                 onChange={handleChange}
                             />
@@ -157,8 +153,12 @@ const CreateDestino = () => {
 
                     <Row className="mt-4">
                         <Col className="text-end">
-                            <SaveButton isLoading={isLoading} />
-                            <CleanButton action={resetForm} isLoading={isLoading}/>
+                            <Button variant="primary" type="submit" className="rounded-pill me-2" disabled={isLoading}>
+                                {isLoading ? 'Guardando...' : <FontAwesomeIcon icon={faSave} /> }
+                            </Button>
+                            <Button variant="secondary" onClick={resetForm} className="rounded-pill" disabled={isLoading}>
+                                {isLoading ? 'Limpiando...' : <FontAwesomeIcon icon={faEdit} /> }
+                            </Button>
                         </Col>
                     </Row>
                 </Form>

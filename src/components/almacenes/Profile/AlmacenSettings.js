@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Col, Row, Spinner, Card, Form, Button } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGetAlmacenResumen, useActAlmacen } from '../../../hooks/Catalogos/Almacenes/useAlmacen';
-import { SaveButton, BackButton, CleanButton } from '../../vehiculos/FormFields/FormButtons.js';
-
 
 const AlmacenSettings = () => {
     const navigate = useNavigate();
@@ -17,8 +15,9 @@ const AlmacenSettings = () => {
     }, [id, getResumen]);
 
     const { data = {} } = almacenResumen;
+    console.log(data);
 
-    const initialFormState = {
+    const [formData, setFormData] = useState({
         ID: '',
         Almacen: '',
         Nombre: '',
@@ -27,13 +26,7 @@ const AlmacenSettings = () => {
         SucursalID: '',
         EstatusID: '',
         EmpresaID: ''
-    }
-
-    const [formData, setFormData] = useState(initialFormState);
-
-    const resetForm = () => {
-        setFormData(initialFormState);
-    }
+    });
 
     useEffect(() => {
         setFormData({
@@ -98,14 +91,7 @@ const AlmacenSettings = () => {
     return (
         <Card>
             <Card.Body className="p-lg-6">
-                <Row>
-                    <Col>
-                        <h3 className="text-dark mb-4">Nuevo Almacen</h3>
-                    </Col>
-                    <Col lg={6} className="text-end">
-                        <BackButton action={() => navigate('/configuration/almacenes')} />
-                    </Col>
-                </Row>
+                <h3 className="text-primary text-center mb-4">Nuevo Almacen</h3>
                 <Form onSubmit={handleSubmit}>
                     <Row className="mb-3">
                         <Col lg={6}>
@@ -206,9 +192,15 @@ const AlmacenSettings = () => {
                     </Row>                       
 
                     <Row className="mt-4">
-                        <Col className="text-end">
-                            <SaveButton isLoading={isLoading}/>
-                            <CleanButton action={resetForm} isLoading={isLoading} />
+                        <Col className="text-center">
+                            <Button variant="primary" type="submit" disabled={isLoading}>
+                                {isLoading ? 'Guardando...' : 'Guardar'}
+                            </Button>
+                        </Col>
+                        <Col className="text-center">
+                            <Button variant="danger" type="submit" onClick={() => { navigate('/configuration/almacenes') }}>
+                                Regresar
+                            </Button>
                         </Col>
                     </Row>
                 </Form>
