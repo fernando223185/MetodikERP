@@ -8,6 +8,7 @@ import TipoVehiculoSelect from '../FormFields/TipoVehiculo.js';
 import RutaSelect from '../FormFields/Ruta.js';
 import EstatusSelect from '../FormFields/Estatus.js'
 import EmpresaSelect from '../FormFields/Empresa.js'
+import { BackButton, SaveButton, CleanButton } from '../FormFields/FormButtons.js';
 
 
 const CreateVehiculo = () => {
@@ -82,9 +83,7 @@ const CreateVehiculo = () => {
                         <h3 className="text-dark mb-4">Nuevo Vehiculo</h3>
                     </Col>
                     <Col lg={6} className="text-end">
-                        <Button className="btn btn-secondary rounded-pill me-1" type="submit" onClick={() => { navigate('/configuration/vehiculos') }}>
-                            <FontAwesomeIcon icon={faReply} />
-                        </Button>
+                        <BackButton action={() => navigate('/configuration/vehiculos')} />
                     </Col>
                 </Row>
                 <Form onSubmit={handleSubmit}>
@@ -111,7 +110,9 @@ const CreateVehiculo = () => {
                     </Row>
                     <Row className="mb-3">
                         <Col lg={6}>
-                            <EstatusSelect 
+                            <EstatusSelect
+                                tipo="Estatus"
+                                modulo="Vehiculos"
                                 value={formData.EstatusID}
                                 onChange={handleChange}
                             />
@@ -158,6 +159,8 @@ const CreateVehiculo = () => {
                         </Col>
                         <Col lg={6}>
                             <RutaSelect 
+                                tipo="Rutas"
+                                modulo="Vehiculos"
                                 value={formData.RutaID}
                                 onChange={handleChange}
                             />
@@ -277,7 +280,7 @@ const CreateVehiculo = () => {
                     </Row>
                     <Row className="mb-3">
                         <Col lg={6}>
-                            <Form.Group controlId="CapacidadPedo">
+                            <Form.Group controlId="CapacidadPeso">
                                 <Form.Label>Capacidad Peso</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -306,6 +309,8 @@ const CreateVehiculo = () => {
                     <Row className="mb-3">
                         <Col lg={6}>
                             <EmpresaSelect 
+                                tipo="Empresa"
+                                modulo="Vehiculos"
                                 value={formData.EmpresaID}
                                 onChange={handleChange}
                             />
@@ -314,14 +319,9 @@ const CreateVehiculo = () => {
 
                     <Row className="mt-4">
                         <Col className="text-end">
-                            <Button variant="primary" type="submit" className="rounded-pill me-2" disabled={isLoading}>
-                                {isLoading ? 'Guardando...' : <FontAwesomeIcon icon={faSave} /> }
-                            </Button>
-                            <Button variant="secondary" onClick={resetForm} className="rounded-pill" disabled={isLoading}>
-                                {isLoading ? 'Limpiando...' : <FontAwesomeIcon icon={faEdit} /> }
-                            </Button>
+                            <SaveButton isLoading={isLoading} />
+                            <CleanButton action={resetForm} isLoading={isLoading} />
                         </Col>
-                            
                     </Row>
                 </Form>
             </Card.Body>

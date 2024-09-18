@@ -8,7 +8,9 @@ import AdvanceTableSearchBox from 'components/common/advance-table/AdvanceTableS
 import AdvanceTableFooter from 'components/common/advance-table/AdvanceTableFooter';
 import SubtleBadge from 'components/common/SubtleBadge';
 import IconButton from 'components/common/IconButton';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 const columns = [
     {
@@ -62,17 +64,15 @@ function TableSucursales() {
           console.log(sucursales.data);
             const transformedData = sucursales.data.map(e => ({
                 acciones: (
-                    <IconButton
-                        icon="edit"
-                        size="sm"
-                        variant="primary"
-                        onClick={() => {
-                            navigate(`/configuration/sucursales/editar/${e.ID}`);
-                        }}
-                    />
+                    <Link
+                        to={`/configuration/sucursales/editar/${e.ID}`}
+                        className="btn btn-outline-primary rounded-pill me-1 mb-1"     
+                    >
+                        <FontAwesomeIcon icon="eye" />
+                    </Link>
                 ),
                 estatus: 
-                <SubtleBadge variant={e.EstatusID === 1 ? 'success' : 'danger'}>{e.EstatusID === 1 ? 'Activo' : 'Inactivo'}</SubtleBadge>,
+                <SubtleBadge className="fs--2" pill bg={e.EstatusID === 1 ? 'success' : 'danger'}>{e.EstatusID === 1 ? 'Alta' : 'Baja'}</SubtleBadge>,
                 sucursal: e.Nombre,
                 direccion: `${e.CodigoPostal} ${e.Colonia} ${e.Direccion} ${e.DireccionNumero} ${e.Estado}`,
                 empresa: e.EmpresaID,
@@ -104,14 +104,12 @@ function TableSucursales() {
           <AdvanceTableSearchBox table />
         </Col>
         <Col xs="auto" sm={6} lg={4} className="ms-auto text-end">
-          <IconButton           variant="primary"
-          icon="plus"
-          size="sm"
-          onClick={() => {
-            navigate('/configuration/sucursal/nuevo');
-          }}
-        >
-        </IconButton>
+          <Link
+                to={`/configuration/sucursal/nuevo`}  
+                className="btn btn-outline-primary rounded-pill me-1 mb-1"
+                >
+            <FontAwesomeIcon icon="plus" />
+            </Link>
         </Col>
       </Row>
       <hr style={{ margin: '10px 0' }} />

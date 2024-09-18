@@ -2,11 +2,18 @@ import React, { useState } from 'react';
 import { Button, Card, Col, Row, Form } from 'react-bootstrap';
 import { useActSucursal } from '../../../hooks/Catalogos/Sucursales/useSucursal.js'
 import { useNavigate } from 'react-router-dom';
+import { SaveButton, BackButton, CleanButton } from '../../vehiculos/FormFields/FormButtons.js';
+import EstatusSelect from '../../vehiculos/FormFields/Estatus.js';
+import EmpresaSelect from '../../vehiculos/FormFields/Empresa.js';
 
 const CreateSucursal = () => {
     const navigate = useNavigate();
     const { submitSucursal, response, error, isLoading } = useActSucursal();
-    const [formData, setFormData] = useState({
+    const storedData = localStorage.getItem("user");
+    const parsedData = storedData ? JSON.parse(storedData) : {};
+    const empresaID = parsedData.EmpresaID;
+
+    const initialFormState = {
         ID: '',
         Sucursal: '',
         Nombre: '',
@@ -21,11 +28,12 @@ const CreateSucursal = () => {
         Pais: '',
         CodigoPostal: '',
         Telefonos: '',
-        EstatusID: '',
+        EstatusID: 1,
         RFC: '',
-        EmpresaID: '',
+        EmpresaID: empresaID,
         ZonaImpuestoID: '',
-    });
+    }
+    const [formData, setFormData] = useState(initialFormState);
 
 
     const handleChange = (e) => {
@@ -35,6 +43,10 @@ const CreateSucursal = () => {
             [name]: value,
         });
     };
+
+    const resetForm = () => {
+        setFormData(initialFormState);
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -53,22 +65,16 @@ const CreateSucursal = () => {
     return (
         <Card>
             <Card.Body className="p-lg-6">
-                <h3 className="text-primary text-center mb-4">Nueva Sucursal</h3>
+                <Row>
+                    <Col lg={6}>
+                        <h3 className="text-dark mb-4">Nueva Sucursal</h3>
+                    </Col>
+                    <Col lg={6} className="text-end">
+                        <BackButton action={() => navigate('/configuration/sucursales')} />
+                    </Col>
+                </Row>
                 <Form onSubmit={handleSubmit}>
                     <Row className="mb-3">
-                        <Col lg={6}>
-                            <Form.Group controlId="Sucursal">
-                                <Form.Label>Sucursal</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="Sucursal"
-                                    value={formData.Sucursal}
-                                    onChange={handleChange}
-                                    placeholder="Ingresa la sucursal"
-                                    required
-                                />
-                            </Form.Group>
-                        </Col>
                         <Col lg={6}>
                             <Form.Group controlId="Nombre">
                                 <Form.Label>Nombre</Form.Label>
@@ -81,6 +87,14 @@ const CreateSucursal = () => {
                                     required
                                 />
                             </Form.Group>
+                        </Col>
+                        <Col lg={6}>
+                            <EstatusSelect
+                                tipo="Estatus"
+                                modulo="Sucursales"
+                                value={formData.EstatusID}
+                                onChange={handleChange}
+                            />
                         </Col>
                     </Row>
                     <Row className="mb-3">
@@ -138,19 +152,13 @@ const CreateSucursal = () => {
                             </Form.Group>
                         </Col>
                         <Col lg={6}>
-                            <Form.Group controlId="Delegacion">
-                                <Form.Label>Delegación</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="Delegacion"
-                                    value={formData.Delegacion}
-                                    onChange={handleChange}
-                                    placeholder="Ingresa la delegación"
-                                    required
-                                />
-                            </Form.Group>
+                            <EmpresaSelect 
+                                tipo="Empresa"
+                                modulo="Sucursales"
+                                value={formData.EmpresaID}
+                                onChange={handleChange}
+                            />
                         </Col>
-
                     </Row>
 
                     <Row className="mb-3">
@@ -182,7 +190,7 @@ const CreateSucursal = () => {
                         </Col>
                     </Row>
                     <Row className="mb-3">
-                        <Col lg={6}>
+                        <Col lg={4}>
                             <Form.Group controlId="Estado">
                                 <Form.Label>Estado</Form.Label>
                                 <Form.Control
@@ -195,7 +203,7 @@ const CreateSucursal = () => {
                                 />
                             </Form.Group>
                         </Col>
-                        <Col lg={6}>
+                        <Col lg={4}>
                             <Form.Group controlId="Pais">
                                 <Form.Label>Pais</Form.Label>
                                 <Form.Control
@@ -204,6 +212,19 @@ const CreateSucursal = () => {
                                     value={formData.Pais}
                                     onChange={handleChange}
                                     placeholder="Ingresa el pais"
+                                    required
+                                />
+                            </Form.Group>
+                        </Col>
+                        <Col lg={4}>
+                            <Form.Group controlId="Delegacion">
+                                <Form.Label>Delegación</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="Delegacion"
+                                    value={formData.Delegacion}
+                                    onChange={handleChange}
+                                    placeholder="Ingresa la delegación"
                                     required
                                 />
                             </Form.Group>
@@ -241,19 +262,6 @@ const CreateSucursal = () => {
                     </Row>
                     <Row className="mb-3">
                         <Col lg={6}>
-                            <Form.Group controlId="EstatusID">
-                                <Form.Label>Estatus</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="EstatusID"
-                                    value={formData.EstatusID}
-                                    onChange={handleChange}
-                                    placeholder="Ingresa el estatus"
-                                    required
-                                />
-                            </Form.Group>
-                        </Col>
-                        <Col lg={6}>
                             <Form.Group controlId="RFC">
                                 <Form.Label>RFC</Form.Label>
                                 <Form.Control
@@ -262,21 +270,6 @@ const CreateSucursal = () => {
                                     value={formData.RFC}
                                     onChange={handleChange}
                                     placeholder="Ingresa el RFC"
-                                    required
-                                />
-                            </Form.Group>
-                        </Col>
-                    </Row>
-                    <Row className="mb-3">
-                        <Col lg={6}>
-                            <Form.Group controlId="EmpresaID">
-                                <Form.Label>Empresa</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="EmpresaID"
-                                    value={formData.EmpresaID}
-                                    onChange={handleChange}
-                                    placeholder="Ingresa la empresa"
                                     required
                                 />
                             </Form.Group>
@@ -295,17 +288,10 @@ const CreateSucursal = () => {
                             </Form.Group>
                         </Col>
                     </Row>
-
                     <Row className="mt-4">
-                        <Col className="text-center">
-                            <Button variant="primary" type="submit" disabled={isLoading}>
-                                {isLoading ? 'Guardando...' : 'Guardar'}
-                            </Button>
-                        </Col>
-                        <Col className="text-center">
-                            <Button variant="danger" type="submit" onClick={() => { navigate('/configuration/sucursales') }}>
-                                Regresar
-                            </Button>
+                        <Col className="text-end">
+                            <SaveButton isLoading={isLoading} />
+                            <CleanButton action={resetForm} isLoading={isLoading} />
                         </Col>
                     </Row>
                 </Form>

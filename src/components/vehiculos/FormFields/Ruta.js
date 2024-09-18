@@ -3,12 +3,12 @@ import { useGetFiltroCatalogo } from '../../../hooks/useFiltros'; // Ajusta la r
 import { Form } from 'react-bootstrap';
 
 
-const RutaSelect = ({ value, onChange }) => {
+const RutaSelect = ({ value, onChange, tipo, modulo }) => {
     const { getFiltroCatalogo, isLoading, error } = useGetFiltroCatalogo();
-    const [vehicleTypes, setVehicleTypes] = useState([]);
+    const [rutas, setRutas] = useState([]);
 
     useEffect(() => {
-        const fetchVehicleTypes = async () => {
+        const fetchRutas = async () => {
             const data = {
                 Tipo: 'Rutas',
                 PersonaID: localStorage.getItem("ID"), // Ajusta este valor según sea necesario
@@ -17,10 +17,10 @@ const RutaSelect = ({ value, onChange }) => {
             };
 
             const result = await getFiltroCatalogo(data);
-            setVehicleTypes(result);
+            setRutas(result);
         };
 
-        fetchVehicleTypes();
+        fetchRutas();
     }, [getFiltroCatalogo]);
 
 
@@ -30,13 +30,13 @@ const RutaSelect = ({ value, onChange }) => {
             <Form.Label>Ruta</Form.Label>
             <Form.Control
                 as="select"
+                className="form-select"
                 name="RutaID"
                 value={value}
                 onChange={onChange}
                 required
             >
-                <option value="">Seleccione una ruta</option>
-                {vehicleTypes.map(option => (
+                {rutas.map(option => (
                     <option key={option.Valor} value={option.Valor}>
                         {option.Dato}
                     </option>
