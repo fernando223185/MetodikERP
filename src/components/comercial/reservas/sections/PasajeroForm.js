@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSave } from '@fortawesome/free-solid-svg-icons';
+import { faSave, faCheckCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { useActDatosPasajero } from '../../../../hooks/Comercial/Reserva/useReservaD'
 
 const getInitialValues = (pasajero) => {
@@ -66,9 +66,13 @@ const PasajeroInfo = ({ index, pasajero }) => {
     } else if (result && result.status === 200) {
         toast[result.data[0].Tipo](`${result.data[0].Mensaje}`, {
             theme: 'colored',
-            position: result.data[0].Posicion
-        });
-
+            position: result.data[0].Posicion,
+            icon: result.data[0].Tipo === 'success' ? 
+            <FontAwesomeIcon icon={faCheckCircle} /> : 
+            result.data[0].Tipo === 'error' ? 
+            <FontAwesomeIcon icon={faExclamationTriangle} /> : 
+            <FontAwesomeIcon icon={faInfoCircle} />
+      });
     } else if (!result) {
         toast.error(`Error al guardar`, {
             theme: 'colored',

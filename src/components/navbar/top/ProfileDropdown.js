@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
-import team3 from 'assets/img/illustrations/Mo.png';
+import team3 from 'assets/img/illustrations/user.jpeg';
 import Avatar from 'components/common/Avatar';
 import { useAuth } from '../../../hooks/Auth/useAuth';
 
