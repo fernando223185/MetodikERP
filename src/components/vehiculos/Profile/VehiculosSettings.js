@@ -8,7 +8,7 @@ import TipoVehiculoSelect from '../FormFields/TipoVehiculo.js';
 import RutaSelect from '../FormFields/Ruta.js';
 import EstatusSelect from '../FormFields/Estatus.js'
 import EmpresaSelect from '../FormFields/Empresa.js'
-import { SaveButton, CleanButton, BackButton } from '../FormFields/FormButtons.js';
+
 
 
 
@@ -139,7 +139,9 @@ const VehiculoSettings = () => {
                         <h3 className="text-dark mb-4">Actualizar Vehiculo</h3>
                     </Col>
                     <Col lg={6} className="text-end">
-                        <BackButton action={() => navigate('/configuration/vehiculos')} />
+                        <Button className="btn btn-secondary rounded-pill me-1" type="submit" onClick={() => { navigate('/configuration/vehiculos') }}>
+                            <FontAwesomeIcon icon={faReply} />
+                        </Button>
                     </Col>
                 </Row>
                 <Form onSubmit={handleSubmit}>
@@ -167,8 +169,6 @@ const VehiculoSettings = () => {
                     <Row className="mb-3">
                         <Col lg={6}>
                             <EstatusSelect 
-                                tipo="Estatus"
-                                modulo="Vehiculos"
                                 value={formData.EstatusID}
                                 onChange={handleChange}
                             />
@@ -215,8 +215,6 @@ const VehiculoSettings = () => {
                         </Col>
                         <Col lg={6}>
                             <RutaSelect 
-                                tipo="Rutas"
-                                modulo="Vehiculos"
                                 value={formData.RutaID}
                                 onChange={handleChange}
                             />
@@ -365,8 +363,6 @@ const VehiculoSettings = () => {
                     <Row className="mb-3">
                         <Col lg={6}>
                             <EmpresaSelect 
-                                tipo="Empresa"
-                                modulo="Vehiculos"
                                 value={formData.EmpresaID}
                                 onChange={handleChange}
                             />
@@ -375,8 +371,12 @@ const VehiculoSettings = () => {
 
                     <Row className="mt-4">
                         <Col className="text-end">
-                            <SaveButton isLoading={isLoading} />
-                            <CleanButton action={resetForm} isLoading={isLoading} />
+                            <Button variant="primary" type="submit" className="rounded-pill me-2" disabled={isLoading}>
+                                {isLoading ? 'Guardando...' : <FontAwesomeIcon icon={faSave} /> }
+                            </Button>
+                            <Button variant="secondary" onClick={resetForm} className="rounded-pill" disabled={isLoading}>
+                                {isLoading ? 'Limpiando...' : <FontAwesomeIcon icon={faEdit} /> }
+                            </Button>
                         </Col>
                     </Row>
                 </Form>
