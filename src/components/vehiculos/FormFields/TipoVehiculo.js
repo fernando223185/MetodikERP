@@ -35,12 +35,12 @@ const TipoVehiculoSelect = ({ value, onChange }) => {
             <Form.Label>Tipo Vehiculo</Form.Label>
             <Form.Control
                 as="select"
-                className="form-select"
                 name="TipoVehiculo"
                 value={value}
                 onChange={onChange}
                 required
             >
+                <option value="">Seleccione el tipo de vehículo</option>
                 {vehicleTypes.map(option => (
                     <option key={option.Valor} value={option.Valor}>
                         {option.Dato}
