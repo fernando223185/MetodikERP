@@ -17,7 +17,7 @@ export const dashboardRoutes = {
   children: [],
 };
 export const appRoutes = {
-  label: "Modules",
+  label: "Modulos",
   /*children: [
 
     {
@@ -371,7 +371,7 @@ export const appRoutes = {
           to: "/configuration/users",
           active: true,
         },
-        {
+        /*{
             name: "Sucursales",
             icon: faBuilding,
             to: "/configuration/sucursales",
@@ -382,7 +382,7 @@ export const appRoutes = {
             icon: faWarehouse,
             to: "/configuration/almacenes",
             activate: true,
-        },
+        },*/
         {
           name: "Vehiculos",
           icon: faTruck,

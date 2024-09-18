@@ -157,7 +157,7 @@ function TableRutas(){
         data={result}
         sortable
         pagination
-        perPage={5}
+        perPage={10}
      >
         <Row className="justify-content-start mb-3">
             <Col xs="auto">
