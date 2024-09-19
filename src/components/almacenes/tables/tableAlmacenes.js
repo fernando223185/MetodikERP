@@ -7,8 +7,6 @@ import { Col, Row } from 'react-bootstrap';
 import AdvanceTableSearchBox from 'components/common/advance-table/AdvanceTableSearchBox';
 import AdvanceTableFooter from 'components/common/advance-table/AdvanceTableFooter';
 import SubtleBadge from 'components/common/SubtleBadge';
-import IconButton from 'components/common/IconButton';
-import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -25,11 +23,6 @@ const columns = [
         Header: 'Estatus',
         headerProps: { className: 'text-900' },
         cellProps: { className: 'text-center' }
-    },
-    {
-        accessor: 'almacen',
-        Header: 'Almacen',
-        headerProps: { className: 'text-900' }
     },
     {
         accessor: 'nombre',
@@ -63,8 +56,6 @@ function TableAlmacenes() {
     const { getAlmacenes, almacenes, isLoading } = useGetAlmacenes();
     const [result, setResult] = useState([]);
 
-    const navigate = useNavigate();
-
     useEffect(() => {
         var user = JSON.parse(localStorage.getItem('user'));
         console.log(user);
@@ -89,7 +80,6 @@ function TableAlmacenes() {
                 ),
                 estatus: 
                 <SubtleBadge className="fs--2" pill bg={e.EstatusID === 1 ? 'success' : 'danger'}>{e.EstatusID === 1 ? 'Alta' : 'Baja'}</SubtleBadge>,
-                almacen: e.Almacen,
                 nombre: e.Nombre,
                 grupo: e.GrupoID,
                 tipo: e.TipoID,
@@ -144,7 +134,7 @@ function TableAlmacenes() {
       />
       <div className="mt-3">
         <AdvanceTableFooter
-          rowCount={4}
+          rowCount={result.length}
           table
           rowInfo
           navButtons
