@@ -207,14 +207,6 @@ import SucursalesSettings from 'components/sucursales/Profile/SucursalesSettings
 import CreateVehiculo from 'components/vehiculos/Profile/CreateVehiculo';
 import Vehiculos from 'components/vehiculos';
 import VehiculosSettings from 'components/vehiculos/Profile/VehiculosSettings';
-
-import CreateAlmacen from 'components/almacenes/Profile/CreateAlmacen';
-import Almacenes from 'components/almacenes';
-import AlmacenSettings from 'components/almacenes/Profile/AlmacenSettings';
-import CreateDestino from 'components/destinos/Profile/CreateDestino';
-import Destinos from 'components/destinos';
-import DestinoSettings from 'components/destinos/Profile/DestinoSettings';
-
 import CreateSucursal from 'components/sucursales/Profile/CreateSucursal';
 import UserProfile from '../components/Usuarios/pages/viewUser/Profile'
 import EditarUsuario from '../components/Usuarios/pages/editUser/EditarUsuario'
@@ -227,11 +219,8 @@ import Choferes from 'components/choferes/index'
 import EditChofer from 'components/choferes/edit/EditChofer';
 import CreateChofer from 'components/choferes/create/CreateChofer';
 import Profiles from 'components/Perfiles/index'
-import ExploradorRutas from 'components/Exploradores/Rutas/index'
-import ExploradorRutasD from 'components/Exploradores/Rutas/index_rutasD'
-import PasajeroD from '../components/comercial/reservas/pages/PasajeroD'
 import ViewProfile from 'components/choferes/ViewProfile/ViewChofer';
-import Horario from 'components/rutas/forms/HorarioForms';
+import Horario from 'components/rutas/modal/Horario';
 
 const MetodikRoutes = () => {
   return (
@@ -612,15 +601,6 @@ const MetodikRoutes = () => {
         <Route path="configuration/vehiculos" element={<Vehiculos />} />
         <Route path="configuration/vehiculos/editar/:id" element={<VehiculosSettings />} />
         <Route path="configuration/vehiculo/nuevo" element={<CreateVehiculo />} />
-        
-        <Route path="configuration/almacenes" element={<Almacenes />} />
-        <Route path="configuration/almacenes/editar/:id" element={<AlmacenSettings />} />
-        <Route path="configuration/almacen/nuevo" element={<CreateAlmacen />} />
-        <Route path="configuration/destinos" element={<Destinos />} />
-        <Route path="configuration/destinos/editar/:id" element={<DestinoSettings />} />
-        <Route path="configuration/destino/nuevo" element={<CreateDestino />} />
-        
-
         <Route path="configuration/users/view-profile/:id" element={<UserProfile />} />
         <Route path="configuration/users/edit/:id" element={<EditarUsuario />} />
         <Route path="comercial/reservas" element={<Reservas/>} />
@@ -634,10 +614,6 @@ const MetodikRoutes = () => {
         <Route path="configuration/choferes/edit/:id" element={<EditChofer />} />
         <Route path="configuration/choferes/nuevo" element={<CreateChofer />} />
         <Route path="configuration/Profiles" element={<Profiles />} />
-        <Route path="Explorador/ExploradorRutas" element={<ExploradorRutas />} />
-        <Route path="Explorador/ExploradorRutas/:id" element={<ExploradorRutasD/>} />
-        <Route path="comercial/reservas/reservaD/pasajerosD/:id" element={<PasajeroD/>} />
-
       </Route>
 
       {/* //--- MainLayout end  */}
@@ -651,3 +627,4 @@ const MetodikRoutes = () => {
 };
 
 export default MetodikRoutes;
+
