@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Form, Row, Col, Tabs, Tab, Container } from "react-bootstrap";
+import Select from 'react-select';  // Importamos react-select
 
 // Simulación del JSON de permisos
 const permisosJSON = [
@@ -35,8 +36,8 @@ const FormPermisos = () => {
     });
   };
 
-  const handleSelectChange = (e) => {
-    setSelectedMenu(e.target.value);
+  const handleSelectChange = (selectedOption) => {
+    setSelectedMenu(selectedOption ? selectedOption.value : "");
   };
 
   // Filtramos los módulos según el filtro de NombreMenu en la pestaña "Modulos"
@@ -44,10 +45,15 @@ const FormPermisos = () => {
     (permiso) => permiso.NombreMenu && permiso.NombreMenu.toLowerCase().includes(selectedMenu.toLowerCase())
   );
 
+  // Creamos las opciones para react-select a partir del NombreMenu
+  const menuOptions = [...new Set(permisosJSON.map(permiso => permiso.NombreMenu).filter(menu => menu))]
+    .map(menu => ({ value: menu, label: menu }));
+
   return (
     <Container>
       <Tabs defaultActiveKey="modulos" id="uncontrolled-tab" className="mb-3">
         <Tab eventKey="menus" title="Menus">
+          <br></br>
           <Row>
             {/* Filtrar por Tipo "Menu" */}
             {permisosJSON.filter(permiso => permiso.Tipo === "Menu").map((permiso) => (
@@ -65,15 +71,35 @@ const FormPermisos = () => {
           </Row>
         </Tab>
 
+        <Tab eventKey="catalogos" title="Catalogos">
+          <Row>
+            {/* Mostrar el Nombre concatenado con el NombreMenu en los Catalogos */}
+            {permisosJSON.filter(permiso => permiso.Tipo === "Catalogo").map((permiso) => (
+              <Col key={permiso.ID} md={4}>
+                <Form.Check
+                  type="checkbox"
+                  id={permiso.ID}
+                  label={`${permiso.Nombre} (${permiso.NombreMenu})`}  // Concatenamos Nombre y NombreMenu
+                  name={permiso.Nombre}
+                  checked={permisosSeleccionados[permiso.Nombre] || false}
+                  onChange={handleCheckboxChange}
+                />
+              </Col>
+            ))}
+          </Row>
+        </Tab>
+
         <Tab eventKey="modulos" title="Modulos">
           <Form.Group className="mb-3">
             <Form.Label>Filtrar por Menú</Form.Label>
-            <Form.Select value={selectedMenu} onChange={handleSelectChange}>
-              <option value="">Todos los Menús</option>
-              {[...new Set(permisosJSON.map(permiso => permiso.NombreMenu).filter(menu => menu))].map((menu, index) => (
-                <option key={index} value={menu}>{menu}</option>
-              ))}
-            </Form.Select>
+            <Select
+              value={menuOptions.find(option => option.value === selectedMenu)}
+              onChange={handleSelectChange}
+              options={menuOptions}
+              placeholder="Seleccione un menú"
+              isClearable
+              isSearchable
+            />
           </Form.Group>
           <Row>
             {modulosFiltrados.map((permiso) => (
