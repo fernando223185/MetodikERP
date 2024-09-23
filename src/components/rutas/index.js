@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Col, Row, Container, Modal, Card } from 'react-bootstrap';
 import TableRutas from './table/tableRutas';
+import { useGetRutas,useGetHorarios } from '../../hooks/Catalogos/Rutas/useRutas' 
+import { useGetFiltroCatalogo } from 'hooks/useFiltros';
+import { Spinner } from 'react-bootstrap';
 //import ModalUser from './modalUser';
 
 const RutasHeader = () => {
@@ -18,28 +21,51 @@ const RutasHeader = () => {
 
 const Rutas = () => {
   
-  const [lgShow, setLgShow] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [formToShow, setFormToShow] = useState(''); 
+  // Llamadas al api
+  const { getRutas, rutas, isLoading: loadingRutas} = useGetRutas();
+  const { getFiltroCatalogo, isLoading: loadingFiltros } = useGetFiltroCatalogo();
+  const { getHorarios, horarios, isLoading: loadingHorarios } = useGetHorarios();
+  
+  const [sucursales, setSucursales] = useState([]);
+  const [destinos, setDestinos] = useState([]);
 
+  // Funcion para obtener las sucursales
+  const fetchSucursales = async () => {
+    const data = { Tipo: "Sucursales", PersonaID:1, Modulo : "Rutas"};
+    const result = await getFiltroCatalogo(data);
+    setSucursales(result);
+    return result;
+  };
+  
 
-  const handleEditClick = (user, formType) => {
-    setSelectedUser(user);
-    setFormToShow(formType); 
-    setLgShow(true);
+  // Funcion para obtener los destinos y origenes,los cuales son los mismos
+  const fetchDestinos = async () => {
+    const data = { Tipo: "Destinos", PersonaID:1, Modulo : "Rutas"};
+    const result = await getFiltroCatalogo(data);
+    setDestinos(result);
+    return result;
   };
 
-  const handleCloseModal = () => {
-    setLgShow(false);
-    setSelectedUser(null);
-  };
+  // Funcion para llamar todas las promesas 
+  const fetchData = async () => {
+    const result = await Promise.all([fetchSucursales(), fetchDestinos(),getRutas(),getHorarios()]);
+    return result;
+  }
 
-  const handleSaveChanges = () => {
-    // Lógica para guardar los cambios
-    console.log('Usuario actualizado:', selectedUser);
-    setLgShow(false);
-  };
+  useEffect(() => {
+    fetchData();
+  },[]);
 
+  if(loadingFiltros || loadingRutas || loadingHorarios)
+  {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', height: '100vh', marginTop: '100px' }}>
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      </div>
+    );
+  }
   return (
     <>
       <RutasHeader />
@@ -47,7 +73,7 @@ const Rutas = () => {
         <Col lg={12}>
           <Card>
             <Card.Body>
-              <TableRutas />
+              <TableRutas rutas={rutas} sucursales={sucursales} destinos={destinos} horarios={horarios} />
             </Card.Body>
           </Card>        
         </Col>

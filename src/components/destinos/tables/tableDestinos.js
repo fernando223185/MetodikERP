@@ -7,8 +7,6 @@ import { Col, Row } from 'react-bootstrap';
 import AdvanceTableSearchBox from 'components/common/advance-table/AdvanceTableSearchBox';
 import AdvanceTableFooter from 'components/common/advance-table/AdvanceTableFooter';
 import SubtleBadge from 'components/common/SubtleBadge';
-import IconButton from 'components/common/IconButton';
-import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -53,7 +51,6 @@ function TableDestinos() {
     const { getDestinos, destinos, isLoading } = useGetDestinos();
     const [result, setResult] = useState([]);
 
-    const navigate = useNavigate();
 
     useEffect(() => {
         var user = JSON.parse(localStorage.getItem('user'));
@@ -132,7 +129,7 @@ function TableDestinos() {
       />
       <div className="mt-3">
         <AdvanceTableFooter
-          rowCount={4}
+          rowCount={result.length}
           table
           rowInfo
           navButtons

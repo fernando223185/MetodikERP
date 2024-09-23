@@ -5,22 +5,27 @@ import { Form } from 'react-bootstrap';
 
 const SucursalSelect = ({ value, onChange, tipo, modulo }) => {
     const { getFiltroCatalogo, isLoading, error } = useGetFiltroCatalogo();
-    const [sucursal, setSucursal] = useState([]);
+    const [ sucursales, setSucursales] = useState([]);
+
+    const storedData = localStorage.getItem("user");
+    const parsedData = storedData ? JSON.parse(storedData) : {};
+    const personaID = parsedData.ID;
+
 
     useEffect(() => {
-        const fetchEstatus = async () => {
+        const fetchSucursales = async () => {
             const data = {
                 Tipo: tipo,
-                PersonaID: localStorage.getItem("ID"), // Ajusta este valor según sea necesario
+                PersonaID: personaID, 
                 Modulo: modulo,
                 ModuloID: ''
             };
 
             const result = await getFiltroCatalogo(data);
-            setSucursal(result);
+            setSucursales(result);
         };
 
-        fetchEstatus();
+        fetchSucursales();
     }, [getFiltroCatalogo]);
 
 
@@ -31,13 +36,13 @@ const SucursalSelect = ({ value, onChange, tipo, modulo }) => {
             <Form.Control
                 as="select"
                 className="form-select"
-                name="SuursalID"
+                name="SucursalID"
                 value={value}
                 onChange={onChange}
                 required
             >
-                <option value="">Seleccione una sucursal</option>
-                {sucursal.map(option => (
+                <option value=''>Seleccione una Sucursal</option>
+                {sucursales.map(option => (
                     <option key={option.Valor} value={option.Valor}>
                         {option.Dato}
                     </option>
@@ -48,4 +53,3 @@ const SucursalSelect = ({ value, onChange, tipo, modulo }) => {
 };
 
 export default SucursalSelect;
-

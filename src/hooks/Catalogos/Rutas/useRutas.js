@@ -9,14 +9,13 @@ export const useGetRutas = () => {
     const [isLoading, setIsLoading] = useState(false);
   
     const getRutas = useCallback(async () => {
-      setIsLoading(true);
-      const result = await getRutasAsync();
+        setIsLoading(true);
+        const result = await getRutasAsync();
+        setRutas(result);
+        setIsLoading(false);
+    });
   
-      setRutas(result);
-      setIsLoading(false);
-    }, []);
-  
-    return { getRutas, rutas, isLoading, setIsLoading };
+    return { getRutas, rutas, isLoading };
 }
 
 export const useGetRutasResumen = () => {
@@ -31,7 +30,7 @@ export const useGetRutasResumen = () => {
       setIsLoading(false);
     }, []);
   
-    return { getResumen, rutasResumen, isLoading, setIsLoading };
+    return { getResumen, rutasResumen, isLoading };
 }
 
 export const useGetHorarios = () => {
@@ -62,6 +61,7 @@ export const useGetHorariosRutas = () => {
       setIsLoading(true);
       try {
           const result = await getHorariosRutasAsync(id);
+          console.log(result);
           setHorariosRutas(result.data);
       } catch (error) {
           console.error('Error fetching horarios:', error);

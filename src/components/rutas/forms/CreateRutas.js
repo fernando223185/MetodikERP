@@ -3,15 +3,19 @@ import { Button, Form } from 'react-bootstrap'; // Ensure you're using Form comp
 import { Col, Row, Card } from 'react-bootstrap';
 import Select from 'react-select';
 import { actRutas } from '../../../api/catalogo/rutas/rutas'; //llamada al api  
-import moment from 'moment/moment';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSave, faReply } from '@fortawesome/free-solid-svg-icons';
+import { faSave, faReply,faCheckCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { useGetFiltroCatalogo } from 'hooks/useFiltros';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function CreateRutas() {
 
   const { getFiltroCatalogo, isLoading, error } = useGetFiltroCatalogo();
+
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     ID:  '',
@@ -25,6 +29,12 @@ function CreateRutas() {
     DestinoAID:  '',
     Observaciones:'',
     Tiempo: '',
+    Observaciones: '',
+    Fecha: '',
+    VehiculoID: '',
+    CostoInfantil: '',
+    CostoAdulto: '',
+    CostoInapan: '',
     });
     
   const [estatus, setEstatus] = useState([]);
@@ -48,6 +58,7 @@ function CreateRutas() {
       const result = await getFiltroCatalogo(data);
       setDestinos(result);
     };
+
     fetchEstatus();
     fetchSucursales();
     fetchDestinos();
@@ -62,6 +73,7 @@ function CreateRutas() {
       [e.target.name]: e.target.value
     });
     console.log(e.target.name + ' ' + e.target.value);
+    console.log(formData);
   };
 
   const getOptionByValue = (options, value) => {
@@ -71,7 +83,6 @@ function CreateRutas() {
     if (result) {
       return { value: result.Valor, label: result.Dato };
     }
-    
     return null; 
   };
 
@@ -79,8 +90,19 @@ function CreateRutas() {
   const handleSubmit = async () => {
     console.log(formData);
     try {
-      await actRutas(formData); // Make API call to update the data
-      // Close the modal after saving
+      const result = await actRutas(formData); // Make API call to update the data
+      toast[result.data[0].Tipo](`${result.data[0].Mensaje}`,{
+        theme: "colored",
+        position: result.data[0].Position,
+        icon: result.data[0].Tipo === 'success' ? 
+          <FontAwesomeIcon icon={faCheckCircle} /> : 
+          result.data[0].Tipo === 'error' ? 
+          <FontAwesomeIcon icon={faExclamationTriangle} /> : 
+          <FontAwesomeIcon icon={faInfoCircle} />
+      }); 
+      if(result.data[0].Tipo === "success"){  // Display the success message
+        navigate('/configuration/rutas'); // Navigate to the routes list page
+      }
     } catch (error) {
       console.error("Error updating route:", error);
     } 
@@ -91,16 +113,16 @@ function CreateRutas() {
     <>
       <Card>
         <Card.Body>
-        <h3 className='text-primary text-left mb-4'>Nueva Ruta</h3> 
+        <h3 className='text-primary text-left mb-4'>Editar Ruta</h3> 
         <Form>
           <Row>
-            <Col mg={6} className='d-flex justify-content-end'>
-            <Link
-              to={`/configuration/rutas`}
-              className="btn btn-secondary rounded-pill me-1"
+            <Col className='d-flex justify-content-end'>
+              <Link
+                to={`/configuration/rutas`}
+                className="btn btn-secondary rounded-pill me-1"
               >
-              <FontAwesomeIcon icon={faReply} />
-            </Link>
+                <FontAwesomeIcon icon={faReply} />
+              </Link>
             </Col>
           </Row>
           <Row>
@@ -118,15 +140,15 @@ function CreateRutas() {
             <Col md={6}>
               <Form.Group className="mb-3">
                 <Form.Label>Estatus</Form.Label>
-                <Select 
-                  className="react-select"
-                  options={estatus.map(item =>({ 
-                    value: item.Valor, 
+                <Select
+                  defaultValue={getOptionByValue(estatus, formData.EstatusID)}
+                  options={estatus.map(item => ({
+                    value: item.Valor,
                     label: item.Dato,
-                   }))}
-                  onChange={option => setFormData({...formData, Estatus: option.value})}
-                  isLoading={isLoading}
-                  value={getOptionByValue(estatus, formData.Estatus)}
+                  }))}
+                  onChange={option => setFormData({...formData, EstatusID: option.value})}
+                  value={getOptionByValue(estatus, formData.EstatusID)}
+                  placeholder="Selecciona un estatus"
                 />
               </Form.Group>
             </Col>
@@ -160,7 +182,6 @@ function CreateRutas() {
               <Form.Group className="mb-3">
                 <Form.Label>Costo</Form.Label>
                 <Form.Control
-                  type="text"
                   name="Costo"
                   value={formData.Costo}
                   onChange={onChangeHandler}
@@ -170,15 +191,14 @@ function CreateRutas() {
             <Col md={6}>
               <Form.Group className="mb-3">
                 <Form.Label>Sucursal</Form.Label>
-                <Select 
-                  className="react-select"
-                  options={sucursales.map(item =>({ 
-                    value: item.Valor, 
+                <Select
+                  options={sucursales.map(item => ({
+                    value: item.Valor,
                     label: item.Dato,
-                   }))}
-                  onChange={option => setFormData({...formData, SucursalD: option.value})}
-                  isLoading={isLoading}
-                  value={getOptionByValue(sucursales, formData.SucursalD)}
+                  }))}
+                  onChange={option => setFormData({...formData, SucursalID: option.value})}
+                  value={getOptionByValue(sucursales, formData.SucursalID)}
+                  placeholder="Selecciona una sucursal"
                 />
               </Form.Group>
             </Col>
@@ -187,36 +207,36 @@ function CreateRutas() {
             <Col>
               <Form.Group className="mb-3">
                 <Form.Label>Destino</Form.Label>
-                <Select 
-                  className="react-select"
-                  options={destinos.map(item =>({ 
-                    value: item.Valor, 
+                <Select
+                  options={destinos.map(item => ({
+                    value: item.Valor,
                     label: item.Dato,
-                   }))}
-                  onChange={option => setFormData({...formData, DestinoDID: option.value})}
-                  isLoading={isLoading}
-                  value={getOptionByValue(destinos, formData.DestinoDID)}
+                  }))}
+                  onChange={option => setFormData({...formData, DestinoID: option.value})}
+                  value={getOptionByValue(destinos, formData.DestinoID)}
+                  placeholder="Selecciona un destino"
                 />
               </Form.Group>
             </Col>
             <Col>
               <Form.Group className="mb-3">
                 <Form.Label>Origen</Form.Label>
-                <Select 
-                  className="react-select"
-                  options={destinos.map(item =>({ 
-                    value: item.Valor, 
+                <Select
+                  options={destinos.map(item => ({
+                    value: item.Valor,
                     label: item.Dato,
-                   }))}
-                  onChange={option => setFormData({...formData, DestinoAID: option.value})}
-                  isLoading={isLoading}
-                  value={getOptionByValue(destinos, formData.DestinoAID)}
+                  }))}
+                  onChange={option => setFormData({...formData, OrigenID: option.value})}
+                  value={getOptionByValue(destinos, formData.OrigenID)}
+                  placeholder="Selecciona un destino"
                 />
               </Form.Group>
             </Col>
+          </Row>
+          <Row>
             <Col>
               <Form.Group className="mb-3">
-                <Form.Label>Horas</Form.Label>
+                <Form.Label>Tiempo</Form.Label>
                 <Form.Control
                   type="text"
                   name="Tiempo"
@@ -225,23 +245,87 @@ function CreateRutas() {
                 />
               </Form.Group>
             </Col>
-          </Row>
-            <Form.Group className="mb-3"> 
-              <Form.Label>Observaciones</Form.Label>
-              <Form.Control
-                type="text"
-                name="Observaciones"
-                value={formData.Observaciones}
-                onChange={onChangeHandler}
-              />
+            <Col md={6}>
+              <Form.Group className="mb-3">
+                <Form.Label>Fecha</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="Fecha"
+                  value={formData.Fecha}
+                  onChange={onChangeHandler}
+                />
               </Form.Group>
-            <Row>
-              <Col className='d-flex justify-content-end'>
-                <Button variant="primary" onClick={handleSubmit}>
-                  Siguiente
-                </Button>
-              </Col>
-            </Row>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6}>
+              <Form.Group className="mb-3">
+                <Form.Label>Vehiculo</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="VehiculoID"
+                  value={formData.VehiculoID}
+                  onChange={onChangeHandler}
+                  required
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group className="mb-3"> 
+                <Form.Label>Observaciones</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="Observaciones"
+                  value={formData.Observaciones}
+                  onChange={onChangeHandler}
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Form.Group className="mb-3">
+                <Form.Label>Costo Infantil</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="CostoInfantil"
+                  value={formData.CostoInfantil}
+                  onChange={onChangeHandler}
+                  required
+                />
+                </Form.Group>
+            </Col>
+            <Col>
+              <Form.Group className="mb-3">
+                <Form.Label>Costo Adulto</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="CostoAdulto"
+                  value={formData.CostoAdulto}
+                  onChange={onChangeHandler}
+                />
+              </Form.Group>
+            </Col>
+            <Col>
+              <Form.Group className="mb-3">
+                <Form.Label>Costo Inapan</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="CostoInapan"
+                  value={formData.CostoInapan}
+                  onChange={onChangeHandler}
+                  required
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+          <Row>
+            <Col className='d-flex justify-content-end'>
+              <Button variant="primary" onClick={handleSubmit}>
+                <FontAwesomeIcon icon={faSave} />
+              </Button>
+            </Col>
+          </Row>
         </Form>
         </Card.Body>
       </Card>

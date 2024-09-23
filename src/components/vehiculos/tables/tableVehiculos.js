@@ -142,7 +142,7 @@ function TableVehiculos() {
       />
       <div className="mt-3">
         <AdvanceTableFooter
-          rowCount={4}
+          rowCount={result.length}
           table
           rowInfo
           navButtons
