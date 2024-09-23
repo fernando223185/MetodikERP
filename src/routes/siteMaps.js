@@ -4,14 +4,24 @@ import {
   faTruck,
   faRoute,
   faSearchLocation,
-  faStore
+  faStore,
+  faUsers,
+  faUserSecret
 } from "@fortawesome/free-solid-svg-icons";
 
 export const dashboardRoutes = {
   label: "Dashboard",
   labelDisable: true,
-  children: [],
+  children: [
+    {
+      name: 'Inicio',
+      to: '/',
+      exact: true,
+      active: true
+    },
+  ], 
 };
+
 export const appRoutes = {
   label: "Modulos",
   children: [
@@ -22,9 +32,15 @@ export const appRoutes = {
       children: [
         {
           name: "Usuarios",
-          ico: faUser,
+          icon: faUser,
           to: "/configuration/users",
           active: true,
+        },
+        {
+            name: "Agentes",
+            icon: faUserSecret,
+            to: "/configuration/agentes",
+            active: true
         },
         {
           name: "Vehiculos",
@@ -32,7 +48,6 @@ export const appRoutes = {
           to: "/configuration/vehiculos",
           active: true,
         },
-
         {
           name: "Rutas",
           icon: faRoute,
@@ -51,6 +66,12 @@ export const appRoutes = {
           to: "/configuration/profiles",
           active: true,
         },
+        {
+          name: "Clientes",
+          icon: faUsers,
+          to: "/catalogo/clientes",
+          active: true,
+        },
       ],
     },
     {
@@ -63,7 +84,7 @@ export const appRoutes = {
           icon: faStore,
           to: "/comercial/reservas",
           active: true,
-        }
+        },
       ],
     },
     {
@@ -78,33 +99,10 @@ export const appRoutes = {
           active: true,
         },
       ],
-    }
+    },
   ],
 };
 
-/*
-export const pagesRoutes = {
-  label: 'pages',
-  children: []
-};
-
-export const modulesRoutes = {
-  label: 'Modules',
-  children: []
-};
-
-export const documentationRoutes = {
-  label: 'documentation',
-  children: []
-};
-*/
-
-const routes = [
-  dashboardRoutes,
-  appRoutes
-  //pagesRoutes,
-  //modulesRoutes,
-  //documentationRoutes
-];
+const routes = [dashboardRoutes, appRoutes];
 
 export default routes;

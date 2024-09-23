@@ -5,8 +5,9 @@ import FormCamion from './FormCamion';
 import { useGetAsientos, useAgregarAsiento } from '../../../../hooks/Comercial/Reserva/useReservaD';
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faPlus } from '@fortawesome/free-solid-svg-icons'; 
+import { faChevronLeft, faPlus, faCheckCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons'; 
 import { toast } from 'react-toastify';
+
 
 export default function ModalAsientos({ show, selectedItem, handleClose, setUpdateList }) {
     const { getAsientos, asientos, isLoading } = useGetAsientos();
@@ -47,7 +48,12 @@ export default function ModalAsientos({ show, selectedItem, handleClose, setUpda
         } else if (result && result.status === 200) {
             toast[result.data[0].Tipo](`${result.data[0].Mensaje}`, {
                 theme: 'colored',
-                position: result.data[0].Posicion
+                position: result.data[0].Posicion,
+                icon: result.data[0].Tipo === 'success' ? 
+                <FontAwesomeIcon icon={faCheckCircle} /> : 
+                result.data[0].Tipo === 'error' ? 
+                <FontAwesomeIcon icon={faExclamationTriangle} /> : 
+                <FontAwesomeIcon icon={faInfoCircle} />
             });
             setTimeout(() => {
                 setUpdateList((prev) => !prev); 

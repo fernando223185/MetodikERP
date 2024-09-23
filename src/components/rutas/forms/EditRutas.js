@@ -7,12 +7,14 @@ import { Link } from 'react-router-dom';
 import { useGetRutasResumen } from '../../../hooks/Catalogos/Rutas/useRutas';
 import { useGetFiltroCatalogo } from 'hooks/useFiltros';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSave, faReply } from '@fortawesome/free-solid-svg-icons';
+import { faSave, faReply, faCheckCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
+import { toast } from 'react-toastify';
+
 
 function EditRutas() {
 
@@ -20,22 +22,27 @@ function EditRutas() {
 
   const { id } = useParams();
 
-  const { getResumen , rutasResumen, isLoading} = useGetRutasResumen();
+  const { getResumen , rutasResumen, isLoading: loadignRuta} = useGetRutasResumen();
 
-  const { getFiltroCatalogo, isLoading2, error } = useGetFiltroCatalogo();
+  const { getFiltroCatalogo, isLoading: loadingFiltros, error } = useGetFiltroCatalogo();
 
   const [formData, setFormData] = useState({
     ID: id,
     Ruta: '',
-    EstatusID: '',
+    EstatusID: 0,
     Zona: '',
     Kms: '',
     Costo: '',
-    SucursalD: '',
-    DestinoDID: '',
-    DestinoAID: '',
+    SucursalID: 0,
+    DestinoID: 0,
+    OrigenID: 0,
     Tiempo: '',
     Observaciones: '',
+    Fecha: '',
+    VehiculoID: 0,
+    CostoInfantil: 0,
+    CostoAdulto: 0,
+    CostoInapan: 0,
     });
 
     const [estatus, setEstatus] = useState([]);
@@ -46,7 +53,7 @@ function EditRutas() {
   const getOptionByValue = (options, value) => {
 
     console.log(options)
-    const result = options.find(option => option.Valor === value) || null;
+    const result = options.find(option => option.Valor == value) || null;
     if (result) {
       return { value: result.Valor, label: result.Dato };
       }
@@ -60,16 +67,19 @@ function EditRutas() {
       const result = await getFiltroCatalogo(data);
       setEstatus(result);
     };
+
     const fetchSucursales = async () => {
       const data = { Tipo: "Sucursales", PersonaID:1, Modulo : "Rutas"};
       const result = await getFiltroCatalogo(data);
       setSucursales(result);
     };
+
     const fetchDestinos = async () => {
-      const data = {Tipo: "Destinos",PersonaID:1, Modulo: "Rutas"};
+      const data = { Tipo: "Destinos", PersonaID:1, Modulo: "Rutas"};
       const result = await getFiltroCatalogo(data);
       setDestinos(result);
     };
+
     fetchEstatus();
     fetchSucursales();
     fetchDestinos();
@@ -89,11 +99,16 @@ function EditRutas() {
             Zona: rutasResumen.Zona,
             Kms: rutasResumen.Kms,
             Costo: rutasResumen.Costo,
-            SucursalD: rutasResumen.SucursalD,
-            DestinoDID: rutasResumen.DestinoDID,
-            DestinoAID: rutasResumen.DestinoAID,
+            SucursalID: rutasResumen.SucursalID,
+            DestinoID: rutasResumen.DestinoID,
+            OrigenID: rutasResumen.OrigenID,
             Tiempo: rutasResumen.Tiempo,
             Observaciones: rutasResumen.Observaciones,
+            Fecha: moment(rutasResumen.Fecha).format('MM/DD/YYYY'),
+            VehiculoID: rutasResumen.VehiculoID,
+            CostoInfantil: rutasResumen.CostoInfantil,
+            CostoAdulto: rutasResumen.CostoAdulto,
+            CostoInapan: rutasResumen.CostoInapan,
           });
         }
         console.log(rutasResumen)
@@ -113,15 +128,27 @@ function EditRutas() {
   const handleSubmit = async () => {
     console.log(formData);
     try {
-      await actRutas(formData); // Make API call to update the data
-      navigate('/configuration/rutas/horarios/' + id);
+      const result = await actRutas(formData); // Make API call to update the data
+      toast[result.data[0].Tipo](`${result.data[0].Mensaje}`,{
+        theme: "colored",
+        position: result.data[0].Position,
+        icon: result.data[0].Tipo === 'success' ? 
+          <FontAwesomeIcon icon={faCheckCircle} /> : 
+          result.data[0].Tipo === 'error' ? 
+          <FontAwesomeIcon icon={faExclamationTriangle} /> : 
+          <FontAwesomeIcon icon={faInfoCircle} />
+      }); 
+      if(result.data[0].Tipo === "success"){  // Display the success message
+        navigate('/configuration/rutas'); // Navigate to the routes list page
+      }
       // Close the modal after saving
     } catch (error) {
       console.error("Error updating route:", error);
     } 
   };
 
-  if (isLoading || isLoading2) {
+  console.log(formData);
+  if (loadingFiltros || loadignRuta) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', height: '100vh', marginTop: '100px' }}>
         <Spinner animation="border" role="status">
@@ -139,13 +166,13 @@ function EditRutas() {
         <h3 className='text-primary text-left mb-4'>Editar Ruta</h3> 
         <Form>
           <Row>
-            <Col mg={6} className='d-flex justify-content-end'>
-            <Link
-              to={`/configuration/rutas`}
-              className="btn btn-secondary rounded-pill me-1"
+            <Col className='d-flex justify-content-end'>
+              <Link
+                to={`/configuration/rutas`}
+                className="btn btn-secondary rounded-pill me-1"
               >
-              <FontAwesomeIcon icon={faReply} />
-            </Link>
+                <FontAwesomeIcon icon={faReply} />
+              </Link>
             </Col>
           </Row>
           <Row>
@@ -163,13 +190,13 @@ function EditRutas() {
             <Col md={6}>
               <Form.Group className="mb-3">
                 <Form.Label>Estatus</Form.Label>
-                <Select 
+                <Select
+                  defaultValue={getOptionByValue(estatus, formData.EstatusID)}
                   options={estatus.map(item => ({
                     value: item.Valor,
                     label: item.Dato,
                   }))}
                   onChange={option => setFormData({...formData, EstatusID: option.value})}
-                  isLoading={isLoading}
                   value={getOptionByValue(estatus, formData.EstatusID)}
                   placeholder="Selecciona un estatus"
                 />
@@ -205,7 +232,6 @@ function EditRutas() {
               <Form.Group className="mb-3">
                 <Form.Label>Costo</Form.Label>
                 <Form.Control
-                  type="text"
                   name="Costo"
                   value={formData.Costo}
                   onChange={onChangeHandler}
@@ -220,9 +246,8 @@ function EditRutas() {
                     value: item.Valor,
                     label: item.Dato,
                   }))}
-                  onChange={option => setFormData({...formData, SucursalD: option.value})}
-                  isLoading={isLoading}
-                  value={getOptionByValue(sucursales, formData.SucursalD)}
+                  onChange={option => setFormData({...formData, SucursalID: option.value})}
+                  value={getOptionByValue(sucursales, formData.SucursalID)}
                   placeholder="Selecciona una sucursal"
                 />
               </Form.Group>
@@ -237,9 +262,8 @@ function EditRutas() {
                     value: item.Valor,
                     label: item.Dato,
                   }))}
-                  onChange={option => setFormData({...formData, DestinoDID: option.value})}
-                  isLoading={isLoading}
-                  value={getOptionByValue(destinos, formData.DestinoDID)}
+                  onChange={option => setFormData({...formData, DestinoID: option.value})}
+                  value={getOptionByValue(destinos, formData.DestinoID)}
                   placeholder="Selecciona un destino"
                 />
               </Form.Group>
@@ -252,13 +276,14 @@ function EditRutas() {
                     value: item.Valor,
                     label: item.Dato,
                   }))}
-                  onChange={option => setFormData({...formData, DestinoAID: option.value})}
-                  isLoading={isLoading}
-                  value={getOptionByValue(destinos, formData.DestinoAID)}
+                  onChange={option => setFormData({...formData, OrigenID: option.value})}
+                  value={getOptionByValue(destinos, formData.OrigenID)}
                   placeholder="Selecciona un destino"
                 />
               </Form.Group>
             </Col>
+          </Row>
+          <Row>
             <Col>
               <Form.Group className="mb-3">
                 <Form.Label>Tiempo</Form.Label>
@@ -270,23 +295,88 @@ function EditRutas() {
                 />
               </Form.Group>
             </Col>
-          </Row>
-            <Form.Group className="mb-3"> 
-              <Form.Label>Observaciones</Form.Label>
-              <Form.Control
-                type="text"
-                name="Observaciones"
-                value={formData.Observaciones}
-                onChange={onChangeHandler}
-              />
+            <Col md={6}>
+              <Form.Group className="mb-3">
+                <Form.Label>Fecha</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="Fecha"
+                  value={formData.Fecha}
+                  onChange={onChangeHandler}
+                  isInvalid={formData.Fecha === ''}
+                />
               </Form.Group>
-            <Row>
-              <Col className='d-flex justify-content-end'>
-                <Button variant="primary" onClick={handleSubmit}>
-                  Siguiente
-                </Button>
-              </Col>
-            </Row>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6}>
+              <Form.Group className="mb-3">
+                <Form.Label>Vehiculo</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="VehiculoID"
+                  value={formData.VehiculoID}
+                  onChange={onChangeHandler}
+                  required
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group className="mb-3"> 
+                <Form.Label>Observaciones</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="Observaciones"
+                  value={formData.Observaciones}
+                  onChange={onChangeHandler}
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Form.Group className="mb-3">
+                <Form.Label>Costo Infantil</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="CostoInfantil"
+                  value={formData.CostoInfantil}
+                  onChange={onChangeHandler}
+                  required
+                />
+                </Form.Group>
+            </Col>
+            <Col>
+              <Form.Group className="mb-3">
+                <Form.Label>Costo Adulto</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="CostoAdulto"
+                  value={formData.CostoAdulto}
+                  onChange={onChangeHandler}
+                />
+              </Form.Group>
+            </Col>
+            <Col>
+              <Form.Group className="mb-3">
+                <Form.Label>Costo Inapan</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="CostoInapan"
+                  value={formData.CostoInapan}
+                  onChange={onChangeHandler}
+                  required
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+          <Row>
+            <Col className='d-flex justify-content-end'>
+              <Button variant="primary" onClick={handleSubmit}>
+                <FontAwesomeIcon icon={faSave} />
+              </Button>
+            </Col>
+          </Row>
         </Form>
         </Card.Body>
       </Card>

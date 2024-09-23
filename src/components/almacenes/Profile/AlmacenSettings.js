@@ -59,14 +59,6 @@ const AlmacenSettings = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         await submitAlmacen({ data: formData });
-
-        console.log(error);
-
-        if (!error) {
-            setTimeout(() => {
-                navigate('/configuration/almacenes');
-            }, 800);
-        }
     };
 
     if (isLoading) {

@@ -20,7 +20,7 @@ const Experience = ({ experience, isLast }) => {
   return (
     <Flex>
       <Link to="#!">
-        <Image fluid src={logo} width={56} />
+        <Image fluid src={logo} width={80} />
       </Link>
       <div className="flex-1 position-relative ps-3">
         <h6 className="fs-0 mb-0">

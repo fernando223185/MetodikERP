@@ -1,17 +1,14 @@
 import AdvanceTable from 'components/common/advance-table/AdvanceTable';
 import AdvanceTableWrapper from 'components/common/advance-table/AdvanceTableWrapper';
-import { useGetRutas } from '../../../hooks/Catalogos/Rutas/useRutas' 
 import React, { useEffect, useState } from 'react';
-import { Spinner } from 'react-bootstrap';
 import { Col, Row } from 'react-bootstrap';
 import AdvanceTableSearchBox from 'components/common/advance-table/AdvanceTableSearchBox';
 import AdvanceTableFooter from 'components/common/advance-table/AdvanceTableFooter';
 import SubtleBadge from 'components/common/SubtleBadge';
-import IconButton from 'components/common/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import  { Link } from 'react-router-dom';
-
-
+import Horario from '../modal/Horario';
+import IconButton from 'components/common/IconButton';
 const columns = [
     {
       accessor: 'acciones',
@@ -31,13 +28,13 @@ const columns = [
       headerProps: { className: 'text-900' }
     },
     {
-      accessor: 'destinoAID',
-      Header: 'Destino A',
+      accessor: 'origen',
+      Header: 'Origen',
       headerProps: { className: 'text-900' }
     },
     {
-      accessor:'destinoDID',
-      Header: 'Destino D',
+      accessor:'destino',
+      Header: 'Destino ',
       headerProps: { className: 'text-900' }
     },
     {
@@ -68,87 +65,72 @@ const columns = [
 
 ];
 
-function TableRutas(){
+function TableRutas({rutas, sucursales, destinos, horarios}) {
 
-    const { getRutas, rutas, isLoading } = useGetRutas();
     const [result, setResult] = useState([]);
     const [showModal, setShowModal] = useState(false);
-    const [selectedRuta, setSelectedRuta] = useState(null);
+    const [selectID, setSelectID] = useState();
 
-
-    // Function to handle modal show
-    const handleShowModal = (ruta) => {
-      console.log(ruta);
-      setSelectedRuta(ruta); // Set the selected route data
-      setShowModal(true); // Show modal 
+   // Function to open the modal and set the selected ID
+    const openModal = (id) => {
+      console.log("The button was clicked");
+      setSelectID(id);
+      setShowModal(true);
     };
 
-    const handleCloseModal = () => {
-      setShowModal(false); // Hide modal
-      setSelectedRuta(null); // Clear selected data
-      handleUpdateRutas(); 
+    const closeModal = () => {
+      setShowModal(false);
     };
 
-    const handleUpdateRutas = async () => {
-      await getRutas(); // Fetch updated rutas from API
+    const getOptionByValue = (options, value) => {
+      const result = options.find(option => option.Valor == value) || null;
+       return result ? result.Dato : '';
     };
+
 
     useEffect(() => {
-        getRutas();
-    },[]);
+       if(rutas.status === 200){
+
+         const transformedData = rutas.data.map(ruta => ({
+           acciones: (
+           <>
+             <Link
+               to={`/configuration/rutas/edit/${ruta.ID}`}
+               className='btn btn-outline-primary rounded-pill me-1 mb-1'
+             >
+               <FontAwesomeIcon icon="eye" />
+             </Link>
+              <Link
+                className='btn btn-outline-primary rounded-pill me-1 mb-1'
+              >
+                <FontAwesomeIcon icon="clock" 
+                onClick={() => openModal(ruta.ID)}
+                />
+              </Link>
+            </>
+           ),
+           estatus: ruta.EstatusID === 1 ? (
+            <SubtleBadge pill bg="success" className="fs--2">
+              Alta
+            </SubtleBadge>
+          ) : (
+            <SubtleBadge pill bg="danger" className="fs--2">
+              Baja
+            </SubtleBadge>
+          ),
+           ruta: ruta.Ruta,
+           origen: getOptionByValue(destinos, ruta.OrigenID),
+           destino: getOptionByValue(destinos, ruta.DestinoID),
+           costo: ruta.Costo,
+           kms: ruta.Kms,
+           tiempo: ruta.Tiempo,
+           sucursalD: getOptionByValue(sucursales, ruta.SucursalID),
+           ultimoCambio: ruta.UltimoCambio
+         }));
+         setResult(transformedData);
+       }
+      },[rutas, sucursales, destinos]);
     
-    useEffect(() => {
-      console.log(rutas);
-        if(rutas.status === 200){
-
-            const transformedData = rutas.data.map(r => ({
-                acciones: (
-                <>
-                  <Link
-                    className="btn btn-outline-primary rounded-pill me-1 mb-1"
-                    to={`/configuration/rutas/edit/${r.ID}`}
-                  >
-                    <FontAwesomeIcon icon="eye"/>
-                  </Link>
-                  <Link
-                    className="btn btn-outline-primary rounded-pill me-1 mb-1"
-                    to={`/configuration/rutas/horarios/${r.ID}`}
-                  >
-                    <FontAwesomeIcon icon="clock"/>
-                  </Link>
-                </>
-                ),
-                estatus: r.EstatusID === 1 ? (
-                  <SubtleBadge pill bg="success" className="fs--2" >
-                    Activo
-                  </SubtleBadge>
-                ) : (
-                  <SubtleBadge pill bg="danger" className="fs--2">
-                    Baja
-                  </SubtleBadge>
-                ),
-                ruta: r.Ruta,
-                destinoAID: r.DestinoAID,
-                destinoDID: r.DestinoDID,
-                sucursalD: r.SucursalD,
-                costo: r.Costo,
-                kms: r.Kms,
-                tiempo: r.Tiempo,
-                ultimoCambio: r.UltimoCambio,
-            }));
-            setResult(transformedData);
-        }
-    },[rutas]);
-
-    if (isLoading) {
-        return (
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', height: '100vh', marginTop: '100px' }}>
-            <Spinner animation="border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </Spinner>
-          </div>
-        );
-      }
 
     return (
       <>
@@ -188,7 +170,7 @@ function TableRutas(){
         
         <div className="mt-3">
             <AdvanceTableFooter
-            rowCount={4}
+            rowCount={result.length}
             table
             rowInfo
             navButtons
@@ -196,7 +178,14 @@ function TableRutas(){
             />
         </div>
     </AdvanceTableWrapper>
-    
+    {showModal && (
+      <Horario 
+        showModal={showModal}
+        handleCloseModal={closeModal}
+        id={selectID}
+        horarios={horarios}
+      />
+    )}
     </>
     )
 

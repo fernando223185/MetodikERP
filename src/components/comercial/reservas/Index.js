@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Row, Container, Card, Spinner } from 'react-bootstrap';
 import TableReservas from './tables/tableReservas';
-import StatisticsCard from 'components/dashboards/saas/stats-cards/StatisticsCard';
+import TableReservasV2 from './tables/tableReservasV2';
+import LmsStats from 'components/dashboards/lms/lms-stats/LmsStatItem';
 import { useGetIndicadores } from '../../../hooks/useIndicadores';
 import { useGetReservas } from '../../../hooks/Comercial/Reserva/useReserva';
+import { useGetFiltroModulo } from '../../../hooks/useFiltros'; 
 
 const ReservasHeader = () => {
   return (
@@ -21,6 +23,8 @@ const ReservasHeader = () => {
 const Reservas = () => {
   const { getIndicadores, indicadores, isLoading: isLoadingIndicadores } = useGetIndicadores();
   const { getReservas, reservas, isLoading: isLoadingReservas } = useGetReservas();
+  const { getFiltroModulo, isLoading: isLoadingFiltro } = useGetFiltroModulo();
+  const [movimientos, setMovimientos] = useState([]);
   const [dataind, setDataInd] = useState([]);
 
   useEffect(() => {
@@ -43,17 +47,30 @@ const Reservas = () => {
   useEffect(() => {
     if (indicadores.data && indicadores.data.length > 0) {
       const transformedData = indicadores.data.map(i => ({
+        //id:
+        //
         title: i.Titulo,
-        value: i.Cantidad,
+        amount: i.Cantidad,
         decimal: false,
-        suffix: '',
-        prefix: '',
-        badgeBg: i.Color,
+        icon: i.Icono,
+        color: i.Color,
         badgeText: i.Porcentaje,
+        className: i.Classname
       }));
       setDataInd(transformedData);
     }
   }, [indicadores]);
+
+  useEffect(() => {
+
+    const fetchMovimientos = async () => {
+      const data = { Tipo: 'Movimientos', PersonaID: 1, Modulo: 'Reservas' };
+      const result = await getFiltroModulo(data);
+      setMovimientos(result); 
+    };
+
+    fetchMovimientos(); 
+  }, []);
 
   if (isLoadingIndicadores || isLoadingReservas) {
     return (
@@ -69,27 +86,33 @@ const Reservas = () => {
     <>
       <ReservasHeader />
       <Row className="g-3 mb-3">
-        {dataind.length > 0 ? (
-          dataind.map((stat) => (
-            <Col key={stat.title} xs={6} sm={6} md={3} className="d-flex">
-              <StatisticsCard stat={stat} style={{ flex: 1, minWidth: '10rem' }} />
-            </Col>
-          ))
-        ) : (
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100px' }}>
-            <Spinner animation="border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </Spinner>
-          </div>
-        )}
+      <Card className="mb-3">
+        <Card.Body className="px-xxl-0 pt-4">
+          <Row className="g-0">
+
+            {dataind.length > 0 ? (
+              dataind.map((stat) => (
+                  <LmsStats stat={stat} style={{ flex: 1, minWidth: '10rem' }} />
+              ))
+            ) : (
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100px' }}>
+                <Spinner animation="border" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </Spinner>
+              </div>
+            )}
+          </Row>
+        </Card.Body>
+      </Card>
       </Row>
       <Row className="g-3 mb-3">
         <Col lg={12}>
-          <Card>
+         {/* <Card>
             <Card.Body>
               <TableReservas reservas={reservas} />
             </Card.Body>
-          </Card>
+          </Card> */}
+            <TableReservasV2 reservas={reservas} movimientos={movimientos}/>
         </Col>
       </Row>
     </>

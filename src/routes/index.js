@@ -231,9 +231,7 @@ import ExploradorRutas from 'components/Exploradores/Rutas/index'
 import ExploradorRutasD from 'components/Exploradores/Rutas/index_rutasD'
 import PasajeroD from '../components/comercial/reservas/pages/PasajeroD'
 import ViewProfile from 'components/choferes/ViewProfile/ViewChofer';
-import Horario from 'components/rutas/forms/HorarioForms';
 import Perfiles from 'components/Perfiles/pages/index';
-
 
 const MetodikRoutes = () => {
   return (
@@ -630,7 +628,6 @@ const MetodikRoutes = () => {
         <Route path="configuration/rutas" element={<Rutas />} />
         <Route path="configuration/rutas/nuevo" element={<CreateRutas />} />
         <Route path="configuration/rutas/edit/:id" element={<EditRutas />} />
-        <Route path="configuration/rutas/horarios/:id" element={<Horario />} />
         <Route path="configuration/choferes" element={<Choferes />} />
         <Route path="configuration/choferes/view-profile/:id" element={<ViewProfile />} />
         <Route path="configuration/choferes/edit/:id" element={<EditChofer />} />
