@@ -16,6 +16,7 @@ import NavbarDropdownModules from './NavbarDropdownModules';
 import { useAppContext } from 'Main';
 
 const NavbarTopDropDownMenus = () => {
+  console.log(dashboardRoutes)
   const {
     config: { navbarCollapsed, showBurgerMenu },
     setConfig
@@ -31,25 +32,15 @@ const NavbarTopDropDownMenus = () => {
   };
   return (
     <>
-      <NavbarDropdown title="dashboard">
-        {dashboardRoutes.children[0].children.map(route => (
-          <Dropdown.Item
-            key={route.name}
-            as={Link}
-            className={route.active ? 'link-600' : 'text-500'}
-            to={route.to}
-            onClick={handleDropdownItemClick}
-          >
-            {route.name}
-          </Dropdown.Item>
-        ))}
+      <NavbarDropdown title="modules">
+        <NavbarDropdownModules items={appRoutes.children} />
       </NavbarDropdown>
 
-      <NavbarDropdown title="app">
+       {/*    <NavbarDropdown title="app">
         <NavbarDropdownApp items={appRoutes.children} />
       </NavbarDropdown>
 
-     {/* <NavbarDropdown title="pages">
+ <NavbarDropdown title="pages">
         <NavbarDropdownPages items={pagesRoutes.children} />
       </NavbarDropdown>
       <NavbarDropdown title="modules">

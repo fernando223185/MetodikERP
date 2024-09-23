@@ -5,13 +5,22 @@ import {
   faRoute,
   faSearchLocation,
   faStore,
+  faUsers
 } from "@fortawesome/free-solid-svg-icons";
 
 export const dashboardRoutes = {
   label: "Dashboard",
   labelDisable: true,
-  children: [],
+  children: [
+    {
+      name: 'Inicio',
+      to: '/',
+      exact: true,
+      active: true
+    },
+  ], 
 };
+
 export const appRoutes = {
   label: "Modulos",
   children: [
@@ -32,7 +41,6 @@ export const appRoutes = {
           to: "/configuration/vehiculos",
           active: true,
         },
-
         {
           name: "Rutas",
           icon: faRoute,
@@ -43,6 +51,12 @@ export const appRoutes = {
           name: "Destinos",
           icon: faSearchLocation,
           to: "/configuration/destinos",
+          active: true,
+        },
+        {
+          name: "Clientes",
+          icon: faUsers,
+          to: "/catalogo/clientes",
           active: true,
         },
       ],
@@ -57,7 +71,7 @@ export const appRoutes = {
           icon: faStore,
           to: "/comercial/reservas",
           active: true,
-        }
+        },
       ],
     },
     {
@@ -72,33 +86,10 @@ export const appRoutes = {
           active: true,
         },
       ],
-    }
+    },
   ],
 };
 
-/*
-export const pagesRoutes = {
-  label: 'pages',
-  children: []
-};
-
-export const modulesRoutes = {
-  label: 'Modules',
-  children: []
-};
-
-export const documentationRoutes = {
-  label: 'documentation',
-  children: []
-};
-*/
-
-const routes = [
-  dashboardRoutes,
-  appRoutes
-  //pagesRoutes,
-  //modulesRoutes,
-  //documentationRoutes
-];
+const routes = [dashboardRoutes, appRoutes];
 
 export default routes;

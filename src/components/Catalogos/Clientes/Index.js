@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Col, Row, Container, Modal, Card } from 'react-bootstrap';
-
+import TableCustomers from '../Clientes/tables/tableCustomer'
 
 const CustomerHeader = () => {
   return (
@@ -44,7 +44,7 @@ const Customers = () => {
         <Col lg={12}>
           <Card>
             <Card.Body>
-
+              <TableCustomers/>
             </Card.Body>
           </Card>        
         </Col>
