@@ -1,12 +1,12 @@
 {
   "files": {
     "main.css": "/frlive.prium.me/static/css/main.30c748b7.css",
-    "main.js": "/frlive.prium.me/static/js/main.96190296.js",
+    "main.js": "/frlive.prium.me/static/js/main.95d193f3.js",
     "reactPlayerPreview.js": "/frlive.prium.me/static/js/reactPlayerPreview.9ca96917.chunk.js",
     "static/media/beach.mp4": "/frlive.prium.me/static/media/beach.85e603cad676bd03f143.mp4",
     "static/media/beach.webm": "/frlive.prium.me/static/media/beach.15cb8ac7025338fd82c5.webm",
     "static/media/6.jpg": "/frlive.prium.me/static/media/6.73c7fce24bcc54d880c1.jpg",
-    "static/media/BannerInicio.jpg": "/frlive.prium.me/static/media/BannerInicio.de53cf971ae766c929a0.jpg",
+    "static/media/rtn.jpg": "/frlive.prium.me/static/media/rtn.e3a938a25b8f370e683b.jpg",
     "static/media/dashboard-alt.jpg": "/frlive.prium.me/static/media/dashboard-alt.d8a84d80996838cb8a03.jpg",
     "static/media/course-details-bg.png": "/frlive.prium.me/static/media/course-details-bg.6af4f986fe8c957e383a.png",
     "static/media/dashboard-alt-dark.png": "/frlive.prium.me/static/media/dashboard-alt-dark.db58a6421f4f5ddef0ef.png",
@@ -140,10 +140,12 @@
     "static/media/social.svg": "/frlive.prium.me/static/media/social.bd2c5bab9303ef785465761b7154ae82.svg",
     "static/media/call.svg": "/frlive.prium.me/static/media/call.114040c9e9592b6a91bbc6eae3de6e5d.svg",
     "static/media/free.svg": "/frlive.prium.me/static/media/free.b24dc2bccf0c7d20c0f7f8072f8422f8.svg",
+    "static/media/base-sprinter.svg": "/frlive.prium.me/static/media/base-sprinter.ca7cc131baf804b245d4d016017835ad.svg",
     "static/media/other.svg": "/frlive.prium.me/static/media/other.b84ffeed982c966b321d425339b67026.svg",
     "static/media/slick.svg": "/frlive.prium.me/static/media/slick.2630a3e3eab21c607e21.svg",
     "static/media/slick.eot": "/frlive.prium.me/static/media/slick.a4e97f5a2a64f0ab1323.eot",
     "static/media/slick.ttf": "/frlive.prium.me/static/media/slick.c94f7671dcc99dce43e2.ttf",
+    "static/media/asiento-camion2.svg": "/frlive.prium.me/static/media/asiento-camion2.f225238ed371354ee4c66d68212400b0.svg",
     "static/media/play.svg": "/frlive.prium.me/static/media/play.cabb9cb7dbeece3c65591260d3901259.svg",
     "static/media/discount.svg": "/frlive.prium.me/static/media/discount.86bd7f9c1a20db31ef010e1470b1de05.svg",
     "static/media/users.svg": "/frlive.prium.me/static/media/users.f9f13623ab50de8da144fa5f5c4518af.svg",
@@ -164,11 +166,11 @@
     "static/media/chevron-up.svg": "/frlive.prium.me/static/media/chevron-up.b8db2d278bc713d1ba82e74825a302d8.svg",
     "static/media/paragraph.svg": "/frlive.prium.me/static/media/paragraph.39a886829c0c43e707aa9e6e913f3475.svg",
     "main.30c748b7.css.map": "/frlive.prium.me/static/css/main.30c748b7.css.map",
-    "main.96190296.js.map": "/frlive.prium.me/static/js/main.96190296.js.map",
+    "main.95d193f3.js.map": "/frlive.prium.me/static/js/main.95d193f3.js.map",
     "reactPlayerPreview.9ca96917.chunk.js.map": "/frlive.prium.me/static/js/reactPlayerPreview.9ca96917.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.30c748b7.css",
-    "static/js/main.96190296.js"
+    "static/js/main.95d193f3.js"
   ]
 }

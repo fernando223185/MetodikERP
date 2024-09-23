@@ -111,7 +111,7 @@ import Products from 'components/app/e-commerce/product/Products';
 import ProductDetails from 'components/app/e-commerce/product/product-details/ProductDetails';
 import AddProduct from 'components/app/e-commerce/product/add-product/AddProduct';
 import Orders from 'components/app/e-commerce/orders/order-list/Orders';
-import Customers from 'components/app/e-commerce/customers/Customers';
+//import Customers from 'components/app/e-commerce/customers/Customers';
 import Courses from 'components/app/e-learning/course/Courses';
 import CourseDetails from 'components/app/e-learning/course/course-details';
 import CreateCourse from 'components/app/e-learning/course/create-a-course';
@@ -207,14 +207,12 @@ import SucursalesSettings from 'components/sucursales/Profile/SucursalesSettings
 import CreateVehiculo from 'components/vehiculos/Profile/CreateVehiculo';
 import Vehiculos from 'components/vehiculos';
 import VehiculosSettings from 'components/vehiculos/Profile/VehiculosSettings';
-
 import CreateAlmacen from 'components/almacenes/Profile/CreateAlmacen';
 import Almacenes from 'components/almacenes';
 import AlmacenSettings from 'components/almacenes/Profile/AlmacenSettings';
 import CreateDestino from 'components/destinos/Profile/CreateDestino';
 import Destinos from 'components/destinos';
 import DestinoSettings from 'components/destinos/Profile/DestinoSettings';
-
 import CreateSucursal from 'components/sucursales/Profile/CreateSucursal';
 import UserProfile from '../components/Usuarios/pages/viewUser/Profile'
 import EditarUsuario from '../components/Usuarios/pages/editUser/EditarUsuario'
@@ -232,6 +230,7 @@ import ExploradorRutasD from 'components/Exploradores/Rutas/index_rutasD'
 import PasajeroD from '../components/comercial/reservas/pages/PasajeroD'
 import ViewProfile from 'components/choferes/ViewProfile/ViewChofer';
 import Horario from 'components/rutas/forms/HorarioForms';
+import Customers from 'components/Catalogos/Clientes/Index';
 
 const MetodikRoutes = () => {
   return (
@@ -637,7 +636,7 @@ const MetodikRoutes = () => {
         <Route path="Explorador/ExploradorRutas" element={<ExploradorRutas />} />
         <Route path="Explorador/ExploradorRutas/:id" element={<ExploradorRutasD/>} />
         <Route path="comercial/reservas/reservaD/pasajerosD/:id" element={<PasajeroD/>} />
-
+        <Route path="catalogo/clientes" element={<Customers/>} />
       </Route>
 
       {/* //--- MainLayout end  */}

@@ -14,7 +14,7 @@ const Footer = () => (
         </p>
       </Col>
       <Col sm="auto">
-        <p className="mb-0 text-600">v{version}</p>
+        <p className="mb-0 text-600">v3.0.0</p>
       </Col>
     </Row>
   </footer>

@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
-import team3 from 'assets/img/illustrations/Mo.png';
+import team3 from 'assets/img/illustrations/user.jpeg';
 import Avatar from 'components/common/Avatar';
 import { useAuth } from '../../../hooks/Auth/useAuth';
 
@@ -40,7 +40,7 @@ const ProfileDropdown = () => {
           </Dropdown.Item>
           <Dropdown.Item href="#!">Feedback</Dropdown.Item>
           <Dropdown.Divider />
-          <Dropdown.Item as={Link} to="/user/settings">
+          <Dropdown.Item as={Link} to={`configuration/users/edit/${user.ID}`}>
             Configuracion
           </Dropdown.Item>
           <Dropdown.Item onClick={handleLogout}>

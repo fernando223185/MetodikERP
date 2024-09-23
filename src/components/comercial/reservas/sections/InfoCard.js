@@ -1,6 +1,5 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
-import { useGetReservaID } from '../../../../hooks/Comercial/Reserva/useReservaD'
 import SubtleBadge from 'components/common/SubtleBadge';
 import classNames from 'classnames';
 import { faPaperPlane, faCheck, faStream, faPen, faBan, faSpinner } from '@fortawesome/free-solid-svg-icons'; 

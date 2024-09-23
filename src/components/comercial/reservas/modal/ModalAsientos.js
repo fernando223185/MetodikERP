@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
-import { Modal, Spinner, Button } from 'react-bootstrap';
+import { Modal, Spinner } from 'react-bootstrap';
 import FormSprinter from './FormSprinter'; 
 import FormCamion from './FormCamion';
 import { useGetAsientos, useAgregarAsiento } from '../../../../hooks/Comercial/Reserva/useReservaD';
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faPlus } from '@fortawesome/free-solid-svg-icons'; 
+import { faChevronLeft, faPlus, faCheckCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons'; 
 import { toast } from 'react-toastify';
+
 
 export default function ModalAsientos({ show, selectedItem, handleClose, setUpdateList }) {
     const { getAsientos, asientos, isLoading } = useGetAsientos();
@@ -47,7 +48,12 @@ export default function ModalAsientos({ show, selectedItem, handleClose, setUpda
         } else if (result && result.status === 200) {
             toast[result.data[0].Tipo](`${result.data[0].Mensaje}`, {
                 theme: 'colored',
-                position: result.data[0].Posicion
+                position: result.data[0].Posicion,
+                icon: result.data[0].Tipo === 'success' ? 
+                <FontAwesomeIcon icon={faCheckCircle} /> : 
+                result.data[0].Tipo === 'error' ? 
+                <FontAwesomeIcon icon={faExclamationTriangle} /> : 
+                <FontAwesomeIcon icon={faInfoCircle} />
             });
             setTimeout(() => {
                 setUpdateList((prev) => !prev); 
@@ -103,8 +109,8 @@ export default function ModalAsientos({ show, selectedItem, handleClose, setUpda
                     <Modal.Body>
                         {asientos[0].TipoCamion === "Sprinter" ? (
                             <FormSprinter asientos={asientos} onConfirm={handleSeatSelection} />
-                        ) : asientos[0].TipoCamion === "Camion" ? (
-                            <FormCamion totalSeats={asientos[0].NoAsientos} onConfirm={handleSeatSelection} />
+                        ) : asientos[0].TipoCamion === "Autobus" ? (
+                            <FormCamion asientos={asientos} onConfirm={handleSeatSelection} />
                         ) : (
                             <div>No se encontró el formulario adecuado.</div>
                         )}

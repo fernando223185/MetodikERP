@@ -28,15 +28,10 @@ const CreateAlmacen = () => {
         GrupoID: '',
         TipoID: '',
         SucursalID: '',
-        EstatusID: 1,
-        EmpresaID: empresaID
-    }
+        EstatusID: '',
+        EmpresaID: ''
+    });
 
-    const [formData, setFormData] = useState(initialFormState);
-
-    const resetForm = () => {
-        setFormData(initialFormState);
-    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;

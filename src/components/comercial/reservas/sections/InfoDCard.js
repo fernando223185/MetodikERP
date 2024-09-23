@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Card, Form, Row, Col, Button, Spinner, InputGroup } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSave } from '@fortawesome/free-solid-svg-icons';
+import { faSave, faCheckCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import { useFormik, FormikProvider } from 'formik';
@@ -40,7 +40,7 @@ const validationSchema = Yup.object().shape({
   origen: Yup.string().required('Origen es obligatorio'),
   destino: Yup.string().required('Destino es obligatorio'),
   dateSalida: Yup.date().required('Fecha de salida es obligatoria'),
-  //dateRegreso: Yup.date().required('Fecha de regreso es obligatoria'),
+  dateRegreso: Yup.date().required('Fecha de regreso es obligatoria'),
 });
 
 const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched, setUpdtRutas, setShowDateRegreso, showDateRegreso }) => {
@@ -99,10 +99,16 @@ const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched,
       console.log("resultNew es un array vacío:", resultNew);
     } else if (resultNew && resultNew.status === 200) {
         toast[resultNew.data[0].Tipo](`${resultNew.data[0].Mensaje}`, {
-            theme: 'colored',
-            position: resultNew.data[0].Posicion
-        });
-        setTimeout(() => {
+            theme: 'light',            
+            position: resultNew.data[0].Posicion,
+            icon: resultNew.data[0].Tipo === 'success' ? 
+            <FontAwesomeIcon icon={faCheckCircle} /> : 
+            resultNew.data[0].Tipo === 'error' ? 
+            <FontAwesomeIcon icon={faExclamationTriangle} /> : 
+            <FontAwesomeIcon icon={faInfoCircle} />
+      });        
+      
+      setTimeout(() => {
           setHasFetched((prev) => !prev); 
           setUpdtRutas(true)
         }, 1000)
@@ -111,7 +117,8 @@ const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched,
             theme: 'colored',
             position: 'top-right'
         });
-    }  }, [resultNew])
+    }  
+  }, [resultNew])
 
     const handleMovimientoChange = (option) => {
       formik.setFieldValue('movimiento', option.value);

@@ -5,6 +5,8 @@ const useVisibilityObserver = (element, rootMargin) => {
   const [observer, setObserver] = useState(null);
 
   useEffect(() => {
+    if (!element.current) return; 
+    const currentElement = element.current; 
     const observer = new IntersectionObserver(
       ([entry]) => {
         setState(entry.isIntersecting);
@@ -14,9 +16,13 @@ const useVisibilityObserver = (element, rootMargin) => {
 
     setObserver(observer);
 
-    element.current && observer.observe(element.current);
-  }, []);
-
+    observer.observe(currentElement);
+    return () => {
+      if (currentElement) {
+        observer.unobserve(currentElement); 
+      }
+    };
+  }, [element, rootMargin]); 
   return { isVisible, observer };
 };
 

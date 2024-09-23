@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
 import { ReactComponent as SprinterSVG } from '../../../../assets/img/camiones/base-sprinter.svg'; 
 import { ReactComponent as AsientoSVG } from '../../../../assets/img/camiones/asiento-camion2.svg'; 
 
-const FormCamion = ({ show, handleClose, totalSeats }) => {
+const FormCamion = ({ asientos, onConfirm }) => {
+  console.log(asientos)
   const [selectedSeats, setSelectedSeats] = useState([]);
+
+  useEffect(() => {
+    const initiallySelectedSeats = asientos
+      .filter(asiento => asiento.Seleccionado)
+      .map(asiento => asiento.Asiento);
+    setSelectedSeats(initiallySelectedSeats);
+  }, [asientos]);
+
+  useEffect(() => {
+    onConfirm(selectedSeats);
+  }, [selectedSeats, onConfirm]);
 
   const handleSeatClick = (seatNumber) => {
     setSelectedSeats((prevSelectedSeats) =>
@@ -18,34 +29,34 @@ const FormCamion = ({ show, handleClose, totalSeats }) => {
     const positions = [];
     let seatCounter = 1;
 
-    for (let i = Math.ceil(totalSeats / 4) - 1; i >= 0; i--) {
+    for (let i = Math.ceil(asientos.length / 4) - 1; i >= 0; i--) {
       positions.push({
         seatNumber: seatCounter++,
-        left: '20%',
-        top: `${15 + i * 15}%`, 
+        left: '28%',
+        top: `${5 + i * 7}%`, // Ajusta la posición vertical
       });
 
       positions.push({
         seatNumber: seatCounter++,
-        left: '34%',
-        top: `${15 + i * 15}%`,  
+        left: '38%',
+        top: `${5 + i * 7}%`, // Ajusta la posición vertical
       });
 
       positions.push({ isAisle: true });
 
       positions.push({
         seatNumber: seatCounter++,
-        left: '56%', 
-        top: `${15 + i * 15}%`,  
+        left: '55%', 
+        top: `${5 + i * 7}%`, // Ajusta la posición vertical
       });
 
       positions.push({
         seatNumber: seatCounter++,
-        left: '70%',
-        top: `${15 + i * 15}%`,  
+        left: '65%',
+        top: `${5 + i * 7}%`, // Ajusta la posición vertical
       });
 
-      if (seatCounter > totalSeats) break;
+      if (seatCounter > asientos.length) break;
     }
     return positions;
   };
@@ -59,29 +70,31 @@ const FormCamion = ({ show, handleClose, totalSeats }) => {
           <div
             key={`aisle-${index}`}
             style={{
-              width: '30px',  
+              width: '20px',  
               display: 'inline-block',
             }}
           />
         );
       }
 
+      const asiento = asientos.find(a => a.Asiento === pos.seatNumber);
       const isSelected = selectedSeats.includes(pos.seatNumber);
-
+      const isReserved = asiento ? asiento.Reservado : false;
       return (
         <div
           key={pos.seatNumber}
-          onClick={() => handleSeatClick(pos.seatNumber)}
+          onClick={() => !isReserved && handleSeatClick(pos.seatNumber)}
           style={{
             position: 'absolute',
             left: pos.left,
             top: pos.top,
-            width: '60px', // Ajusta el tamaño del contenedor del asiento
-            height: '50px', // Ajusta la altura del contenedor del asiento
-            cursor: 'pointer',
-            backgroundColor: isSelected ? '#A66595' : 'lightgray', // Cambia el color de fondo según si está seleccionado
-            borderRadius: '5px', // Le da un poco de estilo
-            padding: '2px', // Reduce el espacio alrededor del icono del asiento
+            width: '45px',  // Reduce el tamaño del asiento
+            height: '35px', // Reduce el tamaño del asiento
+            cursor: isReserved ? 'not-allowed' : 'pointer',
+            backgroundColor: isReserved ? 'darkgray' : (isSelected ? '#A66595' : 'transparent'), 
+            borderRadius: '5px', 
+            padding: '2px',
+            opacity: isReserved ? 0.6 : 1,  
           }}
         >
           <AsientoSVG
@@ -90,16 +103,15 @@ const FormCamion = ({ show, handleClose, totalSeats }) => {
               height: '100%',
             }}
           />
-          {/* Número del asiento centrado */}
           <div
             style={{
               position: 'absolute',
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
-              color: 'black', // Color del número
+              color: 'black',
               fontWeight: 'bold',
-              fontSize: '14px', // Ajusta el tamaño del número
+              fontSize: '12px', 
             }}
           >
             {pos.seatNumber}
@@ -110,39 +122,21 @@ const FormCamion = ({ show, handleClose, totalSeats }) => {
   };
 
   return (
-    <>
-      <Modal.Header closeButton>
-        <Modal.Title>Selecciona tus asientos</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <div style={{ position: 'relative', width: '100%', height: '600px' }}>
-          {/* SVG del camión */}
-          <SprinterSVG style={{ width: '100%', height: '100%' }} />
-          
-          {/* Contenedor para los asientos */}
-          <div 
-            style={{ 
-              position: 'absolute', 
-              top: '10%', // Control vertical del grupo de asientos
-              left: '15%', // Control horizontal del grupo de asientos
-              width: '70%',  // Controla la anchura del área donde se distribuyen los asientos
-              height: '80%', // Controla la altura del área donde se distribuyen los asientos
-              display: 'relative'
-            }}
-          >
-            {renderSeats()}
-          </div>
-        </div>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          Cerrar
-        </Button>
-        <Button variant="primary" onClick={() => console.log(selectedSeats)}>
-          Confirmar
-        </Button>
-      </Modal.Footer>
-      </>
+    <div style={{ position: 'relative', width: '100%', height: '600px' }}> 
+      <SprinterSVG style={{ width: '100%', height: '100%' }} />
+      <div 
+        style={{ 
+          position: 'absolute', 
+          top: '1%',  
+          left: '15%', 
+          width: '70%',  
+          height: '80%', 
+          display: 'relative'
+        }}
+      >
+        {renderSeats()}
+      </div>
+    </div>
   );
 };
 

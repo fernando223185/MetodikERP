@@ -101,7 +101,7 @@ function TableDestinos() {
       data={result}
       sortable
       pagination
-      perPage={5}
+      perPage={10}
     >
       <Row className="justify-content-start ">
         <Col xs="auto">
