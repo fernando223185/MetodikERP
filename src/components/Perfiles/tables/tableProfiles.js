@@ -9,7 +9,6 @@ import AdvanceTableFooter from "components/common/advance-table/AdvanceTableFoot
 import SubtleBadge from "components/common/SubtleBadge";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import ModalProfiler from "../modalProfiler";
 
 const columns = [
   {
@@ -69,7 +68,7 @@ function TableProfiles() {
 
   useEffect(() => {
     var user = JSON.parse(localStorage.getItem("user"));
-    setEmpresaID(user.EmpresaID) 
+    setEmpresaID(user.EmpresaID);
     console.log(user);
     const data = {
       EmpresaID: user.EmpresaID,
@@ -83,12 +82,12 @@ function TableProfiles() {
       const transformedData = profiles.data.map((u) => ({
         acciones: (
           <>
-            <button
+            <Link
+              to={`/Catalogo/Perfil/${u.ID}`}
               className="btn btn-outline-primary rounded-pill me-1 mb-1"
-              onClick={() => handleEditUserClick(u)}
             >
               <FontAwesomeIcon icon="eye" />
-            </button>
+            </Link>
           </>
         ),
         nombre: `${u.Nombre}`,
@@ -171,21 +170,6 @@ function TableProfiles() {
           />
         </div>
       </AdvanceTableWrapper>
-
-      {/* ModalProfiler */}
-      {lgShow && (
-        <ModalProfiler
-          id={selectedUser ? selectedUser.ID : 0}
-          EmpresaID={EmpresaID}
-          formToShow={formToShow}
-          openModal={lgShow}
-          handleCloseModal={handleCloseModal}
-          warehouseID={null}
-          selectedUser={selectedUser}
-          setSelectedUser={setSelectedUser}
-          handleSaveChanges={null}
-        />
-      )}
     </>
   );
 }

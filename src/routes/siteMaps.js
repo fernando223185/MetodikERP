@@ -45,6 +45,12 @@ export const appRoutes = {
           to: "/configuration/destinos",
           active: true,
         },
+        {
+          name: "Perfiles",
+          icon: faSearchLocation,
+          to: "/configuration/profiles",
+          active: true,
+        },
       ],
     },
     {

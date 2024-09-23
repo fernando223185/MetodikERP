@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { getProfilesAsync, ActProfilerAsync, getUsersByIdAsync } from 'api/catalogo/perfiles/perfiles';
+import { getProfilesAsync, ActProfilerAsync, getPerfilesByIdAsync } from 'api/catalogo/perfiles/perfiles';
 
 
 export const useGetProfiles = () => {
@@ -34,18 +34,17 @@ export const useActProfil = () => {
     return { actProfiles, result, isLoading };
 };
 
-export const useGetUserById = () => {
-    const [userId, setUsers] = useState({});
-    const [isLoading, setIsLoading] = useState(false);
-  
-    const getUserById = useCallback(async ({ id }) => {
-      setIsLoading(true);
-      const result = await getUsersByIdAsync({ id });
-        console.log("result", result)
-      setUsers(result);
-      setIsLoading(false);
-    }, []);
-  
-    return { getUserById, userId, isLoading, setIsLoading };
-};
+export const useGetPerfilID = () => {
+  const [profiles, setProfiles] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
+  const getPerfilID = useCallback(async (id) => {
+    setIsLoading(true);
+    const result = await getPerfilesByIdAsync(id);
+
+    setProfiles(result);
+    setIsLoading(false);
+  }, []);
+
+  return { getPerfilID, profiles, isLoading, setIsLoading };
+};

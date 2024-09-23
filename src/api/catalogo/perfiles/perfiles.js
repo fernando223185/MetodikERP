@@ -23,9 +23,9 @@ export async function ActProfilerAsync({data}){
     }
 }
 
-export async function getUsersByIdAsync({id = 0}){
+export async function getPerfilesByIdAsync(ID){
     try{
-        const response = await axios.get(`${endpoints.key}/verUsuarioID?ID=${id}` )
+        const response = await axios.get(`${endpoints.key}/verPerfilID?ID=${ID}` )
         console.log(response)
         return response.data[0]
     }catch(error){
