@@ -1,12 +1,9 @@
-import coverSrc from 'assets/img/illustrations/LogoMetodik_transparent_resized.png';
-import avatar from 'assets/img/illustrations/Mo.png';
-import Flex from 'components/common/Flex';
-import VerifiedBadge from 'components/common/VerifiedBadge';
-import React, { useState } from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
+import coverSrc from 'assets/img/illustrations/BannerUser.jpeg';
+import avatar from 'assets/img/illustrations/user.jpeg';
+import React from 'react';
+import { Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import ProfileBanner from '../../ProfileBanner';
-import IconButton from 'components/common/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 

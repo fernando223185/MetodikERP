@@ -1,4 +1,4 @@
-import logoG from 'assets/img/logos/RTNLogo.png';
+import logoG from 'assets/img/illustrations/Logo-RTN-500x500-1.png';
 
 
 export default [

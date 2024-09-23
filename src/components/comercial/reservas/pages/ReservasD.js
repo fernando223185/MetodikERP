@@ -5,7 +5,7 @@ import InfoDCard from '../sections/InfoDCard'
 import DetalleViajeCard from '../sections/DetalleViajeCard'
 import RutaIda from '../sections/RutaIda'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faReply, faBan, faSave, faChevronLeft, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faReply, faBan, faSave, faChevronLeft, faStar, faCheckCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { useGetReservaID, useGetRutaIda, useGetRutaVuelta, useGetReservaD, useCancelarReserva, useAfectarReserva, useAgregarFormaPago, useCambiarSituaciones } from '../../../../hooks/Comercial/Reserva/useReservaD';
 import { useParams } from 'react-router-dom';
@@ -96,7 +96,12 @@ const ReservasHeader = ({setHasFetched, estatus}) => {
     } else if (pago && pago.status === 200) {
         toast[pago.data[0].Tipo](`${pago.data[0].Mensaje}`, {
             theme: 'colored',
-            position: pago.data[0].Posicion
+            position: pago.data[0].Posicion,
+            icon: pago.data[0].Tipo === 'success' ? 
+            <FontAwesomeIcon icon={faCheckCircle} /> : 
+            pago.data[0].Tipo === 'error' ? 
+            <FontAwesomeIcon icon={faExclamationTriangle} /> : 
+            <FontAwesomeIcon icon={faInfoCircle} />
         });
         setTimeout(() => {
           setShowModal(false);
@@ -116,7 +121,12 @@ const ReservasHeader = ({setHasFetched, estatus}) => {
     } else if (situacion && situacion.status === 200) {
         toast[situacion.data[0].Tipo](`${situacion.data[0].Mensaje}`, {
             theme: 'colored',
-            position: situacion.data[0].Posicion
+            position: situacion.data[0].Posicion,
+            icon: situacion.data[0].Tipo === 'success' ? 
+            <FontAwesomeIcon icon={faCheckCircle} /> : 
+            situacion.data[0].Tipo === 'error' ? 
+            <FontAwesomeIcon icon={faExclamationTriangle} /> : 
+            <FontAwesomeIcon icon={faInfoCircle} />
         });
         setTimeout(() => {
           handleModalCloseSituacion(false);
@@ -136,7 +146,12 @@ const ReservasHeader = ({setHasFetched, estatus}) => {
     } else if (result && result.status === 200) {
         toast[result.data[0].Tipo](`${result.data[0].Mensaje}`, {
             theme: 'colored',
-            position: result.data[0].Posicion
+            position: result.data[0].Posicion,
+            icon: result.data[0].Tipo === 'success' ? 
+            <FontAwesomeIcon icon={faCheckCircle} /> : 
+            result.data[0].Tipo === 'error' ? 
+            <FontAwesomeIcon icon={faExclamationTriangle} /> : 
+            <FontAwesomeIcon icon={faInfoCircle} />
         });
         setTimeout(() => {
           setHasFetched((prev) => !prev); 
@@ -155,7 +170,12 @@ const ReservasHeader = ({setHasFetched, estatus}) => {
     } else if (resultAfect && resultAfect.status === 200) {
         toast[resultAfect.data[0].Tipo](`${resultAfect.data[0].Mensaje}`, {
             theme: 'colored',
-            position: resultAfect.data[0].Posicion
+            position: resultAfect.data[0].Posicion,
+            icon: resultAfect.data[0].Tipo === 'success' ? 
+            <FontAwesomeIcon icon={faCheckCircle} /> : 
+            resultAfect.data[0].Tipo === 'error' ? 
+            <FontAwesomeIcon icon={faExclamationTriangle} /> : 
+            <FontAwesomeIcon icon={faInfoCircle} />
         });
         setTimeout(() => {
           setHasFetched((prev) => !prev); 

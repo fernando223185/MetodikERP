@@ -5,7 +5,7 @@ import { Col, Row, Spinner } from 'react-bootstrap';
 import AdvanceTableFooter from 'components/common/advance-table/AdvanceTableFooter';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AdvanceTableSearchBox from 'components/common/advance-table/AdvanceTableSearchBox';
-import { faBus, faUsers } from '@fortawesome/free-solid-svg-icons'; 
+import { faBus, faUsers, faCheckCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons'; 
 import { useDelRowReservaD } from '../../../../hooks/Comercial/Reserva/useReservaD'
 import { toast } from 'react-toastify';
 import ModalAsientos from '../modal/ModalAsientos'
@@ -79,8 +79,13 @@ function TableReservaD({ reservaD, setUpdateList }) {
       } else if (resultDel && resultDel.status === 200) {
           toast[resultDel.data[0].Tipo](`${resultDel.data[0].Mensaje}`, {
               theme: 'colored',
-              position: resultDel.data[0].Posicion
-          });
+              position: resultDel.data[0].Posicion,
+              icon: resultDel.data[0].Tipo === 'success' ? 
+              <FontAwesomeIcon icon={faCheckCircle} /> : 
+              resultDel.data[0].Tipo === 'error' ? 
+              <FontAwesomeIcon icon={faExclamationTriangle} /> : 
+              <FontAwesomeIcon icon={faInfoCircle} />
+          }); 
           setTimeout(() => {
             setUpdateList((prev) => !prev); 
           }, 1000)

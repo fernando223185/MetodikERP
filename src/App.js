@@ -44,8 +44,8 @@ const App = () => {
       <SettingsPanel />
       <ToastContainer
         closeButton={CloseButton}
-        icon={false}
-        position={toast.POSITION.BOTTOM_LEFT}
+        icon={true}
+        theme="light"
       />
     </>
   );

@@ -4,7 +4,7 @@ import FalconCloseButton from 'components/common/FalconCloseButton';
 import { FormikProvider, useFormik } from 'formik';
 import * as Yup from 'yup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSave, faChevronLeft } from '@fortawesome/free-solid-svg-icons'; 
+import { faSave, faChevronLeft, faCheckCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons'; 
 import { useParams } from 'react-router-dom';
 import { useActReservaD } from '../../../../hooks/Comercial/Reserva/useReservaD'
 import { toast } from 'react-toastify';
@@ -38,14 +38,18 @@ const FormRutaIda = ({ show, handleClose, selectedItem, setUpdateList }) => {
   });
 
     useEffect(() => {
-        console.log(resultNew)
         if (resultNew && Object.keys(resultNew).length === 0) {
             console.log("resultNew es un array vacío:", resultNew);
         } else if (resultNew && resultNew.status === 200) {
             toast[resultNew.data[0].Tipo](`${resultNew.data[0].Mensaje}`, {
                 theme: 'colored',
-                position: resultNew.data[0].Posicion
-            });
+                position: resultNew.data[0].Posicion,
+                icon: resultNew.data[0].Tipo === 'success' ? 
+                <FontAwesomeIcon icon={faCheckCircle} /> : 
+                resultNew.data[0].Tipo === 'error' ? 
+                <FontAwesomeIcon icon={faExclamationTriangle} /> : 
+                <FontAwesomeIcon icon={faInfoCircle} />
+            });  
             setTimeout(() => {
                 setUpdateList((prev) => !prev); 
                 handleClose();

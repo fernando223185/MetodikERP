@@ -58,6 +58,11 @@ const columns = [
     Header: "Confirmados",
     headerProps: { className: "text-900" },
   },
+  {
+    accessor: "noDisponible",
+    Header: "Disponible",
+    headerProps: { className: "text-900" },
+  },
 ];
 
 function TableExploradorRutas() {
@@ -99,6 +104,7 @@ function TableExploradorRutas() {
         noPasajeros: u.NoAsientos,
         noReservados: u.Reservados,
         noConfirmados: u.Confirmados,
+        noDisponible: u.Disponible,
       }));
       setResult(transformedData);
     }
