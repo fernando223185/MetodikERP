@@ -1,7 +1,6 @@
 import React from 'react';
 import { Card, Col, Form, Row, Button } from 'react-bootstrap';
 import FalconCardHeader from 'components/common/FalconCardHeader';
-import { FormikProvider } from 'formik';
 
 const ProfileSettings = ({ formik }) => {
 

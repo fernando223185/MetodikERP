@@ -31,7 +31,7 @@ const SucursalSelect = ({ value, onChange, tipo, modulo }) => {
             <Form.Control
                 as="select"
                 className="form-select"
-                name="SuursalID"
+                name="SucursalID"
                 value={value}
                 onChange={onChange}
                 required

@@ -199,6 +199,7 @@ import RangeSlider from 'components/doc-components/RangeSlider';
 
 /* IMPORTS FOR THE NEW APP */
 import Users from '../components/Usuarios/Index'
+import Agentes from '../components/agentes/index.js'
 import Empresas from 'components/empresas';
 import EmpresasSettings from 'components/empresas/Profile/EmpresaSettings';
 import CreateEmpresa from 'components/empresas/Profile/CreateEmpresa';
@@ -216,6 +217,8 @@ import DestinoSettings from 'components/destinos/Profile/DestinoSettings';
 import CreateSucursal from 'components/sucursales/Profile/CreateSucursal';
 import UserProfile from '../components/Usuarios/pages/viewUser/Profile'
 import EditarUsuario from '../components/Usuarios/pages/editUser/EditarUsuario'
+import AgenteProfile from '../components/agentes/pages/viewAgente/Profile';
+import EditarAgente from '../components/agentes/pages/editAgente/EditarAgente';
 import Reservas from '../components/comercial/reservas/Index'
 import ReservasD from '../components/comercial/reservas/pages/ReservasD'
 import Rutas from 'components/rutas/index'
@@ -602,6 +605,7 @@ const MetodikRoutes = () => {
         <Route path="changelog" element={<Changelog />} />
               {/*ROUTES FOR THE NEW APP METODIK*/}
         <Route path="configuration/users" element={<Users />} />
+        <Route path="configuration/agentes" element={<Agentes />} />
         <Route path="configuration/empresas" element={<Empresas />} />
         <Route path="configuration/empresas/editar/:id" element={<EmpresasSettings />} />
         <Route path="configuration/empresa/nuevo" element={<CreateEmpresa />} />
@@ -622,6 +626,8 @@ const MetodikRoutes = () => {
 
         <Route path="configuration/users/view-profile/:id" element={<UserProfile />} />
         <Route path="configuration/users/edit/:id" element={<EditarUsuario />} />
+        <Route path="configuration/agentes/view-profile/:id" element={<AgenteProfile />} />
+        <Route path="configuration/agentes/edit/:id" element={<EditarAgente />} />
         <Route path="comercial/reservas" element={<Reservas/>} />
         <Route path="comercial/reservas/reservaD/:id" element={<ReservasD/>} />
         <Route path="configuration/rutas" element={<Rutas />} />
