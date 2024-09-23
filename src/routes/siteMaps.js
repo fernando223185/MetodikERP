@@ -61,6 +61,12 @@ export const appRoutes = {
           active: true,
         },
         {
+          name: "Perfiles",
+          icon: faSearchLocation,
+          to: "/configuration/profiles",
+          active: true,
+        },
+        {
           name: "Clientes",
           icon: faUsers,
           to: "/catalogo/clientes",

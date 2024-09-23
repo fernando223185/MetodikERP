@@ -105,6 +105,7 @@ function TableExploradorRutas() {
         noReservados: u.Reservados,
         noConfirmados: u.Confirmados,
         noDisponible: u.Disponible,
+
       }));
       setResult(transformedData);
     }

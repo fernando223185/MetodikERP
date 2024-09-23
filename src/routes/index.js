@@ -231,6 +231,7 @@ import ExploradorRutas from 'components/Exploradores/Rutas/index'
 import ExploradorRutasD from 'components/Exploradores/Rutas/index_rutasD'
 import PasajeroD from '../components/comercial/reservas/pages/PasajeroD'
 import ViewProfile from 'components/choferes/ViewProfile/ViewChofer';
+import Perfiles from 'components/Perfiles/pages/index';
 
 const MetodikRoutes = () => {
   return (
@@ -635,6 +636,7 @@ const MetodikRoutes = () => {
         <Route path="Explorador/ExploradorRutas" element={<ExploradorRutas />} />
         <Route path="Explorador/ExploradorRutas/:id" element={<ExploradorRutasD/>} />
         <Route path="comercial/reservas/reservaD/pasajerosD/:id" element={<PasajeroD/>} />
+        <Route path="Catalogo/Perfil/:id" element={<Perfiles />} />
 
       </Route>
 

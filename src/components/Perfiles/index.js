@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Col, Row, Container, Modal, Card } from 'react-bootstrap';
 import TableProfiles from './tables/tableProfiles';
-import ModalProfiler from './modalProfiler';
 
 
 
@@ -54,16 +53,7 @@ const Profiles = () => {
         </Col>
       </Row>
 
-      <ModalProfiler
-        id={selectedUser ? selectedUser.id : null}
-        formToShow={formToShow}
-        openModal={lgShow}
-        handleCloseModal={handleCloseModal}
-        warehouseID={null}
-        selectedUser={selectedUser}
-        setSelectedUser={setSelectedUser}
-        handleSaveChanges={handleSaveChanges}
-      />
+
     </>
   );
 };
