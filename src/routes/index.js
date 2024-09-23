@@ -111,7 +111,7 @@ import Products from 'components/app/e-commerce/product/Products';
 import ProductDetails from 'components/app/e-commerce/product/product-details/ProductDetails';
 import AddProduct from 'components/app/e-commerce/product/add-product/AddProduct';
 import Orders from 'components/app/e-commerce/orders/order-list/Orders';
-//import Customers from 'components/app/e-commerce/customers/Customers';
+import Customers from 'components/app/e-commerce/customers/Customers';
 import Courses from 'components/app/e-learning/course/Courses';
 import CourseDetails from 'components/app/e-learning/course/course-details';
 import CreateCourse from 'components/app/e-learning/course/create-a-course';
@@ -199,7 +199,6 @@ import RangeSlider from 'components/doc-components/RangeSlider';
 
 /* IMPORTS FOR THE NEW APP */
 import Users from '../components/Usuarios/Index'
-import Agentes from '../components/agentes/index.js'
 import Empresas from 'components/empresas';
 import EmpresasSettings from 'components/empresas/Profile/EmpresaSettings';
 import CreateEmpresa from 'components/empresas/Profile/CreateEmpresa';
@@ -215,11 +214,10 @@ import AlmacenSettings from 'components/almacenes/Profile/AlmacenSettings';
 import CreateDestino from 'components/destinos/Profile/CreateDestino';
 import Destinos from 'components/destinos';
 import DestinoSettings from 'components/destinos/Profile/DestinoSettings';
+
 import CreateSucursal from 'components/sucursales/Profile/CreateSucursal';
 import UserProfile from '../components/Usuarios/pages/viewUser/Profile'
 import EditarUsuario from '../components/Usuarios/pages/editUser/EditarUsuario'
-import AgenteProfile from '../components/agentes/pages/viewAgente/Profile';
-import EditarAgente from '../components/agentes/pages/editAgente/EditarAgente';
 import Reservas from '../components/comercial/reservas/Index'
 import ReservasD from '../components/comercial/reservas/pages/ReservasD'
 import Rutas from 'components/rutas/index'
@@ -229,8 +227,10 @@ import Choferes from 'components/choferes/index'
 import EditChofer from 'components/choferes/edit/EditChofer';
 import CreateChofer from 'components/choferes/create/CreateChofer';
 import Profiles from 'components/Perfiles/index'
+import ExploradorRutas from 'components/Exploradores/Rutas/index'
+import ExploradorRutasD from 'components/Exploradores/Rutas/index_rutasD'
+import PasajeroD from '../components/comercial/reservas/pages/PasajeroD'
 import ViewProfile from 'components/choferes/ViewProfile/ViewChofer';
-import Customers from 'components/Catalogos/Clientes/Index';
 
 const MetodikRoutes = () => {
   return (
@@ -602,7 +602,6 @@ const MetodikRoutes = () => {
         <Route path="changelog" element={<Changelog />} />
               {/*ROUTES FOR THE NEW APP METODIK*/}
         <Route path="configuration/users" element={<Users />} />
-        <Route path="configuration/agentes" element={<Agentes />} />
         <Route path="configuration/empresas" element={<Empresas />} />
         <Route path="configuration/empresas/editar/:id" element={<EmpresasSettings />} />
         <Route path="configuration/empresa/nuevo" element={<CreateEmpresa />} />
@@ -612,16 +611,22 @@ const MetodikRoutes = () => {
         <Route path="configuration/vehiculos" element={<Vehiculos />} />
         <Route path="configuration/vehiculos/editar/:id" element={<VehiculosSettings />} />
         <Route path="configuration/vehiculo/nuevo" element={<CreateVehiculo />} />
+        
+        <Route path="configuration/almacenes" element={<Almacenes />} />
+        <Route path="configuration/almacenes/editar/:id" element={<AlmacenSettings />} />
+        <Route path="configuration/almacen/nuevo" element={<CreateAlmacen />} />
+        <Route path="configuration/destinos" element={<Destinos />} />
+        <Route path="configuration/destinos/editar/:id" element={<DestinoSettings />} />
+        <Route path="configuration/destino/nuevo" element={<CreateDestino />} />
+        
+
         <Route path="configuration/users/view-profile/:id" element={<UserProfile />} />
         <Route path="configuration/users/edit/:id" element={<EditarUsuario />} />
-        <Route path="configuration/agentes/view-profile/:id" element={<AgenteProfile />} />
-        <Route path="configuration/agentes/edit/:id" element={<EditarAgente />} />
         <Route path="comercial/reservas" element={<Reservas/>} />
         <Route path="comercial/reservas/reservaD/:id" element={<ReservasD/>} />
         <Route path="configuration/rutas" element={<Rutas />} />
         <Route path="configuration/rutas/nuevo" element={<CreateRutas />} />
         <Route path="configuration/rutas/edit/:id" element={<EditRutas />} />
-        <Route path="configuration/rutas/horarios/:id" element={<Horario />} />
         <Route path="configuration/choferes" element={<Choferes />} />
         <Route path="configuration/choferes/view-profile/:id" element={<ViewProfile />} />
         <Route path="configuration/choferes/edit/:id" element={<EditChofer />} />
@@ -630,7 +635,7 @@ const MetodikRoutes = () => {
         <Route path="Explorador/ExploradorRutas" element={<ExploradorRutas />} />
         <Route path="Explorador/ExploradorRutas/:id" element={<ExploradorRutasD/>} />
         <Route path="comercial/reservas/reservaD/pasajerosD/:id" element={<PasajeroD/>} />
-        <Route path="catalogo/clientes" element={<Customers/>} />
+
       </Route>
 
       {/* //--- MainLayout end  */}
@@ -644,4 +649,3 @@ const MetodikRoutes = () => {
 };
 
 export default MetodikRoutes;
-

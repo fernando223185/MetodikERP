@@ -1,27 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button, Card, Col, Row, Form } from 'react-bootstrap';
-import { useActAlmacen } from '../../../hooks/Catalogos/Almacenes/useAlmacen.js';
+import { useActAlmacen } from '../../../hooks/Catalogos/Almacenes/useAlmacen.js'
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { BackButton, SaveButton, CleanButton } from '../../vehiculos/FormFields/FormButtons.js';
-import EmpresaSelect from '../../vehiculos/FormFields/Empresa.js';
-import EstatusSelect from '../../vehiculos/FormFields/Estatus.js';
-import SucursalSelect from '../../vehiculos/FormFields/Sucursal.js';
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify';
-
 
 const CreateAlmacen = () => {
     const navigate = useNavigate();
-    const { submitAlmacen, response: resultNew, error, isLoading } = useActAlmacen();
-
-    const storedData = localStorage.getItem("user");
-    const parsedData = storedData ? JSON.parse(storedData) : {};
-    const empresaID = parsedData.EmpresaID;
-
-    const initialFormState = {
+    const { submitAlmacen, response, error, isLoading } = useActAlmacen();
+    const [formData, setFormData] = useState({
         ID: '',
         Almacen: '',
         Nombre: '',
@@ -44,135 +29,136 @@ const CreateAlmacen = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(formData);
-        await submitAlmacen({ data: formData });
+        await submitAlmacen({ data: formData })
+    
+        console.log(error);
 
+        if (!error) {
+            setTimeout(() => {
+                navigate('/configuration/almacenes');
+            }, 800);
+        }
     };
 
-    useEffect(() => {
-        console.log("resultNew received:", resultNew);
-        if (resultNew && resultNew.status === 200 && Array.isArray(resultNew.data) && resultNew.data.length > 0) {
-            const { Mensaje, Tipo, Titulo, Posicion } = resultNew.data[0]; // Extraer el primer objeto del array 'data'
-
-            // Asegúrate de que los valores existen
-            console.log("Mensaje:", Mensaje, "Tipo:", Tipo, "Titulo:", Titulo, "Posicion:", Posicion);
-
-            // Verifica si los valores están definidos
-            if (Mensaje && Tipo) {
-                toast[Tipo?.toLowerCase() || "success"](`${Titulo || 'Notificación'}: ${Mensaje}`, {
-                    position: Posicion || "top-right",
-                    theme: "colored",
-                    style: {
-                        color: "#000000",
-                        backgroundColor: Tipo === 'success' ? '#28a745' : Tipo === 'error' ? '#dc3545' : '#007bff',
-                        fontSize: '16px',
-                        fontWeight: 'bold', 
-                    },
-                });
-            } else if (error) {
-                toast.error('Error al guardar', {
-                    theme: 'colored',
-                    position: 'top-right',
-                });
-            }
-        }
-    }, [resultNew]);
-
     return (
-        <>
-            <Card>
-                <Card.Body className="p-lg-6">
-                    <Row>
-                        <Col>
-                            <h3 className="text-dark mb-4">Nuevo Almacen</h3>
+        <Card>
+            <Card.Body className="p-lg-6">
+                <h3 className="text-primary text-center mb-4">Nuevo Almacen</h3>
+                <Form onSubmit={handleSubmit}>
+                    <Row className="mb-3">
+                        <Col lg={6}>
+                            <Form.Group controlId="Almacen">
+                                <Form.Label>Almacen</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="Almacen"
+                                    value={formData.Almacen}
+                                    onChange={handleChange}
+                                    placeholder="Ingresa la almacen"
+                                    required
+                                />
+                            </Form.Group>
                         </Col>
-                        <Col lg={6} className="text-end">
-                            <BackButton action={() => navigate('/configuration/almacenes')} />
+                        <Col lg={6}>
+                            <Form.Group controlId="Nombre">
+                                <Form.Label>Nombre</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="Nombre"
+                                    value={formData.Nombre}
+                                    onChange={handleChange}
+                                    placeholder="Ingresa el nombre"
+                                    required
+                                />
+                            </Form.Group>
                         </Col>
                     </Row>
-                    <Form onSubmit={handleSubmit}>
-                        <Row className="mb-3">
-                            <Col lg={6}>
-                                <Form.Group controlId="Nombre">
-                                    <Form.Label>Nombre</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        name="Nombre"
-                                        value={formData.Nombre}
-                                        onChange={handleChange}
-                                        placeholder="Ingresa el nombre"
-                                        required
-                                    />
-                                </Form.Group>
-                            </Col>
-                            <Col lg={6}>
-                                <EstatusSelect
-                                    tipo="Estatus"
-                                    modulo="Almacenes"
-                                    value={formData.EstatusID}
+                    <Row className="mb-3">
+                        <Col lg={6}>
+                            <Form.Group controlId="GrupoID">
+                                <Form.Label>GrupoID</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="GrupoID"
+                                    value={formData.GrupoID}
                                     onChange={handleChange}
+                                    placeholder="Ingresa un grupo"
+                                    required
                                 />
-                            </Col>
-                        </Row>
-                        <Row className="mb-3">
-                            <Col lg={6}>
-                                <Form.Group controlId="GrupoID">
-                                    <Form.Label>GrupoID</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        name="GrupoID"
-                                        value={formData.GrupoID}
-                                        onChange={handleChange}
-                                        placeholder="Ingresa un grupo"
-                                        required
-                                    />
-                                </Form.Group>
-                            </Col>
-                            <Col lg={6}>
-                                <Form.Group controlId="TipoID">
-                                    <Form.Label>TipoID</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        name="TipoID"
-                                        value={formData.TipoID}
-                                        onChange={handleChange}
-                                        placeholder="Ingresa el tipo id"
-                                        required
-                                    />
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <Row className="mb-3">
-                            <Col lg={6}>
-                                <SucursalSelect
-                                    tipo="Sucursal"
-                                    modulo="Almacenes"
+                            </Form.Group>
+                        </Col>
+                        <Col lg={6}>
+                            <Form.Group controlId="TipoID">
+                                <Form.Label>TipoID</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="TipoID"
+                                    value={formData.TipoID}
+                                    onChange={handleChange}
+                                    placeholder="Ingresa el tipo id"
+                                    required
+                                />
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                    <Row className="mb-3">
+                        <Col lg={4}>
+                            <Form.Group controlId="SucursalID">
+                                <Form.Label>SucursalID</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="SucursalID"
                                     value={formData.SucursalID}
                                     onChange={handleChange}
+                                    placeholder="Ingresa el sucursal id"
+                                    required
                                 />
-                            </Col>
-                            <Col lg={6}>
-                                <EmpresaSelect
-                                    tipo="Empresa"
-                                    modulo="Almacenes"
+                            </Form.Group>
+                        </Col>
+                        <Col lg={4}>
+                            <Form.Group controlId="EstatusID">
+                                <Form.Label>Estatus</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="EstatusID"
+                                    value={formData.EstatusID}
+                                    onChange={handleChange}
+                                    placeholder="Ingresa el estatus"
+                                    required
+                                />
+                            </Form.Group>
+                        </Col>
+                        <Col lg={4}>
+                            <Form.Group controlId="EmpresaID">
+                                <Form.Label>Empresa</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="EmpresaID"
                                     value={formData.EmpresaID}
                                     onChange={handleChange}
+                                    placeholder="Ingresa la empresa"
+                                    required
                                 />
-                            </Col>
-                        </Row>
-
-                        <Row className="mt-4">
-                            <Col className="text-end">
-                                <SaveButton isLoading={isLoading} />
-                                <CleanButton action={resetForm} isLoading={isLoading} />
-                            </Col>
-                        </Row>
-                    </Form>
-                </Card.Body>
-            </Card>
-            <ToastContainer />
-        </>
+                            </Form.Group>
+                        </Col>
+                    </Row>                       
+                        
+                    <Row className="mt-4">
+                        <Col className="text-center">
+                            <Button variant="primary" type="submit" disabled={isLoading}>
+                                {isLoading ? 'Guardando...' : 'Guardar'}
+                            </Button>
+                        </Col>
+                        <Col className="text-center">
+                            <Button variant="danger" type="submit" onClick={() => { navigate('/configuration/almacenes') }}>
+                                Regresar
+                            </Button>
+                        </Col>
+                    </Row>
+                </Form>
+            </Card.Body>
+        </Card>
     );
 };
 
 export default CreateAlmacen;
-

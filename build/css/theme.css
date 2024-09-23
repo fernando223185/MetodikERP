@@ -25990,7 +25990,6 @@ a[href].bg-200:hover, a[href].bg-200:focus {
   color: var(--falcon-warning);
   border-color: var(--falcon-warning);
 }
-
 .icon-circle-danger {
   color: var(--falcon-danger);
   border-color: var(--falcon-danger);
