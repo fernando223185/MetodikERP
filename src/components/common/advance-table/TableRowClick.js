@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Table } from 'react-bootstrap';
 
-const AdvanceTable = ({
+const TableRowClick = ({
   getTableProps,
   headers,
   page,
@@ -10,7 +10,8 @@ const AdvanceTable = ({
   headerClassName,
   bodyClassName,
   rowClassName,
-  tableProps
+  tableProps,
+  onRowClick 
 }) => {
   return (
     <div className="table-responsive scrollbar">
@@ -46,7 +47,20 @@ const AdvanceTable = ({
           {page.map((row, i) => {
             prepareRow(row);
             return (
-              <tr key={i} className={rowClassName} {...row.getRowProps()}>
+              <tr
+                key={i}
+                className={rowClassName}
+                {...row.getRowProps({
+                  onClick: () => onRowClick(row.original.id),
+                  style: {
+                    cursor: 'pointer',
+                    transition: 'background-color 0.2s ease',
+                    backgroundColor: row.isHovered ? '#f0f0f0' : '', 
+                  },
+                  onMouseEnter: (e) => (e.currentTarget.style.backgroundColor = '#f0f0f0'),
+                  onMouseLeave: (e) => (e.currentTarget.style.backgroundColor = ''),
+                })}
+              >
                 {row.cells.map((cell, index) => {
                   return (
                     <td
@@ -65,7 +79,8 @@ const AdvanceTable = ({
     </div>
   );
 };
-AdvanceTable.propTypes = {
+
+TableRowClick.propTypes = {
   getTableProps: PropTypes.func,
   headers: PropTypes.array,
   page: PropTypes.array,
@@ -73,7 +88,8 @@ AdvanceTable.propTypes = {
   headerClassName: PropTypes.string,
   bodyClassName: PropTypes.string,
   rowClassName: PropTypes.string,
-  tableProps: PropTypes.object
+  tableProps: PropTypes.object,
+  onRowClick: PropTypes.func 
 };
 
-export default AdvanceTable;
+export default TableRowClick;

@@ -1,4 +1,4 @@
-import AdvanceTable from 'components/common/advance-table/AdvanceTable';
+import TableRowClick from 'components/common/advance-table/TableRowClick';
 import AdvanceTableWrapper from 'components/common/advance-table/AdvanceTableWrapper';
 import React, { useEffect, useState } from 'react';
 import { Col, Row, Spinner, Card, Offcanvas } from 'react-bootstrap';
@@ -298,7 +298,7 @@ function TableReservasV2({reservas, movimientos}) {
                 />
                 </Card.Header>
                 <Card.Body className="p-0">
-                <AdvanceTable
+                <TableRowClick
                     table
                     headerClassName="bg-body-tertiary align-middle"
                     rowClassName="align-middle white-space-nowrap"
