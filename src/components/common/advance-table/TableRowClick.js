@@ -66,6 +66,7 @@ const TableRowClick = ({
                     <td
                       key={index}
                       {...cell.getCellProps(cell.column.cellProps)}
+                      onClick={cell.column.id === 'checkbox' ? (e) => e.stopPropagation() : null}
                     >
                       {cell.render('Cell')}
                     </td>

@@ -3,64 +3,102 @@ import { Button, Card, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons'; 
 import Select from 'react-select';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
 
+const ReservaFilterForm = ({ movimientos, estatus, setFilter }) => {
+  const [selectedMovimiento, setSelectedMovimiento] = useState(null);
+  const [selectedEstatus, setSelectedEstatus] = useState(null);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
-const ReservaFilterForm = ({movimientos}) => {
-    const [selectedMovimiento, setSelectedMovimiento] = useState(null);
+  const handleMovimientoChange = (selectedOption) => {
+    setSelectedMovimiento(selectedOption); 
+  };
 
-    const handleMovimientoChange = (selectedOption) => {
-      setSelectedMovimiento(selectedOption); 
-      console.log('Selected:', selectedOption); 
+  const handleEstatusChange = (selectedOption) => {
+    setSelectedEstatus(selectedOption); 
+  };
+
+  const handleSearch = () => {
+    const data = {
+      EstatusID: selectedEstatus ? selectedEstatus.value : null,
+      Movimiento: selectedMovimiento ? selectedMovimiento.value : null,
+      FechaDesde: startDate ? moment(startDate).format('YYYY-MM-DD') : null,
+      FechaHasta: endDate ? moment(endDate).format('YYYY-MM-DD') : null
     };
+
+    console.log('Filtro aplicado:', data);
+    setFilter(data); 
+  };
+
   return (
-    <Card className="shadow-none shadow-show-xl scrollbar">
+    <Card className="shadow-none shadow-show-xl">
       <Card.Header className="bg-body-tertiary d-none d-xl-block">
         <h6 className="mb-0">Filtro</h6>
       </Card.Header>
       <Card.Body>
         <Form>
           <div className="mb-2 mt-n2">
-          <Form.Group>
-            <Form.Label>Movimiento</Form.Label>
-            <Select
+            <Form.Group>
+              <Form.Label>Movimiento</Form.Label>
+              <Select
                 classNamePrefix="react-select"
                 options={movimientos.map(item => ({
-                value: item.Valor,
-                label: item.Dato,
+                  value: item.Valor,
+                  label: item.Dato
                 }))}
                 value={selectedMovimiento}
-                onChange={handleMovimientoChange} 
-                placeholder="Selecciona un movimiento"
-            />
+                onChange={handleMovimientoChange}
+                placeholder="Selecciona"
+              />
             </Form.Group>
           </div>
           <div className="mb-2">
             <Form.Label className="mb-1 mt-2 fs--1">Estatus</Form.Label>
-            <Form.Select defaultValue="Facebook" size="sm">
-              <option>None</option>
-              <option>Email</option>
-              <option>Phone</option>
-              <option>Facebook</option>
-              <option>Twitter</option>
-              <option>Chat</option>
-              <option>Whatsapp</option>
-              <option>Portal</option>
-              <option>Bots</option>
-              <option>External Email</option>
-              <option>Ecommerce</option>
-              <option>Feedback Widget</option>
-            </Form.Select>
+            <Select
+              classNamePrefix="react-select"
+              options={estatus.map(item => ({
+                value: item.Valor,
+                label: item.Dato
+              }))}
+              value={selectedEstatus}
+              onChange={handleEstatusChange}
+              placeholder="Selecciona"
+            />
+          </div>
+          <div className="mb-2">
+            <Form.Label>Fecha Desde</Form.Label>
+            <DatePicker
+              className="form-control"
+              selected={startDate}
+              onChange={date => setStartDate(date)}
+              placeholderText="Selecciona una fecha"
+              dateFormat="dd-MM-yyyy"
+              locale="es"
+            />
+          </div>
+          <div className="mb-2">
+            <Form.Label>Fecha Hasta</Form.Label>
+            <DatePicker
+              className="form-control"
+              selected={endDate}
+              onChange={date => setEndDate(date)}
+              placeholderText="Selecciona una fecha"
+              dateFormat="dd-MM-yyyy"
+              locale="es"
+            />
           </div>
         </Form>
       </Card.Body>
       <Card.Footer className="border-top border-200 py-x1">
-        <Button varient="primary" className="w-100">
+        <Button variant="primary" className="w-100" onClick={handleSearch}>
           Buscar             
-            <FontAwesomeIcon
-              icon={faSearch}
-              transform="shrink-2"
-              className="ms-1"
-            />
+          <FontAwesomeIcon
+            icon={faSearch}
+            transform="shrink-2"
+            className="ms-1"
+          />
         </Button>
       </Card.Footer>
     </Card>

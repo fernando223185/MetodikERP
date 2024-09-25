@@ -6,6 +6,8 @@ import LmsStats from 'components/dashboards/lms/lms-stats/LmsStatItem';
 import { useGetIndicadores } from '../../../hooks/useIndicadores';
 import { useGetReservas } from '../../../hooks/Comercial/Reserva/useReserva';
 import { useGetFiltroModulo } from '../../../hooks/useFiltros'; 
+import { useLocation } from "react-router";
+import ViewReservasCard from './sections/ViewReservasCard'
 
 const ReservasHeader = () => {
   return (
@@ -25,7 +27,13 @@ const Reservas = () => {
   const { getReservas, reservas, isLoading: isLoadingReservas } = useGetReservas();
   const { getFiltroModulo, isLoading: isLoadingFiltro } = useGetFiltroModulo();
   const [movimientos, setMovimientos] = useState([]);
+  const [estatus, setEstatus] = useState([]);
   const [dataind, setDataInd] = useState([]);
+  const [formview, setFormView] = useState(null);
+  const location = useLocation();
+  const { formView } = location.state || {};
+  const [filter, setFilter] = useState({});
+
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -38,11 +46,16 @@ const Reservas = () => {
       const user = JSON.parse(localStorage.getItem('user'));
       const data = { 
         EmpresaID: user.EmpresaID, 
-        PersonaID: user.ID 
+        PersonaID: user.ID,
+        EstatusID: filter.EstatusID ? filter.EstatusID : null,
+        Movimiento: filter.Movimiento ? filter.Movimiento : null,
+        FechaD: filter.FechaDesde ? filter.FechaDesde : null,
+        FechaH: filter.FechaHasta ? filter.FechaHasta : null
       };
 
       getReservas({ data });
-  }, []);
+  }, [filter]);
+
 
   useEffect(() => {
     if (indicadores.data && indicadores.data.length > 0) {
@@ -69,8 +82,24 @@ const Reservas = () => {
       setMovimientos(result); 
     };
 
+    const fetchEstatus = async () => {
+      const data = { Tipo: 'Estatus', PersonaID: 1, Modulo: 'Reservas' };
+      const result = await getFiltroModulo(data);
+      setEstatus(result); 
+    }
+
+    fetchEstatus();
     fetchMovimientos(); 
+
+    setFormView(formView || 'view-table');
+    console.log(formview)
+
   }, []);
+
+  useEffect(() => {
+    setFormView(formView || 'view-table');
+    console.log(formview)
+  }, [formView]);
 
   if (isLoadingIndicadores || isLoadingReservas) {
     return (
@@ -112,7 +141,11 @@ const Reservas = () => {
               <TableReservas reservas={reservas} />
             </Card.Body>
           </Card> */}
-            <TableReservasV2 reservas={reservas} movimientos={movimientos}/>
+          {formview === 'view-card' ? (
+            <ViewReservasCard reservas={reservas} movimientos={movimientos} estatus={estatus} layout={formview}  />
+          ) : (
+            <TableReservasV2 reservas={reservas} movimientos={movimientos} estatus={estatus} layout={formview} setFilter={setFilter}/>
+          )}
         </Col>
       </Row>
     </>

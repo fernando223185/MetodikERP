@@ -87,13 +87,14 @@ const columns = [
                 <Link
                 to="#"
                 className="stretched-link text-900"
+                onClick={(e) => e.stopPropagation()}
                 >
                     {User}
                 </Link>
             </h6>
           </Flex>
         );
-      }
+    }
   },
   {
     accessor: 'Mov',
@@ -162,7 +163,7 @@ const columns = [
   
 ];
 
-function TableReservasV2({reservas, movimientos}) {
+function TableReservasV2({reservas, movimientos, estatus, layout, setFilter }) {
 
   const [result, setResult] = useState([]);
   const [formToShow, setFormToShow] = useState('');
@@ -271,14 +272,13 @@ function TableReservasV2({reservas, movimientos}) {
   },[response])
 
   const handleRowClick = (id) => {
-    console.log("This is ID", id)
     navigate(`/comercial/reservas/reservaD/${id}`);
   };
 
 
   return (
     <Row className="gx-3">
-        <Col xxl={10} xl={9}>
+        <Col>
             <AdvanceTableWrapper
             columns={columns}
             data={result}
@@ -293,8 +293,10 @@ function TableReservasV2({reservas, movimientos}) {
                 <Card.Header className="border-bottom border-200 px-0">
                 <AllReservasHeader
                     table
-                    layout="table-view"
+                    layout={layout}
                     handleShow={handleShow}
+                    handleClick={handleClick}
+                    isLoading={isLoading}
                 />
                 </Card.Header>
                 <Card.Body className="p-0">
@@ -316,7 +318,6 @@ function TableReservasV2({reservas, movimientos}) {
             </AdvanceTableWrapper>
         </Col>
         <Col xxl={2} xl={3}>
-            {breakpoints.down('xl') ? (
             <Offcanvas
                 show={show}
                 onHide={handleClose}
@@ -324,13 +325,10 @@ function TableReservasV2({reservas, movimientos}) {
                 className="dark__bg-card-dark"
             >
                 <Offcanvas.Header closeButton className="bg-body-tertiary">
-                <h6 className="fs-0 mb-0 fw-semi-bold">Filter</h6>
+                <h6 className="fs-0 mb-0 fw-semi-bold">Filtros</h6>
                 </Offcanvas.Header>
-                <ReservaFilterForm movimientos={movimientos}/>
+                <ReservaFilterForm movimientos={movimientos} estatus={estatus} setFilter={setFilter}/>
             </Offcanvas>
-            ) : (
-            <ReservaFilterForm movimientos={movimientos}/>
-            )}
         </Col>
     </Row>
   );

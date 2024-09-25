@@ -16,8 +16,6 @@ const iconMap = {
 };
 
 const LmsStatItem = ({ stat }) => {
-  console.log("stats",JSON.stringify(stat))
-
   const icon = iconMap[stat.icon] || faPaperPlane;
 
   return (

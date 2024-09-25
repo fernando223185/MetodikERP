@@ -167,9 +167,10 @@ export const columns = [
 ];
 
 export const CardLayout = ({ data, isSelectedItem, toggleSelectedItem }) => {
+  console.log("data",data)
   return (
     <div className="d-flex flex-column gap-3">
-      {data.slice(0, 12).map((ticket, index) => (
+      {data.slice(0, 12).map((reserva, index) => (
         <div
           key={index}
           className="bg-white dark__bg-1100 d-md-flex d-xl-inline-block d-xxl-flex align-items-center p-x1 rounded-3 shadow-sm card-view-height w-100"
@@ -182,23 +183,19 @@ export const CardLayout = ({ data, isSelectedItem, toggleSelectedItem }) => {
             >
               <Form.Check.Input
                 type="checkbox"
-                checked={isSelectedItem(ticket.id)}
-                onChange={() => toggleSelectedItem(ticket.id)}
+                checked={isSelectedItem(reserva.id)}
+                onChange={() => toggleSelectedItem(reserva.id)}
               />
             </Form.Check>
             <Link
               to="/support-desk/contact-details"
               className="d-none d-sm-block"
             >
-              {ticket.avatar.img ? (
-                <Avatar src={ticket.avatar.img} size="3xl" />
-              ) : (
-                <Avatar size="3xl" name={ticket.avatar.name} />
-              )}
+            <Avatar size="3xl" name={reserva.avatar.name} />
             </Link>
             <div className="ms-1 ms-sm-3">
               <p className="fw-semi-bold mb-3 mb-sm-2">
-                <Link to="/support-desk/tickets-preview">{ticket.subject}</Link>
+                <Link to={`/comercial/reservas/reservaD/${reserva.id}`}>{reserva.Mov}</Link>
               </p>
               <Row className="align-items-center gx-0 gy-2">
                 <Col xs="auto" className="me-2">
@@ -208,17 +205,15 @@ export const CardLayout = ({ data, isSelectedItem, toggleSelectedItem }) => {
                       className="text-800 d-flex align-items-center gap-1"
                     >
                       <FontAwesomeIcon icon="user" transform="shrink-3 up-1" />
-                      <span>{ticket.name}</span>
+                      <span>{reserva.User}</span>
                     </Link>
                   </h6>
                 </Col>
                 <Col xs="auto" className="lh-1 me-3">
-                  <SubtleBadge bg={ticket.status.type}>
-                    {ticket.status.content}
-                  </SubtleBadge>
+                    {reserva.estatus}
                 </Col>
                 <Col xs="auto">
-                  <h6 className="mb-0 text-500">{ticket.date}</h6>
+                  <h6 className="mb-0 text-500">{reserva.CreatedAt}</h6>
                 </Col>
               </Row>
             </div>
@@ -226,13 +221,12 @@ export const CardLayout = ({ data, isSelectedItem, toggleSelectedItem }) => {
           <div className="border-bottom mt-4 mb-x1"></div>
           <div className="d-flex justify-content-between ms-auto">
             <PrioritySelect
-              title={ticket.priority.title}
-              color={ticket.priority.color}
-              data={ticket.priority.data}
+              title={reserva.priority.title}
+              color={reserva.priority.color}
+              data={reserva.priority.data}
               className="ms-md-4 ms-xl-0"
               style={{ width: '7.5rem' }}
             />
-            <AgentSelect agent={ticket.agent} style={{ width: '9.375rem' }} />
           </div>
         </div>
       ))}

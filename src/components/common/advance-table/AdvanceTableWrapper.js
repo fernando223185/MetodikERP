@@ -95,7 +95,9 @@ const AdvanceTableWrapper = ({
               }
             },
             Cell: ({ row }) => (
-              <div>
+              <div
+              onClick={e => e.stopPropagation()}
+              >
                 <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
               </div>
             )
