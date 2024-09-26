@@ -18,7 +18,8 @@ const getInitialValues = (reservaId) => {
     dateSalida: null,
     dateRegreso: null,
     referencia: '',
-    observaciones: ''
+    observaciones: '',
+    ruta: '0'
   };
 
   if (reservaId) {
@@ -29,7 +30,8 @@ const getInitialValues = (reservaId) => {
       dateSalida: reservaId.FechaA ? moment(reservaId.FechaA, 'DD-MM-YYYY').toDate() : null,
       dateRegreso: reservaId.FechaD ? moment(reservaId.FechaD, 'DD-MM-YYYY').toDate() : null,
       referencia: reservaId.Referencia,
-      observaciones: reservaId.Observaciones
+      observaciones: reservaId.Observaciones,
+      ruta: reservaId.Ruta || ''
     };
   }
   return initialForm;
@@ -43,7 +45,7 @@ const validationSchema = Yup.object().shape({
   dateRegreso: Yup.date().required('Fecha de regreso es obligatoria'),
 });
 
-const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched, setUpdtRutas, setShowDateRegreso, showDateRegreso }) => {
+const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched, setUpdtRutas, setShowDateRegreso, showDateRegreso, rutas }) => {
 
   const { avanzarReserva, result: resultNew, isLoading: isLoadingNew } = useAvanzaReserva();
 
@@ -61,14 +63,13 @@ const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched,
           FechaSalida: values.dateSalida ? moment(values.dateSalida).format('YYYY-MM-DD 00:00:00') : null,
           FechaRegreso: values.dateRegreso ? moment(values.dateRegreso).format('YYYY-MM-DD 00:00:00') : null,
           Referencia: values.referencia,
-          Observaciones: values.observaciones
+          Observaciones: values.observaciones,
+          Ruta: values.ruta
         };
           
-        console.log('Formulario enviado:', JSON.stringify(data));
         avanzarReserva({ data });
 
       } catch (error) {
-        console.error('Error enviando el formulario', error);
         toast.error('Error al enviar el formulario', {
           theme: 'colored',
           position: 'top-right',
@@ -78,7 +79,6 @@ const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched,
   });
 
   const getOptionByValue = (options, value) => {
-
     const result = options.find(option => option.Valor === value) || null;
     if (result) {
       return { value: result.Valor, label: result.Dato };
@@ -93,8 +93,9 @@ const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched,
     }
   }, [reservaId]);
 
+  
+
   useEffect(() => {
-    console.log(resultNew)
     if (resultNew && Object.keys(resultNew).length === 0) {
       console.log("resultNew es un array vacío:", resultNew);
     } else if (resultNew && resultNew.status === 200) {
@@ -133,14 +134,13 @@ const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched,
     };
 
     const { getFieldProps } = formik
-
   return (
     <FormikProvider value={formik}>
       <form onSubmit={formik.handleSubmit}>
         <Card className="mb-3">
           <Card.Body>
             <Row>
-              <Col>
+              <Col md={6}>
                 <Form.Group>
                   <Form.Label>Movimiento</Form.Label>
                   <Select
@@ -155,6 +155,24 @@ const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched,
                   />
                   {formik.touched.movimiento && formik.errors.movimiento && (
                     <div className="text-danger">{formik.errors.movimiento}</div>
+                  )}
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group>
+                  <Form.Label>Rutas</Form.Label>
+                  <Select
+                    classNamePrefix="react-select"
+                    options={rutas.map(item => ({
+                      value: item.Valor,
+                      label: item.Dato,
+                    }))}
+                    onChange={option => formik.setFieldValue('ruta', option.value)}
+                    isLoading={isLoading}
+                    value={getOptionByValue(rutas, formik.values.ruta)} 
+                  />
+                  {formik.touched.ruta && formik.errors.ruta && (
+                    <div className="text-danger">{formik.errors.ruta}</div>
                   )}
                 </Form.Group>
               </Col>
@@ -277,7 +295,8 @@ const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched,
                 </Spinner>
               ) : (
                 <button type="submit" className="btn btn-outline-primary rounded-pill">
-                  <FontAwesomeIcon icon={faSave} />
+                  Buscar&nbsp;
+                  <FontAwesomeIcon icon="search"/>
                 </button>
               )}
             </div>

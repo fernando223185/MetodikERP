@@ -90,7 +90,6 @@ const Reservas = () => {
 
     fetchEstatus();
     fetchMovimientos(); 
-
     setFormView(formView || 'view-table');
     console.log(formview)
 

@@ -339,6 +339,7 @@ const ReservasD = () => {
   const { getFiltroModulo, isLoading: isLoadingFiltro } = useGetFiltroModulo();
   const [movimientos, setMovimientos] = useState([]);
   const [origenes, setOrigenes] = useState([]);
+  const [rutas, setRutas] = useState([]);
   const { getRutaIda, rutaIda, isLoading: isLoadingRutas } = useGetRutaIda();
   const { getRutaVuelta, rutaVuelta, isLoading: isLoadingRutasV } = useGetRutaVuelta();
   const { getReservaD, reservaD, isLoading: isLoadingD } = useGetReservaD();
@@ -378,8 +379,16 @@ const ReservasD = () => {
       setOrigenes(result);
     };
 
+    const fetchRutas = async () => {
+      const data = { Tipo: 'Rutas', PersonaID: 1, Modulo: 'Reservas' };
+      const result = await getFiltroModulo(data);
+      setRutas(result);
+    };
+
     fetchMovimientos(); 
-    fetchOrigenes();  
+    fetchOrigenes(); 
+    fetchRutas();
+ 
   }, []);
 
   if (isLoading && !showRutas) {
@@ -416,6 +425,7 @@ const ReservasD = () => {
                           setUpdtRutas={setUpdtRutas}
                           setShowDateRegreso={setShowDateRegreso}
                           showDateRegreso={showDateRegreso}
+                          rutas={rutas}
                         />
                     </Col>
                 </Row>
