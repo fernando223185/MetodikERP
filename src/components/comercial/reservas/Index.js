@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Row, Container, Card, Spinner } from 'react-bootstrap';
-import TableReservas from './tables/tableReservas';
 import TableReservasV2 from './tables/tableReservasV2';
 import LmsStats from 'components/dashboards/lms/lms-stats/LmsStatItem';
 import { useGetIndicadores } from '../../../hooks/useIndicadores';

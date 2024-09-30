@@ -265,14 +265,14 @@ function TableReservasV2({reservas, movimientos, estatus, layout, setFilter }) {
       if(response.data[0].Ok === 0)
       {
         setTimeout(() => {
-          navigate(`/comercial/reservas/reservaD/${response.data[0].NID}`);
+          navigate(`/comercial/reservas/view-reserva/${response.data[0].NID}`);
         }, 1000);
       }
     }
   },[response])
 
   const handleRowClick = (id) => {
-    navigate(`/comercial/reservas/reservaD/${id}`);
+    navigate(`/comercial/reservas/view-reserva/${id}`);
   };
 
 

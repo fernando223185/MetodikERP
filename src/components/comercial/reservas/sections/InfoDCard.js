@@ -9,6 +9,8 @@ import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import { useAvanzaReserva } from '../../../../hooks/Comercial/Reserva/useReservaD';
+import IconButton from 'components/common/IconButton';
+
 
 const getInitialValues = (reservaId) => {
   const initialForm = {
@@ -294,10 +296,16 @@ const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched,
                   <span className="visually-hidden">Loading...</span>
                 </Spinner>
               ) : (
-                <button type="submit" className="btn btn-outline-primary rounded-pill">
-                  Buscar&nbsp;
-                  <FontAwesomeIcon icon="search"/>
-                </button>
+
+                  <IconButton
+                    variant="falcon-default"
+                    size="sm"
+                    icon="search"
+                    className="mb-2 mb-sm-0"
+                    type = "submit"
+                  >
+                      Buscar
+                  </IconButton>
               )}
             </div>
           </Card.Body>
