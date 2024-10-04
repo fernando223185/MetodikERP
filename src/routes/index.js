@@ -233,6 +233,8 @@ import PasajeroD from '../components/comercial/reservas/pages/PasajeroD'
 import ViewProfile from 'components/choferes/ViewProfile/ViewChofer';
 import Perfiles from 'components/Perfiles/pages/index';
 import ReservasViewD from 'components/comercial/reservas/pages/ReservasViewD'
+import Paqueteria from 'components/comercial/paqueteria/Index'
+
 
 const MetodikRoutes = () => {
   return (
@@ -639,6 +641,8 @@ const MetodikRoutes = () => {
         <Route path="comercial/reservas/reservaD/pasajerosD/:id" element={<PasajeroD/>} />
         <Route path="Catalogo/Perfil/:id" element={<Perfiles />} />
         <Route path="comercial/reservas/view-reserva/:id" element={<ReservasViewD/>} />
+        <Route path="comercial/paqueteria" element={<Paqueteria/>} />
+
 
       </Route>
 

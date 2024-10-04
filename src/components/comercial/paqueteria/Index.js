@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Row, Container, Card, Spinner } from 'react-bootstrap';
-import TableReservasV2 from './tables/tableReservasV2';
+import TableReservasV2 from '../reservas/tables/tableReservasV2';
 import LmsStats from 'components/dashboards/lms/lms-stats/LmsStatItem';
 import { useGetIndicadores } from '../../../hooks/useIndicadores';
 import { useGetReservas } from '../../../hooks/Comercial/Reserva/useReserva';
 import { useGetFiltroModulo } from '../../../hooks/useFiltros'; 
 import { useLocation } from "react-router";
-import ViewReservasCard from './sections/ViewReservasCard'
+import ViewReservasCard from '../reservas/sections/ViewReservasCard'
 
-const ReservasHeader = () => {
+const PaqueteriaHeader = () => {
   return (
     <Container fluid className="py-3 px-4 border-bottom mb-4">
       <Row className="align-items-center">
         <Col>
-          <h2 className="mb-0">Reservas</h2>
+          <h2 className="mb-0">Paqueteria</h2>
           <span className="text-muted">Tablero de control</span>
         </Col>
       </Row>
@@ -21,7 +21,7 @@ const ReservasHeader = () => {
   );
 };
 
-const Reservas = () => {
+const Paqueteria = () => {
   const { getIndicadores, indicadores, isLoading: isLoadingIndicadores } = useGetIndicadores();
   const { getReservas, reservas, isLoading: isLoadingReservas } = useGetReservas();
   const { getFiltroModulo, isLoading: isLoadingFiltro } = useGetFiltroModulo();
@@ -126,7 +126,7 @@ const Reservas = () => {
 
   return (
     <>
-      <ReservasHeader />
+      <PaqueteriaHeader />
       <Row className="g-3 mb-3">
       <Card className="mb-3">
         <Card.Body className="px-xxl-0 pt-4">
@@ -165,4 +165,4 @@ const Reservas = () => {
   );
 };
 
-export default Reservas;
+export default Paqueteria;

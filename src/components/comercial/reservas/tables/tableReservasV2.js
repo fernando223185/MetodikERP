@@ -163,7 +163,7 @@ const columns = [
   
 ];
 
-function TableReservasV2({reservas, movimientos, estatus, layout, setFilter }) {
+function TableReservasV2({reservas, movimientos, estatus, layout, setFilter, situaciones, usuarios }) {
 
   const [result, setResult] = useState([]);
   const [formToShow, setFormToShow] = useState('');
@@ -289,7 +289,7 @@ function TableReservasV2({reservas, movimientos, estatus, layout, setFilter }) {
             perPage={10}
             rowCount={result.length}
             >
-            <Card>
+            <Card style={{ minWidth: '1100px', display: 'flex', flexDirection: 'column' }}>
                 <Card.Header className="border-bottom border-200 px-0">
                 <AllReservasHeader
                     table
@@ -327,7 +327,7 @@ function TableReservasV2({reservas, movimientos, estatus, layout, setFilter }) {
                 <Offcanvas.Header closeButton className="bg-body-tertiary">
                 <h6 className="fs-0 mb-0 fw-semi-bold">Filtros</h6>
                 </Offcanvas.Header>
-                <ReservaFilterForm movimientos={movimientos} estatus={estatus} setFilter={setFilter}/>
+                <ReservaFilterForm movimientos={movimientos} estatus={estatus} setFilter={setFilter} usuarios={usuarios} situaciones={situaciones} />
             </Offcanvas>
         </Col>
     </Row>

@@ -6,9 +6,11 @@ import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 
-const ReservaFilterForm = ({ movimientos, estatus, setFilter }) => {
+const ReservaFilterForm = ({ movimientos, estatus, setFilter, situaciones, usuarios }) => {
   const [selectedMovimiento, setSelectedMovimiento] = useState(null);
   const [selectedEstatus, setSelectedEstatus] = useState(null);
+  const [selectedSituacion, setSelectedSituacion] = useState(null);
+  const [selectedUsuario, setSelectedUsuario] = useState(null);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
@@ -20,15 +22,24 @@ const ReservaFilterForm = ({ movimientos, estatus, setFilter }) => {
     setSelectedEstatus(selectedOption); 
   };
 
+  const handleUsuariosChange = (selectedOption) => {
+    setSelectedUsuario(selectedOption)
+  }
+
+  const handleSituacionesChange = (selectedOption) => {
+    setSelectedSituacion(selectedOption)
+  }
+
   const handleSearch = () => {
     const data = {
       EstatusID: selectedEstatus ? selectedEstatus.value : null,
       Movimiento: selectedMovimiento ? selectedMovimiento.value : null,
       FechaDesde: startDate ? moment(startDate).format('YYYY-MM-DD') : null,
-      FechaHasta: endDate ? moment(endDate).format('YYYY-MM-DD') : null
+      FechaHasta: endDate ? moment(endDate).format('YYYY-MM-DD') : null,
+      Situacion: selectedSituacion ? selectedSituacion.value : null,
+      Usuario: selectedUsuario ? selectedUsuario.value : null
     };
 
-    console.log('Filtro aplicado:', data);
     setFilter(data); 
   };
 
@@ -64,6 +75,32 @@ const ReservaFilterForm = ({ movimientos, estatus, setFilter }) => {
               }))}
               value={selectedEstatus}
               onChange={handleEstatusChange}
+              placeholder="Selecciona"
+            />
+          </div>
+          <div className="mb-2">
+            <Form.Label className="mb-1 mt-2 fs--1">Usuario</Form.Label>
+            <Select
+              classNamePrefix="react-select"
+              options={usuarios.map(item => ({
+                value: item.Valor,
+                label: item.Dato
+              }))}
+              value={selectedUsuario}
+              onChange={handleUsuariosChange}
+              placeholder="Selecciona"
+            />
+          </div>
+          <div className="mb-2">
+            <Form.Label className="mb-1 mt-2 fs--1">Situaciones</Form.Label>
+            <Select
+              classNamePrefix="react-select"
+              options={situaciones.map(item => ({
+                value: item.Valor,
+                label: item.Dato
+              }))}
+              value={selectedSituacion}
+              onChange={handleSituacionesChange}
               placeholder="Selecciona"
             />
           </div>
