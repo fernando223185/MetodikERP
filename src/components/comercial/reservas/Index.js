@@ -155,7 +155,7 @@ const Reservas = () => {
             </Card.Body>
           </Card> */}
           {formview === 'view-card' ? (
-            <ViewReservasCard reservas={reservas} movimientos={movimientos} estatus={estatus} layout={formview}  />
+            <ViewReservasCard reservas={reservas} movimientos={movimientos} estatus={estatus} layout={formview} setFilter={setFilter} situaciones={situaciones} usuarios={usuarios} />
           ) : (
             <TableReservasV2 reservas={reservas} movimientos={movimientos} estatus={estatus} layout={formview} setFilter={setFilter} situaciones={situaciones} usuarios={usuarios}/>
           )}

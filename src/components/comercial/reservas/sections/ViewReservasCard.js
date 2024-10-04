@@ -13,7 +13,7 @@ import SubtleBadge from 'components/common/SubtleBadge';
 import { faPaperPlane, faCheck, faStream, faPen, faBan, faSpinner } from '@fortawesome/free-solid-svg-icons'; 
 
 
-const ViewReservasCard = ({reservas, movimientos, estatus, layout}) => {
+const ViewReservasCard = ({reservas, movimientos, estatus, layout, setFilter, situaciones, usuarios}) => {
   const [show, setShow] = useState(false);
   const { breakpoints } = useBreakpoints();
   const [result, setResult] = useState([]);
@@ -120,8 +120,8 @@ const ViewReservasCard = ({reservas, movimientos, estatus, layout}) => {
 
   return (
     <Row className="gx-3">
-      <Col xxl={10} xl={9}>
-        <Card>
+      <Col>
+        <Card style={{ minWidth: '1100px', display: 'flex', flexDirection: 'column' }}>
           <Card.Header className="border-bottom border-200 px-0">
             <AllReservasHeader
                 layout={layout}
@@ -180,22 +180,18 @@ const ViewReservasCard = ({reservas, movimientos, estatus, layout}) => {
         </Card>
       </Col>
       <Col xxl={2} xl={3}>
-        {breakpoints.down('xl') ? (
-          <Offcanvas
-            show={show}
-            onHide={handleClose}
-            placement="end"
-            className="dark__bg-card-dark"
-          >
-            <Offcanvas.Header closeButton className="bg-body-tertiary">
-              <h6 className="fs-0 mb-0 fw-semi-bold">Filtros</h6>
-            </Offcanvas.Header>
-            <ReservaFilterForm movimientos={movimientos} estatus={estatus}/>
-          </Offcanvas>
-        ) : (
-            <ReservaFilterForm movimientos={movimientos} estatus={estatus}/>
-            )}
-      </Col>
+            <Offcanvas
+                show={show}
+                onHide={handleClose}
+                placement="end"
+                className="dark__bg-card-dark"
+            >
+                <Offcanvas.Header closeButton className="bg-body-tertiary">
+                <h6 className="fs-0 mb-0 fw-semi-bold">Filtros</h6>
+                </Offcanvas.Header>
+                <ReservaFilterForm movimientos={movimientos} estatus={estatus} setFilter={setFilter} usuarios={usuarios} situaciones={situaciones} />
+            </Offcanvas>
+        </Col>
     </Row>
   );
 };

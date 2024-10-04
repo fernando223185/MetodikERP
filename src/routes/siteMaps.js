@@ -6,7 +6,8 @@ import {
   faSearchLocation,
   faStore,
   faUsers,
-  faUserSecret
+  faUserSecret,
+  faBox
 } from "@fortawesome/free-solid-svg-icons";
 
 export const dashboardRoutes = {
@@ -83,6 +84,12 @@ export const appRoutes = {
           name: "Reservas",
           icon: faStore,
           to: "/comercial/reservas",
+          active: true,
+        },
+        {
+          name: "Paqueteria",
+          icon: faBox,
+          to: "/comercial/paqueteria",
           active: true,
         },
       ],
