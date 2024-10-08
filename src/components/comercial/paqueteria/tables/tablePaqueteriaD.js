@@ -194,7 +194,6 @@ function TablePaqueteriaD({ paqueteriaD, setUpdateList }) {
       } 
   },[resultD])
 
-
   return (
     <>
       <AdvanceTableWrapper

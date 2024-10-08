@@ -60,7 +60,7 @@ const Avatar = ({
     return (
       <div className={`avatar-emoji ${mediaClasses}`}>
         <span role="img" aria-label="Emoji">
-          {emoji}
+          
         </span>
       </div>
     );

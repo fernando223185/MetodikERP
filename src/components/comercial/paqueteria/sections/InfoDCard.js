@@ -44,7 +44,7 @@ const getInitialValues = (paqueteriaId) => {
 const validationSchema = Yup.object().shape({
 });
 
-const InfoDCard = ({ paqueteriaId, movimientos, clientes, origenes, formasPago, isLoading, setHasFetched }) => {
+const InfoDCard = ({ paqueteriaId, movimientos, clientes, origenes, formasPago, isLoading, setHasFetched, setUpdtArt }) => {
 
   const { avanzarPaqueteria, result: resultNew, isLoading: isLoadingNew } = useAvanzaPaqueteria();
 
@@ -97,6 +97,7 @@ const InfoDCard = ({ paqueteriaId, movimientos, clientes, origenes, formasPago, 
       
       setTimeout(() => {
           setHasFetched((prev) => !prev); 
+          setUpdtArt(true)
         }, 1000)
     } else if (resultNew) {
         toast.error(`Error al guardar`, {

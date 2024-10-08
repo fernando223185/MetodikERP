@@ -61,8 +61,8 @@ const InfoCard = ({ paqueteriaId }) => {
         <p><strong>Importe Total:</strong> <span className="text-muted">{paqueteriaId.ImporteTotal}</span></p>
       </Card.Body>
       <Card.Footer>
-        <p><strong>Cantidad Paquetes:</strong> <span className="text-muted">{paqueteriaId.ImporteTotal}</span></p>
-        <p><strong>Peso Total:</strong> <span className="text-muted">{paqueteriaId.ImporteTotal}</span></p>
+        <p><strong>Cantidad Paquetes:</strong> <span className="text-muted">{paqueteriaId.CantidadTotal}</span></p>
+        <p><strong>Peso Total:</strong> <span className="text-muted">{paqueteriaId.PesoTotal}</span></p>
       </Card.Footer>
     </Card>
   );

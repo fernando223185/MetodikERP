@@ -223,6 +223,7 @@ const PaqueteriaHeader = ({setHasFetched, estatus}) => {
 const PaqueteriaD = () => {
   const { id } = useParams();
   const { getPaqueteriaID, paqueteriaId, isLoading, error } = useGetPaqueteriaID();
+  const [showArt, setUpdtArt] = useState(false); 
   const [hasFetched, setHasFetched] = useState(false); 
   const { getFiltroModulo, isLoading: isLoadingFiltro } = useGetFiltroModulo();
   const [movimientos, setMovimientos] = useState([]);
@@ -230,7 +231,6 @@ const PaqueteriaD = () => {
   const [formaPago, setFormaPago] = useState([]);
   const [origenes, setOrigenes] = useState([]);
   const [rutas, setRutas] = useState([]);
-  const [showDateRegreso, setShowDateRegreso] = useState(true);
   const { getArtDisponible, Art, isLoading: isLoadingArt } = useGetArtDisponible();
   const { getPaqueteriaD, paqueteriaD, isLoading: isLoadingD } = useGetPaqueteriaD();
   const [updateList, setUpdateList] = useState(false); 
@@ -240,10 +240,10 @@ const PaqueteriaD = () => {
     if (id != null && id > 0) {
         getPaqueteriaID({ id })
     }
-    getArtDisponible({ EmpresaID: 1})
-  }, [id, hasFetched])
-
-
+    if(showArt){
+        getArtDisponible({ EmpresaID: 1})
+    }
+  }, [id, hasFetched, showArt])
 
   useEffect(() => {
 
@@ -323,19 +323,24 @@ const PaqueteriaD = () => {
                           rutas={rutas}
                           clientes={clientes}
                           formasPago={formaPago}
+                          setUpdtArt={setUpdtArt}
+
                         />
                     </Col>
                 </Row>
-
-                <Row className='mt-4'>
-                  <Col>
-                      <ArtDisponible 
-                        Art={Art}
-                        setUpdateList={setUpdateList}
-                        id={id}
-                      />
-                  </Col>
-                </Row> 
+                {showArt && (
+                    <>
+                        <Row className='mt-4'>
+                        <Col>
+                            <ArtDisponible 
+                                Art={Art}
+                                setUpdateList={setUpdateList}
+                                id={id}
+                            />
+                        </Col>
+                        </Row> 
+                    </>
+                )}
                 <Row>
                     <Col>
                         <DetalleCard

@@ -193,9 +193,9 @@ function TablePaqueteria({paqueteria, movimientos, estatus, layout, setFilter, s
     if (paqueteria && paqueteria.status === 200 && paqueteria.data.length > 0) 
     {
       const transformedData = paqueteria.data.map(u => ({
-        User: u.Usuario,
+        User: u.Cliente,
         avatar: {
-            name: u.Usuario,
+            name: u.Cliente,
             size: 'xl',
             round: 'circle'
         },
