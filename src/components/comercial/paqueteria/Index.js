@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Row, Container, Card, Spinner } from 'react-bootstrap';
-import TableReservasV2 from '../reservas/tables/tableReservasV2';
+import TablePaqueteria from './tables/tablePaqueteria';
 import LmsStats from 'components/dashboards/lms/lms-stats/LmsStatItem';
 import { useGetIndicadores } from '../../../hooks/useIndicadores';
-import { useGetReservas } from '../../../hooks/Comercial/Reserva/useReserva';
+import { useGetPaqueteria } from '../../../hooks/Comercial/Paqueteria/usePaqueteria';
 import { useGetFiltroModulo } from '../../../hooks/useFiltros'; 
 import { useLocation } from "react-router";
 import ViewReservasCard from '../reservas/sections/ViewReservasCard'
@@ -23,7 +23,7 @@ const PaqueteriaHeader = () => {
 
 const Paqueteria = () => {
   const { getIndicadores, indicadores, isLoading: isLoadingIndicadores } = useGetIndicadores();
-  const { getReservas, reservas, isLoading: isLoadingReservas } = useGetReservas();
+  const { getPaqueteria, paqueteria, isLoading: isLoadingPaqueteria} = useGetPaqueteria();
   const { getFiltroModulo, isLoading: isLoadingFiltro } = useGetFiltroModulo();
   const [movimientos, setMovimientos] = useState([]);
   const [estatus, setEstatus] = useState([]);
@@ -38,33 +38,19 @@ const Paqueteria = () => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
-    const data = { Tipo: 'Reservas', EmpresaID: user.EmpresaID };
+    const data = { Tipo: 'Paqueteria', EmpresaID: user.EmpresaID };
 
     getIndicadores({ data });
   }, [getIndicadores]);
 
   useEffect(() => {
-      const user = JSON.parse(localStorage.getItem('user'));
-      const data = { 
-        EmpresaID: user.EmpresaID, 
-        PersonaID: user.ID,
-        EstatusID: filter.EstatusID ? filter.EstatusID : null,
-        Movimiento: filter.Movimiento ? filter.Movimiento : null,
-        FechaD: filter.FechaDesde ? filter.FechaDesde : null,
-        FechaH: filter.FechaHasta ? filter.FechaHasta : null,
-        Situacion: filter.Situacion ? filter.Situacion : null,
-        Usuario: filter.Usuario ? filter.Usuario : null
-      };
-
-      getReservas({ data });
-  }, [filter]);
+      getPaqueteria();
+  }, []);
 
 
   useEffect(() => {
     if (indicadores.data && indicadores.data.length > 0) {
       const transformedData = indicadores.data.map(i => ({
-        //id:
-        //
         title: i.Titulo,
         amount: i.Cantidad,
         decimal: false,
@@ -114,7 +100,7 @@ const Paqueteria = () => {
     setFormView(formView || 'view-table');
   }, [formView]);
 
-  if (isLoadingIndicadores || isLoadingReservas) {
+  if (isLoadingIndicadores || isLoadingPaqueteria) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', height: '100vh', marginTop: '100px' }}>
         <Spinner animation="border" role="status">
@@ -155,9 +141,9 @@ const Paqueteria = () => {
             </Card.Body>
           </Card> */}
           {formview === 'view-card' ? (
-            <ViewReservasCard reservas={reservas} movimientos={movimientos} estatus={estatus} layout={formview}  />
+            <ViewReservasCard reservas={paqueteria} movimientos={movimientos} estatus={estatus} layout={formview}  />
           ) : (
-            <TableReservasV2 reservas={reservas} movimientos={movimientos} estatus={estatus} layout={formview} setFilter={setFilter} situaciones={situaciones} usuarios={usuarios}/>
+            <TablePaqueteria paqueteria={paqueteria} movimientos={movimientos} estatus={estatus} layout={formview} setFilter={setFilter} situaciones={situaciones} usuarios={usuarios}/>
           )}
         </Col>
       </Row>

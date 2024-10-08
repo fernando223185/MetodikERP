@@ -234,6 +234,8 @@ import ViewProfile from 'components/choferes/ViewProfile/ViewChofer';
 import Perfiles from 'components/Perfiles/pages/index';
 import ReservasViewD from 'components/comercial/reservas/pages/ReservasViewD'
 import Paqueteria from 'components/comercial/paqueteria/Index'
+import PaqueteriaD from 'components/comercial/paqueteria/pages/PaqueteriaD'
+
 
 
 const MetodikRoutes = () => {
@@ -642,6 +644,8 @@ const MetodikRoutes = () => {
         <Route path="Catalogo/Perfil/:id" element={<Perfiles />} />
         <Route path="comercial/reservas/view-reserva/:id" element={<ReservasViewD/>} />
         <Route path="comercial/paqueteria" element={<Paqueteria/>} />
+        <Route path="comercial/paqueteria/paqueteriaD/:id" element={<PaqueteriaD/>} />
+
 
 
       </Route>

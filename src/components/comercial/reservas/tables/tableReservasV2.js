@@ -289,7 +289,7 @@ function TableReservasV2({reservas, movimientos, estatus, layout, setFilter, sit
             perPage={10}
             rowCount={result.length}
             >
-            <Card style={{ minWidth: '1100px', display: 'flex', flexDirection: 'column' }}>
+            <Card>
                 <Card.Header className="border-bottom border-200 px-0">
                 <AllReservasHeader
                     table
