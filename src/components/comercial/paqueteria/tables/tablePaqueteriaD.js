@@ -67,8 +67,8 @@ function TablePaqueteriaD({ paqueteriaD, setUpdateList }) {
         ID: rowId.ID,
         RenglonID: rowId.RenglonID,
         UsuarioID: user.ID,
-        Cantidad: updatedRow.qtyArt,
-        Peso: updatedRow.peso,
+        Cantidad: updatedRow.qtyArt && updatedRow.qtyArt !== 0 ? updatedRow.qtyArt : rowId.Cantidad,
+        Peso: updatedRow.peso && updatedRow.peso !== 0 ? updatedRow.peso : rowId.Peso,
         Precio: rowId.Precio
       }
       actPaqueteriaD({ data })
