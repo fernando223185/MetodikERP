@@ -24,8 +24,6 @@ const PaqueteriaHeader = ({setHasFetched, estatus}) => {
   const { afectarPaqueteria, result: resultAfect, isLoading  } = useAfectarPaqueteria();
   const { cancelarPaqueteria, result, isLoading: isLoadingCancel  } = useCancelarPaqueteria();
   const { cambiarSituaciones, result: situacion, isLoading: isLoadingSit } = useCambiarSituaciones();
-
-
   const user = JSON.parse(localStorage.getItem('user'));
 
   const handleAfectar = async () => {
@@ -226,7 +224,6 @@ const PaqueteriaD = () => {
   const { id } = useParams();
   const { getPaqueteriaID, paqueteriaId, isLoading, error } = useGetPaqueteriaID();
   const [hasFetched, setHasFetched] = useState(false); 
-
   const { getFiltroModulo, isLoading: isLoadingFiltro } = useGetFiltroModulo();
   const [movimientos, setMovimientos] = useState([]);
   const [clientes, setCte] = useState([]);

@@ -287,7 +287,7 @@ function TablePaqueteria({paqueteria, movimientos, estatus, layout, setFilter, s
   },[response])
 
   const handleRowClick = (id) => {
-    navigate(`/comercial/paqueteria/paqueteriaD/${id}`);
+    navigate(`/comercial/paqueteria/view-paqueteria/${id}`);
   };
 
 

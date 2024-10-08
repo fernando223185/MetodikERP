@@ -59,9 +59,8 @@ function TablePaqueteriaD({ paqueteriaD, setUpdateList }) {
   };
 
   const handleUpdateRow = (rowId) => {
-    const updatedRow = editableRows[rowId.ID];
+    const updatedRow = editableRows[rowId.RenglonID];
     if (updatedRow) {
-      console.log("Valores actualizados para la fila:", rowId, updatedRow);
       const user = JSON.parse(localStorage.getItem('user'));
 
       const data = {
@@ -135,8 +134,8 @@ function TablePaqueteriaD({ paqueteriaD, setUpdateList }) {
         peso: (
           <input 
             type="text"
-            value={editableRows[u.ID]?.peso || u.Peso} 
-            onChange={(e) => handleInputChange(u.ID, 'peso', e.target.value)} 
+            value={editableRows[u.RenglonID]?.peso || u.Peso} 
+            onChange={(e) => handleInputChange(u.RenglonID, 'peso', e.target.value)} 
             style={{
               margin: '5px 0',
               padding: '8px',
@@ -152,8 +151,8 @@ function TablePaqueteriaD({ paqueteriaD, setUpdateList }) {
         qtyArt: (
           <input 
             type="text"
-            value={editableRows[u.ID]?.qtyArt || u.Cantidad}
-            onChange={(e) => handleInputChange(u.ID, 'qtyArt', e.target.value)} 
+            value={editableRows[u.RenglonID]?.qtyArt || u.Cantidad}
+            onChange={(e) => handleInputChange(u.RenglonID, 'qtyArt', e.target.value)} 
             style={{
               margin: '5px 0',
               padding: '8px',
@@ -186,9 +185,7 @@ function TablePaqueteriaD({ paqueteriaD, setUpdateList }) {
               <FontAwesomeIcon icon={faExclamationTriangle} /> : 
               <FontAwesomeIcon icon={faInfoCircle} />
           }); 
-          setTimeout(() => {
-            setUpdateList((prev) => !prev); 
-          }, 1000)
+          setUpdateList((prev) => !prev); 
       } else if (resultD) {
           toast.error(`Error al guardar`, {
               theme: 'colored',
