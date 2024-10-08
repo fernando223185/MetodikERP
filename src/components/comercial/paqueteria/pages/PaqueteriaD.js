@@ -168,7 +168,7 @@ const PaqueteriaHeader = ({setHasFetched, estatus}) => {
                         size="sm"
                         className="mb-2 mb-sm-0 d-flex align-items-center" 
                         title="Cancelar"
-                        onClick={() => console.log("Cancelar operación")}
+                        onClick={handleCancel}
                     >
                         <FontAwesomeIcon icon={faBan} className="me-1" /> Cancelar
                     </IconButton>
