@@ -204,6 +204,7 @@ function TablePaqueteria({paqueteria, movimientos, estatus, layout, setFilter, s
         FechaEntrega: u.FechaEntrega,
         FormaPago: u.FormaPago,
         Ruta: u.Ruta,
+        PesoTotal: u.Peso,
         estatus: (
           <SubtleBadge pill           
             bg={classNames({
