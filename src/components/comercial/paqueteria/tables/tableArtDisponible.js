@@ -43,9 +43,7 @@ function TableArtDisponible({ Art, setUpdateList, id }) {
 
   const handleAddArt = (row) => {
     console.log("row",row)
-
     const user = JSON.parse(localStorage.getItem('user'));
-
     const data = {
         ID: id,
         UsuarioID: user.ID,

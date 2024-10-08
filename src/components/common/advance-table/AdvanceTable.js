@@ -47,31 +47,17 @@ const AdvanceTable = ({
             prepareRow(row);
             return (
               <tr key={i} className={rowClassName} {...row.getRowProps()}>
-              {row.cells.map((cell, index) => {
-                if (['peso',  'qtyArt'].includes(cell.column.id)) {
+                {row.cells.map((cell, index) => {
                   return (
-                    <td key={index} {...cell.getCellProps(cell.column.cellProps)}>
-                      <input 
-                        type="text" 
-                        value={cell.value} 
-                        onChange={(e) => {
-                          console.log(`Updated value for ${cell.column.id}: ${e.target.value}`);
-                        }}
-                      />
+                    <td
+                      key={index}
+                      {...cell.getCellProps(cell.column.cellProps)}
+                    >
+                      {cell.render('Cell')}
                     </td>
                   );
-                }
-                
-                return (
-                  <td
-                    key={index}
-                    {...cell.getCellProps(cell.column.cellProps)}
-                  >
-                    {cell.render('Cell')}
-                  </td>
-                );
-              })}
-            </tr>
+                })}
+              </tr>
             );
           })}
         </tbody>

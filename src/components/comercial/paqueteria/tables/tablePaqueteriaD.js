@@ -5,10 +5,10 @@ import { Col, Row, Spinner } from 'react-bootstrap';
 import AdvanceTableFooter from 'components/common/advance-table/AdvanceTableFooter';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AdvanceTableSearchBox from 'components/common/advance-table/AdvanceTableSearchBox';
-import { faBus, faUsers, faCheckCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons'; 
-import { useDelRowReservaD } from '../../../../hooks/Comercial/Reserva/useReservaD'
+import { faCheckCircle, faExclamationTriangle, faInfoCircle, faTrash, faEdit, faSave } from '@fortawesome/free-solid-svg-icons'; 
 import { toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
+import { useActPaqueteriaD, useDelRowPaqueteriaD } from 'hooks/Comercial/Paqueteria/usePaqueteriaD'
+
 
 const columns = [
   {
@@ -43,14 +43,42 @@ const columns = [
 function TablePaqueteriaD({ paqueteriaD, setUpdateList }) {
 
   const [result, setResult] = useState([]);
+  const [editableRows, setEditableRows] = useState({});
+  const { actPaqueteriaD, result: resultD, isLoading } = useActPaqueteriaD();
+  const { delRowPaqueteriaD, result: resultDel , isLoading: isLoadingDel } = useDelRowPaqueteriaD();
 
-  const [selectedItem, setSelectedItem] = useState(null); 
-  const { delRowReservaD, result: resultDel, isLoading } = useDelRowReservaD();
 
+  const handleInputChange = (rowId, columnId, value) => {
+    setEditableRows(prevState => ({
+      ...prevState,
+      [rowId]: {
+        ...prevState[rowId],
+        [columnId]: value
+      }
+    }));
+  };
+
+  const handleUpdateRow = (rowId) => {
+    const updatedRow = editableRows[rowId.ID];
+    if (updatedRow) {
+      console.log("Valores actualizados para la fila:", rowId, updatedRow);
+      const user = JSON.parse(localStorage.getItem('user'));
+
+      const data = {
+        ID: rowId.ID,
+        RenglonID: rowId.RenglonID,
+        UsuarioID: user.ID,
+        Cantidad: updatedRow.qtyArt,
+        Peso: updatedRow.peso,
+        Precio: rowId.Precio
+      }
+      actPaqueteriaD({ data })
+    }
+  };
 
   const handleDeletedRow = async (id, RowID) => {
     try {
-      await delRowReservaD({ id, RowID });      
+      await delRowPaqueteriaD({ id, RowID });      
       console.log("Fila eliminada correctamente");
     } catch (error) {
       console.error("Error al eliminar la fila:", error);
@@ -68,7 +96,7 @@ function TablePaqueteriaD({ paqueteriaD, setUpdateList }) {
               icon: resultDel.data[0].Tipo === 'success' ? 
               <FontAwesomeIcon icon={faCheckCircle} /> : 
               resultDel.data[0].Tipo === 'error' ? 
-              <FontAwesomeIcon icon ={faExclamationTriangle} /> : 
+              <FontAwesomeIcon icon={faExclamationTriangle} /> : 
               <FontAwesomeIcon icon={faInfoCircle} />
           }); 
           setTimeout(() => {
@@ -83,86 +111,129 @@ function TablePaqueteriaD({ paqueteriaD, setUpdateList }) {
   },[resultDel])
 
   useEffect(() => {
-    console.log("rutaId",paqueteriaD)
-    if (paqueteriaD) 
-    {
+    if (paqueteriaD) {
       const transformedData = paqueteriaD.map(u => ({
         acciones: (
-            <>
-              {isLoading ? (
-                <Spinner animation="border" size="sm" />
-              ) : (
-                <>
-                  {/*<button
-                    className="btn btn-outline-primary rounded-pill me-1 mb-1 btn-sm"
-                    //onClick={() => handleOpenModal(u)} 
-                  >
-                    <FontAwesomeIcon icon="edit" />
-              </button> */}
-                  <button
-                    className="btn btn-outline-danger rounded-pill me-1 mb-1 btn-sm"
-                    onClick={() => handleDeletedRow(u.ID, u.RenglonID)} 
-                    title='Eliminar Renglon'
-                  >
-                    <FontAwesomeIcon icon="trash" />
-                  </button>
-                </>
-              )}
-            </>
+          <>
+
+            <button
+              className="btn btn-outline-danger rounded-pill me-1 mb-1 btn-sm"
+              onClick={() => handleDeletedRow(u.ID, u.RenglonID)} 
+              title='Eliminar Renglon'
+            >
+              <FontAwesomeIcon icon={faTrash} />
+            </button>
+            <button
+              className="btn btn-outline-primary rounded-pill me-1 mb-1 btn-sm"
+              onClick={() => handleUpdateRow(u)} 
+            >
+              <FontAwesomeIcon icon={faSave} />
+            </button>
+          </>
         ),
         art: `${u.Articulo}`,
-        peso: u.Peso,
-        qtyArt: u.Cantidad,
+        peso: (
+          <input 
+            type="text"
+            value={editableRows[u.ID]?.peso || u.Peso} 
+            onChange={(e) => handleInputChange(u.ID, 'peso', e.target.value)} 
+            style={{
+              margin: '5px 0',
+              padding: '8px',
+              border: '1px solid #ced4da',
+              borderRadius: '4px',
+              width: '100%',
+              boxSizing: 'border-box',
+              outline: 'none',
+              fontSize: '14px'
+            }}
+          />
+        ),
+        qtyArt: (
+          <input 
+            type="text"
+            value={editableRows[u.ID]?.qtyArt || u.Cantidad}
+            onChange={(e) => handleInputChange(u.ID, 'qtyArt', e.target.value)} 
+            style={{
+              margin: '5px 0',
+              padding: '8px',
+              border: '1px solid #ced4da',
+              borderRadius: '4px',
+              width: '100%',
+              boxSizing: 'border-box',
+              outline: 'none',
+              fontSize: '14px'
+            }}
+          />
+        ),
         priceTArt: u.PrecioTotal
       }));
-      setResult(prevResult => {
-        if (JSON.stringify(prevResult) !== JSON.stringify(transformedData)) {
-          return transformedData;
-        }
-        return prevResult;
-      });
+      setResult(transformedData);
     }
-  },[paqueteriaD])
+  }, [paqueteriaD, editableRows]);
+
+  useEffect(() => {
+    console.log(resultD)
+    if (resultD && Object.keys(resultD).length === 0) {
+        console.log("resultD es un array vacío:", resultD);
+      } else if (resultD && resultD.status === 200) {
+          toast[resultD.data[0].Tipo](`${resultD.data[0].Mensaje}`, {
+              theme: 'colored',
+              position: resultD.data[0].Posicion,
+              icon: resultD.data[0].Tipo === 'success' ? 
+              <FontAwesomeIcon icon={faCheckCircle} /> : 
+              resultD.data[0].Tipo === 'error' ? 
+              <FontAwesomeIcon icon={faExclamationTriangle} /> : 
+              <FontAwesomeIcon icon={faInfoCircle} />
+          }); 
+          setTimeout(() => {
+            setUpdateList((prev) => !prev); 
+          }, 1000)
+      } else if (resultD) {
+          toast.error(`Error al guardar`, {
+              theme: 'colored',
+              position: 'top-right'
+          });
+      } 
+  },[resultD])
 
 
   return (
-  <>
-
-    <AdvanceTableWrapper
-      columns={columns}
-      data={result}
-      sortable
-      pagination
-      perPage={5}
-    >
+    <>
+      <AdvanceTableWrapper
+        columns={columns}
+        data={result}
+        sortable
+        pagination
+        perPage={5}
+      >
         <Row className="justify-content-start mb-3">
-            <Col xs="auto">
+          <Col xs="auto">
             <AdvanceTableSearchBox table />
-            </Col>
+          </Col>
         </Row>
-      <hr style={{ margin: '10px 0' }} />
-      <AdvanceTable
-        table
-        headerClassName="bg-200 text-nowrap align-middle"
-        rowClassName="align-middle white-space-nowrap"
-        tableProps={{
-          bordered: true,
-          striped: true,
-          className: 'fs--1 mb-0 overflow-hidden'
-        }}
-      />
-      <div className="mt-3">
-        <AdvanceTableFooter
-          rowCount={result.length}
+        <hr style={{ margin: '10px 0' }} />
+        <AdvanceTable
           table
-          rowInfo
-          navButtons
-          rowsPerPageSelection
+          headerClassName="bg-200 text-nowrap align-middle"
+          rowClassName="align-middle white-space-nowrap"
+          tableProps={{
+            bordered: true,
+            striped: true,
+            className: 'fs--1 mb-0 overflow-hidden'
+          }}
         />
-      </div>
-    </AdvanceTableWrapper>
-  </>
-
+        <div className="mt-3">
+          <AdvanceTableFooter
+            rowCount={result.length}
+            table
+            rowInfo
+            navButtons
+            rowsPerPageSelection
+          />
+        </div>
+      </AdvanceTableWrapper>
+    </>
   );
 }
 

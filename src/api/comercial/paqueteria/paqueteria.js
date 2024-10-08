@@ -75,3 +75,53 @@ export async function agregarPaqueteriaDAsync({ data }){
     }
 }
 
+export async function actPaqueteriaDAsync({ data }){
+    try {
+        const response = await axios.post(`${endpoints.key}/actPaqueteriaDetalle`, data)
+        return response
+    } catch (error) {
+        console.error('Error fetching paqueteria:', error);
+        return error;
+    }
+}
+
+export async function afectarPaqueteriaAsync ({ data }){
+    try{
+        const response = await axios.post(`${endpoints.key}/afectarPaqueteria`, data)
+        return response
+    }catch(error){
+        console.error('Error fetching reservas:', error);
+        return error;
+    }
+}
+
+export async function cancelarPaqueteriaAsync ({ data }){
+    try{
+        const response = await axios.post(`${endpoints.key}/Reservas/cancelarReserva`, data)
+        return response
+    }catch(error){
+        console.error('Error fetching reservas:', error);
+        return error;
+    }
+}
+
+export async function delRowAsync({ id = 0, RowID = 0}){
+    try{
+        const response = await axios.delete(`${endpoints.key}/eliminarRenglonPaqueteria?ID=${id}&RenglonID=${RowID}`)
+        return response
+    }catch(error){
+        console.error('Error fetching reservas:', error);
+        return error;
+    }
+}
+
+export async function cambiarSituacionesAsync ({ data }){
+    try{
+        const response = await axios.post(`${endpoints.key}/cambiarSituacion`, data)
+        return response
+    }catch(error){
+        console.error('Error fetching reservas:', error);
+        return error;
+    }
+}
+

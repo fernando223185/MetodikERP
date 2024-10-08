@@ -1,6 +1,11 @@
 import { useCallback, useState } from 'react';
 import { getPaqueteriaIDAsync, getArtDisponibleAsync, avanzarPaqueteriaAsync, getPaqueteriaDAsync,
-          agregarPaqueteriaDAsync } from 'api/comercial/paqueteria/paqueteria';
+          agregarPaqueteriaDAsync,
+          actPaqueteriaDAsync,
+          afectarPaqueteriaAsync,
+          cancelarPaqueteriaAsync,
+          delRowAsync,
+          cambiarSituacionesAsync } from 'api/comercial/paqueteria/paqueteria';
 
 export const useGetPaqueteriaID = () => {
     const [paqueteriaId, setPaqueteria] = useState([]);
@@ -97,4 +102,74 @@ export const useGetPaqueteriaID = () => {
       }, [])
     
       return { agregarPaqueteriaD, result, isLoading };
+  }
+
+  export const useActPaqueteriaD = () => {
+    const [result, setResult] = useState({})    
+    const [isLoading, setIsLoading] = useState(false)
+    
+    const actPaqueteriaD = useCallback(async ({ data }) => {
+        setIsLoading(true);
+        const result = await actPaqueteriaDAsync({ data });
+        setResult(result);
+        setIsLoading(false);
+      }, [])
+    
+      return { actPaqueteriaD, result, isLoading };
+  }
+
+  export const useAfectarPaqueteria = () => {
+    const [result, setResult] = useState({})    
+    const [isLoading, setIsLoading] = useState(false)
+    
+    const afectarPaqueteria = useCallback(async ({ data }) => {
+        setIsLoading(true);
+        const result = await afectarPaqueteriaAsync({ data });
+        setResult(result);
+        setIsLoading(false);
+      }, [])
+    
+      return { afectarPaqueteria, result, isLoading };
+  }
+
+  export const useCancelarPaqueteria = () => {
+    const [result, setResult] = useState({})    
+    const [isLoading, setIsLoading] = useState(false)
+    
+    const cancelarPaqueteria = useCallback(async ({ data }) => {
+        setIsLoading(true);
+        const result = await cancelarPaqueteriaAsync({ data });
+        setResult(result);
+        setIsLoading(false);
+      }, [])
+    
+      return { cancelarPaqueteria, result, isLoading };
+  }
+
+  export const useDelRowPaqueteriaD = () => {
+    const [result, setResult] = useState({})    
+    const [isLoading, setIsLoading] = useState(false)
+    
+    const delRowPaqueteriaD = useCallback(async ({ id, RowID }) => {
+        setIsLoading(true);
+        const result = await delRowAsync({ id, RowID });
+        setResult(result);
+        setIsLoading(false);
+      }, [])
+    
+      return { delRowPaqueteriaD, result, isLoading };
+  } 
+
+  export const useCambiarSituaciones = () => {
+    const [result, setResult] = useState({})    
+    const [isLoading, setIsLoading] = useState(false)
+    
+    const cambiarSituaciones = useCallback(async ({ data }) => {
+        setIsLoading(true);
+        const result = await cambiarSituacionesAsync({ data });
+        setResult(result);
+        setIsLoading(false);
+      }, [])
+    
+      return { cambiarSituaciones, result, isLoading };
   }
