@@ -354,48 +354,34 @@ const ReservasD = () => {
   const { getArtDisponible, Art, isLoading: isLoadingArt } = useGetArtDisponible();
   const { getEquipajeD, equipajeD, isLoading: isLoadingEquipaje } = useGetEquipajeD();
 
-  const [filtrosCargados, setFiltrosCargados] = useState(false);
-
-  useEffect(() => {
-    const fetchFiltros = async () => {
-      try {
-        const dataMovimientos = { Tipo: 'Movimientos', PersonaID: 1, Modulo: 'Reservas' };
-        const resultMovimientos = await getFiltroModulo(dataMovimientos);
-        setMovimientos(resultMovimientos);
-
-        const dataOrigenes = { Tipo: 'Destinos', PersonaID: 1, Modulo: 'Reservas' };
-        const resultOrigenes = await getFiltroModulo(dataOrigenes);
-        setOrigenes(resultOrigenes);
-
-        const dataRutas = { Tipo: 'Rutas', PersonaID: 1, Modulo: 'Reservas' };
-        const resultRutas = await getFiltroModulo(dataRutas);
-        setRutas(resultRutas);
-
-          const dataReservas = { Tipo: 'Reservas', PersonaID: 1, Modulo: 'Reservas' };
-          const resultReservas = await getFiltroModulo(dataReservas);
-          setReservas(resultReservas);
-
-        setFiltrosCargados(true);
-      } catch (error) {
-        console.error('Error al cargar filtros:', error);
-      }
-    };
-
-    fetchFiltros();
-  }, []);
-
   useEffect(() => {
     const fetchReservaID = async () => {
-      if (id != null && id > 0 && filtrosCargados) {
+      if (id != null && id > 0) {
         await getReservaID({ id });
       }
     };
     fetchReservaID();
-  }, [id, hasFetched, filtrosCargados]);
+  }, [id, hasFetched]);
+
+
+  useEffect(() => {
+    const fetchArtAndEquipaje = async () => {
+      if (showFormMov) {
+        await getArtDisponible({ EmpresaID: 1 });
+
+        const dataReservas = { Tipo: 'Reservas', PersonaID: 1, Modulo: 'Reservas' };
+        const resultReservas = await getFiltroModulo(dataReservas);
+        setReservas(resultReservas);
+
+        await getEquipajeD({ id });
+      }
+    };
+    fetchArtAndEquipaje();
+  }, [showFormMov, updateList]);
 
   useEffect(() => {
     const fetchRutas = async () => {
-      if (showRutas && filtrosCargados) {
+      if (showRutas) {
         await getRutaIda({ id });
         if (showDateRegreso) {
           await getRutaVuelta({ id });
@@ -403,46 +389,40 @@ const ReservasD = () => {
       }
     };
     fetchRutas();
-  }, [id, showRutas, showDateRegreso, hasFetched, filtrosCargados]);
+  }, [id, showRutas, showDateRegreso, hasFetched]);
 
   useEffect(() => {
     const fetchReservaD = async () => {
-      if (filtrosCargados) {
+      if(reservaId.Movimiento != "Equipaje")
+      {
         await getReservaD({ id });
       }
     };
     fetchReservaD();
-  }, [id, updateList, filtrosCargados]);
+  }, [id, updateList]);
 
   useEffect(() => {
-    const fetchArtAndEquipaje = async () => {
-      if (showFormMov && filtrosCargados) {
-        try {
-          await getArtDisponible({ EmpresaID: 1 });
-          setTimeout(() => {
-            getEquipajeD({ id });
-          }, 2000)
+    const fetchFiltros = async () => {
+      const dataMovimientos = { Tipo: 'Movimientos', PersonaID: 1, Modulo: 'Reservas' };
+      const resultMovimientos = await getFiltroModulo(dataMovimientos);
+      setMovimientos(resultMovimientos);
 
-        } catch (error) {
-          console.error('Error fetching art or equipaje:', error);
-          toast.error('Error al cargar datos, por favor intente nuevamente.', {
-            position: 'top-right',
-            theme: 'colored',
-          });
-        }
-      }
+      const dataOrigenes = { Tipo: 'Destinos', PersonaID: 1, Modulo: 'Reservas' };
+      const resultOrigenes = await getFiltroModulo(dataOrigenes);
+      setOrigenes(resultOrigenes);
+
+      const dataRutas = { Tipo: 'Rutas', PersonaID: 1, Modulo: 'Reservas' };
+      const resultRutas = await getFiltroModulo(dataRutas);
+      setRutas(resultRutas);
     };
-    setTimeout(() => {
-      fetchArtAndEquipaje();
-    }, 2000)
+    fetchFiltros();
+  }, []);
 
-  }, [showFormMov, updateList, filtrosCargados]);
-
-  if (isLoading || !filtrosCargados) {
+  if (isLoading && !showRutas) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', height: '100vh', marginTop: '100px' }}>
         <Spinner animation="border" role="status">
-          <span className="visually-hidden">Cargando...</span>
+          <span className="visually-hidden">Loading...</span>
         </Spinner>
       </div>
     );

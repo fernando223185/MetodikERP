@@ -101,7 +101,7 @@ const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched,
     if(showFormMov){
       getReservaID({id: formik.values.reservaID})
     }
-  },[formik.values.reservaID, formik.values.movimiento, movimientos]) 
+  },[formik.values.reservaID, formik.values.movimiento, movimientos, showFormMov]) 
 
   
 
