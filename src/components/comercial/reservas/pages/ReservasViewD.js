@@ -208,6 +208,12 @@ const ReservasViewD = () => {
                       <th className="text-sm-end">Referencia:</th>
                       <td>{reservaId.Referencia}</td>
                     </tr>
+                    {reservaId.Movimiento === 'Equipaje' && (
+                      <tr>
+                        <th className="text-sm-end">Reserva Asociada:</th>
+                        <td>{reservaId.ReservaRef}</td>
+                      </tr>
+                    )}
                     <tr>
                       <th className="text-sm-end">Observaciones:</th>
                       <td>{reservaId.Observaciones}</td>
