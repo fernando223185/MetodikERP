@@ -176,3 +176,43 @@ export async function cambiarSituacionesAsync ({ data }){
         return error;
     }
 }
+
+export async function agregarEquipajeDAsync({ data }){
+    try {
+        const response = await axios.post(`${endpoints.key}/Reservas/AgregarEquipajeDetalle`, data)
+        return response
+    } catch (error) {
+        console.error('Error fetching paqueteria:', error);
+        return error;
+    }
+}
+
+export async function getEquipajeDAsync({ id = 0}){
+    try{
+        const response = await axios.get(`${endpoints.key}/Reservas/verEquipajeDetalle?ID=${id}`)
+        return response.data
+    }catch(error){
+        console.error('Error fetching paqueteria:', error);
+        return error;
+    }
+}
+
+export async function actEquipajeDetalleAsync({ data }){
+    try {
+        const response = await axios.post(`${endpoints.key}/Reservas/actEquipajeDetalle`, data)
+        return response
+    } catch (error) {
+        console.error('Error fetching paqueteria:', error);
+        return error;
+    }
+}
+
+export async function delRowEquipajeAsync({ id = 0, RowID = 0}){
+    try{
+        const response = await axios.delete(`${endpoints.key}/Reservas/eliminarRenglonEquipaje?ID=${id}&RenglonID=${RowID}`)
+        return response
+    }catch(error){
+        console.error('Error fetching reservas:', error);
+        return error;
+    }
+}

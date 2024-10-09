@@ -7,12 +7,15 @@ import RutaIda from '../sections/RutaIda'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faReply, faBan, faSave, faChevronLeft, faStar, faCheckCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import { useGetReservaID, useGetRutaIda, useGetRutaVuelta, useGetReservaD, useCancelarReserva, useAfectarReserva, useAgregarFormaPago, useCambiarSituaciones } from '../../../../hooks/Comercial/Reserva/useReservaD';
+import { useGetReservaID, useGetRutaIda, useGetRutaVuelta, useGetReservaD, useCancelarReserva, useAfectarReserva, useAgregarFormaPago, useCambiarSituaciones, useGetEquipajeD } from '../../../../hooks/Comercial/Reserva/useReservaD';
 import { useParams } from 'react-router-dom';
 import { useGetFiltroModulo } from '../../../../hooks/useFiltros'; 
 import RutaVuelta from '../sections/RutaVuelta'
 import { toast } from 'react-toastify';
 import Select from 'react-select';
+import ArtDisponible from '../sections/ArtDisponible'
+import DetalleCard from '../sections/DetalleCard'; 
+import { useGetArtDisponible } from 'hooks/Comercial/Paqueteria/usePaqueteriaD'
 
 
 const ReservasHeader = ({setHasFetched, estatus}) => {
@@ -334,61 +337,85 @@ const ReservasD = () => {
   const { getReservaID, reservaId, isLoading, error } = useGetReservaID();
   const [hasFetched, setHasFetched] = useState(false); 
   const [showRutas, setUpdtRutas] = useState(false); 
+  const [showArts, setUpdtArts] = useState(false); 
+
   const [updateList, setUpdateList] = useState(false); 
 
   const { getFiltroModulo, isLoading: isLoadingFiltro } = useGetFiltroModulo();
   const [movimientos, setMovimientos] = useState([]);
+  const [reservas, setReservas] = useState([]);
   const [origenes, setOrigenes] = useState([]);
   const [rutas, setRutas] = useState([]);
   const { getRutaIda, rutaIda, isLoading: isLoadingRutas } = useGetRutaIda();
   const { getRutaVuelta, rutaVuelta, isLoading: isLoadingRutasV } = useGetRutaVuelta();
   const { getReservaD, reservaD, isLoading: isLoadingD } = useGetReservaD();
   const [showDateRegreso, setShowDateRegreso] = useState(true);
-
-
-  useEffect(() =>{
-    if (id != null && id > 0) {
-      getReservaID({ id })
-    }
-  }, [id, hasFetched])
+  const [showFormMov, setFormMov] = useState(false)
+  const { getArtDisponible, Art, isLoading: isLoadingArt } = useGetArtDisponible();
+  const { getEquipajeD, equipajeD, isLoading: isLoadingEquipaje } = useGetEquipajeD();
 
   useEffect(() => {
-    if (showRutas) {
-      getRutaIda({ id });
-      if (showDateRegreso) {
-        getRutaVuelta({ id });
+    const fetchReservaID = async () => {
+      if (id != null && id > 0) {
+        await getReservaID({ id });
       }
-    }
+    };
+    fetchReservaID();
+  }, [id, hasFetched]);
+
+
+  useEffect(() => {
+    const fetchArtAndEquipaje = async () => {
+      if (showFormMov) {
+        await getArtDisponible({ EmpresaID: 1 });
+
+        const dataReservas = { Tipo: 'Reservas', PersonaID: 1, Modulo: 'Reservas' };
+        const resultReservas = await getFiltroModulo(dataReservas);
+        setReservas(resultReservas);
+
+        await getEquipajeD({ id });
+      }
+    };
+    fetchArtAndEquipaje();
+  }, [showFormMov, updateList]);
+
+  useEffect(() => {
+    const fetchRutas = async () => {
+      if (showRutas) {
+        await getRutaIda({ id });
+        if (showDateRegreso) {
+          await getRutaVuelta({ id });
+        }
+      }
+    };
+    fetchRutas();
   }, [id, showRutas, showDateRegreso, hasFetched]);
 
   useEffect(() => {
-    getReservaD({ id })
-  }, [id, updateList])
+    const fetchReservaD = async () => {
+      if(reservaId.Movimiento != "Equipaje")
+      {
+        await getReservaD({ id });
+      }
+    };
+    fetchReservaD();
+  }, [id, updateList]);
 
   useEffect(() => {
+    const fetchFiltros = async () => {
+      const dataMovimientos = { Tipo: 'Movimientos', PersonaID: 1, Modulo: 'Reservas' };
+      const resultMovimientos = await getFiltroModulo(dataMovimientos);
+      setMovimientos(resultMovimientos);
 
-    const fetchMovimientos = async () => {
-      const data = { Tipo: 'Movimientos', PersonaID: 1, Modulo: 'Reservas' };
-      const result = await getFiltroModulo(data);
-      setMovimientos(result); 
+      const dataOrigenes = { Tipo: 'Destinos', PersonaID: 1, Modulo: 'Reservas' };
+      const resultOrigenes = await getFiltroModulo(dataOrigenes);
+      setOrigenes(resultOrigenes);
+
+      const dataRutas = { Tipo: 'Rutas', PersonaID: 1, Modulo: 'Reservas' };
+      const resultRutas = await getFiltroModulo(dataRutas);
+      setRutas(resultRutas);
     };
-
-    const fetchOrigenes = async () => {
-      const data = { Tipo: 'Destinos', PersonaID: 1, Modulo: 'Reservas' };
-      const result = await getFiltroModulo(data);
-      setOrigenes(result);
-    };
-
-    const fetchRutas = async () => {
-      const data = { Tipo: 'Rutas', PersonaID: 1, Modulo: 'Reservas' };
-      const result = await getFiltroModulo(data);
-      setRutas(result);
-    };
-
-    fetchMovimientos(); 
-    fetchOrigenes(); 
-    fetchRutas();
- 
+    fetchFiltros();
   }, []);
 
   if (isLoading && !showRutas) {
@@ -426,40 +453,80 @@ const ReservasD = () => {
                           setShowDateRegreso={setShowDateRegreso}
                           showDateRegreso={showDateRegreso}
                           rutas={rutas}
+                          setFormMov={setFormMov}
+                          showFormMov={showFormMov}
+                          reservas={reservas}
+                          setUpdtArts={setUpdtArts}
                         />
                     </Col>
                 </Row>
-                {showRutas && (
+              {!showFormMov && (
                 <>
-                  <Row>
-                    <Col>
-                      <RutaIda
-                        rutaIda={rutaIda}
-                        setUpdateList={setUpdateList}
-                      />
-                    </Col>
-                  </Row>
-                  { showDateRegreso && !isLoadingRutasV &&(                  
-                  <Row>
-                    <Col>
-                      <RutaVuelta
-                        rutaVuelta={rutaVuelta}
-                        setUpdateList={setUpdateList}
-                      />
-                    </Col>
-                  </Row>
+                  {showRutas && (
+                  <>
+                    <Row>
+                      <Col>
+                        <RutaIda
+                          rutaIda={rutaIda}
+                          setUpdateList={setUpdateList}
+                        />
+                      </Col>
+                    </Row>
+                    {showDateRegreso && !isLoadingRutasV && (
+                      <Row>
+                        <Col>
+                          <RutaVuelta
+                            rutaVuelta={rutaVuelta}
+                            setUpdateList={setUpdateList}
+                          />
+                        </Col>
+                      </Row>
+                    )}
+                  </>
                   )}
-
-                </>
-              )}
-                <Row className='mt-4'>
-                  <Col>
-                      <DetalleViajeCard 
+                  <Row className="mt-4">
+                    <Col>
+                      <DetalleViajeCard
                         reservaD={reservaD}
                         setUpdateList={setUpdateList}
                       />
-                  </Col>
-                </Row>
+                    </Col>
+                  </Row>
+                </>
+              )}
+              {showFormMov && (
+                <>
+                {showArts && (
+                  <>
+                    <Row className='mt-4'>
+                      <Col>
+                        <ArtDisponible
+                          Art={Art}
+                          setUpdateList={setUpdateList}
+                          id={id}
+                        />
+                      </Col>
+                    </Row>
+                  </>
+                )}
+                  <Row>
+                    <Col>
+                      {isLoadingEquipaje ? (
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                          <Spinner animation="border" role="status">
+                            <span className="visually-hidden">Cargando...</span>
+                          </Spinner>
+                        </div>
+                      ) : (
+                        <DetalleCard 
+                          equipajeD={equipajeD}
+                          setUpdateList={setUpdateList}
+                        />
+                      )}
+                    </Col>
+                  </Row>
+                </>
+              )}
             </Card.Body>
           </Card>        
         </Col>
