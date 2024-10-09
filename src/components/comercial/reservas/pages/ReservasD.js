@@ -361,7 +361,7 @@ const ReservasD = () => {
       }
     };
     fetchReservaID();
-  }, [id, hasFetched]);
+  }, [id, hasFetched, updateList]);
 
 
   useEffect(() => {
