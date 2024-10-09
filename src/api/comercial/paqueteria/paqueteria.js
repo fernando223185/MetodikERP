@@ -4,9 +4,9 @@ export const endpoints = {
     key: '/Comercial/Paqueteria'
 };
 
-export async function getPaqueteriaAsync(){
+export async function getPaqueteriaAsync({data}){
     try{
-        const response = await axios.get(`${endpoints.key}/verPaqueterias`)
+        const response = await axios.post(`${endpoints.key}/verPaqueterias`, data)
         return response
     }catch(error){
         console.error('Error fetching paqueteria:', error);

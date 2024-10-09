@@ -14,7 +14,7 @@ import AllPaqueteriaHeader from './AllPaqueteriaHeader'
 import AdvanceTablePagination from 'components/common/advance-table/AdvanceTablePagination';
 import PropTypes from 'prop-types';
 import { useBreakpoints } from 'hooks/useBreakpoints';
-import ReservaFilterForm from '../sections/ReservasFilterForm'
+import PaqueteriaFilterForm from '../sections/PaqueteriaFilterForm'
 import Flex from 'components/common/Flex';
 import Avatar from 'components/common/Avatar';
 
@@ -343,7 +343,7 @@ function TablePaqueteria({paqueteria, movimientos, estatus, layout, setFilter, s
                 <Offcanvas.Header closeButton className="bg-body-tertiary">
                 <h6 className="fs-0 mb-0 fw-semi-bold">Filtros</h6>
                 </Offcanvas.Header>
-                <ReservaFilterForm movimientos={movimientos} estatus={estatus} setFilter={setFilter} usuarios={usuarios} situaciones={situaciones} />
+                <PaqueteriaFilterForm movimientos={movimientos} estatus={estatus} setFilter={setFilter} usuarios={usuarios} situaciones={situaciones} />
             </Offcanvas>
         </Col>
     </Row>

@@ -6,7 +6,7 @@ import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 
-const ReservaFilterForm = ({ movimientos, estatus, setFilter, situaciones, usuarios }) => {
+const PaqueteriaFilterForm = ({ movimientos, estatus, setFilter, situaciones, usuarios }) => {
   const [selectedMovimiento, setSelectedMovimiento] = useState(null);
   const [selectedEstatus, setSelectedEstatus] = useState(null);
   const [selectedSituacion, setSelectedSituacion] = useState(null);
@@ -142,4 +142,4 @@ const ReservaFilterForm = ({ movimientos, estatus, setFilter, situaciones, usuar
   );
 };
 
-export default ReservaFilterForm;
+export default PaqueteriaFilterForm;

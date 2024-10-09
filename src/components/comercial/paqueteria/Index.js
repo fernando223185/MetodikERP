@@ -44,8 +44,20 @@ const Paqueteria = () => {
   }, [getIndicadores]);
 
   useEffect(() => {
-      getPaqueteria();
-  }, []);
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    const data = { 
+      EmpresaID: user.EmpresaID, 
+      EstatusID: filter.EstatusID ? filter.EstatusID : null,
+      Movimiento: filter.Movimiento ? filter.Movimiento : null,
+      FechaD: filter.FechaDesde ? filter.FechaDesde : null,
+      FechaH: filter.FechaHasta ? filter.FechaHasta : null,
+      Situacion: filter.Situacion ? filter.Situacion : null,
+      Usuario: filter.Usuario ? filter.Usuario : null
+    };
+
+    getPaqueteria({ data });
+  }, [filter]);
 
 
   useEffect(() => {
@@ -66,7 +78,7 @@ const Paqueteria = () => {
   useEffect(() => {
 
     const fetchMovimientos = async () => {
-      const data = { Tipo: 'Movimientos', PersonaID: 1, Modulo: 'Reservas' };
+      const data = { Tipo: 'Movimientos', PersonaID: 1, Modulo: 'Paqueteria' };
       const result = await getFiltroModulo(data);
       setMovimientos(result); 
     };
@@ -78,7 +90,7 @@ const Paqueteria = () => {
     }
 
     const fetchSituaciones = async () => {
-      const data = { Tipo: 'Situaciones', PersonaID: 1, Modulo: 'Reservas' };
+      const data = { Tipo: 'SituacionesFiltro', PersonaID: 1, Modulo: 'Paqueteria' };
       const result = await getFiltroModulo(data);
       setSituacion(result); 
     }

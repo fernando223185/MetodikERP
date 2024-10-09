@@ -6,13 +6,13 @@ export const useGetPaqueteria = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);  
   
-  const getPaqueteria = useCallback(async () => {
+  const getPaqueteria = useCallback(async ({ data }) => {
     if (isLoading) return;
     
     setIsLoading(true);
     setError(null); 
     try {
-      const result = await getPaqueteriaAsync();
+      const result = await getPaqueteriaAsync({ data });
       if (result.status === 200) {
         setPaqueteria(result); 
       } else {

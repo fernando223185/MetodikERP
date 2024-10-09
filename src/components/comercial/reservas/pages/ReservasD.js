@@ -19,7 +19,7 @@ import { useGetArtDisponible } from 'hooks/Comercial/Paqueteria/usePaqueteriaD'
 import IconButton from 'components/common/IconButton';
 
 
-const ReservasHeader = ({setHasFetched, estatus}) => {
+const ReservasHeader = ({setHasFetched, estatus, showFormMov}) => {
   const { id } = useParams();
   const { cancelarReserva, result, isLoading } = useCancelarReserva();
   const { afectarReserva, result: resultAfect, isLoading: isLoadingAfec } = useAfectarReserva();
@@ -56,7 +56,7 @@ const ReservasHeader = ({setHasFetched, estatus}) => {
   }
 
   const handlePlayClick = async () => {
-    if (estatus === 'PENDIENTE') {
+    if (estatus === 'PENDIENTE' && !showFormMov) {
       const data = { Tipo: 'FormaDePago', PersonaID: 1, Modulo: 'Reservas' };
       const resultFiltro = await getFiltroModulo(data); 
       setFormasPago(resultFiltro)
@@ -448,6 +448,7 @@ const ReservasD = () => {
       <ReservasHeader 
       setHasFetched={setHasFetched}
       estatus={reservaId.Estatus}
+      showFormMov={showFormMov}
       />
       <Row className="g-3 mb-3">
         <Col lg={12}>
