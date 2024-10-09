@@ -110,6 +110,7 @@ const InfoDCard = ({ paqueteriaId, movimientos, clientes, origenes, formasPago, 
   useEffect(() => {
     console.log('Formik values updated:', formik.values);
   }, [formik.values]);
+  
   return (
     <FormikProvider value={formik}>
       <form onSubmit={formik.handleSubmit}>

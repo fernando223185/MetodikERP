@@ -45,8 +45,6 @@ const validationSchema = Yup.object().shape({
   movimiento: Yup.string().required('Movimiento es obligatorio'),
   origen: Yup.string().required('Origen es obligatorio'),
   destino: Yup.string().required('Destino es obligatorio'),
-  dateSalida: Yup.date().required('Fecha de salida es obligatoria'),
-  dateRegreso: Yup.date().required('Fecha de regreso es obligatoria'),
 });
 
 const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched, setUpdtRutas, setShowDateRegreso, showDateRegreso, rutas, setFormMov, showFormMov, reservas, setUpdtArts }) => {

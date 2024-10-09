@@ -243,7 +243,7 @@ const PaqueteriaD = () => {
     if(showArt){
         getArtDisponible({ EmpresaID: 1})
     }
-  }, [id, hasFetched, showArt])
+  }, [id, hasFetched, showArt, updateList])
 
   useEffect(() => {
 

@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 const InfoCard = ({ paqueteriaId }) => {
+
   const getStatusIcon = (estatus) => {
     switch (estatus) {
       case 'CONCLUIDO':
