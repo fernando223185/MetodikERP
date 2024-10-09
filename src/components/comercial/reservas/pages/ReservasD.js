@@ -16,6 +16,7 @@ import Select from 'react-select';
 import ArtDisponible from '../sections/ArtDisponible'
 import DetalleCard from '../sections/DetalleCard'; 
 import { useGetArtDisponible } from 'hooks/Comercial/Paqueteria/usePaqueteriaD'
+import IconButton from 'components/common/IconButton';
 
 
 const ReservasHeader = ({setHasFetched, estatus}) => {
@@ -200,42 +201,56 @@ const ReservasHeader = ({setHasFetched, estatus}) => {
             <span className="text-muted">Detalle del Movimiento</span>
           </Col>
             <Col md={4} className="text-end">
-                <Link
-                    to={`/comercial/reservas`}  
-                    className="btn btn-outline-primary rounded-pill me-1 btn-sm"
+            <div className="d-flex justify-content-end align-items-center mt-4">
+              <Link to={`/comercial/reservas`}>
+                <IconButton
+                  variant="falcon-default"
+                  size="sm"
+                  className="mb-2 mb-sm-0 me-2 d-flex align-items-center"
+                  title="Regresar"
                 >
-                    <FontAwesomeIcon icon={faReply} />
-                </Link>
+                  <FontAwesomeIcon icon={faReply} className="me-1" /> Regresar
+                </IconButton>
+              </Link>
                 {isLoading || isLoadingAfec ? (
                   <Spinner animation="border" role="status" className="me-1">
                     <span className="visually-hidden">Loading...</span>
                   </Spinner>
                 ) : (
                   <>
-                    <button
-                      onClick={handleSituacionClick}
-                      className="btn btn-outline-primary rounded-pill btn-sm me-1"
-                      title='Cambiar situacion'
+
+                    <IconButton
+                        variant="falcon-default"
+                        size="sm"
+                        className="mb-2 mb-sm-0 me-2 d-flex align-items-center"
+                        title="Cambiar situación"
+                        onClick={handleSituacionClick}
                     >
-                      <FontAwesomeIcon icon={faStar} />
-                    </button>
-                    <button
-                      onClick={handlePlayClick}
-                      className="btn btn-outline-primary rounded-pill btn-sm me-1"
-                      title='Afectar'
+                        <FontAwesomeIcon icon={faStar} className="me-1" /> Situación
+                    </IconButton>
+
+                    <IconButton
+                        variant="falcon-primary"
+                        size="sm"
+                        className="mb-2 mb-sm-0 me-2 d-flex align-items-center" 
+                        title="Afectar"
+                        onClick={handlePlayClick}
                     >
-                      <FontAwesomeIcon icon={faPlay} />
-                    </button>
-                    <button
-                      onClick={handleCancel}
-                      className="btn btn-outline-primary rounded-pill btn-sm"
-                      title='Cancelar'
+                        <FontAwesomeIcon icon={faPlay} className="me-1" /> Afectar
+                    </IconButton>
+
+                    <IconButton
+                        variant="falcon-danger"
+                        size="sm"
+                        className="mb-2 mb-sm-0 d-flex align-items-center" 
+                        title="Cancelar"
+                        onClick={handleCancel}
                     >
-                      <FontAwesomeIcon icon={faBan} />
-                    </button>
+                        <FontAwesomeIcon icon={faBan} className="me-1" /> Cancelar
+                    </IconButton>
                   </>
                 )}
-
+              </div>
             </Col>
         </Row>
       </Container>

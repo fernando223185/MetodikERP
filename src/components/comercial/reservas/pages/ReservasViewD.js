@@ -3,13 +3,15 @@ import IconButton from 'components/common/IconButton';
 import React, { useEffect, useState } from 'react';
 import { Card, Col, Row, Table, Spinner } from 'react-bootstrap';
 import SimpleBarReact from 'simplebar-react';
-import { useGetReservaID, useGetReservaD } from '../../../../hooks/Comercial/Reserva/useReservaD';
+import { useGetReservaID, useGetReservaD, useVerPDF } from '../../../../hooks/Comercial/Reserva/useReservaD';
 import { useParams } from 'react-router-dom';
-import { faPaperPlane, faCheck, faStream, faPen, faBan, faSpinner } from '@fortawesome/free-solid-svg-icons'; 
+import { faPaperPlane, faCheck, faStream, faPen, faBan, faSpinner, faCheckCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons'; 
 import SubtleBadge from 'components/common/SubtleBadge';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 
 
 const ReservasViewD = () => {
@@ -17,6 +19,7 @@ const ReservasViewD = () => {
     const { id } = useParams();
     const { getReservaID, reservaId, isLoading, error } = useGetReservaID();
     const { getReservaD, reservaD, isLoading: isLoadingD } = useGetReservaD();
+    const { verPDF, result, isLoading: isLoadingPDF } = useVerPDF();
     const [hasFetched, setHasFetched] = useState(false); 
 
 
@@ -28,8 +31,6 @@ const ReservasViewD = () => {
         }
       }, [id, hasFetched])
     
-    console.log(reservaId)
-
     const getStatusIcon = (estatus) => {
         switch (estatus) {
           case 'CONCLUIDO':
@@ -46,6 +47,37 @@ const ReservasViewD = () => {
             return faPaperPlane;
         }
       };
+    
+      const handleClickPDF = async () => {
+          var data = {
+            ID: id
+          }
+          verPDF({data})
+      }
+
+      useEffect(() => {
+        if (result && Object.keys(result).length === 0) {
+          console.log("result es un array vacío:", result);
+        } else if (result && result.status === 200) {
+            toast[result.data[0].Tipo](`${result.data[0].Mensaje}`, {
+                theme: 'colored',
+                position: result.data[0].Posicion,
+                icon: result.data[0].Tipo === 'success' ? 
+                <FontAwesomeIcon icon={faCheckCircle} /> : 
+                result.data[0].Tipo === 'error' ? 
+                <FontAwesomeIcon icon={faExclamationTriangle} /> : 
+                <FontAwesomeIcon icon={faInfoCircle} />
+            });
+            setTimeout(() => {
+              window.open(result.data[0].Ruta, '_blank')            
+            }, 1000)
+        } else if (result) {
+            toast.error(`Error al descargar el PDF`, {
+                theme: 'colored',
+                position: 'top-right'
+            });
+        }  
+      }, [result])
 
     if (isLoading || isLoadingD ) {
         return (
@@ -85,10 +117,11 @@ const ReservasViewD = () => {
                 icon="arrow-down"
                 className="me-1 mb-2 mb-sm-0"
                 iconClassName="me-1"
+                onClick={handleClickPDF}
               >
                 Descargar (.pdf)
               </IconButton>
-              <IconButton
+             {/*  <IconButton
                 variant="falcon-default"
                 size="sm"
                 icon="print"
@@ -96,7 +129,7 @@ const ReservasViewD = () => {
                 className="me-1 mb-2 mb-sm-0"
               >
                 Imprimir
-              </IconButton>
+              </IconButton>  */}
               <Link to={`/comercial/reservas/reservaD/${reservaId.ID}`}>
                 <IconButton
                     variant="falcon-primary"

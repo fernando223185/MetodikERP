@@ -17,7 +17,8 @@ import { getReservaIDAsync,
         agregarEquipajeDAsync,
         getEquipajeDAsync,
         actEquipajeDetalleAsync,
-        delRowEquipajeAsync } from 'api/comercial/reservas/reservas';
+        delRowEquipajeAsync,
+        verPDFAsync } from 'api/comercial/reservas/reservas';
 
 export const useGetReservaID = () => {
   const [reservaId, setReserva] = useState([]);
@@ -369,5 +370,19 @@ export const useDelRowEquipajeD = () => {
     }, [])
   
     return { delRowEquipajeD, result, isLoading };
+}
+
+export const useVerPDF = () => {
+  const [result, setResult] = useState({})    
+  const [isLoading, setIsLoading] = useState(false)
+  
+  const verPDF = useCallback(async ({ data }) => {
+      setIsLoading(true);
+      const result = await verPDFAsync({ data });
+      setResult(result);
+      setIsLoading(false);
+    }, [])
+  
+    return { verPDF, result, isLoading };
 }
 

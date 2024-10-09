@@ -216,3 +216,13 @@ export async function delRowEquipajeAsync({ id = 0, RowID = 0}){
         return error;
     }
 }
+
+export async function verPDFAsync({ data }){
+    try {
+        const response = await axios.post(`${endpoints.key}/Reservas/verPDFReserva`, data)
+        return response
+    } catch (error) {
+        console.error('Error fetching paqueteria:', error);
+        return error;
+    }
+}
