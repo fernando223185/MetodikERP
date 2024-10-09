@@ -122,15 +122,6 @@ const AllPaqueteriaHeader = ({
                       >
                         Vista Tabla
                       </Link>
-                      <Link
-                        className={classNames('dropdown-item', {
-                          active: layout === 'view-card'
-                        })}
-                        to="/comercial/reservas"
-                        state={{ formView: 'view-card' }}  
-                        >
-                        Vista Tarjeta
-                      </Link>
                     </div>
                   </Dropdown.Menu>
                 </Dropdown>
