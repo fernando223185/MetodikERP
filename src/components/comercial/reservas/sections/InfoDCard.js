@@ -340,129 +340,126 @@ const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched,
                   </Row>
                 </>
               )}
-              {showFormMov && (
-                <>
-                  <Row>
-                    <Col md={6}>
-                      <Form.Group>
-                        <Form.Label>Origen</Form.Label>
-                        <Select
-                          classNamePrefix="react-select"
-                          options={origenes.map(item => ({
-                            value: item.Valor,
-                            label: item.Dato,
-                          }))}
-                          onChange={option => formik.setFieldValue('origen', option.value)}
-                          isLoading={isLoading}
-                          value={getOptionByValue(origenes, reservaIdOpti.Origen)}
-                          isDisabled={true}
-                        />
-                        {formik.touched.origen && formik.errors.origen && (
-                          <div className="text-danger">{formik.errors.origen}</div>
-                        )}
-                      </Form.Group>
-                    </Col>
-                    <Col md={6}>
-                      <Form.Group>
-                        <Form.Label>Destino</Form.Label>
-                        <Select
-                          classNamePrefix="react-select"
-                          options={origenes.map(item => ({
-                            value: item.Valor,
-                            label: item.Dato,
-                          }))}
-                          onChange={option => formik.setFieldValue('destino', option.value)}
-                          isLoading={isLoading}
-                          value={getOptionByValue(origenes, reservaIdOpti.Destino)} 
-                          isDisabled={true}
+            {showFormMov && (
+              <>
+                <Row>
+                  <Col md={6}>
+                    <Form.Group>
+                      <Form.Label>Origen</Form.Label>
+                      <Select
+                        classNamePrefix="react-select"
+                        options={origenes.map(item => ({
+                          value: item.Valor,
+                          label: item.Dato,
+                        }))}
+                        onChange={option => formik.setFieldValue('origen', option.value)}
+                        isLoading={isLoading}
+                        value={reservaIdOpti && reservaIdOpti.Origen ? getOptionByValue(origenes, reservaIdOpti.Origen) : null}
+                        isDisabled={true}
+                      />
+                      {formik.touched.origen && formik.errors.origen && (
+                        <div className="text-danger">{formik.errors.origen}</div>
+                      )}
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group>
+                      <Form.Label>Destino</Form.Label>
+                      <Select
+                        classNamePrefix="react-select"
+                        options={origenes.map(item => ({
+                          value: item.Valor,
+                          label: item.Dato,
+                        }))}
+                        onChange={option => formik.setFieldValue('destino', option.value)}
+                        isLoading={isLoading}
+                        value={reservaIdOpti && reservaIdOpti.Destino ? getOptionByValue(origenes, reservaIdOpti.Destino) : null}
+                        isDisabled={true}
+                      />
+                      {formik.touched.destino && formik.errors.destino && (
+                        <div className="text-danger">{formik.errors.destino}</div>
+                      )}
+                    </Form.Group>
+                  </Col>
+                </Row>
 
-                        />
-                        {formik.touched.destino && formik.errors.destino && (
-                          <div className="text-danger">{formik.errors.destino}</div>
-                        )}
-                      </Form.Group>
-                    </Col>
-                  </Row>
-
-                  <Row className="mt-3">
+                <Row className="mt-3">
+                  <Col md={6}>
+                    <Form.Group>
+                      <Form.Label>Fecha Salida</Form.Label>
+                      <DatePicker
+                        selected={reservaIdOpti && reservaIdOpti.FechaA ? moment(reservaIdOpti.FechaA, 'DD-MM-YYYY').toDate() : null}
+                        onChange={date => formik.setFieldValue('dateSalida', date)}
+                        className="form-control"
+                        placeholderText="Selecciona una fecha"
+                        dateFormat="dd-MM-yyyy"
+                        locale="es"
+                        isDisabled={true}
+                        disabled={true}
+                      />
+                      {formik.touched.dateSalida && formik.errors.dateSalida && (
+                        <div className="text-danger">{formik.errors.dateSalida}</div>
+                      )}
+                    </Form.Group>
+                  </Col>
+                  {showDateRegreso && (
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Fecha Salida</Form.Label>
+                        <Form.Label>Fecha Regreso</Form.Label>
                         <DatePicker
-                          selected={reservaIdOpti.FechaA ? moment(reservaIdOpti.FechaA, 'DD-MM-YYYY').toDate() : null}
-                          onChange={date => formik.setFieldValue('dateSalida', date)}
+                          selected={reservaIdOpti && reservaIdOpti.FechaD ? moment(reservaIdOpti.FechaD, 'DD-MM-YYYY').toDate() : null}
+                          onChange={date => formik.setFieldValue('dateRegreso', date)}
                           className="form-control"
                           placeholderText="Selecciona una fecha"
                           dateFormat="dd-MM-yyyy"
                           locale="es"
                           isDisabled={true}
                           disabled={true}
-
                         />
-                        {formik.touched.dateSalida && formik.errors.dateSalida && (
-                          <div className="text-danger">{formik.errors.dateSalida}</div>
+                        {formik.touched.dateRegreso && formik.errors.dateRegreso && (
+                          <div className="text-danger">{formik.errors.dateRegreso}</div>
                         )}
                       </Form.Group>
                     </Col>
-                    {showDateRegreso && (
-                      <Col md={6}>
-                        <Form.Group>
-                          <Form.Label>Fecha Regreso</Form.Label>
-                          <DatePicker
-                            selected={reservaIdOpti.FechaD ? moment(reservaIdOpti.FechaD, 'DD-MM-YYYY').toDate() : null}
-                            onChange={date => formik.setFieldValue('dateRegreso', date)}
-                            className="form-control"
-                            placeholderText="Selecciona una fecha"
-                            dateFormat="dd-MM-yyyy"
-                            locale="es"
-                            isDisabled={true}
-                            disabled={true}
+                  )}
+                </Row>
 
-                          />
-                          {formik.touched.dateRegreso && formik.errors.dateRegreso && (
-                            <div className="text-danger">{formik.errors.dateRegreso}</div>
-                          )}
-                        </Form.Group>
-                      </Col>
-                    )}
-                  </Row>
-                  <Row className='mt-3'>
-                    <Col md={6}>
-                      <Form.Group controlId="formObs">
-                        <Form.Label>Observaciones</Form.Label>
-                        <InputGroup>
-                          <Form.Control
-                            type="text"
-                            isDisabled={true}
-                            disabled={true}
-                            value={reservaIdOpti.Observaciones}
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            {formik.errors.Cantidad}
-                          </Form.Control.Feedback>
-                        </InputGroup>
-                      </Form.Group>
-                    </Col>
-                    <Col md={6}>
-                      <Form.Group controlId="formRef">
-                        <Form.Label>Referencia</Form.Label>
-                        <InputGroup>
-                          <Form.Control
-                            type="text"
-                            value={reservaIdOpti.Referencia}
-                            isInvalid={!!formik.errors.Cantidad && formik.touched.Cantidad}
-                            disabled={true}
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            {formik.errors.Cantidad}
-                          </Form.Control.Feedback>
-                        </InputGroup>
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                </>
-              )}
-
+                <Row className="mt-3">
+                  <Col md={6}>
+                    <Form.Group controlId="formObs">
+                      <Form.Label>Observaciones</Form.Label>
+                      <InputGroup>
+                        <Form.Control
+                          type="text"
+                          isDisabled={true}
+                          disabled={true}
+                          value={reservaIdOpti && reservaIdOpti.Observaciones ? reservaIdOpti.Observaciones : ''}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {formik.errors.Cantidad}
+                        </Form.Control.Feedback>
+                      </InputGroup>
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group controlId="formRef">
+                      <Form.Label>Referencia</Form.Label>
+                      <InputGroup>
+                        <Form.Control
+                          type="text"
+                          value={reservaIdOpti && reservaIdOpti.Referencia ? reservaIdOpti.Referencia : ''}
+                          isInvalid={!!formik.errors.Cantidad && formik.touched.Cantidad}
+                          disabled={true}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {formik.errors.Cantidad}
+                        </Form.Control.Feedback>
+                      </InputGroup>
+                    </Form.Group>
+                  </Col>
+                </Row>
+              </>
+            )}
             <hr style={{ margin: '10px 0' }} className="mt-4" />
 
             <div className="d-flex justify-content-start mt-2">

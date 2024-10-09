@@ -66,9 +66,7 @@ function TableArtDisponible({ Art, setUpdateList, id }) {
               <FontAwesomeIcon icon={faExclamationTriangle} /> : 
               <FontAwesomeIcon icon={faInfoCircle} />
           }); 
-          setTimeout(() => {
             setUpdateList((prev) => !prev); 
-          }, 1000)
       } else if (resultDAdd) {
           toast.error(`Error al guardar`, {
               theme: 'colored',

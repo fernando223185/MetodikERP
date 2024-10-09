@@ -438,11 +438,11 @@ const ReservasD = () => {
 
   }, [showFormMov, updateList, filtrosCargados]);
 
-  if (isLoading && !showRutas) {
+  if (isLoading || !filtrosCargados) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', height: '100vh', marginTop: '100px' }}>
         <Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
+          <span className="visually-hidden">Cargando...</span>
         </Spinner>
       </div>
     );
