@@ -97,7 +97,7 @@ export async function afectarPaqueteriaAsync ({ data }){
 
 export async function cancelarPaqueteriaAsync ({ data }){
     try{
-        const response = await axios.post(`${endpoints.key}/Reservas/cancelarReserva`, data)
+        const response = await axios.post(`${endpoints.key}/cancelarPaqueteria`, data)
         return response
     }catch(error){
         console.error('Error fetching reservas:', error);

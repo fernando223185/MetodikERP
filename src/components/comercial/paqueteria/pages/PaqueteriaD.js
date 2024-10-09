@@ -115,6 +115,30 @@ const PaqueteriaHeader = ({setHasFetched, estatus}) => {
     }
   },[situacion])
 
+  useEffect(() => {
+    if (result && Object.keys(result).length === 0) {
+      console.log("result es un array vacío:", result);
+    } else if (result && result.status === 200) {
+        toast[result.data[0].Tipo](`${result.data[0].Mensaje}`, {
+            theme: 'colored',
+            position: result.data[0].Posicion,
+            icon: result.data[0].Tipo === 'success' ? 
+            <FontAwesomeIcon icon={faCheckCircle} /> : 
+            result.data[0].Tipo === 'error' ? 
+            <FontAwesomeIcon icon={faExclamationTriangle} /> : 
+            <FontAwesomeIcon icon={faInfoCircle} />
+        });
+        setTimeout(() => {
+          setHasFetched((prev) => !prev); 
+        }, 1000)
+    } else if (result) {
+        toast.error(`Error al guardar`, {
+            theme: 'colored',
+            position: 'top-right'
+        });
+    }  
+  }, [result])
+
   return (
     <>
       <Container fluid className="py-3 px-4 border-bottom mb-4">
