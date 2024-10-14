@@ -157,7 +157,7 @@ const Reservas = () => {
           {formview === 'view-card' ? (
             <ViewReservasCard reservas={reservas} movimientos={movimientos} estatus={estatus} layout={formview} setFilter={setFilter} situaciones={situaciones} usuarios={usuarios} />
           ) : (
-            <TableReservasV2 reservas={reservas} movimientos={movimientos} estatus={estatus} layout={formview} setFilter={setFilter} situaciones={situaciones} usuarios={usuarios}/>
+            <TableReservasV2 reservas={reservas} movimientos={movimientos} estatus={estatus} layout={formview} setFilter={setFilter} situaciones={situaciones} usuarios={usuarios} filter={filter}/>
           )}
         </Col>
       </Row>

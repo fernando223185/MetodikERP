@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons'; 
@@ -6,13 +6,15 @@ import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 
-const ReservaFilterForm = ({ movimientos, estatus, setFilter, situaciones, usuarios }) => {
+const ReservaFilterForm = ({ movimientos, estatus, situaciones, usuarios, setFilter, filter }) => {
   const [selectedMovimiento, setSelectedMovimiento] = useState(null);
   const [selectedEstatus, setSelectedEstatus] = useState(null);
   const [selectedSituacion, setSelectedSituacion] = useState(null);
   const [selectedUsuario, setSelectedUsuario] = useState(null);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+
+
 
   const handleMovimientoChange = (selectedOption) => {
     setSelectedMovimiento(selectedOption); 
@@ -23,12 +25,12 @@ const ReservaFilterForm = ({ movimientos, estatus, setFilter, situaciones, usuar
   };
 
   const handleUsuariosChange = (selectedOption) => {
-    setSelectedUsuario(selectedOption)
-  }
+    setSelectedUsuario(selectedOption);
+  };
 
   const handleSituacionesChange = (selectedOption) => {
-    setSelectedSituacion(selectedOption)
-  }
+    setSelectedSituacion(selectedOption);
+  };
 
   const handleSearch = () => {
     const data = {
@@ -42,6 +44,27 @@ const ReservaFilterForm = ({ movimientos, estatus, setFilter, situaciones, usuar
 
     setFilter(data); 
   };
+
+  useEffect(() => {
+    if (filter) {
+      const movimientoEncontrado = movimientos.find(mov => mov.Valor === filter.Movimiento);
+      
+      setSelectedMovimiento(
+        movimientoEncontrado ? { value: movimientoEncontrado.Valor, label: movimientoEncontrado.Dato } : null
+      );
+      setSelectedEstatus(
+        estatus.find(est => est.Valor === filter.EstatusID) ? { value: filter.EstatusID, label: estatus.find(est => est.Valor === filter.EstatusID).Dato } : null
+      );
+      setSelectedSituacion(
+        situaciones.find(sit => sit.Valor === filter.Situacion) ? { value: filter.Situacion, label: situaciones.find(sit => sit.Valor === filter.Situacion).Dato } : null
+      );
+      setSelectedUsuario(
+        usuarios.find(usr => usr.Valor === filter.Usuario) ? { value: filter.Usuario, label: usuarios.find(usr => usr.Valor === filter.Usuario).Dato } : null
+      );
+      setStartDate(filter.FechaDesde ? moment(filter.FechaDesde).toDate() : null);
+      setEndDate(filter.FechaHasta ? moment(filter.FechaHasta).toDate() : null);
+    }
+  }, [filter, movimientos, estatus, situaciones, usuarios]);
 
   return (
     <Card className="shadow-none shadow-show-xl">

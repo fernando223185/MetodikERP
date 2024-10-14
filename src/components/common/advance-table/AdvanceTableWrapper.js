@@ -10,6 +10,8 @@ import {
   useGlobalFilter
 } from 'react-table';
 
+const savedPage = localStorage.getItem('currentPage') ? Number(localStorage.getItem('currentPage')) : 0;
+
 export const IndeterminateCheckbox = React.forwardRef(
   ({ indeterminate, className, ...rest }, ref) => {
     const defaultRef = React.useRef();
@@ -69,7 +71,9 @@ const AdvanceTableWrapper = ({
       columns,
       data,
       disableSortBy: !sortable,
-      initialState: { pageSize: pagination ? perPage : data.length }
+      initialState: { pageSize: pagination ? perPage : data.length,
+        pageIndex: savedPage  
+      }
     },
     useGlobalFilter,
     useSortBy,

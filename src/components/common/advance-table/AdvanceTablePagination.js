@@ -1,7 +1,6 @@
-/* eslint-disable react/prop-types */
+import React, { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
-import React from 'react';
 import { Button } from 'react-bootstrap';
 import Flex from '../Flex';
 
@@ -14,12 +13,29 @@ export const AdvanceTablePagination = ({
   pageIndex,
   gotoPage
 }) => {
+
+  const handleGotoPage = (page) => {
+    localStorage.setItem('currentPage', page);
+    var pag = localStorage.getItem('currentPage')
+    gotoPage(pag);
+  };
+  useEffect(() => {
+    const savedPage = localStorage.getItem('currentPage');
+    if (savedPage && !isNaN(savedPage)) {
+      console.log("Entro en la pagina", savedPage)
+      gotoPage(savedPage);
+    }
+  }, [gotoPage,pageIndex]);
+
   return (
     <Flex alignItems="center" justifyContent="center">
       <Button
         size="sm"
         variant="falcon-default"
-        onClick={() => previousPage()}
+        onClick={() => {
+          previousPage();
+          handleGotoPage(pageIndex - 1);  // Actualiza también el localStorage
+        }}
         className={classNames({ disabled: !canPreviousPage })}
       >
         <FontAwesomeIcon icon="chevron-left" />
@@ -33,7 +49,7 @@ export const AdvanceTablePagination = ({
               className={classNames('page', {
                 'me-2': index + 1 !== pageCount
               })}
-              onClick={() => gotoPage(page)}
+              onClick={() => handleGotoPage(page)}  // Llama a la función con localStorage
             >
               {page + 1}
             </Button>
@@ -43,7 +59,10 @@ export const AdvanceTablePagination = ({
       <Button
         size="sm"
         variant="falcon-default"
-        onClick={() => nextPage()}
+        onClick={() => {
+          nextPage();
+          handleGotoPage(pageIndex + 1);  // Actualiza también el localStorage
+        }}
         className={classNames({ disabled: !canNextPage })}
       >
         <FontAwesomeIcon icon="chevron-right" />

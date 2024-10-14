@@ -163,7 +163,7 @@ const columns = [
   
 ];
 
-function TableReservasV2({reservas, movimientos, estatus, layout, setFilter, situaciones, usuarios }) {
+function TableReservasV2({reservas, movimientos, estatus, layout, setFilter, situaciones, usuarios, filter }) {
 
   const [result, setResult] = useState([]);
   const [formToShow, setFormToShow] = useState('');
@@ -275,7 +275,6 @@ function TableReservasV2({reservas, movimientos, estatus, layout, setFilter, sit
     navigate(`/comercial/reservas/view-reserva/${id}`);
   };
 
-
   return (
     <Row className="gx-3">
         <Col>
@@ -327,7 +326,7 @@ function TableReservasV2({reservas, movimientos, estatus, layout, setFilter, sit
                 <Offcanvas.Header closeButton className="bg-body-tertiary">
                 <h6 className="fs-0 mb-0 fw-semi-bold">Filtros</h6>
                 </Offcanvas.Header>
-                <ReservaFilterForm movimientos={movimientos} estatus={estatus} setFilter={setFilter} usuarios={usuarios} situaciones={situaciones} />
+                <ReservaFilterForm movimientos={movimientos} estatus={estatus} setFilter={setFilter} usuarios={usuarios} situaciones={situaciones} filter={filter} />
             </Offcanvas>
         </Col>
     </Row>
