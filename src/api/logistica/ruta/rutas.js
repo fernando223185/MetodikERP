@@ -43,24 +43,54 @@ export async function getRutaDAsync({ id = 0}){
     }
 }
 
-export async function avanzarReservaAsync({ data })
+export async function avanzarRutaAsync({ data })
 {
     try{
-        const response = await axios.post(`${endpoints.key}/Reservas/avanzarReserva`, data)
+        const response = await axios.post(`${endpoints.key}/AvanzarRuta`, data)
         return response;
     }catch(error)
     {
-        console.error('Error fetching reservas:', error);
+        console.error('Error fetching rutas:', error);
         return error;
     }
 }
 
-export async function getRutaIdaAsync({id = 0}){
+export async function getRutaDisAsync({id = 0}){
     try{
-        const response = await axios.get(`${endpoints.key}/Reservas/verViajesDisponiblesIda?ID=${id}`)
+        const response = await axios.get(`${endpoints.key}/verParadaRutasDisponible?ID=${id}`)
         return response.data
     }catch(error){
-        console.error('Error fetching reservas:', error);
+        console.error('Error fetching rutas:', error);
+        return error;
+    }
+}
+
+export async function agregarParadaDAsync({ data }){
+    try {
+        const response = await axios.post(`${endpoints.key}/agregarParadaRuta`, data)
+        return response
+    } catch (error) {
+        console.error('Error fetching rutas:', error);
+        return error;
+    }
+}
+
+export async function actParadaDAsync({ data }){
+    try {
+        const response = await axios.post(`${endpoints.key}/ActParadaRuta`, data)
+        return response
+    } catch (error) {
+        console.error('Error fetching rutas:', error);
+        return error;
+    }
+}
+
+export async function delRowAsync({ id = 0, RowID = 0, UsuarioID = 0}){
+    try{
+        const response = await axios.delete(`${endpoints.key}/eliminarParadaRuta?ID=${id}&RenglonID=${RowID}&UsuarioID=${UsuarioID}`)
+        return response
+    }catch(error){
+        console.error('Error fetching rutas:', error);
         return error;
     }
 }
@@ -80,16 +110,6 @@ export async function actReservaDAsync({ data }){
         const response = await axios.post(`${endpoints.key}/Reservas/ActReservaD`, data)
         return response
     } catch (error) {
-        console.error('Error fetching reservas:', error);
-        return error;
-    }
-}
-
-export async function delRowAsync({ id = 0, RowID = 0}){
-    try{
-        const response = await axios.delete(`${endpoints.key}/Reservas/eliminarRenglonReserva?ID=${id}&RenglonID=${RowID}`)
-        return response
-    }catch(error){
         console.error('Error fetching reservas:', error);
         return error;
     }

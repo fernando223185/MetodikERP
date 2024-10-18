@@ -238,6 +238,7 @@ import PaqueteriaD from 'components/comercial/paqueteria/pages/PaqueteriaD'
 import PaqueteriaViewD from 'components/comercial/paqueteria/pages/PaqueteriaViewD'
 import RutasLogict from 'components/logistica/rutas/Index';
 import ViewRutasCard from 'components/logistica/rutas/pages/RutasViewD'
+import RutasD from 'components/logistica/rutas/pages/RutasD'
 
 
 const MetodikRoutes = () => {
@@ -650,6 +651,8 @@ const MetodikRoutes = () => {
         <Route path="comercial/paqueteria/view-paqueteria/:id" element={<PaqueteriaViewD/>} />
         <Route path="logistica/rutas" element={<RutasLogict/>} />
         <Route path="logistica/rutas/view-rutas/:id" element={<ViewRutasCard/>} />
+        <Route path="logistica/rutas/rutasD/:id" element={<RutasD/>} />
+
 
       </Route>
 

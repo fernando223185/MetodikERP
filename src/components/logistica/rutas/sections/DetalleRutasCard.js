@@ -1,23 +1,22 @@
 import React from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
-import TableReservaD from '../tables/tableReservaD'
+import TableRutaD from '../tables/tableRutaD'
 
 
-const DetalleViajeCard = ({ reservaD, setUpdateList }) => {
-  console.log(reservaD)
+const DetalleRutasCard = ({ rutaD, setUpdateList }) => {
   return (
     <Card className="mb-3">
       <Card.Header>
         <Row className="align-items-center mb-1">
           <Col>
-            <h5 className="mb-0">Detalle viaje</h5>
+            <h5 className="mb-0">Detalle Rutas</h5>
           </Col>
         </Row>
         <hr />
       </Card.Header>
       <Card.Body>
-        <TableReservaD 
-          reservaD={reservaD}
+        <TableRutaD 
+          rutaD={rutaD}
           setUpdateList={setUpdateList}
         />
       </Card.Body>
@@ -25,4 +24,4 @@ const DetalleViajeCard = ({ reservaD, setUpdateList }) => {
   );
 };
 
-export default DetalleViajeCard;
+export default DetalleRutasCard;

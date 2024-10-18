@@ -105,7 +105,7 @@ const RutasViewD = () => {
               >
                 Imprimir
               </IconButton>  */}
-              <Link to={`/comercial/reservas/reservaD/${rutaId.ID}`}>
+              <Link to={`/logistica/rutas/rutasD/${rutaId.ID}`}>
                 <IconButton
                     variant="falcon-primary"
                     size="sm"

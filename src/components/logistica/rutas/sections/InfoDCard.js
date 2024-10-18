@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Form, Row, Col, Button, Spinner, InputGroup } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faCheckCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
@@ -8,11 +8,11 @@ import { useFormik, FormikProvider } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import moment from 'moment';
-import { useAvanzaReserva, useGetReservaIDOption } from '../../../../hooks/Comercial/Reserva/useReservaD';
+import { useAvanzaRuta } from '../../../../hooks/Logistica/Ruta/useRutaD';
 import IconButton from 'components/common/IconButton';
 
 
-const getInitialValues = (reservaId) => {
+const getInitialValues = (rutaId) => {
   const initialForm = {
     movimiento: '',
     origen: '',
@@ -22,56 +22,54 @@ const getInitialValues = (reservaId) => {
     referencia: '',
     observaciones: '',
     ruta: '0',
-    reservaID: 0
+    vehiculo: '0',
+    equipo: '0'
   };
 
-  if (reservaId) {
+  if (rutaId) {
     return {
-      movimiento: reservaId.Movimiento || '',
-      origen: reservaId.Origen || '',
-      destino: reservaId.Destino || '',
-      dateSalida: reservaId.FechaA ? moment(reservaId.FechaA, 'DD-MM-YYYY').toDate() : null,
-      dateRegreso: reservaId.FechaD ? moment(reservaId.FechaD, 'DD-MM-YYYY').toDate() : null,
-      referencia: reservaId.Referencia,
-      observaciones: reservaId.Observaciones,
-      ruta: reservaId.Ruta || '',
-      reservaID: reservaId.ReservaID || 0
+      movimiento: rutaId.Movimiento || '',
+      dateStart: rutaId.FechaInicio ? moment(rutaId.FechaInicio, 'DD-MM-YYYY').toDate() : null,
+      timeSalida: rutaId.HoraSalida ? moment(rutaId.HoraSalida, 'HH:mm:ss.SSSSSSS').toDate() : null,
+      referencia: rutaId.Referencia,
+      observaciones: rutaId.Observaciones,
+      ruta: rutaId.Ruta || '',
+      vehiculo: rutaId.VehiculoID || 0,
+      equipo: rutaId.EquipoID || '0'
     };
   }
   return initialForm;
 };
 
 const validationSchema = Yup.object().shape({
-  movimiento: Yup.string().required('Movimiento es obligatorio'),
-  origen: Yup.string().required('Origen es obligatorio'),
-  destino: Yup.string().required('Destino es obligatorio'),
+  movimiento: Yup.string().required('Movimiento es obligatorio')
 });
 
-const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched, setUpdtRutas, setShowDateRegreso, showDateRegreso, rutas, setFormMov, showFormMov, reservas, setUpdtArts }) => {
+const InfoDCard = ({ rutaId, movimientos, vehiculos, isLoading, setHasFetched, setUpdtRutas, setShowDateRegreso, showDateRegreso, rutas, setFormMov, showFormMov, equipos, setUpdtArts }) => {
 
-  const { avanzarReserva, result: resultNew, isLoading: isLoadingNew } = useAvanzaReserva();
-  const { getReservaID, reservaIdOpti, isLoading: IsloadingId, error } = useGetReservaIDOption();
+  const { avanzarRuta, result: resultNew, isLoading: isLoadingNew } = useAvanzaRuta();
+  const [date, setDate] = useState(null);
 
   const formik = useFormik({
-    initialValues: getInitialValues(reservaId),
+    initialValues: getInitialValues(rutaId),
     validationSchema,
     enableReinitialize: true, 
     onSubmit: async (values) => {
+      console.log(values)
       try {
         const data = {
-          ID: reservaId.ID,
+          ID: rutaId.ID,
           Movimiento: values.movimiento,
-          OrigenID: values.origen,
-          DestinoID: values.destino,
-          FechaSalida: values.dateSalida ? moment(values.dateSalida).format('YYYY-MM-DD 00:00:00') : null,
-          FechaRegreso: values.dateRegreso ? moment(values.dateRegreso).format('YYYY-MM-DD 00:00:00') : null,
+          RutaID: values.ruta,
+          FechaInicio: values.dateStart ? moment(values.dateStart).format('YYYY-MM-DD 00:00:00') : null,
+          HoraSalida: values.timeSalida ? moment(values.timeSalida).format('HH:mm:ss') : null,
           Referencia: values.referencia,
           Observaciones: values.observaciones,
-          Ruta: values.ruta,
-          ReservaID: values.reservaID
+          VehiculoID: values.vehiculo,
+          EquipoID: values.equipo
         };
           
-        avanzarReserva({ data });
+        avanzarRuta({ data });
 
       } catch (error) {
         toast.error('Error al enviar el formulario', {
@@ -92,18 +90,10 @@ const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched,
   };
 
   useEffect(() => {
-    if (reservaId) {
-      formik.setValues(getInitialValues(reservaId));
+    if (rutaId) {
+      formik.setValues(getInitialValues(rutaId));
     }
-  }, [reservaId]);
-
-  useEffect(() => {
-    if(showFormMov){
-      getReservaID({id: formik.values.reservaID})
-    }
-  },[formik.values.reservaID, formik.values.movimiento, movimientos, showFormMov]) 
-
-  
+  }, [rutaId]);
 
   useEffect(() => {
     if (resultNew && Object.keys(resultNew).length === 0) {
@@ -120,10 +110,10 @@ const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched,
       });        
       
       setTimeout(() => {
-          setHasFetched((prev) => !prev); 
-          setUpdtRutas(true)
-          setUpdtArts(true)
-        }, 1000)
+        setHasFetched((prev) => !prev); 
+        setUpdtRutas(true)
+        setUpdtArts(true)
+      }, 1000) 
     } else if (resultNew) {
         toast.error(`Error al guardar`, {
             theme: 'colored',
@@ -166,7 +156,7 @@ const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched,
         <Card className="mb-3">
           <Card.Body>
             <Row>
-              <Col md={6}>
+              <Col md={4}>
                 <Form.Group>
                   <Form.Label>Movimiento</Form.Label>
                   <Select
@@ -184,282 +174,129 @@ const InfoDCard = ({ reservaId, movimientos, origenes, isLoading, setHasFetched,
                   )}
                 </Form.Group>
               </Col>
-              {!showFormMov && (
-                <>
-                <Col md={6}>
-                  <Form.Group>
-                    <Form.Label>Rutas</Form.Label>
-                    <Select
-                      classNamePrefix="react-select"
-                      options={rutas.map(item => ({
-                        value: item.Valor,
-                        label: item.Dato,
-                      }))}
-                      onChange={option => formik.setFieldValue('ruta', option.value)}
-                      isLoading={isLoading}
-                      value={getOptionByValue(rutas, formik.values.ruta)} 
-                    />
-                    {formik.touched.ruta && formik.errors.ruta && (
-                      <div className="text-danger">{formik.errors.ruta}</div>
-                    )}
-                  </Form.Group>
-                </Col>
-                </>
-              )}
-              {showFormMov && (
-                <>
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Label>Reservas</Form.Label>
-                      <Select
-                        classNamePrefix="react-select"
-                        options={reservas.map(item => ({
-                          value: item.Valor,
-                          label: item.Dato,
-                        }))}
-                        onChange={option => formik.setFieldValue('reservaID', option.value)}
-                        isLoading={isLoading}
-                        value={getOptionByValue(reservas, formik.values.reservaID)} 
-                      />
-                      {formik.touched.reservaID && formik.errors.reservaID && (
-                        <div className="text-danger">{formik.errors.reservaID}</div>
-                      )}
-                    </Form.Group>
-                  </Col>
-                </>
-              )}
-            </Row>
-              {!showFormMov && (
-                <>
-                  <Row>
-                    <Col md={6}>
-                      <Form.Group>
-                        <Form.Label>Origen</Form.Label>
-                        <Select
-                          classNamePrefix="react-select"
-                          options={origenes.map(item => ({
-                            value: item.Valor,
-                            label: item.Dato,
-                          }))}
-                          onChange={option => formik.setFieldValue('origen', option.value)}
-                          isLoading={isLoading}
-                          value={getOptionByValue(origenes, formik.values.origen)} 
-                        />
-                        {formik.touched.origen && formik.errors.origen && (
-                          <div className="text-danger">{formik.errors.origen}</div>
-                        )}
-                      </Form.Group>
-                    </Col>
-                    <Col md={6}>
-                      <Form.Group>
-                        <Form.Label>Destino</Form.Label>
-                        <Select
-                          classNamePrefix="react-select"
-                          options={origenes.map(item => ({
-                            value: item.Valor,
-                            label: item.Dato,
-                          }))}
-                          onChange={option => formik.setFieldValue('destino', option.value)}
-                          isLoading={isLoading}
-                          value={getOptionByValue(origenes, formik.values.destino)} 
-                        />
-                        {formik.touched.destino && formik.errors.destino && (
-                          <div className="text-danger">{formik.errors.destino}</div>
-                        )}
-                      </Form.Group>
-                    </Col>
-                  </Row>
-
-                  <Row className="mt-3">
-                    <Col md={6}>
-                      <Form.Group>
-                        <Form.Label>Fecha Salida</Form.Label>
-                        <DatePicker
-                          selected={formik.values.dateSalida}
-                          onChange={date => formik.setFieldValue('dateSalida', date)}
-                          className="form-control"
-                          placeholderText="Selecciona una fecha"
-                          dateFormat="dd-MM-yyyy"
-                          locale="es"
-                        />
-                        {formik.touched.dateSalida && formik.errors.dateSalida && (
-                          <div className="text-danger">{formik.errors.dateSalida}</div>
-                        )}
-                      </Form.Group>
-                    </Col>
-                    {showDateRegreso && (
-                      <Col md={6}>
-                        <Form.Group>
-                          <Form.Label>Fecha Regreso</Form.Label>
-                          <DatePicker
-                            selected={formik.values.dateRegreso}
-                            onChange={date => formik.setFieldValue('dateRegreso', date)}
-                            className="form-control"
-                            placeholderText="Selecciona una fecha"
-                            dateFormat="dd-MM-yyyy"
-                            locale="es"
-                          />
-                          {formik.touched.dateRegreso && formik.errors.dateRegreso && (
-                            <div className="text-danger">{formik.errors.dateRegreso}</div>
-                          )}
-                        </Form.Group>
-                      </Col>
-                    )}
-                  </Row>
-                  <Row className='mt-3'>
-                    <Col md={6}>
-                      <Form.Group controlId="formObs">
-                        <Form.Label>Observaciones</Form.Label>
-                        <InputGroup>
-                          <Form.Control
-                            type="text"
-                            {...getFieldProps('observaciones')}
-                            isInvalid={!!formik.errors.Cantidad && formik.touched.Cantidad}
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            {formik.errors.Cantidad}
-                          </Form.Control.Feedback>
-                        </InputGroup>
-                      </Form.Group>
-                    </Col>
-                    <Col md={6}>
-                      <Form.Group controlId="formRef">
-                        <Form.Label>Referencia</Form.Label>
-                        <InputGroup>
-                          <Form.Control
-                            type="text"
-                            {...getFieldProps('referencia')}
-                            isInvalid={!!formik.errors.Cantidad && formik.touched.Cantidad}
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            {formik.errors.Cantidad}
-                          </Form.Control.Feedback>
-                        </InputGroup>
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                </>
-              )}
-            {showFormMov && (
-              <>
-                <Row>
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Label>Origen</Form.Label>
-                      <Select
-                        classNamePrefix="react-select"
-                        options={origenes.map(item => ({
-                          value: item.Valor,
-                          label: item.Dato,
-                        }))}
-                        onChange={option => formik.setFieldValue('origen', option.value)}
-                        isLoading={isLoading}
-                        value={reservaIdOpti && reservaIdOpti.Origen ? getOptionByValue(origenes, reservaIdOpti.Origen) : null}
-                        isDisabled={true}
-                      />
-                      {formik.touched.origen && formik.errors.origen && (
-                        <div className="text-danger">{formik.errors.origen}</div>
-                      )}
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Label>Destino</Form.Label>
-                      <Select
-                        classNamePrefix="react-select"
-                        options={origenes.map(item => ({
-                          value: item.Valor,
-                          label: item.Dato,
-                        }))}
-                        onChange={option => formik.setFieldValue('destino', option.value)}
-                        isLoading={isLoading}
-                        value={reservaIdOpti && reservaIdOpti.Destino ? getOptionByValue(origenes, reservaIdOpti.Destino) : null}
-                        isDisabled={true}
-                      />
-                      {formik.touched.destino && formik.errors.destino && (
-                        <div className="text-danger">{formik.errors.destino}</div>
-                      )}
-                    </Form.Group>
-                  </Col>
-                </Row>
-
-                <Row className="mt-3">
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Label>Fecha Salida</Form.Label>
-                      <DatePicker
-                        selected={reservaIdOpti && reservaIdOpti.FechaA ? moment(reservaIdOpti.FechaA, 'DD-MM-YYYY').toDate() : null}
-                        onChange={date => formik.setFieldValue('dateSalida', date)}
-                        className="form-control"
-                        placeholderText="Selecciona una fecha"
-                        dateFormat="dd-MM-yyyy"
-                        locale="es"
-                        isDisabled={true}
-                        disabled={true}
-                      />
-                      {formik.touched.dateSalida && formik.errors.dateSalida && (
-                        <div className="text-danger">{formik.errors.dateSalida}</div>
-                      )}
-                    </Form.Group>
-                  </Col>
-                  {showDateRegreso && (
-                    <Col md={6}>
-                      <Form.Group>
-                        <Form.Label>Fecha Regreso</Form.Label>
-                        <DatePicker
-                          selected={reservaIdOpti && reservaIdOpti.FechaD ? moment(reservaIdOpti.FechaD, 'DD-MM-YYYY').toDate() : null}
-                          onChange={date => formik.setFieldValue('dateRegreso', date)}
-                          className="form-control"
-                          placeholderText="Selecciona una fecha"
-                          dateFormat="dd-MM-yyyy"
-                          locale="es"
-                          isDisabled={true}
-                          disabled={true}
-                        />
-                        {formik.touched.dateRegreso && formik.errors.dateRegreso && (
-                          <div className="text-danger">{formik.errors.dateRegreso}</div>
-                        )}
-                      </Form.Group>
-                    </Col>
+              <Col md={8}>
+                <Form.Group>
+                  <Form.Label>Ruta</Form.Label>
+                  <Select
+                    classNamePrefix="react-select"
+                    options={rutas.map(item => ({
+                      value: item.Valor,
+                      label: item.Dato,
+                    }))}
+                    onChange={option => formik.setFieldValue('ruta', option.value)}
+                    isLoading={isLoading}
+                    value={getOptionByValue(rutas, formik.values.ruta)} 
+                  />
+                  {formik.touched.ruta && formik.errors.ruta && (
+                    <div className="text-danger">{formik.errors.ruta}</div>
                   )}
-                </Row>
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row>
+            <Col md={4}>
+                <Form.Group>
+                  <Form.Label>Fecha Inicio</Form.Label>
+                  <DatePicker
+                    selected={formik.values.dateStart}
+                    onChange={date => formik.setFieldValue('dateStart', date)}
+                    className="form-control"
+                    placeholderText="Selecciona una fecha"
+                    dateFormat="dd-MM-yyyy"
+                    locale="es"
+                  />
+                  {formik.touched.dateStart && formik.errors.dateStart && (
+                    <div className="text-danger">{formik.errors.dateStart}</div>
+                  )}
+                </Form.Group>
+              </Col>
+              <Col md={4}>
+                <Form.Group>
+                  <Form.Label>Hora Salida:</Form.Label>
+                    <DatePicker
+                      selected={formik.values.timeSalida}
+                      onChange={date => formik.setFieldValue('timeSalida', date)}
+                      className='form-control'
+                      placeholderText="Seleccionar horario"
+                      timeIntervals={5}
+                      dateFormat="h:mm aa"
+                      showTimeSelect
+                      showTimeSelectOnly
+                    />
+                </Form.Group>
+              </Col>
+              <Col md={4}>
+                <Form.Group controlId="formRef">
+                  <Form.Label>Referencia</Form.Label>
+                  <InputGroup>
+                    <Form.Control
+                      type="text"
+                      {...getFieldProps('referencia')}
+                      isInvalid={!!formik.errors.Cantidad && formik.touched.Cantidad}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {formik.errors.Cantidad}
+                    </Form.Control.Feedback>
+                  </InputGroup>
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row className="mt-3">
+              <Col md={6}>
+                <Form.Group>
+                  <Form.Label>Vehiculo</Form.Label>
+                  <Select
+                    classNamePrefix="react-select"
+                    options={vehiculos.map(item => ({
+                      value: item.Valor,
+                      label: item.Dato,
+                    }))}
+                    onChange={option => formik.setFieldValue('vehiculo', option.value)}
+                    isLoading={isLoading}
+                    value={getOptionByValue(vehiculos, formik.values.vehiculo)} 
+                  />
+                  {formik.touched.vehiculo && formik.errors.vehiculo && (
+                    <div className="text-danger">{formik.errors.vehiculo}</div>
+                  )}
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group>
+                  <Form.Label>Equipo</Form.Label>
+                  <Select
+                    classNamePrefix="react-select"
+                    options={equipos.map(item => ({
+                      value: item.Valor,
+                      label: item.Dato,
+                    }))}
+                    onChange={option => formik.setFieldValue('equipo', option.value)}
+                    isLoading={isLoading}
+                    value={getOptionByValue(equipos, formik.values.equipo)} 
+                  />
+                  {formik.touched.equipo && formik.errors.equipo && (
+                    <div className="text-danger">{formik.errors.equipo}</div>
+                  )}
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row className='mt-3'>
+              <Col md={12}>
+                <Form.Group controlId="formObs">
+                  <Form.Label>Observaciones</Form.Label>
+                  <InputGroup>
+                    <Form.Control
+                      type="text"
+                      {...getFieldProps('observaciones')}
+                      isInvalid={!!formik.errors.Cantidad && formik.touched.Cantidad}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {formik.errors.Cantidad}
+                    </Form.Control.Feedback>
+                  </InputGroup>
+                </Form.Group>
+              </Col>
 
-                <Row className="mt-3">
-                  <Col md={6}>
-                    <Form.Group controlId="formObs">
-                      <Form.Label>Observaciones</Form.Label>
-                      <InputGroup>
-                        <Form.Control
-                          type="text"
-                          isDisabled={true}
-                          disabled={true}
-                          value={reservaIdOpti && reservaIdOpti.Observaciones ? reservaIdOpti.Observaciones : ''}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          {formik.errors.Cantidad}
-                        </Form.Control.Feedback>
-                      </InputGroup>
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group controlId="formRef">
-                      <Form.Label>Referencia</Form.Label>
-                      <InputGroup>
-                        <Form.Control
-                          type="text"
-                          value={reservaIdOpti && reservaIdOpti.Referencia ? reservaIdOpti.Referencia : ''}
-                          isInvalid={!!formik.errors.Cantidad && formik.touched.Cantidad}
-                          disabled={true}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          {formik.errors.Cantidad}
-                        </Form.Control.Feedback>
-                      </InputGroup>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </>
-            )}
+            </Row>
             <hr style={{ margin: '10px 0' }} className="mt-4" />
 
             <div className="d-flex justify-content-start mt-2">

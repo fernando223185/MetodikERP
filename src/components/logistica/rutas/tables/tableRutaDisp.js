@@ -7,7 +7,9 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AdvanceTableSearchBox from 'components/common/advance-table/AdvanceTableSearchBox';
 import FormRutaIda from '../modal/FormRutaIda'
-
+import { useAgregarParadaD } from 'hooks/Logistica/Ruta/useRutaD'
+import { toast } from 'react-toastify';
+import { faBus, faUsers, faCheckCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons'; 
 
 const columns = [
   {
@@ -17,47 +19,76 @@ const columns = [
     cellProps: { className: 'text-center' }
   },
   {
-    accessor: 'desc',
-    Header: 'Descripcion',
+    accessor: 'orden',
+    Header: 'Orden',
     headerProps: { className: 'text-900' }
   },
   {
-    accessor: 'price',
-    Header: 'Precio',
+    accessor: 'desc',
+    Header: 'Nombre Parada',
     headerProps: { className: 'text-900' }
   }
 ];
 
-function TableRutaIda({ rutaIda, setUpdateList }) {
+function TableRutaDisp({ rutasDisponibles, setUpdateList, id }) {
 
   const [result, setResult] = useState([]);
   const [formToShow, setFormToShow] = useState('');
-  const [showModal, setShowModal] = useState(false); 
   const [selectedItem, setSelectedItem] = useState(null); 
-  const handleOpenModal = (row) => {
-    setSelectedItem(row);
-    setShowModal(true); 
+  const { agregarParada, result: resultDAdd, isLoading } = useAgregarParadaD();
+
+  const handleAddArt = (row) => {
+    console.log("row",row)
+    const user = JSON.parse(localStorage.getItem('user'));
+    const data = {
+        ID: id,
+        UsuarioID: user.ID,
+        DestinoID: row.DestinoID
+    }
+    agregarParada({ data })
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false); 
-  };
   useEffect(() => {
-    console.log("rutaId",rutaIda)
-    if (rutaIda) 
+    console.log(resultDAdd)
+    if (resultDAdd && Object.keys(resultDAdd).length === 0) {
+        console.log("resultDAdd es un array vacío:", resultDAdd);
+      } else if (resultDAdd && resultDAdd.status === 200) {
+          toast[resultDAdd.data[0].Tipo](`${resultDAdd.data[0].Mensaje}`, {
+              theme: 'colored',
+              position: resultDAdd.data[0].Posicion,
+              icon: resultDAdd.data[0].Tipo === 'success' ? 
+              <FontAwesomeIcon icon={faCheckCircle} /> : 
+              resultDAdd.data[0].Tipo === 'error' ? 
+              <FontAwesomeIcon icon={faExclamationTriangle} /> : 
+              <FontAwesomeIcon icon={faInfoCircle} />
+          }); 
+          setTimeout(() => {
+            setUpdateList((prev) => !prev); 
+          }, 1000)
+      } else if (resultDAdd) {
+          toast.error(`Error al guardar`, {
+              theme: 'colored',
+              position: 'top-right'
+          });
+      } 
+  },[resultDAdd])
+
+  useEffect(() => {
+    console.log("rutaId",rutasDisponibles)
+    if (rutasDisponibles) 
     {
-      const transformedData = rutaIda.map(u => ({
+      const transformedData = rutasDisponibles.map(u => ({
         acciones: (
           <button
             className="btn btn-outline-primary rounded-pill me-1 mb-1 btn-sm"
-            onClick={() => handleOpenModal(u)} 
+            onClick={() => handleAddArt(u)} 
           >
 
             <FontAwesomeIcon icon="plus" />
           </button>
         ),
-        desc: u.Descripcion,
-        price: u.PrecioAdulto
+        desc: u.NombreParada,
+        orden: u.Orden
       }));
       setResult(prevResult => {
         if (JSON.stringify(prevResult) !== JSON.stringify(transformedData)) {
@@ -66,7 +97,7 @@ function TableRutaIda({ rutaIda, setUpdateList }) {
         return prevResult;
       });
     }
-  },[rutaIda])
+  },[rutasDisponibles])
 
 
   return (
@@ -105,17 +136,9 @@ function TableRutaIda({ rutaIda, setUpdateList }) {
         />
       </div>
     </AdvanceTableWrapper>
-          {showModal && (
-            <FormRutaIda 
-              show={showModal} 
-              handleClose={handleCloseModal} 
-              selectedItem={selectedItem} 
-              setUpdateList={setUpdateList}
-            />
-          )}
   </>
 
   );
 }
 
-export default TableRutaIda;
+export default TableRutaDisp;

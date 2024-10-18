@@ -1,8 +1,8 @@
 import React from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
-import TableRutaIda from '../tables/tableRutasIda'
+import TableRutaDisp from '../tables/tableRutaDisp'
 
-const RutaIda = ({ rutaIda, setUpdateList }) => {
+const RutasDisponibles = ({ rutasDisponibles, setUpdateList, id }) => {
 
 
   return (
@@ -10,19 +10,20 @@ const RutaIda = ({ rutaIda, setUpdateList }) => {
       <Card.Header>
         <Row className="align-items-center">
           <Col>
-            <h5>Rutas Disponibles Ida</h5>
+            <h5>Rutas Disponibles</h5>
           </Col>
         </Row>
         <hr className='mb-0'/>
       </Card.Header>
       <Card.Body>
-        <TableRutaIda
-            rutaIda={rutaIda}
+        <TableRutaDisp
+            rutasDisponibles={rutasDisponibles}
             setUpdateList={setUpdateList}
+            id={id}
         />
       </Card.Body>
     </Card>
   );
 };
 
-export default RutaIda;
+export default RutasDisponibles;

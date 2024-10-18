@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Col, Row, Container, Modal, Card, Spinner, Form } from 'react-bootstrap';
 import InfoCard from '../sections/InfoCard'
 import InfoDCard from '../sections/InfoDCard'
-import DetalleViajeCard from '../sections/DetalleViajeCard'
-import RutaIda from '../sections/RutaIda'
+import DetalleRutasCard from '../sections/DetalleRutasCard'
+import RutasDisponibles from '../sections/RutasDisponibles'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faReply, faBan, faSave, faChevronLeft, faStar, faCheckCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import { useGetReservaID, useGetRutaIda, useGetRutaVuelta, useGetReservaD, useCancelarReserva, useAfectarReserva, useAgregarFormaPago, useCambiarSituaciones, useGetEquipajeD } from '../../../../hooks/Comercial/Reserva/useReservaD';
+import { useGetRutaID, useGetRutaD, useGetRutaDisp /*, useCancelarReserva, useAfectarReserva, useAgregarFormaPago, useCambiarSituaciones*/ } from '../../../../hooks/Logistica/Ruta/useRutaD';
 import { useParams } from 'react-router-dom';
 import { useGetFiltroModulo } from '../../../../hooks/useFiltros'; 
 import RutaVuelta from '../sections/RutaVuelta'
@@ -15,16 +15,15 @@ import { toast } from 'react-toastify';
 import Select from 'react-select';
 import ArtDisponible from '../sections/ArtDisponible'
 import DetalleCard from '../sections/DetalleCard'; 
-import { useGetArtDisponible } from 'hooks/Comercial/Paqueteria/usePaqueteriaD'
 import IconButton from 'components/common/IconButton';
 
 
-const ReservasHeader = ({setHasFetched, estatus, showFormMov}) => {
+const RutasHeader = ({setHasFetched, estatus, showFormMov}) => {
   const { id } = useParams();
-  const { cancelarReserva, result, isLoading } = useCancelarReserva();
-  const { afectarReserva, result: resultAfect, isLoading: isLoadingAfec } = useAfectarReserva();
-  const { agregarFormaPago, result: pago, isLoading: isLoadingPago } = useAgregarFormaPago();
-  const { cambiarSituaciones, result: situacion, isLoading: isLoadingSit } = useCambiarSituaciones();
+  //const { cancelarReserva, result, isLoading } = useCancelarReserva();
+  //const { afectarReserva, result: resultAfect, isLoading: isLoadingAfec } = useAfectarReserva();
+  //const { agregarFormaPago, result: pago, isLoading: isLoadingPago } = useAgregarFormaPago();
+  //const { cambiarSituaciones, result: situacion, isLoading: isLoadingSit } = useCambiarSituaciones();
 
   const [showModal, setShowModal] = useState(false);
   const [showModalSituacion, setShowModalSituacion] = useState(false); 
@@ -43,7 +42,7 @@ const ReservasHeader = ({setHasFetched, estatus, showFormMov}) => {
       UsuarioID: user.ID
     }
     
-    await cancelarReserva({ data })
+    //await cancelarReserva({ data })
   }
 
   const handleAfectar = async () => {
@@ -52,7 +51,7 @@ const ReservasHeader = ({setHasFetched, estatus, showFormMov}) => {
       UsuarioID: user.ID
     }
     
-    await afectarReserva({ data })
+    //await afectarReserva({ data })
   }
 
   const handlePlayClick = async () => {
@@ -62,7 +61,7 @@ const ReservasHeader = ({setHasFetched, estatus, showFormMov}) => {
       setFormasPago(resultFiltro)
       setShowModal(true); 
     } else {
-      handleAfectar(); 
+      //handleAfectar(); 
     }
   };
 
@@ -83,7 +82,7 @@ const ReservasHeader = ({setHasFetched, estatus, showFormMov}) => {
       FormaPagoID: selectedFormaPago,
       Referencia: referencia
     }
-    await agregarFormaPago({data})
+    //await agregarFormaPago({data})
   };
   const handleModalSaveSituacion = async () => {
     const data = {
@@ -91,9 +90,10 @@ const ReservasHeader = ({setHasFetched, estatus, showFormMov}) => {
       Situacion: selectedSituacion
     }
 
-    await cambiarSituaciones({data})
+    //await cambiarSituaciones({data})
   };
 
+  /*
   useEffect(() => {
     if (pago && Object.keys(pago).length === 0) {
       console.log("pago es un array vacío:", pago);
@@ -118,7 +118,9 @@ const ReservasHeader = ({setHasFetched, estatus, showFormMov}) => {
         });
     }
   },[pago])
+  */
 
+  /*
   useEffect(() => {
     if (situacion && Object.keys(situacion).length === 0) {
       console.log("situacion es un array vacío:", situacion);
@@ -143,7 +145,9 @@ const ReservasHeader = ({setHasFetched, estatus, showFormMov}) => {
         });
     }
   },[situacion])
+  */
 
+  /*
   useEffect(() => {
     if (result && Object.keys(result).length === 0) {
       console.log("result es un array vacío:", result);
@@ -167,7 +171,9 @@ const ReservasHeader = ({setHasFetched, estatus, showFormMov}) => {
         });
     }  
   }, [result])
+  */
 
+  /*
   useEffect(() => {
     if (resultAfect && Object.keys(resultAfect).length === 0) {
       console.log("resultAfect es un array vacío:", resultAfect);
@@ -191,18 +197,19 @@ const ReservasHeader = ({setHasFetched, estatus, showFormMov}) => {
         });
     }  
   }, [resultAfect])
+  */
 
     return (
     <>
       <Container fluid className="py-3 px-4 border-bottom mb-4">
         <Row className="align-items-center">
           <Col md={8}>
-            <h2 className="mb-0">Reservas Detalle</h2>
+            <h2 className="mb-0">Rutas Detalle</h2>
             <span className="text-muted">Detalle del Movimiento</span>
-          </Col>
+          </Col> 
             <Col md={4} className="text-end">
             <div className="d-flex justify-content-end align-items-center mt-4">
-              <Link to={`/comercial/reservas`}>
+              <Link to={`/logistica/rutas`}>
                 <IconButton
                   variant="falcon-default"
                   size="sm"
@@ -212,7 +219,7 @@ const ReservasHeader = ({setHasFetched, estatus, showFormMov}) => {
                   <FontAwesomeIcon icon={faReply} className="me-1" /> Regresar
                 </IconButton>
               </Link>
-                {isLoading || isLoadingAfec ? (
+                { isLoadingFiltro ? (
                   <Spinner animation="border" role="status" className="me-1">
                     <span className="visually-hidden">Loading...</span>
                   </Spinner>
@@ -277,7 +284,7 @@ const ReservasHeader = ({setHasFetched, estatus, showFormMov}) => {
                     label: item.Dato,
                   }))}
                   onChange={(option) => setSelectedFormaPago(option.value)} 
-                  isLoading={isLoading}
+                  //isLoading={isLoading}
                 />
               </Form.Group>
               <Form.Group>
@@ -325,7 +332,7 @@ const ReservasHeader = ({setHasFetched, estatus, showFormMov}) => {
                     label: item.Dato,
                   }))}
                   onChange={(option) => setSelectedSituacion(option.value)} 
-                  isLoading={isLoading}
+                  //isLoading={isLoading}
                 />
               </Form.Group>
             </Form>
@@ -347,9 +354,9 @@ const ReservasHeader = ({setHasFetched, estatus, showFormMov}) => {
     );
 };
 
-const ReservasD = () => {
+const RutasD = () => {
   const { id } = useParams();
-  const { getReservaID, reservaId, isLoading, error } = useGetReservaID();
+  const { getRutaID, rutaId, isLoading } = useGetRutaID();
   const [hasFetched, setHasFetched] = useState(false); 
   const [showRutas, setUpdtRutas] = useState(false); 
   const [showArts, setUpdtArts] = useState(false); 
@@ -358,80 +365,61 @@ const ReservasD = () => {
 
   const { getFiltroModulo, isLoading: isLoadingFiltro } = useGetFiltroModulo();
   const [movimientos, setMovimientos] = useState([]);
-  const [reservas, setReservas] = useState([]);
-  const [origenes, setOrigenes] = useState([]);
+  const [vehiculos, setVehiculos] = useState([]);
   const [rutas, setRutas] = useState([]);
-  const { getRutaIda, rutaIda, isLoading: isLoadingRutas } = useGetRutaIda();
-  const { getRutaVuelta, rutaVuelta, isLoading: isLoadingRutasV } = useGetRutaVuelta();
-  const { getReservaD, reservaD, isLoading: isLoadingD } = useGetReservaD();
+  const [equipos, setEquipo] = useState([]);
+
+  const { getRutaDisp, rutasDisponibles, isLoading: isLoadingRutas } = useGetRutaDisp();
+  //const { getRutaVuelta, rutaVuelta, isLoading: isLoadingRutasV } = useGetRutaVuelta();
+  const { getRutaD, rutaD, isLoading: isLoadingD } = useGetRutaD();
   const [showDateRegreso, setShowDateRegreso] = useState(true);
   const [showFormMov, setFormMov] = useState(false)
-  const { getArtDisponible, Art, isLoading: isLoadingArt } = useGetArtDisponible();
-  const { getEquipajeD, equipajeD, isLoading: isLoadingEquipaje } = useGetEquipajeD();
 
   useEffect(() => {
-    const fetchReservaID = async () => {
+    const fetchRutaID = async () => {
       if (id != null && id > 0) {
-        await getReservaID({ id });
+        await getRutaID({ id });
       }
     };
-    fetchReservaID();
+    fetchRutaID();
   }, [id, hasFetched, updateList]);
 
-
   useEffect(() => {
-    const fetchArtAndEquipaje = async () => {
-      if (showFormMov) {
-        await getArtDisponible({ EmpresaID: 1 });
-
-        const dataReservas = { Tipo: 'Reservas', PersonaID: 1, Modulo: 'Reservas' };
-        const resultReservas = await getFiltroModulo(dataReservas);
-        setReservas(resultReservas);
-
-        await getEquipajeD({ id });
-      }
-    };
-    fetchArtAndEquipaje();
-  }, [showFormMov, updateList]);
-
-  useEffect(() => {
-    const fetchRutas = async () => {
-      if (showRutas) {
-        await getRutaIda({ id });
-        if (showDateRegreso) {
-          await getRutaVuelta({ id });
-        }
-      }
-    };
-    fetchRutas();
-  }, [id, showRutas, showDateRegreso, hasFetched]);
-
-  useEffect(() => {
-    const fetchReservaD = async () => {
-      if(reservaId.Movimiento != "Equipaje")
-      {
-        await getReservaD({ id });
-      }
-    };
-    fetchReservaD();
+    const fetchRutaD = async () => {
+        await getRutaD({ id }); 
+    }
+    fetchRutaD();
   }, [id, updateList]);
 
   useEffect(() => {
     const fetchFiltros = async () => {
-      const dataMovimientos = { Tipo: 'Movimientos', PersonaID: 1, Modulo: 'Reservas' };
+      const dataMovimientos = { Tipo: 'Movimientos', PersonaID: 1, Modulo: 'Rutas' };
       const resultMovimientos = await getFiltroModulo(dataMovimientos);
       setMovimientos(resultMovimientos);
 
-      const dataOrigenes = { Tipo: 'Destinos', PersonaID: 1, Modulo: 'Reservas' };
-      const resultOrigenes = await getFiltroModulo(dataOrigenes);
-      setOrigenes(resultOrigenes);
+      const dataVehiculo = { Tipo: 'Vehiculos', PersonaID: 1, Modulo: 'Rutas' };
+      const resultVehiculo = await getFiltroModulo(dataVehiculo);
+      setVehiculos(resultVehiculo);
 
-      const dataRutas = { Tipo: 'Rutas', PersonaID: 1, Modulo: 'Reservas' };
+      const dataRutas = { Tipo: 'Ruta', PersonaID: 1, Modulo: 'Rutas' };
       const resultRutas = await getFiltroModulo(dataRutas);
       setRutas(resultRutas);
+
+      const dataEquipo = { Tipo: 'Equipos', PersonaID: 1, Modulo: 'Rutas' };
+      const resultEquipo = await getFiltroModulo(dataEquipo);
+      setEquipo(resultEquipo);
     };
     fetchFiltros();
   }, []);
+
+  useEffect(() => {
+    const fetchRutas = async () => {
+      if (showRutas && rutaId.Ruta > 0) {
+        await getRutaDisp({ id: rutaId.Ruta });
+      }
+    };
+    fetchRutas();
+  }, [ showRutas, hasFetched]);
 
   if (isLoading && !showRutas) {
     return (
@@ -445,9 +433,9 @@ const ReservasD = () => {
 
   return (
     <>
-      <ReservasHeader 
+      <RutasHeader 
       setHasFetched={setHasFetched}
-      estatus={reservaId.Estatus}
+      estatus={rutaId.Estatus}
       showFormMov={showFormMov}
       />
       <Row className="g-3 mb-3">
@@ -456,14 +444,15 @@ const ReservasD = () => {
             <Card.Body>
                 <Row>
                     <Col md={4}>
-                        <InfoCard reservaId={reservaId}/>
+                        <InfoCard reservaId={rutaId}/>
                     </Col>
                     <Col md={8}>
                         <InfoDCard
-                          reservaId={reservaId}
+                          rutaId={rutaId}
                           movimientos={movimientos}
                           isLoading={isLoadingFiltro}
-                          origenes={origenes}
+                          vehiculos={vehiculos}
+                          equipos={equipos}
                           setHasFetched={setHasFetched} 
                           setUpdtRutas={setUpdtRutas}
                           setShowDateRegreso={setShowDateRegreso}
@@ -471,78 +460,32 @@ const ReservasD = () => {
                           rutas={rutas}
                           setFormMov={setFormMov}
                           showFormMov={showFormMov}
-                          reservas={reservas}
                           setUpdtArts={setUpdtArts}
                         />
                     </Col>
                 </Row>
-              {!showFormMov && (
+                {showRutas && (
                 <>
-                  {showRutas && (
-                  <>
-                    <Row>
-                      <Col>
-                        <RutaIda
-                          rutaIda={rutaIda}
-                          setUpdateList={setUpdateList}
-                        />
-                      </Col>
-                    </Row>
-                    {showDateRegreso && !isLoadingRutasV && (
-                      <Row>
-                        <Col>
-                          <RutaVuelta
-                            rutaVuelta={rutaVuelta}
-                            setUpdateList={setUpdateList}
-                          />
-                        </Col>
-                      </Row>
-                    )}
-                  </>
-                  )}
-                  <Row className="mt-4">
-                    <Col>
-                      <DetalleViajeCard
-                        reservaD={reservaD}
-                        setUpdateList={setUpdateList}
-                      />
-                    </Col>
-                  </Row>
-                </>
-              )}
-              {showFormMov && (
-                <>
-                {showArts && (
-                  <>
-                    <Row className='mt-4'>
-                      <Col>
-                        <ArtDisponible
-                          Art={Art}
-                          setUpdateList={setUpdateList}
-                          id={id}
-                        />
-                      </Col>
-                    </Row>
-                  </>
-                )}
                   <Row>
                     <Col>
-                      {isLoadingEquipaje  ? (
-                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                          <Spinner animation="border" role="status">
-                            <span className="visually-hidden">Cargando...</span>
-                          </Spinner>
-                        </div>
-                      ) : (
-                        <DetalleCard 
-                          equipajeD={equipajeD}
-                          setUpdateList={setUpdateList}
-                        />
-                      )}
+                       <RutasDisponibles
+                        rutasDisponibles={rutasDisponibles}
+                        setUpdateList={setUpdateList}
+                        id={id}
+                      />
+                    
                     </Col>
                   </Row>
                 </>
-              )}
+                )}
+                <Row className="mt-4">
+                  <Col>
+                    <DetalleRutasCard
+                      rutaD={rutaD}
+                      setUpdateList={setUpdateList}
+                    />
+                  </Col>
+                </Row>
             </Card.Body>
           </Card>        
         </Col>
@@ -552,4 +495,4 @@ const ReservasD = () => {
   );
 };
 
-export default ReservasD;
+export default RutasD;
