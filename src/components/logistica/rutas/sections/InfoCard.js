@@ -67,12 +67,14 @@ const InfoCard = ({ reservaId }) => {
         </p>
         <p><strong>Folio:</strong> <span className="text-muted">{reservaId.Folio}</span></p>
         <p><strong>Fecha Emisión:</strong> <span className="text-muted">{reservaId.FechaEmision}</span></p>
-        <p><strong>Agente:</strong> <span className="text-muted">{reservaId.Agente}</span></p>
+        <p><strong>Agente:</strong> <span className="text-muted">{reservaId.Usuario}</span></p>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+
         <hr />
-        <p><strong>Subtotal:</strong> <span className="text-muted">{reservaId.SubTotal}</span></p>
-        <p><strong>Impuestos:</strong> <span className="text-muted">{reservaId.Impuestos}</span></p>
-        <p><strong>Descuento:</strong> <span className="text-muted">{reservaId.Descuento}</span></p>
-        <p><strong>Importe Total:</strong> <span className="text-muted">{reservaId.ImporteTotal}</span></p>
       </Card.Body>
     </Card>
   );

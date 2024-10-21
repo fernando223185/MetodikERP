@@ -31,7 +31,7 @@ const AllReservasHeader = ({
     <div className="d-lg-flex justify-content-between">
       <Row className="flex-between-center gy-2 px-x1">
         <Col xs="auto" className="pe-0">
-          <h6 className="mb-0">Reservas</h6>
+          <h6 className="mb-0">Rutas</h6>
         </Col>
         <Col xs="auto">
           {layout === 'view-table' ? (

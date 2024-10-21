@@ -123,25 +123,25 @@ const KanbanContainer = () => {
           />
         ))}
         <div className="kanban-column">
-          <AddAnotherForm
+          {/*<AddAnotherForm
             type="list"
             onSubmit={handleSubmit}
             showForm={showForm}
             setShowForm={setShowForm}
-          />
+          />*/}
           {!showForm && (
             <IconButton
               variant="secondary"
               className="d-block w-100 border-400 bg-400"
               icon="plus"
               iconClassName="me-1"
-              onClick={() => setShowForm(true)}
+              onClick={() => setShowForm(false)}
             >
-              Add another list
+              Agregar vehiculo
             </IconButton>
           )}
         </div>
-        <KanbanModal show={kanbanModal.show} />
+        {/* <KanbanModal show={kanbanModal.show} /> */}
       </div>
     </DragDropContext>
   );

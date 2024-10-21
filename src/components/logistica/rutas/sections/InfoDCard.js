@@ -42,7 +42,9 @@ const getInitialValues = (rutaId) => {
 };
 
 const validationSchema = Yup.object().shape({
-  movimiento: Yup.string().required('Movimiento es obligatorio')
+  movimiento: Yup.string().required('Seleccione un movimiento'),
+  ruta: Yup.string().required('Seleccione una ruta')
+
 });
 
 const InfoDCard = ({ rutaId, movimientos, vehiculos, isLoading, setHasFetched, setUpdtRutas, setShowDateRegreso, showDateRegreso, rutas, setFormMov, showFormMov, equipos, setUpdtArts }) => {

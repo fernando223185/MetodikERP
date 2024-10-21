@@ -6,7 +6,7 @@ export const endpoints = {
 
 export async function getProfilesAsync({data}){
     try{
-        const response = await axios.get(`${endpoints.key}/verPerfiles?EstatusID=${data.EstatusID}&EmpresaID=${data.EmpresaID}`)
+        const response = await axios.get(`${endpoints.key}/verPerfiles?EstatusID=${data.EstatusID}&EmpresaID=${data.EmpresaID}&SearchText=${data.searchText}`)
         return response
     }catch(error){
         return error;
