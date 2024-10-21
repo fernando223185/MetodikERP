@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { getRutaAsync, newReservaAsync } from 'api/logistica/ruta/rutas';
+import { getRutaAsync, newRutaAsync } from 'api/logistica/ruta/rutas';
 
 export const useGetRuta = () => {
   const [ruta, setRuta] = useState([]);
@@ -28,16 +28,16 @@ export const useGetRuta = () => {
   return { getRuta, ruta, isLoading, error };
 };
 
-export const useNewReserva = () => {
+export const useNewRuta = () => {
     const [result, setResult] = useState({})    
     const [isLoading, setIsLoading] = useState(false)
     
-    const newReserva = useCallback(async ({ data }) => {
+    const newRuta = useCallback(async ({ data }) => {
         setIsLoading(true);
-        const result = await newReservaAsync({ data });
+        const result = await newRutaAsync({ data });
         setResult(result);
         setIsLoading(false);
       }, [])
     
-      return { newReserva, result, isLoading };
+      return { newRuta, result, isLoading };
 }

@@ -95,6 +95,24 @@ export const appRoutes = {
       ],
     },
     {
+      name: "Logistica",
+      icon: "dollar-sign",
+      active: true,
+      children: [
+        {
+          name: "Rutas",
+          icon: faStore,
+          to: "/logistica/rutas",
+          active: true,
+        },{
+          name: "Pasajeros",
+          icon: faUsers,
+          to: "/app/kanban",
+          active: true,
+        },
+      ],
+    },
+    {
       name: "Exploradores",
       icon: "search",
       active: true,

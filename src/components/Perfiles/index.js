@@ -45,11 +45,9 @@ const Profiles = () => {
       <ProfilerHeader />
       <Row className="g-3 mb-3">
         <Col lg={12}>
-          <Card>
             <Card.Body>
               <TableProfiles onEditClick={handleEditClick} />
             </Card.Body>
-          </Card>        
         </Col>
       </Row>
 

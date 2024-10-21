@@ -14,9 +14,9 @@ export async function getRutaAsync(){
     }
 }
 
-export async function newReservaAsync({data}){
+export async function newRutaAsync({data}){
     try{
-        const response = await axios.post(`${endpoints.key}/NuevaReserva`, data)
+        const response = await axios.post(`${endpoints.key}/nuevaRuta`, data)
         return response
     }catch(error){
         return error;
@@ -167,12 +167,12 @@ export async function cancelarReservaAsync ({ data }){
     }
 }
 
-export async function afectarReservaAsync ({ data }){
+export async function afectarRutaAsync ({ data }){
     try{
-        const response = await axios.post(`${endpoints.key}/Reservas/afectarReserva`, data)
+        const response = await axios.post(`${endpoints.key}/afectarRuta`, data)
         return response
     }catch(error){
-        console.error('Error fetching reservas:', error);
+        console.error('Error fetching rutas:', error);
         return error;
     }
 }

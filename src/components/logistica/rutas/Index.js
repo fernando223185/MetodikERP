@@ -13,7 +13,7 @@ const RutasHeader = () => {
     <Container fluid className="py-3 px-4 border-bottom mb-4">
       <Row className="align-items-center">
         <Col>
-          <h2 className="mb-0">Rutas</h2>
+          <h2 className="mb-0">Configurador de Rutas</h2>
           <span className="text-muted">Tablero de control</span>
         </Col>
       </Row>
@@ -38,7 +38,7 @@ const Rutas = () => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
-    const data = { Tipo: 'Reservas', EmpresaID: user.EmpresaID };
+    const data = { Tipo: 'Rutas', EmpresaID: user.EmpresaID };
 
     getIndicadores({ data });
   }, [getIndicadores]);

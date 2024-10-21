@@ -79,9 +79,9 @@ const KanbanColumn = ({ kanbanColumnItem }) => {
                   className="d-block w-100 btn-add-card text-decoration-none text-600"
                   icon="plus"
                   iconClassName="me-2"
-                  onClick={() => setShowForm(true)}
+                  onClick={() => setShowForm(false)}
                 >
-                  Add another card
+                  Añadir pasajero
                 </IconButton>
               </div>
             )}

@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import { faPaperPlane, faCheck, faStream, faPen, faBan, faSpinner } from '@fortawesome/free-solid-svg-icons'; 
-import { useNewReserva } from '../../../../hooks/Comercial/Reserva/useReserva';
+import { useNewRuta } from '../../../../hooks/Logistica/Ruta/useRutas';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import AllReservasHeader from './AllReservasHeader'
@@ -183,7 +183,7 @@ function TableRutas({ruta, movimientos, estatus, layout, setFilter, situaciones,
 
   const [result, setResult] = useState([]);
   const [formToShow, setFormToShow] = useState('');
-  const { newReserva, result: response, isLoading } = useNewReserva();
+  const { newRuta, result: response, isLoading } = useNewRuta();
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -267,9 +267,9 @@ function TableRutas({ruta, movimientos, estatus, layout, setFilter, situaciones,
     };
 
     try {
-      await newReserva({ data });
+      await newRuta({ data });
     } catch (error) {
-      toast.error('Hubo un error al crear la reserva', { theme: 'colored' });
+      toast.error('Hubo un error al crear la ruta', { theme: 'colored' });
     }
   };
   
@@ -281,7 +281,7 @@ function TableRutas({ruta, movimientos, estatus, layout, setFilter, situaciones,
       if(response.data[0].Ok === 0)
       {
         setTimeout(() => {
-          navigate(`/comercial/reservas/view-reserva/${response.data[0].NID}`);
+          navigate(`/logistica/rutas/rutasD/${response.data[0].NID}`);
         }, 1000);
       }
     }

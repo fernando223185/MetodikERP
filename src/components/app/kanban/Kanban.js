@@ -13,8 +13,8 @@ const Kanban = () => {
   const [kanbanIsNavbarVerticalCollapsed] = useState(isNavbarVerticalCollapsed);
 
   useEffect(() => {
-    setConfig('isFluid', true);
-    setConfig('isNavbarVerticalCollapsed', true);
+    setConfig('isFluid', false);
+    setConfig('isNavbarVerticalCollapsed', false);
 
     return () => {
       setConfig('isFluid', kanbanIsFluid);

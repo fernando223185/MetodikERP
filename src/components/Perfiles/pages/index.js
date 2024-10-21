@@ -1,14 +1,5 @@
 import React, { useState } from "react";
-import {
-  Col,
-  Row,
-  Container,
-  Modal,
-  Card,
-  Button,
-  Tabs,
-  Tab,
-} from "react-bootstrap";
+import { Col, Row, Container, Modal, Card, Button } from "react-bootstrap";
 import FormDatosGenerales from "../form/FormDatosGenerales"; // Importando el formulario
 import FormPermisos from "../form/FormPermisos";
 import { Link } from "react-router-dom";
@@ -44,9 +35,8 @@ const ProfilerHeader = () => {
 const Perfiles = () => {
   const [lgShow, setLgShow] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [key, setKey] = useState("datosGenerales"); // Estado para controlar las pestañas
 
-  const handleEditClick = (user, formType) => {
+  const handleEditClick = (user) => {
     setSelectedUser(user);
     setLgShow(true);
   };
@@ -68,41 +58,51 @@ const Perfiles = () => {
 
       <Row className="g-3 mb-3">
         <Col lg={12}>
+          <Card className="mb-3">
+            <Card.Body>
+              <h5 className="mb-3">Datos Generales</h5>
+              {/* Aquí se llama al componente FormDatosGenerales */}
+              <Row>
+                <Col>
+                  <FormDatosGenerales />
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+
+          <Card className="mb-3">
+            <Card.Body>
+              <h5 className="mb-3">Permisos</h5>
+              {/* Aquí se llama al componente FormPermisos */}
+              <Row>
+                <Col>
+                  <FormPermisos />
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+
+          <Card className="mb-3">
+            <Card.Body>
+              <h5 className="mb-3">Acciones</h5>
+              {/* Aquí podrías añadir un componente de acciones */}
+              <Row>
+                <Col>
+                  <p>Contenido de Acciones</p>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+
           <Card>
             <Card.Body>
-              {/* Pestañas para separar las secciones */}
-              <Tabs
-                id="profile-tabs"
-                activeKey={key}
-                onSelect={(k) => setKey(k)}
-                className="mb-3"
-              >
-                <Tab eventKey="datosGenerales" title="Datos Generales">
-                  {/* Aquí se llama al componente FormDatosGenerales */}
-                  <Row>
-                    <Col>
-                      <FormDatosGenerales />
-                    </Col>
-                  </Row>
-                </Tab>
-                <Tab eventKey="permisos" title="Permisos">
-                  <Row>
-                    <Col>
-                      <FormPermisos />
-                    </Col>
-                  </Row>
-                </Tab>
-                <Tab eventKey="acciones" title="Acciones">
-                  <Row>
-                    <Col></Col>
-                  </Row>
-                </Tab>
-                <Tab eventKey="movimientos" title="Movimientos">
-                  <Row>
-                    <Col></Col>
-                  </Row>
-                </Tab>
-              </Tabs>
+              <h5 className="mb-3">Movimientos</h5>
+              {/* Aquí podrías añadir un componente de movimientos */}
+              <Row>
+                <Col>
+                  <p>Contenido de Movimientos</p>
+                </Col>
+              </Row>
             </Card.Body>
           </Card>
         </Col>

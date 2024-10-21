@@ -1,131 +1,160 @@
-import { useCallback, useState } from 'react';
-import { getRutaIDAsync, getRutaDAsync, avanzarRutaAsync, getRutaDisAsync, agregarParadaDAsync, actParadaDAsync,delRowAsync } from 'api/logistica/ruta/rutas';
+import { useCallback, useState } from "react";
+import {
+  getRutaIDAsync,
+  getRutaDAsync,
+  avanzarRutaAsync,
+  getRutaDisAsync,
+  agregarParadaDAsync,
+  actParadaDAsync,
+  delRowAsync,
+  afectarRutaAsync
+} from "api/logistica/ruta/rutas";
 
 export const useGetRutaID = () => {
   const [rutaId, setRuta] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);  
-  
-  const getRutaID = useCallback(async ({ id }) => {
-    if (isLoading) return;
-    setIsLoading(true);
-    setError(null); 
-    try {
-      const result = await getRutaIDAsync({ id });
-      setRuta(result); 
-        setError('Failed to fetch ruta');
-    } catch (error) {
-      setError('An error occurred while fetching ruta');
-    } finally {
-      setIsLoading(false);
-    }
-  }, [isLoading]); 
+  const [error, setError] = useState(null);
+
+  const getRutaID = useCallback(
+    async ({ id }) => {
+      if (isLoading) return;
+      setIsLoading(true);
+      setError(null);
+      try {
+        const result = await getRutaIDAsync({ id });
+        setRuta(result);
+        setError("Failed to fetch ruta");
+      } catch (error) {
+        setError("An error occurred while fetching ruta");
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [isLoading]
+  );
 
   return { getRutaID, rutaId, isLoading, error };
 };
 
 export const useGetRutaD = () => {
-    const [rutaD, setRuta] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);  
-    
-    const getRutaD = useCallback(async ({ id }) => {
+  const [rutaD, setRuta] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const getRutaD = useCallback(
+    async ({ id }) => {
       if (isLoading) return;
       setIsLoading(true);
-      setError(null); 
+      setError(null);
       try {
         const result = await getRutaDAsync({ id });
-        setRuta(result); 
-        setError('Failed to fetch ruta');
+        setRuta(result);
+        setError("Failed to fetch ruta");
       } catch (error) {
-        setError('An error occurred while fetching ruta');
+        setError("An error occurred while fetching ruta");
       } finally {
         setIsLoading(false);
       }
-    }, [isLoading]); 
-  
-    return { getRutaD, rutaD, isLoading, error };
-  };
+    },
+    [isLoading]
+  );
 
+  return { getRutaD, rutaD, isLoading, error };
+};
 
-export const useAvanzaRuta = () =>{
-  const [result, setResult] = useState({})    
-  const [isLoading, setIsLoading] = useState(false)
-  
+export const useAvanzaRuta = () => {
+  const [result, setResult] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+
   const avanzarRuta = useCallback(async ({ data }) => {
-      setIsLoading(true);
-      const result = await avanzarRutaAsync({ data });
-      setResult(result);
-      setIsLoading(false);
-    }, [])
-  
-    return { avanzarRuta, result, isLoading };
-}
+    setIsLoading(true);
+    const result = await avanzarRutaAsync({ data });
+    setResult(result);
+    setIsLoading(false);
+  }, []);
+
+  return { avanzarRuta, result, isLoading };
+};
 
 export const useGetRutaDisp = () => {
   const [rutasDisponibles, setRuta] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);  
-  
-  const getRutaDisp = useCallback(async ({ id }) => {
-    if (isLoading) return;
-    setIsLoading(true);
-    setError(null); 
-    try {
-      const result = await getRutaDisAsync({ id });
-      setRuta(result); 
-        setError('Failed to fetch ruta');
-    } catch (error) {
-      setError('An error occurred while fetching ruta');
-    } finally {
-      setIsLoading(false);
-    }
-  }, [isLoading]); 
+  const [error, setError] = useState(null);
+
+  const getRutaDisp = useCallback(
+    async ({ id }) => {
+      if (isLoading) return;
+      setIsLoading(true);
+      setError(null);
+      try {
+        const result = await getRutaDisAsync({ id });
+        setRuta(result);
+        setError("Failed to fetch ruta");
+      } catch (error) {
+        setError("An error occurred while fetching ruta");
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [isLoading]
+  );
 
   return { getRutaDisp, rutasDisponibles, isLoading, error };
 };
 export const useAgregarParadaD = () => {
-    const [result, setResult] = useState({})    
-    const [isLoading, setIsLoading] = useState(false)
-    
-    const agregarParada = useCallback(async ({ data }) => {
-        setIsLoading(true);
-        const result = await agregarParadaDAsync({ data });
-        setResult(result);
-        setIsLoading(false);
-      }, [])
-    
-      return { agregarParada, result, isLoading };
-}
+  const [result, setResult] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+
+  const agregarParada = useCallback(async ({ data }) => {
+    setIsLoading(true);
+    const result = await agregarParadaDAsync({ data });
+    setResult(result);
+    setIsLoading(false);
+  }, []);
+
+  return { agregarParada, result, isLoading };
+};
 
 export const useActParadaD = () => {
-    const [result, setResult] = useState({})    
-    const [isLoading, setIsLoading] = useState(false)
-    
-    const actParadaD = useCallback(async ({ data }) => {
-        setIsLoading(true);
-        const result = await actParadaDAsync({ data });
-        setResult(result);
-        setIsLoading(false);
-      }, [])
-    
-      return { actParadaD, result, isLoading };
-}
+  const [result, setResult] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+
+  const actParadaD = useCallback(async ({ data }) => {
+    setIsLoading(true);
+    const result = await actParadaDAsync({ data });
+    setResult(result);
+    setIsLoading(false);
+  }, []);
+
+  return { actParadaD, result, isLoading };
+};
 
 export const useDelRowParadaD = () => {
-    const [result, setResult] = useState({})    
-    const [isLoading, setIsLoading] = useState(false)
-    
-    const delRowParadaD = useCallback(async ({ id, RowID, UsuarioID }) => {
-        setIsLoading(true);
-        const result = await delRowAsync({ id, RowID, UsuarioID });
-        setResult(result);
-        setIsLoading(false);
-      }, [])
-    
-      return { delRowParadaD, result, isLoading };
-  } 
-  
+  const [result, setResult] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+
+  const delRowParadaD = useCallback(async ({ id, RowID, UsuarioID }) => {
+    setIsLoading(true);
+    const result = await delRowAsync({ id, RowID, UsuarioID });
+    setResult(result);
+    setIsLoading(false);
+  }, []);
+
+  return { delRowParadaD, result, isLoading };
+};
+export const useAfectarRuta = () => {
+  const [result, setResult] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+
+  const afectarRuta = useCallback(async ({ data }) => {
+    setIsLoading(true);
+    const result = await afectarRutaAsync({ data });
+    setResult(result);
+    setIsLoading(false);
+  }, []);
+
+  return { afectarRuta, result, isLoading };
+};
 /*
 
 export const useGetRutaVuelta = () => {
@@ -290,19 +319,7 @@ export const useCancelarReserva = () => {
     return { cancelarReserva, result, isLoading };
 }
 
-export const useAfectarReserva = () => {
-  const [result, setResult] = useState({})    
-  const [isLoading, setIsLoading] = useState(false)
-  
-  const afectarReserva = useCallback(async ({ data }) => {
-      setIsLoading(true);
-      const result = await afectarReservaAsync({ data });
-      setResult(result);
-      setIsLoading(false);
-    }, [])
-  
-    return { afectarReserva, result, isLoading };
-}
+
 
 export const useAgregarFormaPago = () => {
   const [result, setResult] = useState({})    
