@@ -11,21 +11,19 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const user = JSON.parse(localStorage.getItem("user"));
-console.log(user.ID)
+const userID = user && user.ID ? user.ID : null;
 export const dashboardRoutes = {
   label: "Dashboard",
   labelDisable: true,
   children: [
     {
-      name: 'Inicio',
-      to: '/',
+      name: "Inicio",
+      to: "/",
       exact: true,
-      active: true
+      active: true,
     },
-  ], 
+  ],
 };
-
-
 
 // Definir una versión alternativa de appRoutes si user es 1
 const altAppRoutes = {
@@ -62,7 +60,7 @@ const altAppRoutes = {
 
 // Condicionalmente asignar appRoutes
 export const appRoutes =
-  user.ID != 1
+  userID != 1
     ? altAppRoutes
     : {
         label: "Modulos",
