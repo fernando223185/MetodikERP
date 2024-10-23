@@ -68,32 +68,11 @@ PrioritySelect.propTypes = {
   
 const columns = [
   {
-    accessor: 'User',
-    Header: 'Usuario',
-    headerProps: { className: 'ps-2 text-900', style: { height: '46px' } },
+    accessor: 'vehiculo',
+    Header: 'Vehiculo',
+    headerProps: { className: 'text-900' },
     cellProps: {
-      className: 'py-2 white-space-nowrap pe-3 pe-xxl-4 ps-2'
-    },
-    Cell: rowData => {
-        const { User, avatar } = rowData.row.original;
-        return (
-          <Flex alignItems="center" className="position-relative py-1">
-            {avatar && avatar.img ? (
-              <Avatar src={avatar.img} size="xl" className="me-2" />
-            ) : (
-              <Avatar size="xl" name={avatar ? avatar.name : User} className="me-2" />
-            )}
-            <h6 className="mb-0">
-                <Link
-                to="#"
-                className="stretched-link text-900"
-                onClick={(e) => e.stopPropagation()}
-                >
-                    {User}
-                </Link>
-            </h6>
-          </Flex>
-        );
+        className: 'py-2 pe-4'
     }
   },
   {
@@ -106,7 +85,7 @@ const columns = [
   },
   {
     accessor: 'fechaSalida',
-    Header: 'Fecha Salida',
+    Header: 'Fecha Inicio',
     headerProps: { className: 'text-900' },
     cellProps: {
         className: 'py-2 pe-4'
@@ -123,14 +102,6 @@ const columns = [
   {
     accessor: 'ruta',
     Header: 'Ruta',
-    headerProps: { className: 'text-900' },
-    cellProps: {
-        className: 'py-2 pe-4'
-    }
-  },
-  {
-    accessor: 'vehiculo',
-    Header: 'Vehiculo',
     headerProps: { className: 'text-900' },
     cellProps: {
         className: 'py-2 pe-4'
@@ -176,6 +147,35 @@ const columns = [
       );
     }
   },
+  {
+    accessor: 'User',
+    Header: 'Usuario',
+    headerProps: { className: 'ps-2 text-900', style: { height: '46px' } },
+    cellProps: {
+      className: 'py-2 white-space-nowrap pe-3 pe-xxl-4 ps-2'
+    },
+    Cell: rowData => {
+        const { User, avatar } = rowData.row.original;
+        return (
+          <Flex alignItems="center" className="position-relative py-1">
+            {avatar && avatar.img ? (
+              <Avatar src={avatar.img} size="xl" className="me-2" />
+            ) : (
+              <Avatar size="xl" name={avatar ? avatar.name : User} className="me-2" />
+            )}
+            <h6 className="mb-0">
+                <Link
+                to="#"
+                className="stretched-link text-900"
+                onClick={(e) => e.stopPropagation()}
+                >
+                    {User}
+                </Link>
+            </h6>
+          </Flex>
+        );
+    }
+  }
   
 ];
 
@@ -226,6 +226,8 @@ function TableRutas({ruta, movimientos, estatus, layout, setFilter, situaciones,
         horario: u.Horario,
         ruta: u.Ruta,
         vehiculo: u.Vehiculo,
+        equipo: u.Equipo,
+        plazasDisp: u.PlazasDisponibles,
         priority: {
             title: u.Situacion,
             color: '#'+u.Color,

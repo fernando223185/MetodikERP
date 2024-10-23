@@ -64,15 +64,17 @@ function TableRutaD({ rutaD, setUpdateList }) {
   const { delRowParadaD, result: resultDel, isLoading: isLoadingDel } = useDelRowParadaD();
   const { actParadaD, result: resultD, isLoading } = useActParadaD();
 
-  const handleInputChange = (rowId, columnId, value) => {
-    setEditableRows(prevState => ({
-      ...prevState,
-      [rowId]: {
-        ...prevState[rowId],
-        [columnId]: value
-      }
-    }));
-  };
+// handleInputChange actualizada para mantener los valores anteriores si no se cambian
+const handleInputChange = (renglonId, field, value) => {
+  setEditableRows(prevState => ({
+    ...prevState,
+    [renglonId]: {
+      ...prevState[renglonId],
+      [field]: value || prevState[renglonId]?.[field] || rutaD.find(u => u.RenglonID === renglonId)?.[field] || '' // Mantén el valor anterior si no hay cambios
+    }
+  }));
+};
+
 
   const handleUpdateRow = (rowId) => {
     const updatedRow = editableRows[rowId.RenglonID];
@@ -83,8 +85,10 @@ function TableRutaD({ rutaD, setUpdateList }) {
         ID: rowId.ID,
         RenglonID: rowId.RenglonID,
         UsuarioID: user.ID,
-        HoraAbordaje: updatedRow.abordaje ? moment(updatedRow.abordaje).format('HH:mm:ss') : null,
-        Descripcion: updatedRow.desc && updatedRow.desc !== 0 ? updatedRow.desc : rowId.desc      }
+        HoraAbordaje: updatedRow.abordaje ? moment(updatedRow.abordaje).format('HH:mm:ss') : rowId.HoraAbordaje,
+        Descripcion: updatedRow.desc && updatedRow.desc !== 0 ? updatedRow.desc : rowId.Descripcion,
+        HoraDescenso: updatedRow.descenso ? moment(updatedRow.descenso).format('HH:mm:ss') : rowId.HoraDescenso
+      }
       console.log(updatedRow)
       actParadaD({ data })
     }
@@ -200,7 +204,18 @@ function TableRutaD({ rutaD, setUpdateList }) {
             }}
           />
         ),
-        horaDesc: u.HoraDescenso,
+        horaDesc: (
+        <DatePicker
+          selected={editableRows[u.RenglonID]?.descenso || (u.HoraDescenso ? moment(u.HoraDescenso, 'HH:mm:ss.SSSSSSS').toDate() : null)}
+          onChange={(date) => handleInputChange(u.RenglonID, 'descenso', date)}
+          className="form-control"
+          placeholderText="Seleccionar horario"
+          timeIntervals={5}
+          dateFormat="h:mm aa"
+          showTimeSelect
+          showTimeSelectOnly
+        />
+        ),
         pzsDisp: u.PlazasDisponible
       }));
       setResult(transformedData);

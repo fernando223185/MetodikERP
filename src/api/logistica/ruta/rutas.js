@@ -176,7 +176,24 @@ export async function afectarRutaAsync ({ data }){
         return error;
     }
 }
-
+export async function copiarRutaAsync ({ data }){
+    try{
+        const response = await axios.post(`${endpoints.key}/copiarRuta`, data)
+        return response
+    }catch(error){
+        console.error('Error fetching rutas:', error);
+        return error;
+    }
+}
+export async function EliminarRutaAsync ({ data }){
+    try{
+        const response = await axios.delete(`${endpoints.key}/eliminarRuta?ID=${data.ID}&UsuarioID=${data.UsuarioID}`)
+        return response
+    }catch(error){
+        console.error('Error fetching rutas:', error);
+        return error;
+    }
+}
 export async function agregarFormaPagoAsync ({ data }){
     try{
         const response = await axios.post(`${endpoints.key}/Reservas/agregarPagoReserva`, data)
@@ -189,7 +206,7 @@ export async function agregarFormaPagoAsync ({ data }){
 
 export async function cambiarSituacionesAsync ({ data }){
     try{
-        const response = await axios.post(`${endpoints.key}/Reservas/cambiarSituacion`, data)
+        const response = await axios.post(`${endpoints.key}/cambiarsituacionRuta`, data)
         return response
     }catch(error){
         console.error('Error fetching reservas:', error);
