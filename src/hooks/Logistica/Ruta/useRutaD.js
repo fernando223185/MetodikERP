@@ -7,7 +7,10 @@ import {
   agregarParadaDAsync,
   actParadaDAsync,
   delRowAsync,
-  afectarRutaAsync
+  afectarRutaAsync,
+  cambiarSituacionesAsync,
+  copiarRutaAsync,
+  EliminarRutaAsync
 } from "api/logistica/ruta/rutas";
 
 export const useGetRutaID = () => {
@@ -155,6 +158,49 @@ export const useAfectarRuta = () => {
 
   return { afectarRuta, result, isLoading };
 };
+
+export const useCopiarRuta = () => {
+  const [result, setResult] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+
+  const copiarRuta = useCallback(async ({ data }) => {
+    setIsLoading(true);
+    const result = await copiarRutaAsync({ data });
+    setResult(result);
+    setIsLoading(false);
+  }, []);
+
+  return { copiarRuta, result, isLoading };
+};
+export const useElimiarRuta = () => {
+  const [result, setResult] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+
+  const eliminarRuta = useCallback(async ({ data }) => {
+    setIsLoading(true);
+    const result = await EliminarRutaAsync({ data });
+    setResult(result);
+    setIsLoading(false);
+  }, []);
+
+  return { eliminarRuta, result, isLoading };
+};
+
+
+export const useCambiarSituaciones = () => {
+  const [result, setResult] = useState({})    
+  const [isLoading, setIsLoading] = useState(false)
+  
+  const cambiarSituaciones = useCallback(async ({ data }) => {
+      setIsLoading(true);
+      const result = await cambiarSituacionesAsync({ data });
+      setResult(result);
+      setIsLoading(false);
+    }, [])
+  
+    return { cambiarSituaciones, result, isLoading };
+}
+
 /*
 
 export const useGetRutaVuelta = () => {
@@ -335,19 +381,6 @@ export const useAgregarFormaPago = () => {
     return { agregarFormaPago, result, isLoading };
 }
 
-export const useCambiarSituaciones = () => {
-  const [result, setResult] = useState({})    
-  const [isLoading, setIsLoading] = useState(false)
-  
-  const cambiarSituaciones = useCallback(async ({ data }) => {
-      setIsLoading(true);
-      const result = await cambiarSituacionesAsync({ data });
-      setResult(result);
-      setIsLoading(false);
-    }, [])
-  
-    return { cambiarSituaciones, result, isLoading };
-}
 
 export const useGetReservaIDOption = () => {
   const [reservaIdOpti, setReservaOpt] = useState([]);

@@ -127,7 +127,7 @@ const RutasViewD = () => {
               <img src={logoInvoice} alt="invoice" width={250} />
             </Col>
             <Col className="text-sm-end mt-3 mt-sm-0">
-              <h2 className="mb-3">{rutaId.Movimiento}</h2>
+              <h2 className="mb-3">{rutaId.Folio}</h2>
               <h5>{rutaId.Agente}</h5>
             <SubtleBadge pill           
                 bg={classNames({
@@ -150,9 +150,9 @@ const RutasViewD = () => {
             <br></br>
             <SubtleBadge pill           
                 bg={classNames({
-                success:  rutaId.Situacion === 'Confirmado' || rutaId.Situacion === 'Pagado' || rutaId.Situacion === 'Abordado',
-                warning: rutaId.Situacion  === 'Por Confirmar',
-                danger: rutaId.Situacion === 'No confirmado'
+                success:  rutaId.Situacion === 'Finalizada',
+                warning: rutaId.Situacion  === 'Transito' || rutaId.Situacion === 'Descenso',
+                primary: rutaId.Situacion === 'Programda' || rutaId.Situacion === 'Check de Limpieza' || rutaId.Situacion === 'Abordando'
             })}
             className="fs--2 ms-2 mt-2" 
             >
@@ -180,36 +180,32 @@ const RutasViewD = () => {
                 <Table borderless size="sm" className="fs--1">
                   <tbody>
                     <tr>
-                      <th className="text-sm-end">Referencia:</th>
-                      <td>{rutaId.Referencia}</td>
+                      <th className="text-sm-end">Ruta:</th>
+                      <td>{rutaId.RutaNombre}</td>
                     </tr>
-                    {rutaId.Movimiento === 'Equipaje' && (
-                      <tr>
-                        <th className="text-sm-end">Reserva Asociada:</th>
-                        <td>{rutaId.ReservaRef}</td>
-                      </tr>
-                    )}
+                    <tr>
+                      <th className="text-sm-end">Fecha de Inicio:</th>
+                      <td>{rutaId.FechaInicioF}</td>
+                    </tr>
+                    <tr>
+                      <th className="text-sm-end">Hora de Salida:</th>
+                      <td>{rutaId.HoraSalidaF}</td>
+                    </tr>
+                    <tr>
+                      <th className="text-sm-end">Equipo:</th>
+                      <td>{rutaId.EquipoNombre}</td>
+                    </tr>
+                    <tr>
+                      <th className="text-sm-end">Vehiculo:</th>
+                      <td>{rutaId.VehiculoNombre}</td>
+                    </tr>
                     <tr>
                       <th className="text-sm-end">Observaciones:</th>
                       <td>{rutaId.Observaciones}</td>
                     </tr>
                     <tr>
-                      <th className="text-sm-end">Fecha Emision:</th>
-                      <td>{rutaId.FechaEmision}</td>
-                    </tr>
-                    <tr>
-                      <th className="text-sm-end">Ruta:</th>
-                      <td>{rutaId.RutaNombre}</td>
-                    </tr>
-                    <tr>
-                      <th className="text-sm-end">Forma de Pago:</th>
-                      <td>{rutaId.FormaPago}</td>
-                    </tr>
-                    <tr className="alert alert-success fw-bold">
-                      <th className="text-success-emphasis text-sm-end">
-                        Importe Total:
-                      </th>
-                      <td className="text-success-emphasis">{rutaId.ImporteTotal}</td>
+                      <th className="text-sm-end">Referencia:</th>
+                      <td>{rutaId.Referencia}</td>
                     </tr>
                   </tbody>
                 </Table>
@@ -222,52 +218,34 @@ const RutasViewD = () => {
               <Table striped className="border-bottom">
                 <thead data-bs-theme="light">
                   <tr className="dark__bg-1000" style={{ backgroundColor: '#A66595' }}>
-                    <th className="text-white border-0">No. Parada</th>
+                    <th className="text-white border-0 text-center">No. Parada</th>
                     <th className="text-white border-0 text-center">
                       Hora Abordaje
                     </th>
-                    <th className="text-white border-0 text-end">Destino</th>
-                    <th className="text-white border-0 text-end">Descripcion</th>
-                    <th className="text-white border-0 text-end">Hora descenso</th>
-                    <th className="text-white border-0 text-end">Plazas disponibles</th>
+                    <th className="text-white border-0 text-center">Destino</th>
+                    <th className="text-white border-0 text-center">Descripcion</th>
+                    <th className="text-white border-0 text-center">Hora descenso</th>
+                    <th className="text-white border-0 text-center">Plazas disponibles</th>
                   </tr>
                 </thead>
                 <tbody>
                 {rutaD.map((item, index) => (
                     <tr key={index}>
                         <td className="align-middle">
-                        <h6 className="mb-0 text-nowrap">{item.Descripcion}</h6>
+                        <h6 className="mb-0 text-nowrap text-center">{item.RenglonID}</h6>
                         </td>
-                        <td className="align-middle text-center">{item.Cantidad}</td>
-                        <td className="align-middle text-end">{item.Asientos}</td>
-                        <td className="align-middle text-end">{item.PrecioTotal}</td>
+                        <td className="align-middle text-center">{item.HoraAbordajeFormat}</td>
+                        <td className="align-middle text-center">{item.DestinoNombre}</td>
+                        <td className="align-middle text-center">{item.Descripcion}</td>
+                        <td className="align-middle text-center">{item.HoraDescensoFormat}</td>
+                        <td className="align-middle text-center">{item.PlazasDisponible}</td>
+
                     </tr>
                 ))}
                 </tbody>
               </Table>
             </SimpleBarReact>
           </div>
-
-          <Row className="justify-content-end">
-            <Col xs="auto">
-              <Table borderless size="sm" className="fs--1 text-end">
-                <tbody>
-                  <tr>
-                    <th className="text-900">Subtotal:</th>
-                    <td className="fw-semi-bold">{rutaId.SubTotal}</td>
-                  </tr>
-                  <tr>
-                    <th className="text-900">Impuestos:</th>
-                    <td className="fw-semi-bold">{rutaId.Impuestos}</td>
-                  </tr>
-                  <tr className="border-top border-top-2 fw-bolder text-900">
-                    <th className="text-900">Importe total:</th>
-                    <td className="text-900">{rutaId.ImporteTotal}</td>
-                  </tr>
-                </tbody>
-              </Table>
-            </Col>
-          </Row>
         </Card.Body>
       </Card>
     </>

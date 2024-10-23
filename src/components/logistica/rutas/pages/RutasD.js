@@ -13,6 +13,7 @@ import InfoCard from "../sections/InfoCard";
 import InfoDCard from "../sections/InfoDCard";
 import DetalleRutasCard from "../sections/DetalleRutasCard";
 import RutasDisponibles from "../sections/RutasDisponibles";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlay,
@@ -26,13 +27,16 @@ import {
   faInfoCircle,
   faEllipsisV,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   useGetRutaID,
   useGetRutaD,
   useGetRutaDisp,
-  useAfectarRuta /*, useCancelarReserva, useAfectarReserva, useAgregarFormaPago, useCambiarSituaciones*/,
-} from "../../../../hooks/Logistica/Ruta/useRutaD";
+  useAfectarRuta,
+  useCambiarSituaciones,
+  useCopiarRuta,
+  useElimiarRuta,
+} from /*, useCancelarReserva, useAfectarReserva, useAgregarFormaPago*/ "../../../../hooks/Logistica/Ruta/useRutaD";
 import { useParams } from "react-router-dom";
 import { useGetFiltroModulo } from "../../../../hooks/useFiltros";
 import RutaVuelta from "../sections/RutaVuelta";
@@ -44,14 +48,31 @@ import IconButton from "components/common/IconButton";
 
 const RutasHeader = ({ setHasFetched, estatus, showFormMov }) => {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   //const { cancelarReserva, result, isLoading } = useCancelarReserva();
   const {
     afectarRuta,
     result: resultAfect,
     isLoading: isLoadingAfec,
   } = useAfectarRuta();
+  const {
+    copiarRuta,
+    result: resultCopiar,
+    isLoading: isLoadingCopiar,
+  } = useCopiarRuta();
+  const {
+    eliminarRuta,
+    result: resultEliminar,
+    isLoading: isLoadingEliminar,
+  } = useElimiarRuta();
+
   //const { agregarFormaPago, result: pago, isLoading: isLoadingPago } = useAgregarFormaPago();
-  //const { cambiarSituaciones, result: situacion, isLoading: isLoadingSit } = useCambiarSituaciones();
+  const {
+    cambiarSituaciones,
+    result: situacion,
+    isLoading: isLoadingSit,
+  } = useCambiarSituaciones();
 
   const [showModal, setShowModal] = useState(false);
   const [showModalSituacion, setShowModalSituacion] = useState(false);
@@ -85,6 +106,22 @@ const RutasHeader = ({ setHasFetched, estatus, showFormMov }) => {
   const handlePlayClick = async () => {
     handleAfectar();
   };
+  const handleCopiar = async () => {
+    const data = {
+      ID: id,
+      UsuarioID: user.ID,
+    };
+
+    await copiarRuta({ data });
+  };
+  const handleEliminarMov = async () => {
+    const data = {
+      ID: id,
+      UsuarioID: user.ID,
+    };
+
+    await eliminarRuta({ data });
+  };
   useEffect(() => {
     if (resultAfect && Object.keys(resultAfect).length === 0) {
       console.log("resultAfect es un array vacío:", resultAfect);
@@ -113,7 +150,12 @@ const RutasHeader = ({ setHasFetched, estatus, showFormMov }) => {
   }, [resultAfect]);
 
   const handleSituacionClick = async () => {
-    const data = { Tipo: "Situaciones", PersonaID: 1, Modulo: "Reservas" };
+    const data = {
+      Tipo: "Situaciones",
+      PersonaID: 1,
+      Modulo: "Rutas",
+      ModuloID: id,
+    };
     const resultFiltro = await getFiltroModulo(data);
     setSituaciones(resultFiltro);
     setShowModalSituacion(true);
@@ -137,7 +179,7 @@ const RutasHeader = ({ setHasFetched, estatus, showFormMov }) => {
       Situacion: selectedSituacion,
     };
 
-    //await cambiarSituaciones({data})
+    await cambiarSituaciones({ data });
   };
 
   /*
@@ -167,32 +209,89 @@ const RutasHeader = ({ setHasFetched, estatus, showFormMov }) => {
   },[pago])
   */
 
-  /*
   useEffect(() => {
     if (situacion && Object.keys(situacion).length === 0) {
       console.log("situacion es un array vacío:", situacion);
     } else if (situacion && situacion.status === 200) {
-        toast[situacion.data[0].Tipo](`${situacion.data[0].Mensaje}`, {
-            theme: 'colored',
-            position: situacion.data[0].Posicion,
-            icon: situacion.data[0].Tipo === 'success' ? 
-            <FontAwesomeIcon icon={faCheckCircle} /> : 
-            situacion.data[0].Tipo === 'error' ? 
-            <FontAwesomeIcon icon={faExclamationTriangle} /> : 
+      toast[situacion.data[0].Tipo](`${situacion.data[0].Mensaje}`, {
+        theme: "colored",
+        position: situacion.data[0].Posicion,
+        icon:
+          situacion.data[0].Tipo === "success" ? (
+            <FontAwesomeIcon icon={faCheckCircle} />
+          ) : situacion.data[0].Tipo === "error" ? (
+            <FontAwesomeIcon icon={faExclamationTriangle} />
+          ) : (
             <FontAwesomeIcon icon={faInfoCircle} />
-        });
-        setTimeout(() => {
-          handleModalCloseSituacion(false);
-          setHasFetched((prev) => !prev); 
-        }, 1000)
+          ),
+      });
+      setTimeout(() => {
+        handleModalCloseSituacion(false);
+        setHasFetched((prev) => !prev);
+      }, 1000);
     } else if (situacion) {
-        toast.error(`Error al guardar`, {
-            theme: 'colored',
-            position: 'top-right'
-        });
+      toast.error(`Error al guardar`, {
+        theme: "colored",
+        position: "top-right",
+      });
     }
-  },[situacion])
-  */
+  }, [situacion]);
+
+  useEffect(() => {
+    if (resultCopiar && Object.keys(resultCopiar).length === 0) {
+      console.log("situacion es un array vacío:", resultCopiar);
+    } else if (resultCopiar && resultCopiar.status === 200) {
+      toast[resultCopiar.data[0].Tipo](`${resultCopiar.data[0].Mensaje}`, {
+        theme: "colored",
+        position: resultCopiar.data[0].Posicion,
+        icon:
+          resultCopiar.data[0].Tipo === "success" ? (
+            <FontAwesomeIcon icon={faCheckCircle} />
+          ) : resultCopiar.data[0].Tipo === "error" ? (
+            <FontAwesomeIcon icon={faExclamationTriangle} />
+          ) : (
+            <FontAwesomeIcon icon={faInfoCircle} />
+          ),
+      });
+      setTimeout(() => {
+        navigate(`/logistica/rutas/rutasD/${resultCopiar.data[0].NID}`);
+      }, 1000);
+    } else if (resultCopiar) {
+      toast.error(`Error al copiar`, {
+        theme: "colored",
+        position: "top-right",
+      });
+    }
+  }, [resultCopiar]);
+
+  useEffect(() => {
+    if (resultEliminar && Object.keys(resultEliminar).length === 0) {
+      console.log("situacion es un array vacío:", resultEliminar);
+    } else if (resultEliminar && resultEliminar.status === 200) {
+      toast[resultEliminar.data[0].Tipo](`${resultEliminar.data[0].Mensaje}`, {
+        theme: "colored",
+        position: resultEliminar.data[0].Posicion,
+        icon:
+          resultEliminar.data[0].Tipo === "success" ? (
+            <FontAwesomeIcon icon={faCheckCircle} />
+          ) : resultEliminar.data[0].Tipo === "error" ? (
+            <FontAwesomeIcon icon={faExclamationTriangle} />
+          ) : (
+            <FontAwesomeIcon icon={faInfoCircle} />
+          ),
+      });
+      if (resultEliminar.data[0].Ok == 0) {
+        setTimeout(() => {
+          navigate(`/logistica/rutas`);
+        }, 1000);
+      }
+    } else if (resultEliminar) {
+      toast.error(`Error al copiar`, {
+        theme: "colored",
+        position: "top-right",
+      });
+    }
+  }, [resultEliminar]);
 
   /*
   useEffect(() => {
@@ -318,9 +417,15 @@ const RutasHeader = ({ setHasFetched, estatus, showFormMov }) => {
 
                     <Dropdown.Menu className="border py-0">
                       <div className="py-2">
-                        <Dropdown.Item>Copiar</Dropdown.Item>
+                        <Dropdown.Item onClick={handleCopiar}>
+                          {" "}
+                          Copiar{" "}
+                        </Dropdown.Item>
                         <Dropdown.Divider />
-                        <Dropdown.Item className="text-danger">
+                        <Dropdown.Item
+                          className="text-danger"
+                          onClick={handleEliminarMov}
+                        >
                           Eliminar
                         </Dropdown.Item>
                       </div>
@@ -333,57 +438,6 @@ const RutasHeader = ({ setHasFetched, estatus, showFormMov }) => {
         </Row>
       </Container>
 
-      <Modal show={showModal} onHide={handleModalClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Formas de Pago</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {isLoadingFiltro ? (
-            <div className="d-flex justify-content-center">
-              <Spinner animation="border" role="status">
-                <span className="visually-hidden">Cargando...</span>
-              </Spinner>
-            </div>
-          ) : (
-            <Form>
-              <Form.Group>
-                <Form.Label>Seleccione una forma de pago</Form.Label>
-                <Select
-                  classNamePrefix="react-select"
-                  options={formasPago.map((item) => ({
-                    value: item.Valor,
-                    label: item.Dato,
-                  }))}
-                  onChange={(option) => setSelectedFormaPago(option.value)}
-                  //isLoading={isLoading}
-                />
-              </Form.Group>
-              <Form.Group>
-                <Form.Label>Referencia</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={referencia}
-                  onChange={(e) => setReferencia(e.target.value)}
-                />
-              </Form.Group>
-            </Form>
-          )}
-        </Modal.Body>
-        <Modal.Footer>
-          <button
-            className="btn btn-outline-secondary rounded-pill me-1 mb-1 btn-sm"
-            onClick={handleModalClose}
-          >
-            <FontAwesomeIcon icon={faChevronLeft} />
-          </button>
-          <button
-            onClick={handleModalSave}
-            className="btn btn-outline-primary rounded-pill btn-sm"
-          >
-            <FontAwesomeIcon icon={faSave} />
-          </button>
-        </Modal.Footer>
-      </Modal>
       <Modal show={showModalSituacion} onHide={handleModalCloseSituacion}>
         <Modal.Header closeButton>
           <Modal.Title>Cambiar Situación</Modal.Title>
