@@ -1,14 +1,17 @@
-import AdvanceTable from "components/common/advance-table/AdvanceTable";
-import AdvanceTableWrapper from "components/common/advance-table/AdvanceTableWrapper";
-import { useGetExploradorRutas } from "../../../../hooks/Exploradores/Rutas/useRutasExplorador";
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
+import { Spinner, Button, Modal, Form } from "react-bootstrap";
 import { Col, Row } from "react-bootstrap";
-import AdvanceTableSearchBox from "components/common/advance-table/AdvanceTableSearchBox";
-import AdvanceTableFooter from "components/common/advance-table/AdvanceTableFooter";
-import SubtleBadge from "components/common/SubtleBadge";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import AdvanceTable from "components/common/advance-table/AdvanceTable";
+import AdvanceTableWrapper from "components/common/advance-table/AdvanceTableWrapper";
+import AdvanceTableSearchBox from "components/common/advance-table/AdvanceTableSearchBox";
+import AdvanceTableFooter from "components/common/advance-table/AdvanceTableFooter";
+import { useGetExploradorRutas } from "../../../../hooks/Exploradores/Rutas/useRutasExplorador";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css"; // Asegúrate de que los estilos de DatePicker estén incluidos
+import Select from "react-select";
+import { useGetFiltroModulo } from "../../../../hooks/useFiltros";
 
 const columns = [
   {
@@ -68,20 +71,72 @@ const columns = [
 function TableExploradorRutas() {
   const { getProfiles, rutes, isLoading } = useGetExploradorRutas();
   const [result, setResult] = useState([]);
-  const [lgShow, setLgShow] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [formToShow, setFormToShow] = useState("");
-  const [EmpresaID, setEmpresaID] = useState(0);
+  const [showFilterModal, setShowFilterModal] = useState(false);
+  const { getFiltroModulo, isLoading: isLoadingFiltro } = useGetFiltroModulo();
 
-  const handleEditUserClick = (user) => {
-    setFormToShow("EditUser");
-    setSelectedUser(user); // Selecciona el usuario para editar
-    setLgShow(true); // Abre el modal
+  // Estado para los filtros
+  const [selectedRuta, setSelectedRuta] = useState(0);
+  const [selectedFecha, setSelectedFecha] = useState(null);
+  const [selectedHora, setSelectedHora] = useState(null);
+  const [filters, setFilters] = useState({
+    ruta: 0,
+    fecha: "",
+    hora: "",
+  });
+  const [rutasOptions, setRutasOptions] = useState([]);
+
+  const handleOpenFilterModal = () => setShowFilterModal(true);
+  const handleCloseFilterModal = () => setShowFilterModal(false);
+
+  const fetchRutasOptions = async () => {
+    const data = {
+      Tipo: "RutaFiltro",
+      PersonaID: 1,
+      Modulo: "Rutas",
+      ModuloID: null,
+    };
+    const resultFiltro = await getFiltroModulo(data);
+    const options = resultFiltro.map((item) => ({
+      value: item.Valor,
+      label: item.Dato,
+    }));
+    console.log(options);
+    setRutasOptions(options);
   };
 
   useEffect(() => {
-    getProfiles();
-  }, []);
+    if (showFilterModal) {
+      fetchRutasOptions();
+    }
+  }, [showFilterModal]);
+
+  useEffect(() => {
+    console.log(filters);
+    getProfiles(filters);
+  }, [filters]);
+
+  const applyFilters = () => {
+    setFilters({
+      ruta: selectedRuta ? selectedRuta.value : "",
+      fecha: selectedFecha
+        ? new Intl.DateTimeFormat("es-ES", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+          }).format(selectedFecha)
+        : "",
+      hora: selectedHora
+        ? new Intl.DateTimeFormat("es-ES", {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: false,
+          }).format(selectedHora)
+        : "",
+    });
+
+    handleCloseFilterModal();
+  };
 
   useEffect(() => {
     if (rutes.status === 200) {
@@ -105,7 +160,6 @@ function TableExploradorRutas() {
         noReservados: u.Reservados,
         noConfirmados: u.Confirmados,
         noDisponible: u.Disponible,
-
       }));
       setResult(transformedData);
     }
@@ -138,11 +192,16 @@ function TableExploradorRutas() {
         pagination
         perPage={10}
       >
-        <Row className="justify-content-start mb-3">
+        <Row className="justify-content-between mb-3">
           <Col xs="auto">
             <AdvanceTableSearchBox table />
           </Col>
-          <Col xs="auto" sm={6} lg={4} className="ms-auto text-end"></Col>
+          <Col xs="auto">
+            {/* Botón para abrir el modal de filtros */}
+            <Button variant="outline-primary" onClick={handleOpenFilterModal}>
+              Filtrar
+            </Button>
+          </Col>
         </Row>
         <hr style={{ margin: "10px 0" }} />
         <AdvanceTable
@@ -165,6 +224,64 @@ function TableExploradorRutas() {
           />
         </div>
       </AdvanceTableWrapper>
+
+      {/* Modal de filtros */}
+      <Modal
+        show={showFilterModal}
+        onHide={handleCloseFilterModal}
+        size="lg"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Filtros</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group controlId="filtroRuta">
+              <Form.Label>Ruta</Form.Label>
+              <Select
+                options={rutasOptions}
+                value={selectedRuta}
+                onChange={setSelectedRuta}
+                placeholder="Todos"
+              />
+            </Form.Group>
+
+            <Form.Group controlId="filtroFecha" className="mt-3">
+              <Form.Label>Fecha</Form.Label>
+              <Form.Control
+                type="date"
+                value={
+                  selectedFecha
+                    ? selectedFecha.toISOString().substring(0, 10)
+                    : ""
+                }
+                onChange={(e) => setSelectedFecha(new Date(e.target.value))}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="filtroHora" className="mt-3">
+              <Form.Label>Hora</Form.Label>
+              <DatePicker
+                selected={selectedHora}
+                onChange={(date) => setSelectedHora(date)}
+                showTimeSelect
+                showTimeSelectOnly
+                timeIntervals={15}
+                timeCaption="Hora"
+                dateFormat="h:mm aa"
+                className="form-control"
+                placeholderText="Selecciona una hora"
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={applyFilters}>
+            Buscar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

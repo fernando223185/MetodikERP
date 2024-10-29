@@ -42,7 +42,6 @@ const ExploradorRutas = () => {
           </Card>        
         </Col>
       </Row>
-
     </>
   );
 };

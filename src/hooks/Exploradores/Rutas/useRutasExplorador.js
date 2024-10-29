@@ -8,9 +8,9 @@ export const useGetExploradorRutas = () => {
   const [rutes, setRutes] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const getProfiles = useCallback(async () => {
+  const getProfiles = useCallback(async (data) => {
     setIsLoading(true);
-    const result = await getExploradorRutas();
+    const result = await getExploradorRutas(data);
 
     setRutes(result);
     setIsLoading(false);
