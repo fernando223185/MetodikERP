@@ -34,11 +34,35 @@ export const arrayReducer = (state, action) => {
         return [payload, ...filteredState];
       }
       return state.map(item => (item.id === id ? payload : item));
+
     case 'SORT':
       if (!sortBy || !order) {
         return state;
       }
       return orderBy(state, sortBy, order);
+      
+    case 'ADD_MANY':
+      if (!Array.isArray(payload)) {
+        console.error('Payload is not an array:', payload);
+        return state;
+      }
+      console.log('Payload:', payload);
+      return state.map(thread => {
+        // Encontrar si hay mensajes nuevos para este hilo
+        const newThreadMessages = payload.find(newMsg => newMsg.id === thread.id);
+        if (newThreadMessages && Array.isArray(newThreadMessages.content)) {
+          // Concatenar los mensajes nuevos al `content` existente
+          return {
+            ...thread,
+            content: [...thread.content, ...newThreadMessages.content],
+            read: newThreadMessages.content.some(msg => msg.senderUserId !== 1) ? false : true // Actualizar el estado `read`
+            };
+          }
+          return thread;
+        });
+
+        
+
     default:
       return state;
   }

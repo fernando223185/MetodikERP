@@ -14,6 +14,7 @@ const ChatThread = ({ thread, index }) => {
   const user = getUser(thread);
   const message = messages.find(({ id }) => id === thread.messagesId);
   const lastMessage = message?.content[message.content.length - 1];
+  
   return (
     <Nav.Link
       eventKey={index}
