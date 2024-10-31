@@ -60,7 +60,7 @@ const altAppRoutes = {
 
 // Condicionalmente asignar appRoutes
 export const appRoutes =
-  userID != 1
+  userID !== 1
     ? altAppRoutes
     : {
         label: "Modulos",
@@ -110,6 +110,12 @@ export const appRoutes =
                 name: "Clientes",
                 icon: faUsers,
                 to: "/catalogo/clientes",
+                active: true,
+              },
+              {
+                name: "Equipos",
+                icon: faUsers,
+                to: "/catalogo/equipos",
                 active: true,
               },
             ],

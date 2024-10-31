@@ -207,6 +207,7 @@ import SucursalesSettings from 'components/sucursales/Profile/SucursalesSettings
 import CreateVehiculo from 'components/vehiculos/Profile/CreateVehiculo';
 import Vehiculos from 'components/vehiculos';
 import VehiculosSettings from 'components/vehiculos/Profile/VehiculosSettings';
+import Equipos from 'components/Catalogos/Equipos/Index';
 
 import CreateAlmacen from 'components/almacenes/Profile/CreateAlmacen';
 import Almacenes from 'components/almacenes';
@@ -239,6 +240,8 @@ import PaqueteriaViewD from 'components/comercial/paqueteria/pages/PaqueteriaVie
 import RutasLogict from 'components/logistica/rutas/Index';
 import ViewRutasCard from 'components/logistica/rutas/pages/RutasViewD'
 import RutasD from 'components/logistica/rutas/pages/RutasD'
+import EquiposViewD from 'components/Catalogos/Equipos/pages/EquiposViewD';
+import EquiposD from 'components/Catalogos/Equipos/pages/EquiposD';
 
 
 const MetodikRoutes = () => {
@@ -620,6 +623,8 @@ const MetodikRoutes = () => {
         <Route path="configuration/vehiculos" element={<Vehiculos />} />
         <Route path="configuration/vehiculos/editar/:id" element={<VehiculosSettings />} />
         <Route path="configuration/vehiculo/nuevo" element={<CreateVehiculo />} />
+
+        <Route path="Catalogo/Equipos" element={<Equipos />}/>
         
         <Route path="configuration/almacenes" element={<Almacenes />} />
         <Route path="configuration/almacenes/editar/:id" element={<AlmacenSettings />} />
@@ -652,6 +657,10 @@ const MetodikRoutes = () => {
         <Route path="logistica/rutas" element={<RutasLogict/>} />
         <Route path="logistica/rutas/view-rutas/:id" element={<ViewRutasCard/>} />
         <Route path="logistica/rutas/rutasD/:id" element={<RutasD/>} />
+
+        {/* Catalogo Equipos */}
+        <Route path="/catalogo/equipos/view-equipo/:id" element={<EquiposViewD/>} />
+        <Route path="/catalogo/equipos/actEquipoD/:id" element={<EquiposD />} />
 
 
       </Route>
