@@ -5,14 +5,14 @@ import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faBan, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { Col, Row, Card, Offcanvas } from 'react-bootstrap';
-import AllEquiposHeader from './AllEquiposHeader';
 import { useNavigate } from 'react-router-dom';
 import TableRowClick from 'components/common/advance-table/TableRowClick';
 import AdvanceTablePagination from 'components/common/advance-table/AdvanceTablePagination';
-import EquiposFilterForm from '../sections/EquiposFilterForm';
+import AllChoferesHeader from './AllChoferesHeader';
 import Flex from 'components/common/Flex';
 import Avatar from 'components/common/Avatar';
 import { Link } from 'react-router-dom';
+import ChoferesFilterForm from '../sections/ChoferesFilterForm';
 
 const columns = [
     {
@@ -45,36 +45,43 @@ const columns = [
         }
     },
     {
-        accessor: 'Descripcion',
-        Header: 'Descripcion',
-        headerProps: { className: 'text-900'},
+        accessor: 'Sucursal',
+        Header: 'Sucursal',
+        headerProps: { className: 'text-900' },
         cellProps: {
-            className: ' py-2 pe-4'
+            className: 'py-2 pe-4'
+        }
+    },
+    {
+        accessor: 'Vehiculo',
+        Header: 'Vehiculo',
+        headerProps: { className: 'text-900' },
+        cellProps: {
+            className: 'py-2 pe-4'
         }
     },
     {
         accessor: 'Estatus',
         Header: 'Estatus',
-        headerProps: { className: 'text-center text-900'},
+        headerProps: { className: 'text-center text-900' },
         cellProps: {
             className: 'text-center py-2 pe-4'
         }
     }
 ];
 
-function TableEquipos({equipos, layout, estatus, setFilter, filter}) {
+function TableChoferes({choferes, layout, estatus, sucursal, empresa, setFilter, filter}) {
     const [result, setResult] = useState([]);
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const navigate = useNavigate();
 
-
     useEffect(() => {
-        if (equipos && equipos.status === 200 && equipos.data.length > 0) {
-            const transformedData = equipos.data.map(u => ({
+        if (choferes && choferes.status === 200 && choferes.data.length > 0) {
+            const transformedData = choferes.data.map(u => ({
                 Nombre: u.Nombre,
-                Descripcion: u.Descripcion,
+                Sucursal: u.Sucursal,
                 Estatus: (
                     <SubtleBadge pill
                         bg={classNames({
@@ -84,15 +91,16 @@ function TableEquipos({equipos, layout, estatus, setFilter, filter}) {
                         className='fs--2'
                     >
                         {u.Estatus}
-                        <FontAwesomeIcon 
+                        <FontAwesomeIcon
                             icon={getStatusIcon(u.Estatus)}
                             transform="shrink-2"
                             className='ms-1'
                         />
                     </SubtleBadge>
                 ),
-                empresa: u.EmpresaID,
-                id: u.ID
+                Empresa: u.EmpresaID,
+                id: u.ID,
+                Vehiculo: u.Vehiculo
             }));
             setResult(prevResult => {
                 if(JSON.stringify(prevResult) !== JSON.stringify(transformedData)) {
@@ -101,7 +109,7 @@ function TableEquipos({equipos, layout, estatus, setFilter, filter}) {
                 return prevResult
             });
         }
-    }, [equipos])
+    }, [choferes])
 
     const getStatusIcon = (estatus) => {
         switch(estatus) {
@@ -115,11 +123,11 @@ function TableEquipos({equipos, layout, estatus, setFilter, filter}) {
     };
 
     const handleClick = (id) => {
-        navigate(`/catalogo/equipos/actEquipoD/${id}`);
+        navigate(`/catalogo/choferes/actChoferD/${id}`);
     };
 
     const handleRowClick = (id) => {
-        navigate(`/catalogo/equipos/view-equipo/${id}`);
+        navigate(`/catalogo/choferes/view-profile/${id}`);
     };
 
     return (
@@ -137,7 +145,7 @@ function TableEquipos({equipos, layout, estatus, setFilter, filter}) {
                 >
                     <Card>
                         <Card.Header className='border-bottom border-200 px-0'>
-                            <AllEquiposHeader
+                            <AllChoferesHeader
                                 table
                                 layout={layout}
                                 handleShow={handleShow}
@@ -172,12 +180,12 @@ function TableEquipos({equipos, layout, estatus, setFilter, filter}) {
                     <Offcanvas.Header closeButton className="bg-body-tertiary">
                     <h6 className="fs-0 mb-0 fw-semi-bold">Filtros</h6>
                     </Offcanvas.Header>
-                    <EquiposFilterForm estatus={estatus} setFilter={setFilter} filter={filter} />
+                    <ChoferesFilterForm estatus={estatus} sucursal={sucursal} empresa={empresa} setFilter={setFilter} filter={filter} />
                 </Offcanvas>
             </Col>
         </Row>
     );
 }
 
+export default TableChoferes;
 
-export default TableEquipos;

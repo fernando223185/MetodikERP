@@ -224,14 +224,11 @@ import ReservasD from '../components/comercial/reservas/pages/ReservasD'
 import Rutas from 'components/rutas/index'
 import CreateRutas from 'components/rutas/forms/CreateRutas'
 import EditRutas from 'components/rutas/forms/EditRutas'
-import Choferes from 'components/choferes/index'
-import EditChofer from 'components/choferes/edit/EditChofer';
-import CreateChofer from 'components/choferes/create/CreateChofer';
+
 import Profiles from 'components/Perfiles/index'
 import ExploradorRutas from 'components/Exploradores/Rutas/index'
 import ExploradorRutasD from 'components/Exploradores/Rutas/index_rutasD'
 import PasajeroD from '../components/comercial/reservas/pages/PasajeroD'
-import ViewProfile from 'components/choferes/ViewProfile/ViewChofer';
 import Perfiles from 'components/Perfiles/pages/index';
 import ReservasViewD from 'components/comercial/reservas/pages/ReservasViewD'
 import Paqueteria from 'components/comercial/paqueteria/Index'
@@ -242,6 +239,9 @@ import ViewRutasCard from 'components/logistica/rutas/pages/RutasViewD'
 import RutasD from 'components/logistica/rutas/pages/RutasD'
 import EquiposViewD from 'components/Catalogos/Equipos/pages/EquiposViewD';
 import EquiposD from 'components/Catalogos/Equipos/pages/EquiposD';
+import Choferes from 'components/Catalogos/Choferes/Index';
+import ChoferProfile from 'components/Catalogos/Choferes/pages/viewChofer/Profile';
+import EditarChofer from 'components/Catalogos/Choferes/pages/editChofer/EditarChofer';
 
 
 const MetodikRoutes = () => {
@@ -624,7 +624,6 @@ const MetodikRoutes = () => {
         <Route path="configuration/vehiculos/editar/:id" element={<VehiculosSettings />} />
         <Route path="configuration/vehiculo/nuevo" element={<CreateVehiculo />} />
 
-        <Route path="Catalogo/Equipos" element={<Equipos />}/>
         
         <Route path="configuration/almacenes" element={<Almacenes />} />
         <Route path="configuration/almacenes/editar/:id" element={<AlmacenSettings />} />
@@ -641,10 +640,6 @@ const MetodikRoutes = () => {
         <Route path="configuration/rutas" element={<Rutas />} />
         <Route path="configuration/rutas/nuevo" element={<CreateRutas />} />
         <Route path="configuration/rutas/edit/:id" element={<EditRutas />} />
-        <Route path="configuration/choferes" element={<Choferes />} />
-        <Route path="configuration/choferes/view-profile/:id" element={<ViewProfile />} />
-        <Route path="configuration/choferes/edit/:id" element={<EditChofer />} />
-        <Route path="configuration/choferes/nuevo" element={<CreateChofer />} />
         <Route path="configuration/Profiles" element={<Profiles />} />
         <Route path="Explorador/ExploradorRutas" element={<ExploradorRutas />} />
         <Route path="Explorador/ExploradorRutas/:id" element={<ExploradorRutasD/>} />
@@ -659,8 +654,14 @@ const MetodikRoutes = () => {
         <Route path="logistica/rutas/rutasD/:id" element={<RutasD/>} />
 
         {/* Catalogo Equipos */}
-        <Route path="/catalogo/equipos/view-equipo/:id" element={<EquiposViewD/>} />
-        <Route path="/catalogo/equipos/actEquipoD/:id" element={<EquiposD />} />
+        <Route path="catalogo/equipos" element={<Equipos />} />
+        <Route path="catalogo/equipos/view-equipo/:id" element={<EquiposViewD/>} />
+        <Route path="catalogo/equipos/actEquipoD/:id" element={<EquiposD/>} />
+
+        {/* Catalogo Choferes */} 
+        <Route path="catalogo/choferes" element={<Choferes />} />
+        <Route path="catalogo/choferes/view-profile/:id" element={<ChoferProfile/>} />
+        <Route path="catalogo/choferes/actChoferD/:id" element={<EditarChofer />} />
 
 
       </Route>

@@ -72,16 +72,6 @@ const Equipos = () => {
             <EquiposHeader />
             <Row className="g-3 mb-3">
                 <Col lg={12}>
-                {/* <Card>
-                    <Card.Body>
-                    <TableReservas reservas={reservas} />
-                    </Card.Body>
-                </Card> */}
-                {/* {formview === 'view-card' ? (
-                    <ViewReservasCard reservas={reservas} movimientos={movimientos} estatus={estatus} layout={formview} setFilter={setFilter} situaciones={situaciones} usuarios={usuarios} />
-                ) : (
-                    <TableReservasV2 reservas={reservas} movimientos={movimientos} estatus={estatus} layout={formview} setFilter={setFilter} situaciones={situaciones} usuarios={usuarios} filter={filter}/>
-                )} */}
                     <TableEquipos equipos={equipos} estatus={estatus} setFilter={setFilter} layout={formview} filter={filter} />
                 </Col>
             </Row> 

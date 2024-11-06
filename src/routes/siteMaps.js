@@ -8,6 +8,7 @@ import {
   faUsers,
   faUserSecret,
   faBox,
+  faIdCard
 } from "@fortawesome/free-solid-svg-icons";
 
 const user = JSON.parse(localStorage.getItem("user"));
@@ -80,6 +81,12 @@ export const appRoutes =
                 name: "Agentes",
                 icon: faUserSecret,
                 to: "/configuration/agentes",
+                active: true,
+              },
+              {
+                name: "Choferes",
+                icon: faIdCard,
+                to: "/catalogo/choferes",
                 active: true,
               },
               {
