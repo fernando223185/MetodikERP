@@ -8,6 +8,7 @@ import {
   faUsers,
   faUserSecret,
   faBox,
+  faIdCard
 } from "@fortawesome/free-solid-svg-icons";
 
 const user = JSON.parse(localStorage.getItem("user"));
@@ -60,7 +61,7 @@ const altAppRoutes = {
 
 // Condicionalmente asignar appRoutes
 export const appRoutes =
-  userID != 1
+  userID !== 1
     ? altAppRoutes
     : {
         label: "Modulos",
@@ -80,6 +81,12 @@ export const appRoutes =
                 name: "Agentes",
                 icon: faUserSecret,
                 to: "/configuration/agentes",
+                active: true,
+              },
+              {
+                name: "Choferes",
+                icon: faIdCard,
+                to: "/catalogo/choferes",
                 active: true,
               },
               {
@@ -110,6 +117,12 @@ export const appRoutes =
                 name: "Clientes",
                 icon: faUsers,
                 to: "/catalogo/clientes",
+                active: true,
+              },
+              {
+                name: "Equipos",
+                icon: faUsers,
+                to: "/catalogo/equipos",
                 active: true,
               },
             ],

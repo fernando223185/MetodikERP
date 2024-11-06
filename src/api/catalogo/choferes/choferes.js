@@ -1,38 +1,45 @@
 import axios from 'utils/axios'
 
 export const endpoints = {
-    key: '/Catalogos/Choferes'
+    key: '/Catalogos'
 };
 
-export async function getChoferesAsync(){
-    try{
-        const response = await axios.get(`${endpoints.key}/choferes`)
-        console.log(response)
+export async function getChoferesAsync({data}){
+    try {
+        const response = await axios.post(`${endpoints.key}/Choferes`, data)
         return response
-    } catch(error){
+    } catch(error) {
+        console.error('Error fetching equipos:', error);
         return error;
     }
 }
 
-export async function getChoferById(id){
-    try{
-        console.log(id)
-        const response = await axios.get(`${endpoints.key}/verChoferID?ID=${id}`)
-        console.log(response)
-        return response
-    } catch(error){
-        console.error("Error: ", error);
-        throw error;
+export async function getChoferIDAsync({id = 0}) {
+    try {
+        const response = await axios.get(`${endpoints.key}/Choferes/verChoferID?ID=${id}`);
+        return response.data[0];
+    } catch (error) {
+        console.error("Error fetching choferes", error);
+        return error;
     }
 }
 
-export async function actChoferes({data}){
-    try{
-        console.log(data)
-        const response = await axios.post(`${endpoints.key}/actChoferes`, data)
-        console.log(response)
-        return response
-    } catch(error){
+export async function newChoferAsync({data}) {
+    try {
+        const response = await axios.post(`${endpoints.key}/Choferes/actChoferD`, data);
+        return response;
+    } catch (error) {
+        console.error("error: ", error);
+        return error;
+    }
+}
+
+export async function delChoferAsync({id=0}) {
+    try {
+        const response = await axios.delete(`${endpoints.key}/Choferes/eliminarChofer?ID=${id}`);
+        return response;
+    } catch(error) {
+        console.error("Error fetching choferes:", error);
         return error;
     }
 }
