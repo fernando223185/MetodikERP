@@ -633,11 +633,23 @@ const MetodikRoutes = () => {
           element={<CreateSucursal />}
         />
         <Route path="configuration/vehiculos" element={<Vehiculos />} />
-        <Route path="configuration/vehiculos/editar/:id" element={<VehiculosSettings />} />
-        <Route path="configuration/vehiculo/nuevo" element={<CreateVehiculo />} />
+        <Route
+          path="configuration/vehiculos/editar/:id"
+          element={<VehiculosSettings />}
+        />
+        <Route
+          path="configuration/vehiculo/nuevo"
+          element={<CreateVehiculo />}
+        />
 
-        <Route path="configuration/vehiculos/editar/:id" element={<VehiculosSettings />} />
-        <Route path="configuration/vehiculo/nuevo" element={<CreateVehiculo />} />
+        <Route
+          path="configuration/vehiculos/editar/:id"
+          element={<VehiculosSettings />}
+        />
+        <Route
+          path="configuration/vehiculo/nuevo"
+          element={<CreateVehiculo />}
+        />
 
         <Route path="configuration/almacenes" element={<Almacenes />} />
         <Route
@@ -668,13 +680,13 @@ const MetodikRoutes = () => {
         <Route path="configuration/choferes" element={<Choferes />} />
         <Route
           path="configuration/choferes/view-profile/:id"
-          element={<ViewProfile />}
+          element={<ChoferProfile />}
         />
         <Route
           path="configuration/choferes/edit/:id"
-          element={<EditChofer />}
+          element={<EditarChofer />}
         />
-        <Route path="configuration/choferes/nuevo" element={<CreateChofer />} />
+        <Route path="configuration/choferes/nuevo" element={<EditarChofer />} />
 
         <Route path="configuration/Profiles" element={<Profiles />} />
         <Route
@@ -717,25 +729,44 @@ const MetodikRoutes = () => {
           path="Explorador/ExploradorRutas/Pasajeros/:RutaID/:ParadaID"
           element={<ExploradorPasajerosRutas />}
         />
-        <Route path="comercial/reservas/view-reserva/:id" element={<ReservasViewD/>} />
-        <Route path="comercial/paqueteria" element={<Paqueteria/>} />
-        <Route path="comercial/paqueteria/paqueteriaD/:id" element={<PaqueteriaD/>} />
-        <Route path="comercial/paqueteria/view-paqueteria/:id" element={<PaqueteriaViewD/>} />
-        <Route path="logistica/rutas" element={<RutasLogict/>} />
-        <Route path="logistica/rutas/view-rutas/:id" element={<ViewRutasCard/>} />
-        <Route path="logistica/rutas/rutasD/:id" element={<RutasD/>} />
+        <Route
+          path="comercial/reservas/view-reserva/:id"
+          element={<ReservasViewD />}
+        />
+        <Route path="comercial/paqueteria" element={<Paqueteria />} />
+        <Route
+          path="comercial/paqueteria/paqueteriaD/:id"
+          element={<PaqueteriaD />}
+        />
+        <Route
+          path="comercial/paqueteria/view-paqueteria/:id"
+          element={<PaqueteriaViewD />}
+        />
+        <Route path="logistica/rutas" element={<RutasLogict />} />
+        <Route
+          path="logistica/rutas/view-rutas/:id"
+          element={<ViewRutasCard />}
+        />
+        <Route path="logistica/rutas/rutasD/:id" element={<RutasD />} />
 
         {/* Catalogo Equipos */}
         <Route path="catalogo/equipos" element={<Equipos />} />
-        <Route path="catalogo/equipos/view-equipo/:id" element={<EquiposViewD/>} />
-        <Route path="catalogo/equipos/actEquipoD/:id" element={<EquiposD/>} />
+        <Route
+          path="catalogo/equipos/view-equipo/:id"
+          element={<EquiposViewD />}
+        />
+        <Route path="catalogo/equipos/actEquipoD/:id" element={<EquiposD />} />
 
-        {/* Catalogo Choferes */} 
+        {/* Catalogo Choferes */}
         <Route path="catalogo/choferes" element={<Choferes />} />
-        <Route path="catalogo/choferes/view-profile/:id" element={<ChoferProfile/>} />
-        <Route path="catalogo/choferes/actChoferD/:id" element={<EditarChofer />} />
-
-
+        <Route
+          path="catalogo/choferes/view-profile/:id"
+          element={<ChoferProfile />}
+        />
+        <Route
+          path="catalogo/choferes/actChoferD/:id"
+          element={<EditarChofer />}
+        />
       </Route>
 
       {/* //--- MainLayout end  */}

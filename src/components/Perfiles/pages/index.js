@@ -5,12 +5,13 @@ import FormPermisos from "../form/FormPermisos";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faReply, faBan } from "@fortawesome/free-solid-svg-icons";
+import IconButton from "components/common/IconButton";
 
 const ProfilerHeader = () => {
   return (
     <Container fluid className="py-3 px-4 border-bottom mb-4">
       <Row className="align-items-center justify-content-between">
-        {/* Título y Descripción */}
+
         <Col xs="auto">
           <h2 className="mb-0 d-inline-block">Configuración de perfil</h2>
           <span className="text-muted ms-2 d-inline-block">
@@ -18,13 +19,17 @@ const ProfilerHeader = () => {
           </span>
         </Col>
 
-        {/* Botón con icono alineado */}
+
         <Col xs="auto">
-          <Link
-            to={`/configuration/profiles/`}
-            className="btn btn-outline-primary rounded-pill"
-          >
-            <FontAwesomeIcon icon={faReply} />
+          <Link to={`/configuration/profiles/`}>
+            <IconButton
+              variant="falcon-default"
+              size="sm"
+              className="mb-2 mb-sm-0 me-2 d-flex align-items-center"
+              title="Regresar"
+            >
+              <FontAwesomeIcon icon={faReply} className="me-1" /> Regresar
+            </IconButton>
           </Link>
         </Col>
       </Row>
@@ -61,7 +66,6 @@ const Perfiles = () => {
           <Card className="mb-3">
             <Card.Body>
               <h5 className="mb-3">Datos Generales</h5>
-              {/* Aquí se llama al componente FormDatosGenerales */}
               <Row>
                 <Col>
                   <FormDatosGenerales />
@@ -73,7 +77,6 @@ const Perfiles = () => {
           <Card className="mb-3">
             <Card.Body>
               <h5 className="mb-3">Permisos</h5>
-              {/* Aquí se llama al componente FormPermisos */}
               <Row>
                 <Col>
                   <FormPermisos />
@@ -81,51 +84,8 @@ const Perfiles = () => {
               </Row>
             </Card.Body>
           </Card>
-
-          <Card className="mb-3">
-            <Card.Body>
-              <h5 className="mb-3">Acciones</h5>
-              {/* Aquí podrías añadir un componente de acciones */}
-              <Row>
-                <Col>
-                  <p>Contenido de Acciones</p>
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
-
-          <Card>
-            <Card.Body>
-              <h5 className="mb-3">Movimientos</h5>
-              {/* Aquí podrías añadir un componente de movimientos */}
-              <Row>
-                <Col>
-                  <p>Contenido de Movimientos</p>
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
         </Col>
       </Row>
-
-      {/* Modal para editar información */}
-      <Modal size="lg" show={lgShow} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Editar Información</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {/* Aquí puedes cargar el contenido del formulario según el tipo seleccionado */}
-          <p>Formulario para editar la sección seleccionada.</p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Cancelar
-          </Button>
-          <Button variant="primary" onClick={handleSaveChanges}>
-            Guardar Cambios
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </>
   );
 };

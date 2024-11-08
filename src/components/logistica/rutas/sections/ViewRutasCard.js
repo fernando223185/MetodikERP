@@ -8,7 +8,7 @@ import usePagination from 'hooks/usePagination';
 import React, { useState, useEffect } from 'react';
 import { Button, Card, Col, Offcanvas, Row } from 'react-bootstrap';
 import AllReservasHeader from '../tables/AllReservasHeader'
-import ReservaFilterForm from './ReservasFilterForm';
+import ReservaFilterForm from './RutasFilterForm';
 import SubtleBadge from 'components/common/SubtleBadge';
 import { faPaperPlane, faCheck, faStream, faPen, faBan, faSpinner } from '@fortawesome/free-solid-svg-icons'; 
 

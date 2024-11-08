@@ -5,21 +5,20 @@ import { Card, Col, Row, Table, Spinner } from 'react-bootstrap';
 import SimpleBarReact from 'simplebar-react';
 import { useGetRutaID, useGetRutaD } from '../../../../hooks/Logistica/Ruta/useRutaD';
 import { useParams } from 'react-router-dom';
-import { faPaperPlane, faCheck, faStream, faPen, faBan, faSpinner, faCheckCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons'; 
+import { faPaperPlane, faCheck, faStream, faPen, faBan, faSpinner} from '@fortawesome/free-solid-svg-icons'; 
 import SubtleBadge from 'components/common/SubtleBadge';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
 
 
 
 const RutasViewD = () => {
 
     const { id } = useParams();
-    const { getRutaID, rutaId, isLoading, error } = useGetRutaID();
+    const { getRutaID, rutaId, isLoading } = useGetRutaID();
     const { getRutaD, rutaD, isLoading: isLoadingD } = useGetRutaD();
-    const [hasFetched, setHasFetched] = useState(false); 
+    const [hasFetched] = useState(false); 
 
 
     useEffect(() =>{
@@ -48,10 +47,10 @@ const RutasViewD = () => {
       };
     
       const handleClickPDF = async () => {
-          var data = {
+          /*var data = {
             ID: id
           }
-          //verPDF({data})
+          verPDF({data})*/
       }
 
     if (isLoading || isLoadingD ) {
@@ -74,17 +73,17 @@ const RutasViewD = () => {
               <h5 className="mb-2 mb-md-0">Orden: {rutaId.Folio}</h5>
             </Col>
             <Col xs="auto">
-                <Link to="/comercial/reservas">
-                    <IconButton
-                        variant="falcon-default"
-                        size="sm"
-                        icon="reply"
-                        className="me-1 mb-2 mb-sm-0"
-                        iconClassName="me-1"
-                    >
-                        Regresar
-                    </IconButton>
-                </Link>
+              <Link to="/logistica/rutas">
+                <IconButton
+                  variant="falcon-default"
+                  size="sm"
+                  icon="reply"
+                  className="me-1 mb-2 mb-sm-0"
+                  iconClassName="me-1"
+                >
+                  Regresar
+                </IconButton>
+              </Link>
 
               <IconButton
                 variant="falcon-default"
@@ -96,7 +95,7 @@ const RutasViewD = () => {
               >
                 Descargar (.pdf)
               </IconButton>
-             {/*  <IconButton
+              {/*  <IconButton
                 variant="falcon-default"
                 size="sm"
                 icon="print"
@@ -107,12 +106,12 @@ const RutasViewD = () => {
               </IconButton>  */}
               <Link to={`/logistica/rutas/rutasD/${rutaId.ID}`}>
                 <IconButton
-                    variant="falcon-primary"
-                    size="sm"
-                    icon="edit"
-                    className="mb-2 mb-sm-0"
+                  variant="falcon-primary"
+                  size="sm"
+                  icon="edit"
+                  className="mb-2 mb-sm-0"
                 >
-                    Editar
+                  Editar
                 </IconButton>
               </Link>
             </Col>
@@ -129,36 +128,42 @@ const RutasViewD = () => {
             <Col className="text-sm-end mt-3 mt-sm-0">
               <h2 className="mb-3">{rutaId.Folio}</h2>
               <h5>{rutaId.Agente}</h5>
-            <SubtleBadge pill           
+              <SubtleBadge
+                pill
                 bg={classNames({
-                success:  rutaId.Estatus === 'CONCLUIDO',
-                primary:  rutaId.Estatus  === 'SINAFECTAR',
-                warning: rutaId.Estatus  === 'PENDIENTE',
-                secondary: rutaId.Estatus === 'BORRADOR',
-                danger: rutaId.Estatus === 'CANCELADO'
-            })} 
-            className="fs--2 ms-2 " 
-            >
+                  success: rutaId.Estatus === "CONCLUIDO",
+                  primary: rutaId.Estatus === "SINAFECTAR",
+                  warning: rutaId.Estatus === "PENDIENTE",
+                  secondary: rutaId.Estatus === "BORRADOR",
+                  danger: rutaId.Estatus === "CANCELADO",
+                })}
+                className="fs--2 ms-2 "
+              >
                 {rutaId.Estatus}
                 <FontAwesomeIcon
-                icon={getStatusIcon(rutaId.Estatus)}
-                transform="shrink-2"
-                className="ms-1"
+                  icon={getStatusIcon(rutaId.Estatus)}
+                  transform="shrink-2"
+                  className="ms-1"
                 />
-
-            </SubtleBadge> 
-            <br></br>
-            <SubtleBadge pill           
+              </SubtleBadge>
+              <br></br>
+              <SubtleBadge
+                pill
                 bg={classNames({
-                success:  rutaId.Situacion === 'Finalizada',
-                warning: rutaId.Situacion  === 'Transito' || rutaId.Situacion === 'Descenso',
-                primary: rutaId.Situacion === 'Programda' || rutaId.Situacion === 'Check de Limpieza' || rutaId.Situacion === 'Abordando'
-            })}
-            className="fs--2 ms-2 mt-2" 
-            >
-                {rutaId.Situacion} 
-            </SubtleBadge>             
-          </Col>
+                  success: rutaId.Situacion === "Finalizada",
+                  warning:
+                    rutaId.Situacion === "Transito" ||
+                    rutaId.Situacion === "Descenso",
+                  primary:
+                    rutaId.Situacion === "Programda" ||
+                    rutaId.Situacion === "Check de Limpieza" ||
+                    rutaId.Situacion === "Abordando",
+                })}
+                className="fs--2 ms-2 mt-2"
+              >
+                {rutaId.Situacion}
+              </SubtleBadge>
+            </Col>
             <Col xs={12}>
               <hr />
             </Col>
@@ -217,31 +222,53 @@ const RutasViewD = () => {
             <SimpleBarReact>
               <Table striped className="border-bottom">
                 <thead data-bs-theme="light">
-                  <tr className="dark__bg-1000" style={{ backgroundColor: '#A66595' }}>
-                    <th className="text-white border-0 text-center">No. Parada</th>
+                  <tr
+                    className="dark__bg-1000"
+                    style={{ backgroundColor: "#A66595" }}
+                  >
+                    <th className="text-white border-0 text-center">
+                      No. Parada
+                    </th>
                     <th className="text-white border-0 text-center">
                       Hora Abordaje
                     </th>
                     <th className="text-white border-0 text-center">Destino</th>
-                    <th className="text-white border-0 text-center">Descripcion</th>
-                    <th className="text-white border-0 text-center">Hora descenso</th>
-                    <th className="text-white border-0 text-center">Plazas disponibles</th>
+                    <th className="text-white border-0 text-center">
+                      Descripcion
+                    </th>
+                    <th className="text-white border-0 text-center">
+                      Hora descenso
+                    </th>
+                    <th className="text-white border-0 text-center">
+                      Plazas disponibles
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
-                {rutaD.map((item, index) => (
+                  {rutaD.map((item, index) => (
                     <tr key={index}>
-                        <td className="align-middle">
-                        <h6 className="mb-0 text-nowrap text-center">{item.RenglonID}</h6>
-                        </td>
-                        <td className="align-middle text-center">{item.HoraAbordajeFormat}</td>
-                        <td className="align-middle text-center">{item.DestinoNombre}</td>
-                        <td className="align-middle text-center">{item.Descripcion}</td>
-                        <td className="align-middle text-center">{item.HoraDescensoFormat}</td>
-                        <td className="align-middle text-center">{item.PlazasDisponible}</td>
-
+                      <td className="align-middle">
+                        <h6 className="mb-0 text-nowrap text-center">
+                          {item.RenglonID}
+                        </h6>
+                      </td>
+                      <td className="align-middle text-center">
+                        {item.HoraAbordajeFormat}
+                      </td>
+                      <td className="align-middle text-center">
+                        {item.DestinoNombre}
+                      </td>
+                      <td className="align-middle text-center">
+                        {item.Descripcion}
+                      </td>
+                      <td className="align-middle text-center">
+                        {item.HoraDescensoFormat}
+                      </td>
+                      <td className="align-middle text-center">
+                        {item.PlazasDisponible}
+                      </td>
                     </tr>
-                ))}
+                  ))}
                 </tbody>
               </Table>
             </SimpleBarReact>

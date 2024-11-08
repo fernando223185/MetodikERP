@@ -32,3 +32,14 @@ export async function getPerfilesByIdAsync(ID){
         return error;
     }
 }
+
+export async function getModulosAccesoAsync({ data }) {
+  try {
+    const response = await axios.get(
+      `${endpoints.key}/verModulosAcceso?PerfilID=${data.PerfilID}&PersonaID=${data.PersonaID}`
+    );
+    return response;
+  } catch (error) {
+    return error;
+  }
+}

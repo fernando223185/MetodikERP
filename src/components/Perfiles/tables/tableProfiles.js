@@ -164,7 +164,7 @@ function TableProfiles({ reservas, movimientos }) {
   return (
     <>
       <Row className="gx-3">
-        <Col xxl={9} xl={5}>
+        <Col xxl={12} xl={12}>
           <AdvanceTableWrapper
             columns={columns}
             data={result}
@@ -200,32 +200,6 @@ function TableProfiles({ reservas, movimientos }) {
               </Card.Footer>
             </Card>
           </AdvanceTableWrapper>
-        </Col>
-        <Col xxl={3} xl={5}>
-          {breakpoints.down("xl") ? (
-            <Offcanvas
-              show={show}
-              onHide={handleClose}
-              placement="end"
-              className="dark__bg-card-dark"
-            >
-              <Offcanvas.Header closeButton className="bg-body-tertiary">
-                <h6 className="fs-0 mb-0 fw-semi-bold">Filter</h6>
-              </Offcanvas.Header>
-              <PerfilesFilterForm
-                movimientos={movimientos}
-                setReload={setReload} // Pasamos el setReload como prop
-                setFilters={setFilters} // Pasar la función para actualizar los filtros
-              />
-            </Offcanvas>
-          ) : (
-            <PerfilesFilterForm
-              movimientos={movimientos}
-              setReload={setReload} // Pasamos el setReload como prop
-              setFilters={setFilters} // Pasar la función para actualizar los filtros
-
-            />
-          )}
         </Col>
       </Row>
     </>
