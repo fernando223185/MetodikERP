@@ -1,5 +1,10 @@
 import { useCallback, useState } from 'react';
-import { getProfilesAsync, ActProfilerAsync, getPerfilesByIdAsync } from 'api/catalogo/perfiles/perfiles';
+import {
+  getProfilesAsync,
+  ActProfilerAsync,
+  getPerfilesByIdAsync,
+  getModulosAccesoAsync,
+} from "api/catalogo/perfiles/perfiles";
 
 
 export const useGetProfiles = () => {
@@ -47,4 +52,19 @@ export const useGetPerfilID = () => {
   }, []);
 
   return { getPerfilID, profiles, isLoading, setIsLoading };
+};
+
+export const useGetModulosAcceso = () => {
+  const [modules, setModules] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const getModulosAcceso = useCallback(async ({ data }) => {
+    setIsLoading(true);
+    const result = await getModulosAccesoAsync({ data });
+
+    setModules(result);
+    setIsLoading(false);
+  }, []);
+
+  return { getModulosAcceso, modules, isLoading, setIsLoading };
 };

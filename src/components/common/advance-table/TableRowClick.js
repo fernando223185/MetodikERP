@@ -51,14 +51,17 @@ const TableRowClick = ({
                 key={i}
                 className={rowClassName}
                 {...row.getRowProps({
-                  onClick: () => onRowClick(row.original.id),
+                  onClick: () =>
+                    onRowClick(row.original.id, row.original.noAbordaje),
                   style: {
-                    cursor: 'pointer',
-                    transition: 'background-color 0.2s ease',
-                    backgroundColor: row.isHovered ? '#f0f0f0' : '', 
+                    cursor: "pointer",
+                    transition: "background-color 0.2s ease",
+                    backgroundColor: row.isHovered ? "#f0f0f0" : "",
                   },
-                  onMouseEnter: (e) => (e.currentTarget.style.backgroundColor = '#f0f0f0'),
-                  onMouseLeave: (e) => (e.currentTarget.style.backgroundColor = ''),
+                  onMouseEnter: (e) =>
+                    (e.currentTarget.style.backgroundColor = "#f0f0f0"),
+                  onMouseLeave: (e) =>
+                    (e.currentTarget.style.backgroundColor = ""),
                 })}
               >
                 {row.cells.map((cell, index) => {
@@ -66,9 +69,13 @@ const TableRowClick = ({
                     <td
                       key={index}
                       {...cell.getCellProps(cell.column.cellProps)}
-                      onClick={cell.column.id === 'checkbox' ? (e) => e.stopPropagation() : null}
+                      onClick={
+                        cell.column.id === "checkbox"
+                          ? (e) => e.stopPropagation()
+                          : null
+                      }
                     >
-                      {cell.render('Cell')}
+                      {cell.render("Cell")}
                     </td>
                   );
                 })}

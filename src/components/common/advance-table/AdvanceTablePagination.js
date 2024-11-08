@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import classNames from 'classnames';
-import { Button } from 'react-bootstrap';
-import Flex from '../Flex';
+/* eslint-disable react/prop-types */
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import classNames from "classnames";
+import React from "react";
+import { Button } from "react-bootstrap";
+import Flex from "../Flex";
 
 export const AdvanceTablePagination = ({
   canPreviousPage,
@@ -11,31 +12,14 @@ export const AdvanceTablePagination = ({
   nextPage,
   pageCount,
   pageIndex,
-  gotoPage
+  gotoPage,
 }) => {
-
-  const handleGotoPage = (page) => {
-    localStorage.setItem('currentPage', page);
-    var pag = localStorage.getItem('currentPage')
-    gotoPage(pag);
-  };
-  useEffect(() => {
-    const savedPage = localStorage.getItem('currentPage');
-    if (savedPage && !isNaN(savedPage)) {
-      console.log("Entro en la pagina", savedPage)
-      gotoPage(savedPage);
-    }
-  }, [gotoPage,pageIndex]);
-
   return (
     <Flex alignItems="center" justifyContent="center">
       <Button
         size="sm"
         variant="falcon-default"
-        onClick={() => {
-          previousPage();
-          handleGotoPage(pageIndex - 1);  // Actualiza también el localStorage
-        }}
+        onClick={() => previousPage()}
         className={classNames({ disabled: !canPreviousPage })}
       >
         <FontAwesomeIcon icon="chevron-left" />
@@ -46,10 +30,10 @@ export const AdvanceTablePagination = ({
             <Button
               size="sm"
               variant="falcon-default"
-              className={classNames('page', {
-                'me-2': index + 1 !== pageCount
+              className={classNames("page", {
+                "me-2": index + 1 !== pageCount,
               })}
-              onClick={() => handleGotoPage(page)}  // Llama a la función con localStorage
+              onClick={() => gotoPage(page)}
             >
               {page + 1}
             </Button>
@@ -59,10 +43,7 @@ export const AdvanceTablePagination = ({
       <Button
         size="sm"
         variant="falcon-default"
-        onClick={() => {
-          nextPage();
-          handleGotoPage(pageIndex + 1);  // Actualiza también el localStorage
-        }}
+        onClick={() => nextPage()}
         className={classNames({ disabled: !canNextPage })}
       >
         <FontAwesomeIcon icon="chevron-right" />

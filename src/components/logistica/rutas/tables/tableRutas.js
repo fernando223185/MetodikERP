@@ -14,7 +14,7 @@ import AllReservasHeader from './AllReservasHeader'
 import AdvanceTablePagination from 'components/common/advance-table/AdvanceTablePagination';
 import PropTypes from 'prop-types';
 import { useBreakpoints } from 'hooks/useBreakpoints';
-import ReservaFilterForm from '../sections/ReservasFilterForm'
+import ReservaFilterForm from '../sections/RutasFilterForm'
 import Flex from 'components/common/Flex';
 import Avatar from 'components/common/Avatar';
 
@@ -47,7 +47,7 @@ const PrioritySelect = ({ title, color, data, className, style }) => {
               cy="60"
               r="54"
               fill="none"
-              strokeLinecap="round"
+              strokeLinecap="round" 
               stroke={color}
               strokeWidth="12"
             ></circle>

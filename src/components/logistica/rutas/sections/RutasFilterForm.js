@@ -78,9 +78,9 @@ const ReservaFilterForm = ({ movimientos, estatus, situaciones, usuarios, setFil
               <Form.Label>Movimiento</Form.Label>
               <Select
                 classNamePrefix="react-select"
-                options={movimientos.map(item => ({
+                options={movimientos.map((item) => ({
                   value: item.Valor,
-                  label: item.Dato
+                  label: item.Dato,
                 }))}
                 value={selectedMovimiento}
                 onChange={handleMovimientoChange}
@@ -92,9 +92,9 @@ const ReservaFilterForm = ({ movimientos, estatus, situaciones, usuarios, setFil
             <Form.Label className="mb-1 mt-2 fs--1">Estatus</Form.Label>
             <Select
               classNamePrefix="react-select"
-              options={estatus.map(item => ({
+              options={estatus.map((item) => ({
                 value: item.Valor,
-                label: item.Dato
+                label: item.Dato,
               }))}
               value={selectedEstatus}
               onChange={handleEstatusChange}
@@ -105,9 +105,9 @@ const ReservaFilterForm = ({ movimientos, estatus, situaciones, usuarios, setFil
             <Form.Label className="mb-1 mt-2 fs--1">Usuario</Form.Label>
             <Select
               classNamePrefix="react-select"
-              options={usuarios.map(item => ({
+              options={usuarios.map((item) => ({
                 value: item.Valor,
-                label: item.Dato
+                label: item.Dato,
               }))}
               value={selectedUsuario}
               onChange={handleUsuariosChange}
@@ -118,9 +118,35 @@ const ReservaFilterForm = ({ movimientos, estatus, situaciones, usuarios, setFil
             <Form.Label className="mb-1 mt-2 fs--1">Situaciones</Form.Label>
             <Select
               classNamePrefix="react-select"
-              options={situaciones.map(item => ({
+              options={situaciones.map((item) => ({
                 value: item.Valor,
-                label: item.Dato
+                label: item.Dato,
+              }))}
+              value={selectedSituacion}
+              onChange={handleSituacionesChange}
+              placeholder="Selecciona"
+            />
+          </div>
+          <div className="mb-2">
+            <Form.Label className="mb-1 mt-2 fs--1">Ruta</Form.Label>
+            <Select
+              classNamePrefix="react-select"
+              options={situaciones.map((item) => ({
+                value: item.Valor,
+                label: item.Dato,
+              }))}
+              value={selectedSituacion}
+              onChange={handleSituacionesChange}
+              placeholder="Selecciona"
+            />
+          </div>
+          <div className="mb-2">
+            <Form.Label className="mb-1 mt-2 fs--1">Vehiculo</Form.Label>
+            <Select
+              classNamePrefix="react-select"
+              options={situaciones.map((item) => ({
+                value: item.Valor,
+                label: item.Dato,
               }))}
               value={selectedSituacion}
               onChange={handleSituacionesChange}
@@ -132,7 +158,7 @@ const ReservaFilterForm = ({ movimientos, estatus, situaciones, usuarios, setFil
             <DatePicker
               className="form-control"
               selected={startDate}
-              onChange={date => setStartDate(date)}
+              onChange={(date) => setStartDate(date)}
               placeholderText="Selecciona una fecha"
               dateFormat="dd-MM-yyyy"
               locale="es"
@@ -143,7 +169,7 @@ const ReservaFilterForm = ({ movimientos, estatus, situaciones, usuarios, setFil
             <DatePicker
               className="form-control"
               selected={endDate}
-              onChange={date => setEndDate(date)}
+              onChange={(date) => setEndDate(date)}
               placeholderText="Selecciona una fecha"
               dateFormat="dd-MM-yyyy"
               locale="es"
@@ -153,7 +179,7 @@ const ReservaFilterForm = ({ movimientos, estatus, situaciones, usuarios, setFil
       </Card.Body>
       <Card.Footer className="border-top border-200 py-x1">
         <Button variant="primary" className="w-100" onClick={handleSearch}>
-          Buscar             
+          Buscar
           <FontAwesomeIcon
             icon={faSearch}
             transform="shrink-2"

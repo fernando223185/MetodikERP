@@ -18,23 +18,25 @@ const FormRutaIda = ({ show, handleClose, selectedItem, setUpdateList }) => {
 
   const formik = useFormik({
     initialValues: {
-        ID: id,
-        HorarioRutaID: selectedItem ? selectedItem.HRutaID : 0,
-        Precio: selectedItem ? selectedItem.Precio : 0,
-        descripcion: selectedItem ? selectedItem.Descripcion : '',
-        Cantidad: 0 ,
-        TipoViaje: selectedItem ? selectedItem.TipoViaje : ''
+      ID: id,
+      Precio: selectedItem ? selectedItem.Precio : 0,
+      descripcion: selectedItem ? selectedItem.Descripcion : "",
+      Cantidad: 0,
+      TipoViaje: selectedItem ? selectedItem.TipoViaje : "",
+      RutaID: selectedItem ? selectedItem.RutaID : 0,
+      ParadaID: selectedItem ? selectedItem.NoParada : 0,
+      DestinoID: selectedItem ? selectedItem.DestinoID : 0,
     },
     validationSchema: Yup.object({
-        Cantidad: Yup.number()
-        .typeError('Debe ser un número') 
-        .required('Cantidad requerida')  
-        .min(1, 'La cantidad debe ser mayor que 0') 
+      Cantidad: Yup.number()
+        .typeError("Debe ser un número")
+        .required("Cantidad requerida")
+        .min(1, "La cantidad debe ser mayor que 0"),
     }),
     onSubmit: (values) => {
-        console.log('Formulario enviado:', values);
-        actReservaD({ data: values })
-    }
+      console.log("Formulario enviado:", values);
+      actReservaD({ data: values });
+    },
   });
 
     useEffect(() => {
