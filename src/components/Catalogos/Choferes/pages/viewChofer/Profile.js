@@ -6,6 +6,7 @@ import { Spinner } from 'react-bootstrap';
 import ProfileBanner from './Banner';
 import ProfileIntro from './ProfileIntro';
 import Empresas from 'components/Usuarios/pages/viewUser/Empresas';
+import PreviewChoferesHeader from '../../sections/PreviewChoferesHeader';
 
 const ChoferProfile = () => {
     const { id } = useParams();
@@ -16,8 +17,6 @@ const ChoferProfile = () => {
             getChoferID({ id });
         }
     }, [id]);
-
-    console.log(chofer);
 
     if(isLoading) {
         return (
@@ -31,6 +30,7 @@ const ChoferProfile = () => {
 
     return (
         <>
+            <PreviewChoferesHeader chofer={chofer}/>
             <ProfileBanner chofer={chofer}/>
             <Row className='g-3 mb-3'>
                 <Col lg={8}>

@@ -16,6 +16,7 @@ import IconButton from 'components/common/IconButton';
 import ProfileSettings from './ProfileSettings';
 import { useGetFiltroCatalogo } from 'hooks/useFiltros';
 import { useNavigate } from 'react-router-dom';
+import EditChoferesHeader from '../../sections/EditChoferesHeader';
 
 const getInitialValues = (chofer) => {
     const ChoferForm = {
@@ -44,16 +45,11 @@ const EditarChofer = () => {
     const { getChoferID, chofer, isLoading } = useGetChoferID();
     const { actChoferD, result: resultNew, isLoading: isLoadingNew } = useActChoferD();
     const { getFiltroCatalogo, isLoading: isLoadingFiltro } = useGetFiltroCatalogo();
-    const { delChofer, result, isLoading: isLoadingDel } = useDelChofer();
     const [ estatus, setEstatus ] = useState([]);
     const [ sucursal, setSucursal ] = useState([]);
     const [ vehiculo, setVehiculo ] = useState([]);
     const [ empresa, setEmpresa ] = useState([]);
     const navigate = useNavigate();
-
-    const handleEliminate = async () => {
-        await delChofer({ id: id });
-    }
 
     const formik = useFormik({
         initialValues: getInitialValues(chofer),
@@ -61,7 +57,11 @@ const EditarChofer = () => {
         enableReinitialize: true,
         onSubmit: async (values) => {
             actChoferD({data: values});
-        }
+
+            setTimeout(() => {
+                navigate("/catalogo/choferes");
+            }, 600)
+        },
     });
 
     useEffect(() => {
@@ -89,45 +89,6 @@ const EditarChofer = () => {
               });
           }
     }, [resultNew]);
-
-    useEffect(() => {
-        if (result && Object.keys(result).length === 0) {
-          console.log("result es un array vacío:", result);
-        } else if (result && result.status === 200) {
-            console.log(result.data[0].Tipo)
-            console.log(result.data[0].Mensaje)
-            console.log(result.data[0].Posicion)
-            const tipoToast = result.data[0].Tipo;
-
-            if (tipoToast === 'success') {
-                toast.success(result.data[0].Mensaje, {
-                    theme: 'colored',
-                    position: result.data[0].Posicion,
-                    icon: <FontAwesomeIcon icon={faCheckCircle} />
-                });
-            } else if (tipoToast === 'error') {
-                toast.error(result.data[0].Mensaje, {
-                    theme: 'colored',
-                    position: result.data[0].Posicion,
-                    icon: <FontAwesomeIcon icon={faExclamationTriangle} />
-                });
-            } else {
-                toast.info(result.data[0].Mensaje, {
-                    theme: 'colored',
-                    position: result.data[0].Posicion,
-                    icon: <FontAwesomeIcon icon={faInfoCircle} />
-                });
-            }
-            setTimeout(() => {
-              navigate("/catalogo/choferes");
-            }, 1000)
-        } else if (result) {
-            toast.error(`Error al guardar`, {
-                theme: 'colored',
-                position: 'top-right'
-            });
-        }
-    }, [result])
 
     useEffect(() => {
         const fetchEstatus = async () => {
@@ -169,6 +130,7 @@ const EditarChofer = () => {
 
     return(
         <>
+            <EditChoferesHeader />
             <ProfileBanner>
                 <ProfileBanner.Header
                     coverSrc={coverSrc}
@@ -178,42 +140,8 @@ const EditarChofer = () => {
             </ProfileBanner>
             <FormikProvider value={formik}>
                 <form onSubmit={formik.handleSubmit}>
-                    <Card className='mb-3'>
-                        <Card.Body>
-                            <div className='d-flex justify-content-end'>
-                                {isLoadingNew ? (
-                                    <Spinner animation="border" role="status">
-                                    <span className="visually-hidden">Loading...</span>
-                                    </Spinner>
-                                ) : (
-                                    <Col xs='auto'>
-                                        <Link to={`/catalogo/choferes`}>
-                                            <IconButton
-                                            variant="falcon-default"
-                                            size="sm"
-                                            className="me-1 mb-2 mb-sm-0"
-                                            title="Regresar"
-                                            >
-                                            <FontAwesomeIcon icon={faReply} className="me-1" /> Regresar
-                                            </IconButton>
-                                        </Link>
-                                        <IconButton
-                                            variant="falcon-danger"
-                                            size="sm"
-                                            className="mb-2 mb-sm-0" 
-                                            title="Cancelar"
-                                            onClick={handleEliminate}
-                                        >
-                                            <FontAwesomeIcon icon={faTrash} className="me-1" /> Eliminar
-                                        </IconButton>
-                                    </Col>
-                                )}
-                            </div>
-                        </Card.Body>
-                    </Card>
                     <Row className='g-3'>
                         <Col lg={12}>
-                            {/* <ProfileSettings formik={formik}/> */}
                             <ProfileSettings 
                             formik={formik} 
                             estatus={estatus} 

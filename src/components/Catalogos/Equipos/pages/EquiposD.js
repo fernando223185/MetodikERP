@@ -1,67 +1,41 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Row, Container, Modal, Card, Spinner, Form, CardBody } from 'react-bootstrap';
+import { Col, Row, Container, Card, Spinner} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faReply, faBan, faSave, faChevronLeft, faStar, faCheckCircle, faExclamationTriangle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { Link, useNavigate } from 'react-router-dom';
+import { faReply } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useGetFiltroCatalogo } from '../../../../hooks/useFiltros'; 
-import { toast } from 'react-toastify';
-import Select from 'react-select';
 import IconButton from 'components/common/IconButton';
-import { useDelEquipo, useGetEquipoID } from 'hooks/Catalogos/Equipos/useEquipos';
 import InfoEquipoDCard from '../sections/infoEquipoDCard';
+import { useActEquipoD, useGetEquipoID } from 'hooks/Catalogos/Equipos/useEquipos';
+import { FormikProvider, useFormik } from 'formik';
+import * as Yup from 'yup';
+import _ from 'lodash';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
-const EquiposHeader = ({setHasFetched}) => {
-    const { id } = useParams();
-    const { delEquipo, result, isLoading } = useDelEquipo();
-    const navigate = useNavigate();
+const getInitialValues = (equipoID) => {
+    const initialForm = {
+        ID: 0,
+        EmpresaID: 1,
+        EstatusID: 1,
+        Nombre: '',
+        Descripcion: '',
+        Integrantes: ''
+    };
 
-    const handleCancel = async () => {
-        await delEquipo({ id: id });
+    if(equipoID) {
+        return _.merge({}, initialForm, equipoID)
     }
+    return initialForm;
+}
 
-    useEffect(() => {
-        if (result && Object.keys(result).length === 0) {
-          console.log("result es un array vacío:", result);
-        } else if (result && result.status === 200) {
-            console.log(result.data[0].Tipo)
-            console.log(result.data[0].Mensaje)
-            console.log(result.data[0].Posicion)
-            const tipoToast = result.data[0].Tipo;
+const validationSchema = Yup.object().shape({
+    Nombre: Yup.string().required('Nombre es obligatorio'),
+});
 
-            if (tipoToast === 'success') {
-                toast.success(result.data[0].Mensaje, {
-                    theme: 'colored',
-                    position: result.data[0].Posicion,
-                    icon: <FontAwesomeIcon icon={faCheckCircle} />
-                });
-            } else if (tipoToast === 'error') {
-                toast.error(result.data[0].Mensaje, {
-                    theme: 'colored',
-                    position: result.data[0].Posicion,
-                    icon: <FontAwesomeIcon icon={faExclamationTriangle} />
-                });
-            } else {
-                toast.info(result.data[0].Mensaje, {
-                    theme: 'colored',
-                    position: result.data[0].Posicion,
-                    icon: <FontAwesomeIcon icon={faInfoCircle} />
-                });
-            }
-            setTimeout(() => {
-              setHasFetched((prev) => !prev);
-              navigate("/catalogo/equipos");
-            }, 1000)
-        } else if (result) {
-            toast.error(`Error al guardar`, {
-                theme: 'colored',
-                position: 'top-right'
-            });
-        }
-    }, [result])
-
-
+const EquiposHeader = () => {
     return (
         <>
             <Container fluid className="py-3 px-4 border-bottom mb-4">
@@ -82,23 +56,6 @@ const EquiposHeader = ({setHasFetched}) => {
                         <FontAwesomeIcon icon={faReply} className="me-1" /> Regresar
                         </IconButton>
                     </Link>
-                        {isLoading ? (
-                        <Spinner animation="border" role="status" className="me-1">
-                            <span className="visually-hidden">Loading...</span>
-                        </Spinner>
-                        ) : (
-                        <>
-                            <IconButton
-                                variant="falcon-danger"
-                                size="sm"
-                                className="mb-2 mb-sm-0 d-flex align-items-center" 
-                                title="Cancelar"
-                                onClick={handleCancel}
-                            >
-                                <FontAwesomeIcon icon={faBan} className="me-1" /> Eliminar
-                            </IconButton>
-                        </>
-                        )}
                     </div>
                     </Col>
                 </Row>
@@ -111,34 +68,67 @@ const EquiposHeader = ({setHasFetched}) => {
 const EquiposD = () => {
     const { id } = useParams();
     const { getEquipoID, equipoId, isLoading, error } = useGetEquipoID();
-    const [hasFetched, setHasFetched] = useState(false); 
+    const { actEquipoD, result: resultNew, isLoading: isLoadingActEquipo } = useActEquipoD();
     const { getFiltroCatalogo, isLoading: isLoadingFiltro} = useGetFiltroCatalogo();
-    const [updateList, setUpdateList] = useState(false); 
     const [estatus, setEstatus] = useState([]);
     const [integrantes, setIntegrantes] = useState([]);
+    const navigate = useNavigate();
+
+
+    const formik = useFormik({
+        initialValues: getInitialValues(equipoId),
+        validationSchema,
+        enableReinitialize: true,
+        onSubmit: async (values) => {
+            actEquipoD({data: values});
+
+            setTimeout(() => {
+                navigate("/catalogo/equipos");
+            }, 600);
+        },
+    });
 
     useEffect(() => {
-        const fetchEquipoID = async () => {
-            if (id != null && id > 0) {
-                await getEquipoID({ id });
-            }
-        };
-        fetchEquipoID();
-    }, [id, hasFetched, updateList]);
-
-    console.log(id)
+        if (id != null && id > 0) {
+            getEquipoID({ id });
+        }
+    }, [id]);
 
     useEffect(() => {
-        const fetchFiltros = async () => {
+        if(equipoId) {
+            formik.setValues(getInitialValues(equipoId));
+        }
+    }, [equipoId]);
+
+    useEffect(() => {
+        if (resultNew && Object.keys(resultNew).length === 0) {
+            console.log("resultNew es un array vacío:", resultNew);
+          } else if (resultNew && resultNew.status === 200) {
+              toast.success(`${resultNew.data[0].Mensaje}`, {
+                  theme: 'colored',
+              });
+          } else if (resultNew) {
+              toast.error(`Error al crear el equipo`, {
+                  theme: 'colored',
+              });
+          }
+    }, [resultNew]);
+
+    useEffect(() => {
+        const fetchEstatus = async () => {
             const dataEstatus = { Tipo: 'Estatus', PersonaID: 1, Modulo: 'Equipos' };
             const resultEstatus = await getFiltroCatalogo(dataEstatus);
             setEstatus(resultEstatus);
+        };
 
+        const fetchIntegrantes = async () => {
             const dataIntegrantes = { Tipo: 'Integrantes', PersonaID: 1, Modulo: 'Equipos' };
             const resultIntegrantes = await getFiltroCatalogo(dataIntegrantes);
             setIntegrantes(resultIntegrantes);
         };
-        fetchFiltros();
+
+        fetchEstatus();
+        fetchIntegrantes();
     }, []);
 
     if (isLoading) {
@@ -153,13 +143,21 @@ const EquiposD = () => {
 
     return (
         <>
-            <EquiposHeader  setHasFetched={setHasFetched}/>
+            <EquiposHeader/>
             <Row className='g-3 mb-3'>
                 <Col lg={12}>
                     <Card style={{ backgroundColor: 'transparent', border: 'none' }}>
                         <Card.Body>
                             <Row>
-                                <InfoEquipoDCard equipoID={equipoId} setHasFetched={setHasFetched} estatus={estatus} integrantes={integrantes}/>
+                                <FormikProvider value={formik}>
+                                    <form onSubmit={formik.handleSubmit}>
+                                        <InfoEquipoDCard 
+                                        formik={formik} 
+                                        estatus={estatus} 
+                                        integrantes={integrantes}
+                                        />
+                                    </form>
+                                </FormikProvider>
                             </Row>
                         </Card.Body>
                     </Card>

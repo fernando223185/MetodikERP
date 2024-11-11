@@ -7,6 +7,8 @@ import classNames from 'classnames';
 const ProfileIntro = ({ chofer }) => {
     const [collapsed, setCollapsed] = useState(false);
 
+    const date = new Date(chofer.FechaRegistro);
+
     return (
         <Card className='mb-3'>
             <Card.Header className='bg-body-tertiary'>
@@ -28,10 +30,18 @@ const ProfileIntro = ({ chofer }) => {
                 </Row>
                 <Row>
                     <Col md={6}>
-                        <p><strong>Fecha Registro:</strong> {chofer.FechaRegistro}</p>
+                        <p><strong>Fecha Registro:</strong> {new Date(chofer.FechaRegistro).toLocaleDateString("es-MX", {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric"
+                        })}</p>
                     </Col>
                     <Col md={6}>
-                        <p><strong>Ultima Modificacion:</strong> {chofer.UltimaModificacion}</p>
+                        <p><strong>Ultima Modificacion:</strong> {new Date(chofer.UltimaModificacion).toLocaleDateString("es-MX", {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric"
+                        })}</p>
                     </Col>
                 </Row>
                 <Row>
