@@ -38,13 +38,13 @@ const ChatTab = () => {
     setCurrentThread(thread);
 
 
-    // if (thread) {
-    //   threadsDispatch({
-    //     type: 'EDIT',
-    //     payload: { MensajeID: thread.messageId, read:true}
-    //   });
-    //   setScrollToBottom(true);
-    // }
+    if (thread) {
+      threadsDispatch({
+        type: 'EDIT',
+         payload: { MensajeID: thread.messageId, read:true}
+       });
+       setScrollToBottom(true);
+     }
   };
   
 // First Effect: Fetch Users and Threads

@@ -28,10 +28,10 @@ export const arrayReducer = (state, action) => {
       return state.filter(item => item.id !== id);
       
     case 'EDIT':
-      if(payload.messageId){
+      if(payload.MensajeID){
         const status = readMessageAsync(payload);
         console.log(status)
-        return state
+        return state.map(item => (item.id === id ? payload : item)); 
       }
       
 
