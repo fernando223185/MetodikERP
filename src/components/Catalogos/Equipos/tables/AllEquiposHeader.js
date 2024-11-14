@@ -102,6 +102,39 @@ const AllEquiposHeader = ({
                 </div>
               ) : (
                 <div id="orders-actions">
+                  <Dropdown
+                    align="end"
+                    className="btn-reveal-trigger d-inline-block me-2"
+                    >
+                    <Dropdown.Toggle split variant="falcon-default" size="sm">
+                        <span className="d-none d-sm-inline-block d-xl-none d-xxl-inline-block me-1">
+                        {layout === 'view-table' ? 'Vista Tabla' : 'Vista Tarjeta'}
+                        </span>
+                        <FontAwesomeIcon icon="chevron-down" transform="shrink-2" />
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu className="border py-0">
+                        <div className="py-2">
+                        <Link
+                            className={classNames('dropdown-item', {
+                            active: layout === 'view-table'
+                            })}
+                            to="/catalogo/equipos"
+                            state={{ formView: 'view-table' }}
+                        >
+                            Vista Tabla
+                        </Link>
+                        <Link
+                            className={classNames('dropdown-item', {
+                            active: layout === 'view-card'
+                            })}
+                            to="/catalogo/equipos"
+                            state={{ formView: 'view-card' }}  
+                            >
+                            Vista Tarjeta
+                        </Link>
+                        </div>
+                    </Dropdown.Menu>
+                    </Dropdown>
                   <IconButton
                     variant="falcon-default"
                     size="sm"

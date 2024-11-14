@@ -14,13 +14,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const EquiposViewD = () => {
     const { id } = useParams();
     const { getEquipoID, equipoId, isLoading, error } = useGetEquipoID();
-    const [ hasFetched, setHasFetched ] = useState(false);
 
     useEffect(() => {
         if(id != null && id > 0) {
             getEquipoID({ id });
         }
-    }, [id, hasFetched]);
+    }, [id]);
 
     const getStatusIcon = (estatus) => {
         switch(estatus) {
@@ -32,8 +31,6 @@ const EquiposViewD = () => {
                 return faPaperPlane;
         }
     }
-
-    console.log(equipoId);
 
     if(isLoading) {
         return (
@@ -97,23 +94,13 @@ const EquiposViewD = () => {
                     <img src={logoInvoice} alt="invoice" width={250} />
                     </Col>
                     <Col className="text-sm-end mt-3 mt-sm-0">
-                    <h2 className="mb-3">{equipoId.Descripcion ? equipoId.Descripcion : "Sin descripcion"}</h2>
-                    <h5>Integrantes: </h5>
-                    <ul className="mt-2 ms-3">
-                        {(equipoId.Integrantes ? equipoId.Integrantes.split(';') : ["Sin integrantes"])
-                        .filter(integrante => integrante.trim() !== '')
-                        .map((integrante, index) => (
-                            <p key={index} className="mb-1">
-                            {integrante}
-                            </p>
-                        ))}
-                    </ul>
+                    <h2 className="mb-2">{equipoId.Nombre ? equipoId.Nombre : "Sin descripcion"}</h2>
                     <SubtleBadge pill           
                         bg={classNames({
                         success:  equipoId.EstatusID  === 1,
                         danger: equipoId.EstatusID === 2
                     })} 
-                    className="fs--2 ms-2 " 
+                    className="fs--2 ms-2 mb-3" 
                     >
                         {equipoId.EstatusID === 1 ? "ALTA" : "BAJA"}
                         <FontAwesomeIcon
@@ -121,12 +108,35 @@ const EquiposViewD = () => {
                         transform="shrink-2"
                         className="ms-1"
                         />
-                        
-                    </SubtleBadge> 
+                    </SubtleBadge>
+                    <p className='mb-2'>{equipoId.Descripcion ? equipoId.Descripcion : "Sin Descripcion"}</p>
+                    <h5>Integrantes: </h5>
+                        <ul className="mt-2 ms-3">
+                            {(equipoId.Integrantes ? equipoId.Integrantes.split(';') : ["Sin integrantes"])
+                            .filter(integrante => integrante.trim() !== '')
+                            .map((integrante, index) => (
+                                <p key={index} className="mb-1">
+                                {integrante}
+                                </p>
+                            ))}
+                        </ul>
                     <br></br>
                 </Col>
                     <Col xs={12}>
                     <hr />
+                    </Col>
+                </Row>
+                <Row className="align-items-center">
+                    <Col>
+                        <h5>{equipoId.EmpresaNombre}</h5>
+                        <p className="fs--1">
+                            {equipoId.EmpresaRFC}
+                            <br />
+                            {equipoId.EmpresaDireccion}
+                        </p>
+                        <p className="fs--1">
+                            <a href="#">{equipoId.EmpresaTelefonos}</a>
+                        </p>
                     </Col>
                 </Row>
                 <Row className="align-items-center">
@@ -136,11 +146,19 @@ const EquiposViewD = () => {
                         <tbody>
                             <tr>
                             <th className="text-sm-end">Fecha de Creacion:</th>
-                            <td>{equipoId.FechaRegistro}</td>
+                            <td>{new Date(equipoId.FechaRegistro).toLocaleDateString("es-MX",{
+                                day: "2-digit",
+                                month: "2-digit",
+                                year: "numeric"
+                            })}</td>
                             </tr>
                             <tr>
                             <th className="text-sm-end">Ultima Modificacion:</th>
-                            <td>{equipoId.UltimaModificacion}</td>
+                            <td>{new Date(equipoId.UltimaModificacion).toLocaleDateString("es-MX",{
+                                day: "2-digit",
+                                month: "2-digit",
+                                year: "numeric"
+                            })}</td>
                             </tr>
                         </tbody>
                         </Table>

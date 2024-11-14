@@ -4,6 +4,7 @@ import TableEquipos from './tables/tableEquipos';
 import { useGetEquipos } from '../../../hooks/Catalogos/Equipos/useEquipos';
 import { useLocation } from "react-router";
 import { useGetFiltroCatalogo } from 'hooks/useFiltros';
+import ViewEquiposCard from './sections/ViewEquiposCard';
 
 
 const EquiposHeader = () => {
@@ -72,7 +73,11 @@ const Equipos = () => {
             <EquiposHeader />
             <Row className="g-3 mb-3">
                 <Col lg={12}>
+                {formview === 'view-card' ? (
+                    <ViewEquiposCard equipos={equipos} estatus={estatus} setFilter={setFilter} layout={formview} />
+                ) : (
                     <TableEquipos equipos={equipos} estatus={estatus} setFilter={setFilter} layout={formview} filter={filter} />
+                )}
                 </Col>
             </Row> 
         </>

@@ -53,6 +53,14 @@ const columns = [
         }
     },
     {
+        accessor: 'Integrantes',
+        Header: 'Integrantes',
+        headerProps: { className:'text-900' },
+        cellProps: {
+            className: 'py-2 p3-4'
+        }
+    },
+    {
         accessor: 'Estatus',
         Header: 'Estatus',
         headerProps: { className: 'text-center text-900'},
@@ -92,7 +100,8 @@ function TableEquipos({equipos, layout, estatus, setFilter, filter}) {
                     </SubtleBadge>
                 ),
                 empresa: u.EmpresaID,
-                id: u.ID
+                id: u.ID,
+                Integrantes: u.Integrantes.split(';').filter(Boolean).join(',')
             }));
             setResult(prevResult => {
                 if(JSON.stringify(prevResult) !== JSON.stringify(transformedData)) {

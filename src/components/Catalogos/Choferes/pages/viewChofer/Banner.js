@@ -48,29 +48,6 @@ const Banner = ({ chofer }) => {
                         </SubtleBadge>
                     <div className="border-dashed border-bottom my-4 d-lg-none" />
                     </Col>
-                    <Col xs="auto">
-                        <Link to="/catalogo/choferes">
-                            <IconButton
-                                variant="falcon-default"
-                                size="sm"
-                                icon="reply"
-                                className="me-1 mb-2 mb-sm-0"
-                                iconClassName="me-1"
-                            >
-                                Regresar
-                            </IconButton>
-                        </Link>
-                        <Link to={`/catalogo/choferes/actChoferD/${chofer.ID}`} className="ms-auto">
-                            <IconButton
-                                variant="falcon-primary"
-                                size="sm"
-                                icon="edit"
-                                className="mb-2 mb-sm-0"
-                            >
-                                Editar
-                            </IconButton>
-                        </Link>
-                    </Col>
                 </Row>
             </ProfileBanner.Body>
         </ProfileBanner>

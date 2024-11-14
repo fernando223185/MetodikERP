@@ -12,6 +12,30 @@ const ProfileSettings = ({formik, sucursal, estatus, empresa, vehiculo}) => {
     const [selectedSucursal, setSelectedSucursal] = useState(null);
     const [selectedVehiculo, setSelectedVehiculo] = useState(null);
 
+    useEffect(() => {
+        // Configurar valores iniciales en los dropdowns usando los valores actuales del usuario
+        if (estatus.length > 0) {
+            const currentEstatus = estatus.find(item => item.Valor === values.EstatusID.toString());
+            setSelectedEstatus(currentEstatus ? { value: currentEstatus.Valor, label: currentEstatus.Dato } : null);
+        }
+
+        if (empresa.length > 0) {
+            const currentEmpresa = empresa.find(item => item.Valor === values.EmpresaID.toString());
+            setSelectedEmpresa(currentEmpresa ? { value: currentEmpresa.Valor, label: currentEmpresa.Dato } : null);
+        }
+
+        if (sucursal.length > 0) {
+            const currentSucursal = sucursal.find(item => item.Valor === values.SucursalID.toString());
+            setSelectedSucursal(currentSucursal ? { value: currentSucursal.Valor, label: currentSucursal.Dato } : null);
+        }
+
+        if (vehiculo.length > 0) {
+            const currentVehiculo = vehiculo.find(item => item.Valor === values.VehiculoID.toString());
+            setSelectedVehiculo(currentVehiculo ? { value: currentVehiculo.Valor, label: currentVehiculo.Dato } : null);
+        }
+    }, [estatus, empresa, sucursal, vehiculo, values]);
+
+
     const handleEstatusChange = (selectedOption) => {
         setSelectedEstatus(selectedOption);
         setValues({ ...values, EstatusID: selectedOption ? selectedOption.value : null });
@@ -34,6 +58,7 @@ const ProfileSettings = ({formik, sucursal, estatus, empresa, vehiculo}) => {
 
     const handleSave = () => {
         setValues({
+            ID: values.ID,
             Nombre: values.Nombre,
             Observaciones: values.Observaciones,
             EmpresaID: selectedEmpresa ? selectedEmpresa.value : null,
@@ -142,7 +167,7 @@ const ProfileSettings = ({formik, sucursal, estatus, empresa, vehiculo}) => {
                         <Form.Control
                         as="textarea"
                         name="Observaciones"
-                        placeholder='Ingrese una descripcion'
+                        placeholder='Ingrese una observacion'
                         value={values.Observaciones}
                         onChange={handleChange}
                         isInvalid={!!errors.Observaciones}
