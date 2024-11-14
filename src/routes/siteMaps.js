@@ -13,6 +13,7 @@ import {
 
 const user = JSON.parse(localStorage.getItem("user"));
 const userID = user && user.ID ? user.ID : null;
+
 export const dashboardRoutes = {
   label: "Dashboard",
   labelDisable: true,

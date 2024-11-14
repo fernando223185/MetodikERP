@@ -119,7 +119,7 @@ export async function agregarAsientoAsync({ data })
 
 export async function getPersonaReservaAsync({ data }){
     try{
-        const response = await axios.get(`${endpoints.key}/Reservas/verPersonasReserva?ID=${data.ID}&HorarioRutaID=${data.HorarioRutaID}&RenglonID=${data.RenglonID}`)
+        const response = await axios.get(`${endpoints.key}/Reservas/verPersonasReserva?ID=${data.ID}&RenglonID=${data.RenglonID}`)
         return response.data
     }catch(error){
         console.error('Error fetching reservas:', error);

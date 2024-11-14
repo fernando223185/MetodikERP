@@ -45,7 +45,7 @@ const columns = [
   },
   {
     accessor: 'horaDesc',
-    Header: 'Hora Descanso',
+    Header: 'Hora Descenso',
     headerProps: { className: 'text-900' }
   },
   {
@@ -155,19 +155,21 @@ const handleInputChange = (renglonId, field, value) => {
 
   useEffect(() => {
     if (rutaD) {
-      const transformedData = rutaD.map(u => ({
+      const transformedData = rutaD.map((u) => ({
         acciones: (
           <>
-            <button
-              className="btn btn-outline-danger rounded-pill me-1 mb-1 btn-sm"
-              onClick={() => handleDeletedRow(u.ID, u.RenglonID)} 
-              title='Eliminar Renglon'
-            >
-              <FontAwesomeIcon icon={faTrash} />
-            </button>
+            {u.RenglonID !== 0 && u.UltimoRenglonID !== 1 && (
+              <button
+                className="btn btn-outline-danger rounded-pill me-1 mb-1 btn-sm"
+                onClick={() => handleDeletedRow(u.ID, u.RenglonID)}
+                title="Eliminar Renglon"
+              >
+                <FontAwesomeIcon icon={faTrash} />
+              </button>
+            )}
             <button
               className="btn btn-outline-primary rounded-pill me-1 mb-1 btn-sm"
-              onClick={() => handleUpdateRow(u)} 
+              onClick={() => handleUpdateRow(u)}
             >
               <FontAwesomeIcon icon={faSave} />
             </button>
@@ -176,8 +178,56 @@ const handleInputChange = (renglonId, field, value) => {
         paradas: u.RenglonID,
         abordaje: (
           <DatePicker
-            selected={editableRows[u.RenglonID]?.abordaje || (u.HoraAbordaje ? moment(u.HoraAbordaje, 'HH:mm:ss.SSSSSSS').toDate() : null)}
-            onChange={(date) => handleInputChange(u.RenglonID, 'abordaje', date)}
+            selected={
+              editableRows[u.RenglonID]?.abordaje ||
+              (u.HoraAbordaje
+                ? moment(u.HoraAbordaje, "HH:mm:ss.SSSSSSS").toDate()
+                : null)
+            }
+            onChange={(date) =>
+              handleInputChange(u.RenglonID, "abordaje", date)
+            }
+            className="form-control"
+            placeholderText="Seleccionar horario"
+            timeIntervals={5}
+            dateFormat="h:mm aa"
+            showTimeSelect
+            showTimeSelectOnly
+            disabled={u.RenglonID === 0 }
+          />
+        ),
+
+        destino: u.DestinoNombre,
+        desc: (
+          <input
+            type="text"
+            value={editableRows[u.RenglonID]?.desc || u.Descripcion}
+            onChange={(e) =>
+              handleInputChange(u.RenglonID, "desc", e.target.value)
+            }
+            style={{
+              margin: "5px 0",
+              padding: "8px",
+              border: "1px solid #ced4da",
+              borderRadius: "4px",
+              width: "100%",
+              boxSizing: "border-box",
+              outline: "none",
+              fontSize: "14px",
+            }}
+          />
+        ),
+        horaDesc: (
+          <DatePicker
+            selected={
+              editableRows[u.RenglonID]?.descenso ||
+              (u.HoraDescenso
+                ? moment(u.HoraDescenso, "HH:mm:ss.SSSSSSS").toDate()
+                : null)
+            }
+            onChange={(date) =>
+              handleInputChange(u.RenglonID, "descenso", date)
+            }
             className="form-control"
             placeholderText="Seleccionar horario"
             timeIntervals={5}
@@ -186,37 +236,7 @@ const handleInputChange = (renglonId, field, value) => {
             showTimeSelectOnly
           />
         ),
-        destino: u.DestinoNombre,
-        desc: (
-          <input 
-            type="text"
-            value={editableRows[u.RenglonID]?.desc || u.Descripcion}
-            onChange={(e) => handleInputChange(u.RenglonID, 'desc', e.target.value)} 
-            style={{
-              margin: '5px 0',
-              padding: '8px',
-              border: '1px solid #ced4da',
-              borderRadius: '4px',
-              width: '100%',
-              boxSizing: 'border-box',
-              outline: 'none',
-              fontSize: '14px'
-            }}
-          />
-        ),
-        horaDesc: (
-        <DatePicker
-          selected={editableRows[u.RenglonID]?.descenso || (u.HoraDescenso ? moment(u.HoraDescenso, 'HH:mm:ss.SSSSSSS').toDate() : null)}
-          onChange={(date) => handleInputChange(u.RenglonID, 'descenso', date)}
-          className="form-control"
-          placeholderText="Seleccionar horario"
-          timeIntervals={5}
-          dateFormat="h:mm aa"
-          showTimeSelect
-          showTimeSelectOnly
-        />
-        ),
-        pzsDisp: u.PlazasDisponible
+        pzsDisp: u.PlazasDisponible,
       }));
       setResult(transformedData);
     }
@@ -229,7 +249,7 @@ const handleInputChange = (renglonId, field, value) => {
         data={result}
         sortable
         pagination
-        perPage={5}
+        perPage={15}
       >
         <Row className="justify-content-start mb-3">
           <Col xs="auto">

@@ -75,7 +75,7 @@ function TableReservas({reservas}) {
             </Link>
         ),
         Mov: `${u.Movimiento}`,
-        CreatedAt: u.FechaEmision,
+        CreatedAt: u.FechaEmision, 
         estatus: (
           <SubtleBadge pill           
             bg={classNames({
@@ -92,7 +92,7 @@ function TableReservas({reservas}) {
               icon={getStatusIcon(u.Estatus)}
               transform="shrink-2"
               className="ms-1"
-            />
+            /> 
 
           </SubtleBadge>
         ),

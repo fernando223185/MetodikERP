@@ -36,6 +36,7 @@ import {
   useCambiarSituaciones,
   useCopiarRuta,
   useElimiarRuta,
+  useCancelarRuta,
 } from /*, useCancelarReserva, useAfectarReserva, useAgregarFormaPago*/ "../../../../hooks/Logistica/Ruta/useRutaD";
 import { useParams } from "react-router-dom";
 import { useGetFiltroModulo } from "../../../../hooks/useFiltros";
@@ -67,6 +68,11 @@ const RutasHeader = ({ setHasFetched, estatus, showFormMov }) => {
     isLoading: isLoadingEliminar,
   } = useElimiarRuta();
 
+  const {
+    cancelarRuta,
+    result: resultCancelar,
+    isLoading: isLoadingCancelar,
+  } = useCancelarRuta();
   //const { agregarFormaPago, result: pago, isLoading: isLoadingPago } = useAgregarFormaPago();
   const {
     cambiarSituaciones,
@@ -91,7 +97,7 @@ const RutasHeader = ({ setHasFetched, estatus, showFormMov }) => {
       UsuarioID: user.ID,
     };
 
-    //await cancelarReserva({ data })
+    await cancelarRuta({ data });
   };
 
   const handleAfectar = async () => {
@@ -292,6 +298,36 @@ const RutasHeader = ({ setHasFetched, estatus, showFormMov }) => {
       });
     }
   }, [resultEliminar]);
+
+    useEffect(() => {
+      if (resultCancelar && Object.keys(resultCancelar).length === 0) {
+        console.log("result es un array vacío:", resultCancelar);
+      } else if (resultCancelar && resultCancelar.status === 200) {
+        toast[resultCancelar.data[0].Tipo](
+          `${resultCancelar.data[0].Mensaje}`,
+          {
+            theme: "colored",
+            position: resultCancelar.data[0].Posicion,
+            icon:
+              resultCancelar.data[0].Tipo === "success" ? (
+                <FontAwesomeIcon icon={faCheckCircle} />
+              ) : resultCancelar.data[0].Tipo === "error" ? (
+                <FontAwesomeIcon icon={faExclamationTriangle} />
+              ) : (
+                <FontAwesomeIcon icon={faInfoCircle} />
+              ),
+          }
+        );
+        setTimeout(() => {
+          setHasFetched((prev) => !prev);
+        }, 1000);
+      } else if (resultCancelar) {
+        toast.error(`Error al guardar`, {
+          theme: "colored",
+          position: "top-right",
+        });
+      }
+    }, [resultCancelar]);
 
   /*
   useEffect(() => {
@@ -553,8 +589,8 @@ const RutasD = () => {
 
   useEffect(() => {
     const fetchRutas = async () => {
-      if (showRutas && rutaId.Ruta > 0) {
-        await getRutaDisp({ id: rutaId.Ruta });
+      if (showRutas && id > 0) {
+        await getRutaDisp({ id: id });
       }
     };
     fetchRutas();
