@@ -1,75 +1,96 @@
 import { useCallback, useState } from 'react';
-import { getRutasAsync } from 'api/catalogo/rutas/rutas';
-import { getRutasResumen } from 'api/catalogo/rutas/rutas';
-import { getHorariosAsync } from 'api/catalogo/rutas/rutas';
-import { getHorariosRutasAsync } from 'api/catalogo/rutas/rutas';
+import { getRutasAsync, getRutaIDAsync, actRutaAsync, actDescensoRutaAsync, delDescensoRutaAsync } from 'api/catalogo/rutas/rutas';
+
 
 export const useGetRutas = () => {
-    const [rutas, setRutas] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-  
-    const getRutas = useCallback(async () => {
+    const [ rutas, setRutas ] = useState([]);
+    const [ isLoading, setIsLoading ] = useState(false);
+    const [ error, setError ] = useState(null);
+
+    const getRutas = useCallback(async ({data}) => {
+        if (isLoading) return;
+
         setIsLoading(true);
-        const result = await getRutasAsync();
-        setRutas(result);
-        setIsLoading(false);
-    });
-  
-    return { getRutas, rutas, isLoading };
+        setError(null);
+        try {
+            const result = await getRutasAsync({data});
+            if (result.status === 200) {
+                setRutas(result);
+            } else {
+                setError("Failed to fetch rutas");
+            }
+        } catch (error) {
+            setError("An error ocurred while fetching rutas");
+        } finally {
+            setIsLoading(false);
+        }
+    }, [isLoading]);
+
+    return { getRutas, rutas, isLoading, error };
 }
 
-export const useGetRutasResumen = () => {
-    const [rutasResumen, setRutasResumen] = useState({});
-    const [isLoading, setIsLoading] = useState(false);
-  
-    const getResumen = useCallback(async (id) => {
-      setIsLoading(true);
-      const result = await getRutasResumen(id);
-      console.log(result);
-      setRutasResumen(result.data[0]);
-      setIsLoading(false);
-    }, []);
-  
-    return { getResumen, rutasResumen, isLoading };
-}
+export const useGetRutaID = () => {
+    const [ ruta, setRuta ] = useState([]);
+    const [ isLoading, setIsLoading ] = useState(false);
+    const [ error, setError ] = useState(null);
 
-export const useGetHorarios = () => {
-  const [horarios, setHorarios] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+    const getRutaID = useCallback(async ({id}) => {
+        if (isLoading) return;
 
-  const getHorarios = useCallback(async () => {
-      setIsLoading(true);
-      try {
-          const result = await getHorariosAsync(); // La llamada a la API devuelve dos arrays
-          const allHorarios = result.data[0].concat(result.data[1]); // Combina ambos arrays en uno solo
-          setHorarios(allHorarios); // Almacena los horarios combinados en el estado
-      } catch (error) {
-          console.error('Error fetching horarios:', error);
-      } finally {
-          setIsLoading(false);
-      }
-  }, []);
+        setIsLoading(true);
+        setError(null);
+        try {
+            const result = await getRutaIDAsync({ id });
+            setRuta(result);
+            setError("Failed to fetch ruta");
+        } catch(error) {
+            setError("An error ocurred while fetching ruta");
+        } finally {
+            setIsLoading(false);
+        }
+    }, [isLoading]);
 
-  return { getHorarios, horarios, isLoading };
+    return { getRutaID, ruta, isLoading, error };
 };
 
-export const useGetHorariosRutas = () => {
-  const [horariosRutas, setHorariosRutas] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+export const useActRuta = () => {
+    const [ result, setResult ] = useState([]);
+    const [ isLoading, setIsLoading ] = useState(false);
 
-  const getHorariosRutas = useCallback(async (id) => {
-      setIsLoading(true);
-      try {
-          const result = await getHorariosRutasAsync(id);
-          console.log(result);
-          setHorariosRutas(result.data);
-      } catch (error) {
-          console.error('Error fetching horarios:', error);
-      } finally {
-          setIsLoading(false);
-      }
-  }, []);
+    const actRuta = useCallback(async ({ data }) => {
+        setIsLoading(true);
+        const result = await actRutaAsync({ data });
+        setResult(result);
+        setIsLoading(false)
+    }, []);
 
-  return { getHorariosRutas, horariosRutas, isLoading };
-  
-}
+    return { actRuta, result, isLoading };
+};
+
+export const useActDescensoRuta = () => {
+    const [ result, setResult ] = useState([]);
+    const [ isLoading, setIsLoading ] = useState(false);
+
+    const actDescenso = useCallback(async ({data}) => {
+        setIsLoading(true);
+        const result = await actDescensoRutaAsync({ data });
+        setResult(result);
+        setIsLoading(false);
+    }, []);
+
+    return { actDescenso, result, isLoading };
+};
+
+export const useDelDescensoRuta = () => {
+    const [ result, setResult ] = useState([]);
+    const [ isLoading, setIsLoading ] = useState(false);
+
+    const delDescenso = useCallback(async ({data}) => {
+        setIsLoading(true);
+        const result = await delDescensoRutaAsync({ data });
+        setResult(result);
+        setIsLoading(false);
+    }, []);
+
+    return { delDescenso, result, isLoading };
+};
