@@ -1,23 +1,16 @@
-import AdvanceTable from "components/common/advance-table/AdvanceTable";
 import AdvanceTableWrapper from "components/common/advance-table/AdvanceTableWrapper";
 import { useGetProfiles } from "../../../hooks/Catalogos/Perfiles/usePerfiles";
 import React, { useEffect, useState } from "react";
-import { Col, Row, Card, Offcanvas, Spinner } from "react-bootstrap";
-
-import AdvanceTableSearchBox from "components/common/advance-table/AdvanceTableSearchBox";
-import AdvanceTableFooter from "components/common/advance-table/AdvanceTableFooter";
+import { Col, Row, Card, Spinner } from "react-bootstrap";
 import SubtleBadge from "components/common/SubtleBadge";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PerfilesHeader from './PerfilesHeader'
 import TableRowClick from 'components/common/advance-table/TableRowClick';
 import AdvanceTablePagination from 'components/common/advance-table/AdvanceTablePagination';
 import { useBreakpoints } from 'hooks/useBreakpoints';
-import PerfilesFilterForm from '../sections/PerfilesFilterForm'
-import { faPaperPlane, faCheck, faStream, faPen, faBan, faSpinner } from '@fortawesome/free-solid-svg-icons'; 
+import { faPaperPlane, faCheck, faBan } from '@fortawesome/free-solid-svg-icons'; 
 import classNames from 'classnames';
-
-
 
 
 
@@ -122,6 +115,8 @@ function TableProfiles({ reservas, movimientos }) {
         ),
         rfc: u.RFC,
         id: u.ID,
+        fechaRegistro: u.FechaRegistro,
+        fechaModificacion: u.UltimoCambio,
       }));
       setResult((prevResult) => {
         if (JSON.stringify(prevResult) !== JSON.stringify(transformedData)) {

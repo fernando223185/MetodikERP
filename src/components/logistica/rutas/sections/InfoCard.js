@@ -58,7 +58,7 @@ const InfoCard = ({ reservaId }) => {
             bg={classNames({
             success:  reservaId.Situacion === 'Finalizada',
             warning: reservaId.Situacion  === 'Transito' || reservaId.Situacion === 'Descenso',
-            primary: reservaId.Situacion === 'Programda' || reservaId.Situacion === 'Check de Limpieza' || reservaId.Situacion === 'Abordando'
+            primary: reservaId.Situacion === 'Programada' || reservaId.Situacion === 'Check de Limpieza' || reservaId.Situacion === 'Abordando'
           })}
           className="fs--2 ms-2 " 
           >

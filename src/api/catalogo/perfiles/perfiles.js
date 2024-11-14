@@ -25,7 +25,7 @@ export async function ActProfilerAsync({data}){
 
 export async function getPerfilesByIdAsync(ID){
     try{
-        const response = await axios.get(`${endpoints.key}/verPerfilID?ID=${ID}` )
+        const response = await axios.get(`${endpoints.key}/verPerfilID?ID=${ID}`)
         console.log(response)
         return response.data[0]
     }catch(error){
@@ -37,6 +37,30 @@ export async function getModulosAccesoAsync({ data }) {
   try {
     const response = await axios.get(
       `${endpoints.key}/verModulosAcceso?PerfilID=${data.PerfilID}&PersonaID=${data.PersonaID}`
+    );
+    return response;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function actModulosAccesoAsync({ data }) {
+  try {
+    const response = await axios.post(
+      `${endpoints.key}/actAccesosPerfil`,
+      data
+    );
+    console.log(response);
+    return response;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function getMenusAccesoAsync(ID) {
+  try {
+    const response = await axios.get(
+      `${endpoints.key}/crearMenus?PersonaID=${ID}`
     );
     return response;
   } catch (error) {
