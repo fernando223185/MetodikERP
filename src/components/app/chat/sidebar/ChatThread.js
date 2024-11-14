@@ -5,19 +5,39 @@ import classNames from 'classnames';
 import Avatar from 'components/common/Avatar';
 import { Nav } from 'react-bootstrap';
 import LastMessage from './LastMessage';
+import avatar from 'assets/img/team/avatar.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ChatSidebarDropdownAction from './ChatSidebarDropdownAction';
 import { ChatContext } from 'context/Context';
 
-const ChatThread = ({ thread, index }) => {
-  const { getUser, messages } = useContext(ChatContext);
+const ChatThread = ({ thread }) => {
+  const { getUser } = useContext(ChatContext);
   const user = getUser(thread);
-  const message = messages.find(({ id }) => id === thread.messagesId);
-  const lastMessage = message?.content[message.content.length - 1];
   
+  const dateObj = new Date(user.UltimoMensajeFecha);
+  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const day = dayNames[dateObj.getUTCDay()];
+  const hour = dateObj.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true
+  });
+  const formattedDate = dateObj.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric"
+  });
+
+  const lastMessage = {
+   message : thread.message,
+   time: {day, hour, formattedDate},
+   senderUserId: 3,
+   status: 'delivered',
+   name: user.name
+  };
   return (
     <Nav.Link
-      eventKey={index}
+      eventKey={thread?.id}
       className={classNames(`chat-contact hover-actions-trigger p-3`, {
         'unread-message': !thread.read,
         'read-message': thread.read
@@ -27,10 +47,10 @@ const ChatThread = ({ thread, index }) => {
         <ChatSidebarDropdownAction />
       </div>
       <Flex>
-        <Avatar className={user.status} src={user.avatarSrc} size="xl" />
+        <Avatar className={user.status} src={avatar} size="xl" />
         <div className="flex-1 chat-contact-body ms-2 d-md-none d-lg-block">
           <Flex justifyContent="between">
-            <h6 className="mb-0 chat-contact-title">{user.name}</h6>
+            <h6 className="mb-0 chat-contact-title">{user.wa_id}</h6>
             <span className="message-time fs--2">
               {' '}
               {!!lastMessage && lastMessage.time.day}{' '}

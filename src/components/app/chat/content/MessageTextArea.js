@@ -7,6 +7,8 @@ import PropTypes from 'prop-types';
 import { Button, Form } from 'react-bootstrap';
 import TextareaAutosize from 'react-textarea-autosize';
 import { useAppContext } from 'Main';
+import { sendMessageAsync } from 'api/chat/chat';
+
 
 const formatDate = date => {
   const options = {
@@ -37,8 +39,12 @@ const MessageTextArea = () => {
     threadsDispatch,
     currentThread,
     setScrollToBottom,
-    isOpenThreadInfo
+    isOpenThreadInfo,
+    getUser
   } = useContext(ChatContext);
+
+
+
   const [previewEmoji, setPreviewEmoji] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -52,40 +58,49 @@ const MessageTextArea = () => {
     setPreviewEmoji(false);
   };
 
-  const handleSubmit = e => {
+  async function handleSubmit(e) {
     e.preventDefault();
-    const date = new Date();
-    let newMessage = {
-      senderUserId: 3,
-      message: `${message.replace(/(?:\r\n|\r|\n)/g, '<br>')}`,
-      status: 'delivered',
-      time: formatDate(date)
-    };
-
-    const { content } = messages.find(
-      ({ id }) => id === currentThread.messagesId
-    );
-
-    if (message) {
-      messagesDispatch({
-        type: 'EDIT',
-        payload: {
-          id: currentThread.messagesId,
-          content: [...content, newMessage]
-        },
-        id: currentThread.messagesId
-      });
-
-      threadsDispatch({
-        type: 'EDIT',
-        payload: currentThread,
-        id: currentThread.id,
-        isUpdatedStart: true
-      });
-    }
+    
+  
+    const status = await sendMessageAsync({ recipient_WAID: currentThread.wa_id ,text: message });
+     
+    console.log(status); 
+    
     setMessage('');
-    setScrollToBottom(true);
-  };
+  }
+
+  //   const date = new Date();
+  //   let newMessage = {
+  //     senderUserId: 3,
+  //     message: `${message.replace(/(?:\r\n|\r|\n)/g, '<br>')}`,
+  //     status: 'delivered',
+  //     time: formatDate(date)
+  //   };
+
+  //   const { content } = messages.find(
+  //     ({ id }) => id === currentThread.messagesId
+  //   );
+
+  //   if (message) {
+  //     messagesDispatch({
+  //       type: 'EDIT',
+  //       payload: {
+  //         id: currentThread.messagesId,
+  //         content: [...content, newMessage]
+  //       },
+  //       id: currentThread.messagesId
+  //     });
+
+  //     threadsDispatch({
+  //       type: 'EDIT',
+  //       payload: currentThread,
+  //       id: currentThread.id,
+  //       isUpdatedStart: true
+  //     });
+  //   }
+  //   setMessage('');
+  //   setScrollToBottom(true);
+  // };
 
   useEffect(() => {
     if (isOpenThreadInfo) {
