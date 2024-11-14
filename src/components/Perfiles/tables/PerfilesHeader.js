@@ -1,7 +1,7 @@
-import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import AdvanceTableSearchBox from 'components/common/advance-table/AdvanceTableSearchBox';
-import IconButton from 'components/common/IconButton';
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import AdvanceTableSearchBox from "components/common/advance-table/AdvanceTableSearchBox";
+import IconButton from "components/common/IconButton";
 import {
   Button,
   Col,
@@ -9,11 +9,11 @@ import {
   Form,
   FormControl,
   InputGroup,
-  Row
-} from 'react-bootstrap';
-import PropTypes from 'prop-types';
-import { Link, useNavigate } from 'react-router-dom'; // Importa useNavigate para redirigir programáticamente
-import classNames from 'classnames';
+  Row,
+} from "react-bootstrap";
+import PropTypes from "prop-types";
+import { Link, useNavigate } from "react-router-dom"; // Importa useNavigate para redirigir programáticamente
+import classNames from "classnames";
 
 const PerfilesHeader = ({
   selectedRowIds,
@@ -22,12 +22,12 @@ const PerfilesHeader = ({
   layout,
   handleShow,
   selectedItems,
-  handleTicketsSearch
+  handleTicketsSearch,
 }) => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleNuevoClick = () => {
-    navigate("/Catalogo/Perfil/0"); 
+    navigate("/Catalogo/Perfil/0");
   };
 
   return (
@@ -37,7 +37,7 @@ const PerfilesHeader = ({
           <h6 className="mb-0">Perfiles</h6>
         </Col>
         <Col xs="auto">
-          {layout === 'table-view' ? (
+          {layout === "table-view" ? (
             <AdvanceTableSearchBox
               className="input-search-width"
               globalFilter={globalFilter}
@@ -52,7 +52,7 @@ const PerfilesHeader = ({
                 type="search"
                 className="shadow-none"
                 placeholder="Search by name"
-                onChange={e => handleTicketsSearch(e.target.value)}
+                onChange={(e) => handleTicketsSearch(e.target.value)}
               />
               <Button
                 size="sm"
@@ -67,20 +67,9 @@ const PerfilesHeader = ({
       </Row>
       <div className="border-bottom border-200 my-3"></div>
       <div className="d-flex align-items-center justify-content-between justify-content-lg-end px-x1">
-        <IconButton
-          variant="falcon-default"
-          size="sm"
-          icon="filter"
-          transform="shrink-4"
-          iconAlign="middle"
-          onClick={handleShow}
-          className="d-xl-none"
-        >
-          <span className="d-none d-sm-inline-block ms-1">Filtros</span>
-        </IconButton>
         <div
           className="bg-300 mx-3 d-none d-lg-block d-xl-none"
-          style={{ width: '1px', height: '29px' }}
+          style={{ width: "1px", height: "29px" }}
         ></div>
         {(selectedRowIds && Object.keys(selectedRowIds).length > 0) ||
         (selectedItems && selectedItems.length > 0) ? (
@@ -102,29 +91,42 @@ const PerfilesHeader = ({
           </div>
         ) : (
           <div id="orders-actions">
+            <IconButton
+              variant="falcon-default"
+              size="sm"
+              icon="filter"
+              transform="shrink-4"
+              iconAlign="middle"
+              onClick={handleShow}
+              className="btn-reveal-trigger d-inline-block me-2"
+            >
+              <span className="d-none d-sm-inline-block ms-1">Filtros</span>
+            </IconButton>
             <Dropdown
               align="end"
               className="btn-reveal-trigger d-inline-block me-2"
             >
               <Dropdown.Toggle split variant="falcon-default" size="sm">
                 <span className="d-none d-sm-inline-block d-xl-none d-xxl-inline-block me-1">
-                  {layout === 'table-view' ? 'Vista de Tabla' : 'Vista de Tarjeta'}
+                  {layout === "table-view"
+                    ? "Vista de Tabla"
+                    : "Vista de Tarjeta"}
                 </span>
                 <FontAwesomeIcon icon="chevron-down" transform="shrink-2" />
               </Dropdown.Toggle>
               <Dropdown.Menu className="border py-0">
                 <div className="py-2">
                   <Link
-                    className={classNames('dropdown-item', {
-                      active: layout === 'table-view'
+                    className={classNames("dropdown-item", {
+                      active: layout === "table-view",
                     })}
                     to="/support-desk/table-view"
                   >
                     Vista de Tabla
                   </Link>
                   <Link
-                    className={classNames('dropdown-item', {
-                      active: layout === 'card-view'
+                    className={classNames("dropdown-item", {
+                      active: layout === "card-view",
                     })}
                     to="/support-desk/card-view"
                   >
@@ -157,6 +159,7 @@ const PerfilesHeader = ({
                 Exportar
               </span>
             </IconButton>
+
             <Dropdown align="end" className="btn-reveal-trigger d-inline-block">
               <Dropdown.Toggle split variant="falcon-default" size="sm">
                 <FontAwesomeIcon icon="ellipsis-h" className="fs--2" />
@@ -167,7 +170,9 @@ const PerfilesHeader = ({
                   <Dropdown.Item>Visualizar</Dropdown.Item>
                   <Dropdown.Item>Exportar</Dropdown.Item>
                   <Dropdown.Divider />
-                  <Dropdown.Item className="text-danger">Eliminar</Dropdown.Item>
+                  <Dropdown.Item className="text-danger">
+                    Eliminar
+                  </Dropdown.Item>
                 </div>
               </Dropdown.Menu>
             </Dropdown>
@@ -185,7 +190,7 @@ PerfilesHeader.propTypes = {
   handleShow: PropTypes.func,
   layout: PropTypes.string,
   selectedItems: PropTypes.array,
-  handleTicketsSearch: PropTypes.func
+  handleTicketsSearch: PropTypes.func,
 };
 
 export default PerfilesHeader;

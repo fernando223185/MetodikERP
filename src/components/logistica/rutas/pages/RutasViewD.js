@@ -155,7 +155,7 @@ const RutasViewD = () => {
                     rutaId.Situacion === "Transito" ||
                     rutaId.Situacion === "Descenso",
                   primary:
-                    rutaId.Situacion === "Programda" ||
+                    rutaId.Situacion === "Programada" ||
                     rutaId.Situacion === "Check de Limpieza" ||
                     rutaId.Situacion === "Abordando",
                 })}

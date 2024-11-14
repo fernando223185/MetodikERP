@@ -157,9 +157,9 @@ export async function guardarDatosPersonaAsync({ data }){
     }
 }
 
-export async function cancelarReservaAsync ({ data }){
+export async function cancelarRutaAsync ({ data }){
     try{
-        const response = await axios.post(`${endpoints.key}/Reservas/cancelarReserva`, data)
+        const response = await axios.post(`${endpoints.key}/cancelarRuta`, data);
         return response
     }catch(error){
         console.error('Error fetching reservas:', error);
