@@ -53,7 +53,7 @@ const ChatThread = ({ thread }) => {
             <h6 className="mb-0 chat-contact-title">{user.wa_id}</h6>
             <span className="message-time fs--2">
               {' '}
-              {!!lastMessage && lastMessage.time.day}{' '}
+              {thread.message && lastMessage.time.day}{' '}
             </span>
           </Flex>
           <div className="min-w-0">

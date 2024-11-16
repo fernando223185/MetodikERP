@@ -8,6 +8,7 @@ import { Button, Form } from 'react-bootstrap';
 import TextareaAutosize from 'react-textarea-autosize';
 import { useAppContext } from 'Main';
 import { sendMessageAsync } from 'api/chat/chat';
+import { fetchMessages } from '../data/fetchData';
 
 
 const formatDate = date => {
@@ -63,7 +64,7 @@ const MessageTextArea = () => {
     
   
     const status = await sendMessageAsync({ recipient_WAID: currentThread.wa_id ,text: message });
-     
+    fetchMessages(messagesDispatch, currentThread);
     console.log(status); 
     
     setMessage('');

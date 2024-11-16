@@ -115,6 +115,20 @@ export const arrayReducer = (state, action) => {
       );
       return [...state, ...newThreads];
         
+    case 'UPDATE_THREAD_FROM_WEBHOOK':
+      const { UsuarioID, Mensaje, MensajeID } = action.payload;
+     
+    return state.map((thread) => {
+      if (thread.id === UsuarioID) {
+        return {
+          ...thread,
+          message: Mensaje, // Update the last message
+          messageId : MensajeID,
+          read: false, // Mark as unread
+        };
+      }
+      return thread;
+    });
 
     default:
       return state;

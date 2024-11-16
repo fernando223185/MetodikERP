@@ -3,6 +3,7 @@ import { ChatContext } from 'context/Context';
 import React, { useContext, useState, useEffect } from 'react';
 import { Card, Tab, Nav } from 'react-bootstrap';
 import Loading from 'widgets/Loading';
+import { io } from 'socket.io-client';
 
 import ChatProvider from './ChatProvider';
 import ChatContent from './content/ChatContent';
@@ -27,8 +28,7 @@ const ChatTab = () => {
 
   const [hideSidebar, setHideSidebar] = useState(false);
 
-  const POLLING_INTERVAL = 60000;
-
+  
   const handleSelect = userId => {
     console.log(threads); 
     console.log('handleSelect ' + userId);
@@ -36,8 +36,6 @@ const ChatTab = () => {
     setIsOpenThreadInfo(false);
     const thread = threads.find(thread => thread.id === parseInt(userId));
     setCurrentThread(thread);
-
-
     if (thread) {
       threadsDispatch({
         type: 'EDIT',
@@ -45,15 +43,16 @@ const ChatTab = () => {
        });
        setScrollToBottom(true);
      }
+  }
+
+  const fetchInitialData = async () => {
+    await fetchUsersAndThreads(setUsers, setCurrentThread, threadsDispatch);
   };
-  
-// First Effect: Fetch Users and Threads
+
   useEffect(() => {
-    const fetchInitialData = async () => {
-      await fetchUsersAndThreads(setUsers, setCurrentThread, threadsDispatch);
-    };
 
     fetchInitialData();
+
   }, [threadsDispatch, setUsers, setCurrentThread]);
 
   useEffect(() => {
@@ -61,7 +60,40 @@ const ChatTab = () => {
       fetchMessages(messagesDispatch, currentThread);
     }
   }, [currentThread, messagesDispatch]);
+  
+  useEffect(() => {
+    const socket = io('http://localhost:5001'); 
 
+    // Escuchar el evento 'new_message' para recibir nuevos mensajes desde el servidor
+    socket.on('new_message', (newMessage) => {
+      console.log('Nuevo mensaje recibido:', newMessage);
+      
+      messagesDispatch({
+        type: 'ADD_MANY',
+        payload: newMessage,
+      });
+
+        threadsDispatch({
+          type: 'UPDATE_THREAD_FROM_WEBHOOK',
+          payload: {
+            UsuarioID: newMessage[0].UsuarioID,
+            Mensaje: newMessage[0].Mensaje,
+            MensajeID: newMessage[0].MensajeID
+            },
+          },
+
+      );
+
+      setScrollToBottom(true);
+      // Limpiar conexión al desmontar el componente
+      fetchInitialData();
+    })
+
+    return () => {
+      socket.disconnect();
+    };
+
+    },[])
 
   if (users.length === 0 || threads.length === 0 || messages.length === 0) {
     return <Loading />;
@@ -76,7 +108,7 @@ const ChatTab = () => {
     >
       <Card className="card-chat overflow-hidden" >
         <Card.Body as={Flex} className="p-0 h-100">
-          <ChatSidebar hideSidebar={hideSidebar} />
+          <ChatSidebar hideSidebar={hideSidebar}/>
           <ChatContent setHideSidebar={setHideSidebar} threads={threads}/>
         </Card.Body>
       </Card>

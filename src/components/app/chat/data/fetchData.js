@@ -5,7 +5,8 @@ export async function fetchMessages(messagesDispatch,user) {
   try {
     console.log(user);
     const newMessages = await getMensagesAsync(user);
-    
+
+
     console.log('Messages',newMessages);
     
     if (Array.isArray(newMessages)) {

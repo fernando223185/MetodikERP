@@ -17,42 +17,18 @@ const ChatContentBody = ({ thread }) => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const POLLING_INTERVAL = 10000;
-
-  // Fetch messages for the selected user (thread) and update the loading state
-  const fetchMessagesForUser = async () => {
-    setIsLoading(true);
-    try {
-      await fetchMessages(messagesDispatch, user);
-      console.log(messages);
-    } catch (error) {
-      console.error('Error fetching messages:', error);
-    }
-    setIsLoading(false);
-  };
+  
 
   // Find the messages for the current thread
   const threadMessages = messages.find(({ id }) => id === thread.id);
   const { content = [] } = threadMessages || {};
 
-  // Fetch messages only when the thread changes
+  // Scroll to the bottom of the chat when messages are loaded or updated
   useEffect(() => {
-    if (currentThread && currentThread.id === thread.id && user.status !== 'status-away') {
-      // Fetch initial messages for the selected thread
-      fetchMessagesForUser();
-  
-      // Set up periodic fetch for the messages
-      const intervalId = setInterval(() => {
-        fetchMessagesForUser();
-        console.log('new fetch');
-      }, POLLING_INTERVAL);
-  
-      // Clean up the interval when unmounting or when `currentThread` changes
-      return () => clearInterval(intervalId);
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'auto' }); // Use "auto" for instant scroll
     }
-
-  }, [currentThread, thread.id]);
-  
+  }, [content]);
 
   // Scroll to the bottom of the chat when `scrollToBottom` is triggered
   useEffect(() => {
