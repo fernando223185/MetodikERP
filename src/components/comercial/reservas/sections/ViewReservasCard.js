@@ -20,7 +20,7 @@ const ViewReservasCard = ({reservas, movimientos, estatus, layout, setFilter, si
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  console.log(reservas)
+  console.log("aaaaaaaa",reservas)
   const reservaIds = reservas.data.map(reserva => reserva.id);
   const { selectedItems, isSelectedItem, toggleSelectedItem } =
     useBulkSelect(reservaIds);

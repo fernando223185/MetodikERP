@@ -60,7 +60,7 @@ const altAppRoutes = {
 
 // Condicionalmente asignar appRoutes
 export const appRoutes =
-  userID != 1
+  userID !== 1
     ? altAppRoutes
     : {
         label: "Modulos",
@@ -85,7 +85,7 @@ export const appRoutes =
               {
                 name: "Vehiculos",
                 icon: faTruck,
-                to: "/configuration/vehiculos",
+                to: "/Catalogos/vehiculos",
                 active: true,
               },
               {
@@ -110,6 +110,18 @@ export const appRoutes =
                 name: "Clientes",
                 icon: faUsers,
                 to: "/catalogo/clientes",
+                active: true,
+              },
+              {
+                name: "Pasajeros",
+                icon: faUsers,
+                to: "/Catalogos/Pasajeros",
+                active: true,
+              },
+              {
+                name: "Sucursales",
+                icon: faStore,
+                to: "/configuration/sucursales",
                 active: true,
               },
             ],
@@ -161,6 +173,18 @@ export const appRoutes =
                 name: "Rutas",
                 icon: faRoute,
                 to: "/Explorador/ExploradorRutas",
+                active: true,
+              },
+              {
+                name: "Paqueteria Recepcion",
+                icon: faBox,
+                to: "/Explorador/PaqueteriaRecepcion",
+                active: true,
+              },
+              {
+                name: "Paqueteria Entrega",
+                icon: faBox,
+                to: "/Explorador/PaqueteriaEntrega",
                 active: true,
               },
             ],

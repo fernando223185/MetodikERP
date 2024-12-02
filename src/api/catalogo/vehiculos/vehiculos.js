@@ -1,12 +1,12 @@
 import axios from 'utils/axios'
 
 export const endpoints = {
-    key: '/Catalogos/Vehiculos'
+    key: '/Catalogos'
 };
 
 export async function getVehiculosAsync({data}){
     try{
-        const response = await axios.get(`${endpoints.key}/vehiculos?ID=${data.ID}`, data)
+        const response = await axios.post(`${endpoints.key}/verVehiculos`, data)
         console.log(response)
         return response
     } catch(error){
@@ -14,23 +14,22 @@ export async function getVehiculosAsync({data}){
     }
 }
 
-export async function getVehiculoResumen({data}){
+export async function actVehiculoAync({data}){
     try{
-        const response = await axios.get(`${endpoints.key}/verVehiculoResumen?ID=${data.ID}`, data)
-        console.log(response)
-        return response
-    } catch(error){
-        return error;
-    }
-}
-
-export async function actVehiculo({data}){
-    try{
-        console.log(data)
         const response = await axios.post(`${endpoints.key}/actVehiculo`, data)
         console.log(response)
         return response
     } catch(error){
+        return error;
+    }
+}
+
+export async function getVehiculosIDAsync({id=0}){
+    try{
+        const response = await axios.get(`${endpoints.key}/verVehiculoID?ID=${id}`)
+        return response.data[0]
+    } catch(error){
+        console.error('Error fetching vehiculo:', error);
         return error;
     }
 }

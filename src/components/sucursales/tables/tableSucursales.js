@@ -1,33 +1,53 @@
-import AdvanceTable from 'components/common/advance-table/AdvanceTable';
-import AdvanceTableWrapper from 'components/common/advance-table/AdvanceTableWrapper';
-import { useGetSucursales } from '../../../hooks/Catalogos/Sucursales/useSucursal' 
+import TableRowClick from "components/common/advance-table/TableRowClick";
+import AdvanceTableWrapper from "components/common/advance-table/AdvanceTableWrapper";
 import React, { useEffect, useState } from 'react';
-import { Spinner } from 'react-bootstrap';
-import { Col, Row } from 'react-bootstrap';
-import AdvanceTableSearchBox from 'components/common/advance-table/AdvanceTableSearchBox';
-import AdvanceTableFooter from 'components/common/advance-table/AdvanceTableFooter';
+import { Col, Row, Spinner, Card, Offcanvas } from 'react-bootstrap';
 import SubtleBadge from 'components/common/SubtleBadge';
-import IconButton from 'components/common/IconButton';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import classNames from 'classnames';
+import { faPaperPlane, faCheck, faBan } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import AdvanceTablePagination from 'components/common/advance-table/AdvanceTablePagination';
+import { useBreakpoints } from 'hooks/useBreakpoints';
+import Flex from 'components/common/Flex';
+import Avatar from 'components/common/Avatar';
+import SucursalesHeader from "../Profile/SucursalesHeader";
+import { useActSucursal } from "hooks/Catalogos/Sucursales/useSucursal";
+import SucursalesFilterForm from "../Profile/SucursalesFilterForm";
+
+
 
 const columns = [
     {
-      accessor: 'acciones',
-      Header: 'Editar',
-      headerProps: { className: 'text-900' },
-      cellProps: { className: 'text-center' }
-    },
-    {
-      accessor: 'estatus',
-      Header: 'Estatus',
-      headerProps: { className: 'text-900' },
-      cellProps: { className: 'text-center' }
-    },
-    {
       accessor: 'sucursal',
-      Header: 'Nombre',
-      headerProps: { className: 'text-900' }
-    },
+      Header: 'Sucursal',
+      headerProps: { className: 'ps-2 text-900', style: { height: '46px' } },
+      cellProps: {
+          className: 'py-2 white-space-nowrap pe-3 pe-xxl-4 ps-2'
+      },
+      Cell: rowData => {
+        const { sucursal, avatar } = rowData.row.original;
+        return (
+            <Flex alignItems="center" className="position-relative py-1">
+            {avatar && avatar.img ? (
+                <Avatar src={avatar.img} size="xl" className="me-2" />
+            ) : (
+                <Avatar size="xl" name={avatar ? avatar.name : sucursal} className="me-2" />
+            )}
+            <h6 className="mb-0">
+                <Link
+                to="#"
+                className="stretched-link text-900"
+                onClick={(e) => e.stopPropagation()}
+                >
+                    {sucursal}
+                </Link>
+            </h6>
+            </Flex>
+        );
+      }
+    },  
     {
       accessor: 'direccion',
       Header: 'Dirección',
@@ -37,104 +57,148 @@ const columns = [
       accessor:'empresa',
       Header: 'Empresa',
       headerProps: { className: 'text-900' }
+    },
+    {
+      accessor:'fechaemision',
+      Header: 'Fecha de Resgistro',
+      headerProps: { className: 'text-900' }
+    },
+    {
+      accessor: 'estatus',
+      Header: 'Estatus',
+      headerProps: { className: 'text-900' },
+      cellProps: { className: 'text-center' }
     }
   ];
 
-function TableSucursales() {
+function TableSucursales({sucursales, estatus, layout, setFilter, filter}) {
     
-    const { getSucursales, sucursales, isLoading } = useGetSucursales();
-    const [result, setResult] = useState([]);
+  const [result, setResult] = useState([]);
+  const [formtoShow, setFormToShow] = useState('');
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const navigate = useNavigate();
+  const{breakpoints} = useBreakpoints();
+  const {actSucursal, result: response, isLoading} = useActSucursal();
 
-    const navigate = useNavigate();
+  useEffect(() => {
+    if(sucursales && sucursales.status === 200 && sucursales.data.length > 0 )
 
-    useEffect(() => {
-        var user = JSON.parse(localStorage.getItem('user'));
-        console.log(user);
-        const data = {
-          ID: user.SucursalID,
+    {
+      const transformedData = sucursales.data.map(u => ({
+        estatus: (
+          <SubtleBadge pill
+          bg={classNames({
+            success: u.Estatus === "ALTA",
+            danger: u.Estatus === "BAJA"
+          })}
+          className="fs--2"
+          >
+            {u.Estatus}
+            <FontAwesomeIcon
+            icon={getStatusIcon(u.Estatus)}
+            transform="shrink-2"
+            className="ms-1"
+            />
+
+          </SubtleBadge>
+        ),
+        id:u.ID,
+        sucursal: u.Nombre,
+        direccion: u.Direccion,
+        empresa: u.Empresa,
+        fechaemision: u.FechaEmision
+      }));
+      setResult(prevResult => {
+        if(JSON.stringify(prevResult)!== JSON.stringify(transformedData)) {
+          return transformedData;
         }
-        getSucursales({ data });
-    },[]);
-
-    useEffect(() => {
-        if(sucursales.status === 200)
-        {   
-          console.log(sucursales.data);
-            const transformedData = sucursales.data.map(e => ({
-                acciones: (
-                    <IconButton
-                        icon="edit"
-                        size="sm"
-                        variant="primary"
-                        onClick={() => {
-                            navigate(`/configuration/sucursales/editar/${e.ID}`);
-                        }}
-                    />
-                ),
-                estatus: 
-                <SubtleBadge variant={e.EstatusID === 1 ? 'success' : 'danger'}>{e.EstatusID === 1 ? 'Activo' : 'Inactivo'}</SubtleBadge>,
-                sucursal: e.Nombre,
-                direccion: `${e.CodigoPostal} ${e.Colonia} ${e.Direccion} ${e.DireccionNumero} ${e.Estado}`,
-                empresa: e.EmpresaID,
-            }));
-            setResult(transformedData);
-        }
-    }, [sucursales]);
-
-    if (isLoading) {
-      return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', height: '100vh', marginTop: '100px' }}>
-          <Spinner animation="border" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </Spinner>
-        </div>
-      );
+        return prevResult;
+      });
     }
+  },[sucursales]);
 
+  const getStatusIcon = (estatus) => {
+    switch (estatus) {
+      case 'ALTA':
+        return faCheck;
+      case 'BAJA':
+        return faBan;
+      default:
+        return faPaperPlane;
+    }
+  };
+
+  const handleRowClick = (id) => {
+    navigate(`/Catalogos/view-sucursales/${id}`);
+  };
+
+  if (isLoading) {
     return (
-      <AdvanceTableWrapper
-      columns={columns}
-      data={result}
-      sortable
-      pagination
-      perPage={5}
-    >
-      <Row className="justify-content-start ">
-        <Col xs="auto">
-          <AdvanceTableSearchBox table />
-        </Col>
-        <Col xs="auto" sm={6} lg={4} className="ms-auto text-end">
-          <IconButton           variant="primary"
-          icon="plus"
-          size="sm"
-          onClick={() => {
-            navigate('/configuration/sucursal/nuevo');
-          }}
-        >
-        </IconButton>
-        </Col>
-      </Row>
-      <hr style={{ margin: '10px 0' }} />
-      <AdvanceTable
-        table
-        headerClassName="bg-200 text-nowrap align-middle"
-        rowClassName="align-middle white-space-nowrap"
-        tableProps={{
-          bordered: true,
-          striped: true,
-          className: 'fs--1 mb-0 overflow-hidden'
-        }}
-      />
-      <div className="mt-3">
-        <AdvanceTableFooter
-          rowCount={result.length}
-          table
-          rowInfo
-          navButtons
-          rowsPerPageSelection
-        />
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', height: '100vh', marginTop: '100px' }}>
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
       </div>
-    </AdvanceTableWrapper>
+    );
+  }
+
+  return(
+    <Row className="gx-3">
+      <Col>
+        <AdvanceTableWrapper
+        columns={columns}
+        data={result}
+        selection
+        selectionColumnWidth={52}
+        sortable
+        pagination
+        perPage={10}
+        rowCount={result.length}
+        >
+          <Card>
+            <Card.Header className="border-bottom border-200 px-0">
+              <SucursalesHeader
+                table
+                layout={layout}
+                handleShow={handleShow}
+                filter={filter}
+                setFilter={setFilter}
+              />
+            </Card.Header>
+            <Card.Body className="p-0">
+              <TableRowClick
+                table
+                headerClassName="bg-body-tertiary align-middle"
+                rowClassName="align-middle white-space-nowrap"
+                onRowClick={(id) => handleRowClick(id)} 
+                tableProps={{
+                bordered: false,
+                className: 'fs--1 mb-0 overflow-hidden'
+                }}
+              />
+            </Card.Body>
+            <Card.Footer>
+              <AdvanceTablePagination table />
+            </Card.Footer>
+          </Card>
+        </AdvanceTableWrapper>
+      </Col>
+      <Col xxl={2} xl={3}>
+      <Offcanvas
+          show={show}
+          onHide={handleClose}
+          placement="end"
+          className="dark__bg-card-dark"
+      >
+          <Offcanvas.Header closeButton className="bg-body-tertiary">
+          <h6 className="fs-0 mb-0 fw-semi-bold">Filtros</h6>
+          </Offcanvas.Header>
+          <SucursalesFilterForm  estatus={estatus} setFilter={setFilter} filter={filter} />
+      </Offcanvas>
+      </Col>
+    </Row>
   );
 }
 

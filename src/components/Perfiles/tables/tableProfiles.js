@@ -3,7 +3,6 @@ import AdvanceTableWrapper from "components/common/advance-table/AdvanceTableWra
 import { useGetProfiles } from "../../../hooks/Catalogos/Perfiles/usePerfiles";
 import React, { useEffect, useState } from "react";
 import { Col, Row, Card, Offcanvas, Spinner } from "react-bootstrap";
-
 import AdvanceTableSearchBox from "components/common/advance-table/AdvanceTableSearchBox";
 import AdvanceTableFooter from "components/common/advance-table/AdvanceTableFooter";
 import SubtleBadge from "components/common/SubtleBadge";
@@ -95,6 +94,7 @@ function TableProfiles({ reservas, movimientos }) {
       endDate: filters.endDate,     // Fecha de fin
     };
     getProfiles({ data });
+
   }, [reload, filters]); // Ejecutar cuando `reload` o `filters` cambian
 
   useEffect(() => {
