@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Row, Col, Image } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Avatar from 'components/common/Avatar';
+import profileImage from 'assets/img/team/avatar.png';
 import Flex from 'components/common/Flex';
 import classNames from 'classnames';
 import users from 'data/people';
@@ -17,7 +18,7 @@ const Message = ({ message, senderUserId, status, time, isGroup }) => {
 
   return (
     <Flex className={classNames('p-3', { 'd-block': !isLeft })}>
-      {isLeft && <Avatar size="l" className="me-2" src={user.avatarSrc} />}
+      {isLeft && <Avatar size="l" className="me-2" src={profileImage} />}
       <div
         className={classNames('flex-1', {
           'd-flex justify-content-end': !isLeft
