@@ -240,12 +240,15 @@ import RutasD from 'components/logistica/rutas/pages/RutasD'
 import ExploradorParadasRutas from "components/Exploradores/Rutas/pages/ParadasRuta";
 import ExploradorPasajerosRutas from "components/Exploradores/Rutas/pages/PasajerosRuta";
 import EquiposViewD from 'components/Catalogos/Equipos/pages/EquiposViewD';
+import Clientes from 'components/Catalogos/Clientes/Index';
 import EquiposD from 'components/Catalogos/Equipos/pages/EquiposD';
 import Choferes from 'components/Catalogos/Choferes/Index';
 import ChoferProfile from 'components/Catalogos/Choferes/pages/viewChofer/Profile';
 import EditarChofer from 'components/Catalogos/Choferes/pages/editChofer/EditarChofer';
 import RutaD from 'components/Catalogos/Rutas/pages/previewRuta/RutaD';
 import RutaEditD from 'components/Catalogos/Rutas/pages/editRuta/RutaEditD';
+import ClienteProfile from 'components/Catalogos/Clientes/pages/viewCliente/Profile';
+import EditarCliente from 'components/Catalogos/Clientes/pages/editCliente/EditarCliente';
 
 
 const MetodikRoutes = () => {
@@ -676,8 +679,8 @@ const MetodikRoutes = () => {
         <Route path="comercial/reservas" element={<Reservas />} />
         <Route path="comercial/reservas/reservaD/:id" element={<ReservasD />} />
         <Route path="configuration/rutas" element={<Rutas />} />
-        <Route path="configuration/rutas/nuevo" element={<CreateRutas />} />
-        <Route path="configuration/rutas/edit/:id" element={<EditRutas />} />
+        {/* <Route path="configuration/rutas/nuevo" element={<CreateRutas />} />
+        <Route path="configuration/rutas/edit/:id" element={<EditRutas />} /> */}
         <Route path="configuration/choferes" element={<Choferes />} />
         <Route
           path="configuration/choferes/view-profile/:id"
@@ -765,6 +768,11 @@ const MetodikRoutes = () => {
         <Route path="catalogo/rutas" element={<Rutas />} />
         <Route path="catalogo/rutas/view-ruta/:id" element={<RutaD />} />
         <Route path="catalogo/rutas/actRutaD/:id" element={<RutaEditD />} />
+
+        {/* Catalogo Clientes */}
+        <Route path="catalogo/clientes" element={<Clientes />} />
+        <Route path="catalogo/clientes/view-profile/:id" element={<ClienteProfile />} />
+        <Route path="catalogo/clientes/actCliente/:id" element={<EditarCliente />} />
 
         <Route
           path="catalogo/choferes/view-profile/:id"
