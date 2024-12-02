@@ -104,7 +104,7 @@ export const appRoutes =
               {
                 name: "Rutas",
                 icon: faRoute,
-                to: "/configuration/rutas",
+                to: "/catalogo/rutas",
                 active: true,
               },
               {

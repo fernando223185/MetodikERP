@@ -221,9 +221,8 @@ import UserProfile from '../components/Usuarios/pages/viewUser/Profile'
 import EditarUsuario from '../components/Usuarios/pages/editUser/EditarUsuario'
 import Reservas from '../components/comercial/reservas/Index'
 import ReservasD from '../components/comercial/reservas/pages/ReservasD'
-import Rutas from 'components/rutas/index'
-import CreateRutas from 'components/rutas/forms/CreateRutas'
-import EditRutas from 'components/rutas/forms/EditRutas'
+import Rutas from 'components/Catalogos/Rutas/Index'
+
 
 import Profiles from 'components/Perfiles/index'
 import ExploradorRutas from 'components/Exploradores/Rutas/index'
@@ -245,6 +244,8 @@ import EquiposD from 'components/Catalogos/Equipos/pages/EquiposD';
 import Choferes from 'components/Catalogos/Choferes/Index';
 import ChoferProfile from 'components/Catalogos/Choferes/pages/viewChofer/Profile';
 import EditarChofer from 'components/Catalogos/Choferes/pages/editChofer/EditarChofer';
+import RutaD from 'components/Catalogos/Rutas/pages/previewRuta/RutaD';
+import RutaEditD from 'components/Catalogos/Rutas/pages/editRuta/RutaEditD';
 import RutasPrecios from "components/logistica/preciosRutas/index";
 
 
@@ -760,6 +761,12 @@ const MetodikRoutes = () => {
 
         {/* Catalogo Choferes */}
         <Route path="catalogo/choferes" element={<Choferes />} />
+
+        {/* Catalogo Rutas */}
+        <Route path="catalogo/rutas" element={<Rutas />} />
+        <Route path="catalogo/rutas/view-ruta/:id" element={<RutaD />} />
+        <Route path="catalogo/rutas/actRutaD/:id" element={<RutaEditD />} />
+
         <Route
           path="catalogo/choferes/view-profile/:id"
           element={<ChoferProfile />}
