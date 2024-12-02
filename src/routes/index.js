@@ -206,7 +206,6 @@ import Sucursales from 'components/sucursales';
 import Vehiculos from 'components/vehiculos';
 import VehiculosD from 'components/vehiculos/pages/VehiculosD';
 import VehiculosViewD from 'components/vehiculos/pages/VehiculosViewD';
-import VehiculosSettings from 'components/vehiculos/Profile/VehiculosSettings';
 import Equipos from 'components/Catalogos/Equipos/Index';
 
 import CreateAlmacen from 'components/almacenes/Profile/CreateAlmacen';
@@ -639,32 +638,8 @@ const MetodikRoutes = () => {
         <Route path="Catalogos/vehiculos" element={<Vehiculos />} />
         <Route path="Catalogos/vehiculos/:id" element={<VehiculosD/>} />
         <Route path="Catalogos/view-vehiculos/:id" element={<VehiculosViewD/>} />
-        <Route
-          path="configuration/sucursales/editar/:id"
-          element={<SucursalesSettings />}
-        />
-        <Route
-          path="configuration/sucursal/nuevo"
-          element={<CreateSucursal />}
-        />
-        <Route path="configuration/vehiculos" element={<Vehiculos />} />
-        <Route
-          path="configuration/vehiculos/editar/:id"
-          element={<VehiculosSettings />}
-        />
-        <Route
-          path="configuration/vehiculo/nuevo"
-          element={<CreateVehiculo />}
-        />
 
-        <Route
-          path="configuration/vehiculos/editar/:id"
-          element={<VehiculosSettings />}
-        />
-        <Route
-          path="configuration/vehiculo/nuevo"
-          element={<CreateVehiculo />}
-        />
+        <Route path="configuration/vehiculos" element={<Vehiculos />} />
 
         <Route path="configuration/almacenes" element={<Almacenes />} />
         <Route
@@ -686,11 +661,7 @@ const MetodikRoutes = () => {
         <Route path="comercial/reservas" element={<Reservas/>} />
         <Route path="comercial/reservas/reservaD/:id" element={<ReservasD/>} />
         <Route path="configuration/destinos" element={<Destinos />} />
-        <Route
-          path="configuration/destinos/editar/:id"
-          element={<DestinoSettings />}
-        />
-        <Route path="configuration/destino/nuevo" element={<CreateDestino />} />
+
 
         <Route
           path="configuration/users/view-profile/:id"
@@ -703,8 +674,6 @@ const MetodikRoutes = () => {
         <Route path="comercial/reservas" element={<Reservas />} />
         <Route path="comercial/reservas/reservaD/:id" element={<ReservasD />} />
         <Route path="configuration/rutas" element={<Rutas />} />
-        <Route path="configuration/rutas/nuevo" element={<CreateRutas />} />
-        <Route path="configuration/rutas/edit/:id" element={<EditRutas />} />
         <Route path="configuration/choferes" element={<Choferes />} />
         <Route
           path="configuration/choferes/view-profile/:id"
