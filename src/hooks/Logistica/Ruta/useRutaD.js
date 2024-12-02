@@ -10,7 +10,8 @@ import {
   afectarRutaAsync,
   cambiarSituacionesAsync,
   copiarRutaAsync,
-  EliminarRutaAsync
+  EliminarRutaAsync,
+  cancelarRutaAsync,
 } from "api/logistica/ruta/rutas";
 
 export const useGetRutaID = () => {
@@ -200,7 +201,19 @@ export const useCambiarSituaciones = () => {
   
     return { cambiarSituaciones, result, isLoading };
 }
+export const useCancelarRuta = () => {
+  const [result, setResult] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
+  const cancelarRuta = useCallback(async ({ data }) => {
+    setIsLoading(true);
+    const result = await cancelarRutaAsync({ data });
+    setResult(result);
+    setIsLoading(false);
+  }, []);
+
+  return { cancelarRuta, result, isLoading };
+};
 /*
 
 export const useGetRutaVuelta = () => {
@@ -351,19 +364,7 @@ export const useActDatosPasajero= () => {
     return { actDatosAsync, result, isLoading };
 }
 
-export const useCancelarReserva = () => {
-  const [result, setResult] = useState({})    
-  const [isLoading, setIsLoading] = useState(false)
-  
-  const cancelarReserva = useCallback(async ({ data }) => {
-      setIsLoading(true);
-      const result = await cancelarReservaAsync({ data });
-      setResult(result);
-      setIsLoading(false);
-    }, [])
-  
-    return { cancelarReserva, result, isLoading };
-}
+
 
 
 

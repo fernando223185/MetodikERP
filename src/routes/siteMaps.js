@@ -8,10 +8,12 @@ import {
   faUsers,
   faUserSecret,
   faBox,
+  faIdCard
 } from "@fortawesome/free-solid-svg-icons";
 
 const user = JSON.parse(localStorage.getItem("user"));
 const userID = user && user.ID ? user.ID : null;
+
 export const dashboardRoutes = {
   label: "Dashboard",
   labelDisable: true,
@@ -20,6 +22,11 @@ export const dashboardRoutes = {
       name: "Inicio",
       to: "/",
       exact: true,
+      active: true,
+    },
+    {
+      name: "Soporte",
+      to: "/app/chat",
       active: true,
     },
   ],
@@ -83,6 +90,12 @@ export const appRoutes =
                 active: true,
               },
               {
+                name: "Choferes",
+                icon: faIdCard,
+                to: "/catalogo/choferes",
+                active: true,
+              },
+              {
                 name: "Vehiculos",
                 icon: faTruck,
                 to: "/Catalogos/vehiculos",
@@ -91,7 +104,7 @@ export const appRoutes =
               {
                 name: "Rutas",
                 icon: faRoute,
-                to: "/configuration/rutas",
+                to: "/catalogo/rutas",
                 active: true,
               },
               {
@@ -112,18 +125,7 @@ export const appRoutes =
                 to: "/catalogo/clientes",
                 active: true,
               },
-              {
-                name: "Pasajeros",
-                icon: faUsers,
-                to: "/Catalogos/Pasajeros",
-                active: true,
-              },
-              {
-                name: "Sucursales",
-                icon: faStore,
-                to: "/configuration/sucursales",
-                active: true,
-              },
+           
             ],
           },
           {

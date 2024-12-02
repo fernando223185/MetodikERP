@@ -1,18 +1,19 @@
-import React, { useEffect, Fragment } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { Nav, Navbar, Row, Col } from 'react-bootstrap';
-import { navbarBreakPoint, topNavbarBreakpoint } from 'config';
-import Flex from 'components/common/Flex';
-import Logo from 'components/common/Logo';
-import NavbarVerticalMenu from './NavbarVerticalMenu';
-import ToggleButton from './ToggleButton';
-import routes from 'routes/siteMaps';
-import { capitalize } from 'helpers/utils';
-import NavbarTopDropDownMenus from 'components/navbar/top/NavbarTopDropDownMenus';
-import PurchaseCard from './PurchaseCard';
-import bgNavbar from 'assets/img/generic/bg-navbar.png';
-import { useAppContext } from 'Main';
+import React, { useEffect, Fragment } from "react";
+import PropTypes from "prop-types";
+import classNames from "classnames";
+import { Nav, Navbar, Row, Col } from "react-bootstrap";
+import { navbarBreakPoint, topNavbarBreakpoint } from "config";
+import Flex from "components/common/Flex";
+import Logo from "components/common/Logo";
+import NavbarVerticalMenu from "./NavbarVerticalMenu";
+import ToggleButton from "./ToggleButton";
+//import routes from 'routes/siteMaps';
+import { capitalize } from "helpers/utils";
+import NavbarTopDropDownMenus from "components/navbar/top/NavbarTopDropDownMenus";
+import PurchaseCard from "./PurchaseCard";
+import bgNavbar from "assets/img/generic/bg-navbar.png";
+import { useAppContext } from "Main";
+import { useCrearMenus } from "../../../hooks/Catalogos/Perfiles/usePerfiles";
 
 const NavbarVertical = () => {
   const {
@@ -20,20 +21,29 @@ const NavbarVertical = () => {
       navbarPosition,
       navbarStyle,
       isNavbarVerticalCollapsed,
-      showBurgerMenu
-    }
+      showBurgerMenu,
+    },
   } = useAppContext();
 
-  const HTMLClassList = document.getElementsByTagName('html')[0].classList;
+  const { crearmenus, routes, isLoading } = useCrearMenus();
+
+  const HTMLClassList = document.getElementsByTagName("html")[0].classList;
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userID = user && user.ID ? user.ID : null;
+
+  useEffect(() => {
+    crearmenus(userID);
+  }, [userID]);
 
   useEffect(() => {
     if (isNavbarVerticalCollapsed) {
-      HTMLClassList.add('navbar-vertical-collapsed');
+      HTMLClassList.add("navbar-vertical-collapsed");
     } else {
-      HTMLClassList.remove('navbar-vertical-collapsed');
+      HTMLClassList.remove("navbar-vertical-collapsed");
     }
     return () => {
-      HTMLClassList.remove('navbar-vertical-collapsed-hover');
+      HTMLClassList.remove("navbar-vertical-collapsed-hover");
     };
   }, [isNavbarVerticalCollapsed, HTMLClassList]);
 
@@ -42,13 +52,13 @@ const NavbarVertical = () => {
   const handleMouseEnter = () => {
     if (isNavbarVerticalCollapsed) {
       time = setTimeout(() => {
-        HTMLClassList.add('navbar-vertical-collapsed-hover');
+        HTMLClassList.add("navbar-vertical-collapsed-hover");
       }, 100);
     }
   };
   const handleMouseLeave = () => {
     clearTimeout(time);
-    HTMLClassList.remove('navbar-vertical-collapsed-hover');
+    HTMLClassList.remove("navbar-vertical-collapsed-hover");
   };
 
   const NavbarLabel = ({ label }) => (
@@ -67,8 +77,8 @@ const NavbarVertical = () => {
   return (
     <Navbar
       expand={navbarBreakPoint}
-      className={classNames('navbar-vertical', {
-        [`navbar-${navbarStyle}`]: navbarStyle !== 'transparent'
+      className={classNames("navbar-vertical", {
+        [`navbar-${navbarStyle}`]: navbarStyle !== "transparent",
       })}
       variant="light"
     >
@@ -82,14 +92,14 @@ const NavbarVertical = () => {
         onMouseLeave={handleMouseLeave}
         style={{
           backgroundImage:
-            navbarStyle === 'vibrant'
+            navbarStyle === "vibrant"
               ? `linear-gradient(-45deg, rgba(0, 160, 255, 0.86), #0048a2),url(${bgNavbar})`
-              : 'none'
+              : "none",
         }}
       >
         <div className="navbar-vertical-content scrollbar">
           <Nav className="flex-column" as="ul">
-            {routes.map(route => (
+            {routes.map((route) => (
               <Fragment key={route.label}>
                 {!route.labelDisable && (
                   <NavbarLabel label={capitalize(route.label)} />
@@ -100,7 +110,7 @@ const NavbarVertical = () => {
           </Nav>
 
           <>
-            {navbarPosition === 'combo' && (
+            {navbarPosition === "combo" && (
               <div className={`d-${topNavbarBreakpoint}-none`}>
                 <div className="navbar-vertical-divider">
                   <hr className="navbar-vertical-hr my-2" />
@@ -118,7 +128,7 @@ const NavbarVertical = () => {
 };
 
 NavbarVertical.propTypes = {
-  label: PropTypes.string
+  label: PropTypes.string,
 };
 
 export default NavbarVertical;

@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import classNames from 'classnames';
-import { Button } from 'react-bootstrap';
-import Flex from '../Flex';
+/* eslint-disable react/prop-types */
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import classNames from "classnames";
+import React from "react";
+import { Button } from "react-bootstrap";
+import Flex from "../Flex";
 
 export const AdvanceTablePagination = ({
   canPreviousPage,
@@ -11,59 +12,89 @@ export const AdvanceTablePagination = ({
   nextPage,
   pageCount,
   pageIndex,
-  gotoPage
+  gotoPage,
 }) => {
+  const maxButtonsToShow = 10;
+  const sideButtons = 2;
 
-  const handleGotoPage = (page) => {
-    localStorage.setItem('currentPage', page);
-    var pag = localStorage.getItem('currentPage')
-    gotoPage(pag);
-  };
-  useEffect(() => {
-    const savedPage = localStorage.getItem('currentPage');
-    if (savedPage && !isNaN(savedPage)) {
-      console.log("Entro en la pagina", savedPage)
-      gotoPage(savedPage);
+  const getPageNumbers = () => {
+    const pageButtons = [];
+    if (pageIndex < maxButtonsToShow - sideButtons) {
+      for (let i = 0; i < maxButtonsToShow && i < pageCount; i++) {
+        pageButtons.push(i);
+      }
+      if (pageCount > maxButtonsToShow) {
+        pageButtons.push("...");
+        pageButtons.push(pageCount - 1);
+      }
+    } else if (pageIndex >= pageCount - maxButtonsToShow + sideButtons) {
+      pageButtons.push(0);
+      pageButtons.push("...");
+      for (let i = pageCount - maxButtonsToShow; i < pageCount; i++) {
+        pageButtons.push(i);
+      }
+    } else {
+      pageButtons.push(0);
+      pageButtons.push("...");
+      for (let i = pageIndex - sideButtons; i <= pageIndex + sideButtons; i++) {
+        pageButtons.push(i);
+      }
+      pageButtons.push("...");
+      pageButtons.push(pageCount - 1);
     }
-  }, [gotoPage,pageIndex]);
+    return pageButtons;
+  };
 
   return (
-    <Flex alignItems="center" justifyContent="center">
+    <Flex
+      alignItems="center"
+      justifyContent="center"
+      className="flex-wrap"
+      style={{ gap: "0.5rem" }} // Añade espacio entre los botones
+    >
       <Button
         size="sm"
         variant="falcon-default"
-        onClick={() => {
-          previousPage();
-          handleGotoPage(pageIndex - 1);  // Actualiza también el localStorage
-        }}
-        className={classNames({ disabled: !canPreviousPage })}
+        onClick={() => previousPage()}
+        disabled={!canPreviousPage}
+        style={{ minWidth: "2.5rem" }} // Tamaño mínimo para botones
       >
         <FontAwesomeIcon icon="chevron-left" />
       </Button>
-      <ul className="pagination mb-0 mx-2">
-        {Array.from(Array(pageCount).keys()).map((page, index) => (
-          <li key={page} className={classNames({ active: pageIndex === page })}>
-            <Button
-              size="sm"
-              variant="falcon-default"
-              className={classNames('page', {
-                'me-2': index + 1 !== pageCount
+      <ul className="pagination mb-0 mx-2" style={{ gap: "0.5rem" }}>
+        {" "}
+        {/* Controla la separación */}
+        {getPageNumbers().map((page, index) =>
+          page === "..." ? (
+            <li key={`ellipsis-${index}`} className="pagination-ellipsis">
+              <span className="mx-2">...</span>
+            </li>
+          ) : (
+            <li
+              key={page}
+              className={classNames("page-item", {
+                active: pageIndex === page,
               })}
-              onClick={() => handleGotoPage(page)}  // Llama a la función con localStorage
             >
-              {page + 1}
-            </Button>
-          </li>
-        ))}
+              <Button
+                size="sm"
+                variant="falcon-default"
+                className="page"
+                onClick={() => gotoPage(page)}
+                style={{ minWidth: "2.5rem" }}
+              >
+                {page + 1}
+              </Button>
+            </li>
+          )
+        )}
       </ul>
       <Button
         size="sm"
         variant="falcon-default"
-        onClick={() => {
-          nextPage();
-          handleGotoPage(pageIndex + 1);  // Actualiza también el localStorage
-        }}
-        className={classNames({ disabled: !canNextPage })}
+        onClick={() => nextPage()}
+        disabled={!canNextPage}
+        style={{ minWidth: "2.5rem" }}
       >
         <FontAwesomeIcon icon="chevron-right" />
       </Button>
