@@ -24,6 +24,11 @@ export const dashboardRoutes = {
       exact: true,
       active: true,
     },
+    {
+      name: "Soporte",
+      to: "/app/chat",
+      active: true,
+    },
   ],
 };
 

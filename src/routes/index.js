@@ -246,6 +246,7 @@ import ChoferProfile from 'components/Catalogos/Choferes/pages/viewChofer/Profil
 import EditarChofer from 'components/Catalogos/Choferes/pages/editChofer/EditarChofer';
 import RutaD from 'components/Catalogos/Rutas/pages/previewRuta/RutaD';
 import RutaEditD from 'components/Catalogos/Rutas/pages/editRuta/RutaEditD';
+import RutasPrecios from "components/logistica/preciosRutas/index";
 
 
 const MetodikRoutes = () => {
@@ -774,6 +775,7 @@ const MetodikRoutes = () => {
           path="catalogo/choferes/actChoferD/:id"
           element={<EditarChofer />}
         />
+        <Route path="Logistica/PreciosRutas" element={<RutasPrecios />} />
       </Route>
 
       {/* //--- MainLayout end  */}
