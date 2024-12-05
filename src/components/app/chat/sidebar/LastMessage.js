@@ -37,6 +37,7 @@ const LastMessage = ({ lastMessage, thread }) => {
 
   return <div>Say hi to your new friend</div>;
 };
+
 LastMessage.propTypes = {
   thread: PropTypes.object.isRequired,
   lastMessage: PropTypes.object

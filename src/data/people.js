@@ -1,5 +1,5 @@
 import team1 from 'assets/img/team/1.jpg';
-import team2 from 'assets/img/team/2.jpg';
+//import team2 from 'assets/img/team/2.jpg';
 import team3 from 'assets/img/team/3.jpg';
 import team4 from 'assets/img/team/4.jpg';
 import team5 from 'assets/img/team/5.jpg';
@@ -23,6 +23,7 @@ import team22 from 'assets/img/team/22.jpg';
 import team23 from 'assets/img/team/23.jpg';
 import team24 from 'assets/img/team/24.jpg';
 import team25 from 'assets/img/team/25.jpg';
+import profileImage from '../assets/img/team/profileImage.png';
 
 export default [
   {
@@ -36,8 +37,8 @@ export default [
   },
   {
     id: 1,
-    avatarSrc: team2,
-    name: 'Kit Harington',
+    avatarSrc: profileImage,
+    name: 'Antoine Ganem Nuñez',
     institution: 'Harvard Korea Society',
     profileLink: '/user/profile',
     institutionLink: '#!',

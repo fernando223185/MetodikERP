@@ -24,6 +24,11 @@ export const dashboardRoutes = {
       exact: true,
       active: true,
     },
+    {
+      name: "Soporte",
+      to: "/app/chat",
+      active: true,
+    },
   ],
 };
 
@@ -93,7 +98,7 @@ export const appRoutes =
               {
                 name: "Vehiculos",
                 icon: faTruck,
-                to: "/configuration/vehiculos",
+                to: "/Catalogos/vehiculos",
                 active: true,
               },
               {
@@ -120,12 +125,7 @@ export const appRoutes =
                 to: "/catalogo/clientes",
                 active: true,
               },
-              {
-                name: "Equipos",
-                icon: faUsers,
-                to: "/catalogo/equipos",
-                active: true,
-              },
+           
             ],
           },
           {
@@ -175,6 +175,18 @@ export const appRoutes =
                 name: "Rutas",
                 icon: faRoute,
                 to: "/Explorador/ExploradorRutas",
+                active: true,
+              },
+              {
+                name: "Paqueteria Recepcion",
+                icon: faBox,
+                to: "/Explorador/PaqueteriaRecepcion",
+                active: true,
+              },
+              {
+                name: "Paqueteria Entrega",
+                icon: faBox,
+                to: "/Explorador/PaqueteriaEntrega",
                 active: true,
               },
             ],

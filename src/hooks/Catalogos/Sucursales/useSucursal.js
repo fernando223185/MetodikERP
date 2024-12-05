@@ -1,56 +1,99 @@
-import { useCallback, useState } from 'react';
-import { getSucursalesAsync } from 'api/catalogo/sucursales/sucursales';
-import { getSucursalResumen } from 'api/catalogo/sucursales/sucursales';
-import { actSucursal } from 'api/catalogo/sucursales/sucursales';
+import { useCallback, useState } from "react";
+import {
+  actSucursalAsync,
+  getSucursalesAsync,
+} from "api/catalogo/sucursales/sucursales";
+import { getSucursalIDAsync } from "api/catalogo/sucursales/sucursales";
 
 export const useGetSucursales = () => {
-    const [sucursales, setSucursales] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-  
-    const getSucursales = useCallback(async ({ data }) => {
+  const [sucursales, setSucursales] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const getSucursales = useCallback(
+    async ({ data }) => {
+      if (isLoading) return;
       setIsLoading(true);
-      const result = await getSucursalesAsync({ data });
-  
-      setSucursales(result);
-      setIsLoading(false);
-    }, []);
-  
-    return { getSucursales, sucursales, isLoading, setIsLoading };
-}
+      setError(null);
 
-export const useGetSucursalResumen = () => {
-    const [sucursalResumen, setSucursalResumen] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-  
-    const getResumen = useCallback(async ({ data }) => {
-      setIsLoading(true);
-      const result = await getSucursalResumen({ data });
-  
-      setSucursalResumen(result);
-      setIsLoading(false);
-    }, []);
-  
-    return { getResumen, sucursalResumen, isLoading, setIsLoading };
-}
-
-export const useActSucursal = () => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [response, setResponse] = useState(null);
-    const [error, setError] = useState(null);
-
-    const submitSucursal = useCallback(async ({data}) => {
-        setIsLoading(true);
-        setError(null);
-
-        try {
-            const result = await actSucursal({ data });
-            setResponse(result);
-        } catch (error) {
-            setError(error);
-        } finally {
-            setIsLoading(false);
+      try {
+        const result = await getSucursalesAsync({ data });
+        if (result.status === 200) {
+          setSucursales(result);
+        } else {
+          setError("failed to fetch sucursales");
         }
-    }, []);
+      } catch (error) {
+        setError("an error ocurred while fetching sucursales");
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [isLoading]
+  );
 
-    return { submitSucursal, response, error, isLoading };
-}
+  return { getSucursales, sucursales, isLoading, error };
+};
+export const useActSucursal = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [result, setResult] = useState(null);
+
+  const actSucursal = useCallback(async ({ data }) => {
+    setIsLoading(true);
+    const result = await actSucursalAsync({ data });
+    setResult(result);
+    setIsLoading(false);
+  }, []);
+  return { actSucursal, result, isLoading };
+};
+
+export const useGetSucursalID = () => {
+  const [sucursalID, setSucursal] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const getSucursalID = useCallback(
+    async ({ id }) => {
+      if (isLoading) return;
+      setIsLoading(true);
+      setError(null);
+      try {
+        const result = await getSucursalIDAsync({ id });
+        setSucursal(result);
+        setError("Failed to fetch sucursal");
+      } catch (error) {
+        setError("An error occurred while fetching sucursal");
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [isLoading]
+  );
+
+  return { getSucursalID, sucursalID, isLoading, error };
+};
+
+export const useGetSucursalIDOption = () => {
+  const [sucursalIdOption, setSucursalOpt] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const getSucursalID = useCallback(
+    async ({ id }) => {
+      if (isLoading) return;
+      setIsLoading(true);
+      setError(null);
+      try {
+        const result = await getSucursalIDAsync({ id });
+        setSucursalOpt(result);
+      } catch (error) {
+        setError("Failed to fetch sucursal options");
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [isLoading]
+  );
+
+  return { getSucursalID, sucursalIdOption, isLoading, error };
+};

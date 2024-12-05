@@ -203,20 +203,23 @@ import Empresas from 'components/empresas';
 import EmpresasSettings from 'components/empresas/Profile/EmpresaSettings';
 import CreateEmpresa from 'components/empresas/Profile/CreateEmpresa';
 import Sucursales from 'components/sucursales';
-import SucursalesSettings from 'components/sucursales/Profile/SucursalesSettings';
-import CreateVehiculo from 'components/vehiculos/Profile/CreateVehiculo';
 import Vehiculos from 'components/vehiculos';
-import VehiculosSettings from 'components/vehiculos/Profile/VehiculosSettings';
+import VehiculosD from 'components/vehiculos/pages/VehiculosD';
+import VehiculosViewD from 'components/vehiculos/pages/VehiculosViewD';
 import Equipos from 'components/Catalogos/Equipos/Index';
 
 import CreateAlmacen from 'components/almacenes/Profile/CreateAlmacen';
 import Almacenes from 'components/almacenes';
 import AlmacenSettings from 'components/almacenes/Profile/AlmacenSettings';
-import CreateDestino from 'components/destinos/Profile/CreateDestino';
-import Destinos from 'components/destinos';
-import DestinoSettings from 'components/destinos/Profile/DestinoSettings';
+import Destinos from 'components/destinos/index';
+import DestinosD from 'components/destinos/pages/DestinosD';
+import DestinosViewD from 'components/destinos/pages/DestinosViewD';
 
-import CreateSucursal from 'components/sucursales/Profile/CreateSucursal';
+import Pasajeros from 'components/Pasajeros';
+import PasajerosD from 'components/Pasajeros/pages/PasajerosD';
+import PasajerosViewD from 'components/Pasajeros/pages/PasajerosViewD';
+import ViewPasajerosCard from 'components/Pasajeros/sections/ViewPasajerosCard';
+
 import UserProfile from '../components/Usuarios/pages/viewUser/Profile'
 import EditarUsuario from '../components/Usuarios/pages/editUser/EditarUsuario'
 import Reservas from '../components/comercial/reservas/Index'
@@ -227,6 +230,8 @@ import Rutas from 'components/Catalogos/Rutas/Index'
 import Profiles from 'components/Perfiles/index'
 import ExploradorRutas from 'components/Exploradores/Rutas/index'
 import ExploradorRutasD from 'components/Exploradores/Rutas/index_rutasD'
+import ExploradorPaqueteriaRecepcion from 'components/Exploradores/PaqueteriaRecepcion';
+import PaqueteriaEntrega from 'components/Exploradores/PaqueteriaEntrega';
 import PasajeroD from '../components/comercial/reservas/pages/PasajeroD'
 import Perfiles from 'components/Perfiles/pages/index';
 import ReservasViewD from 'components/comercial/reservas/pages/ReservasViewD'
@@ -236,6 +241,8 @@ import PaqueteriaViewD from 'components/comercial/paqueteria/pages/PaqueteriaVie
 import RutasLogict from 'components/logistica/rutas/Index';
 import ViewRutasCard from 'components/logistica/rutas/pages/RutasViewD'
 import RutasD from 'components/logistica/rutas/pages/RutasD'
+import SucursalesViewD from 'components/sucursales/pages/SucursalesViewD';
+import SucursalesD from 'components/sucursales/pages/SucursalesD';
 
 import ExploradorParadasRutas from "components/Exploradores/Rutas/pages/ParadasRuta";
 import ExploradorPasajerosRutas from "components/Exploradores/Rutas/pages/PasajerosRuta";
@@ -247,8 +254,9 @@ import ChoferProfile from 'components/Catalogos/Choferes/pages/viewChofer/Profil
 import EditarChofer from 'components/Catalogos/Choferes/pages/editChofer/EditarChofer';
 import RutaD from 'components/Catalogos/Rutas/pages/previewRuta/RutaD';
 import RutaEditD from 'components/Catalogos/Rutas/pages/editRuta/RutaEditD';
-import ClienteProfile from 'components/Catalogos/Clientes/pages/viewCliente/Profile';
-import EditarCliente from 'components/Catalogos/Clientes/pages/editCliente/EditarCliente';
+
+import RutasPrecios from "components/logistica/preciosRutas/index";
+
 
 
 const MetodikRoutes = () => {
@@ -628,32 +636,13 @@ const MetodikRoutes = () => {
         />
         <Route path="configuration/empresa/nuevo" element={<CreateEmpresa />} />
         <Route path="configuration/sucursales" element={<Sucursales />} />
-        <Route
-          path="configuration/sucursales/editar/:id"
-          element={<SucursalesSettings />}
-        />
-        <Route
-          path="configuration/sucursal/nuevo"
-          element={<CreateSucursal />}
-        />
-        <Route path="configuration/vehiculos" element={<Vehiculos />} />
-        <Route
-          path="configuration/vehiculos/editar/:id"
-          element={<VehiculosSettings />}
-        />
-        <Route
-          path="configuration/vehiculo/nuevo"
-          element={<CreateVehiculo />}
-        />
+        <Route path="Catalogos/view-sucursales/:id" element={<SucursalesViewD />} />
+        <Route path="Catalogos/sucursales/:id" element={<SucursalesD />} />
+        <Route path="Catalogos/vehiculos" element={<Vehiculos />} />
+        <Route path="Catalogos/vehiculos/:id" element={<VehiculosD/>} />
+        <Route path="Catalogos/view-vehiculos/:id" element={<VehiculosViewD/>} />
 
-        <Route
-          path="configuration/vehiculos/editar/:id"
-          element={<VehiculosSettings />}
-        />
-        <Route
-          path="configuration/vehiculo/nuevo"
-          element={<CreateVehiculo />}
-        />
+        <Route path="configuration/vehiculos" element={<Vehiculos />} />
 
         <Route path="configuration/almacenes" element={<Almacenes />} />
         <Route
@@ -661,12 +650,21 @@ const MetodikRoutes = () => {
           element={<AlmacenSettings />}
         />
         <Route path="configuration/almacen/nuevo" element={<CreateAlmacen />} />
+        <Route path="configuration/Destinos" element={<Destinos />} />
+        <Route path="Catalogos/Destinos/:id" element={<DestinosD />} />
+        <Route path="Catalogos/view-destinos/:id" element={<DestinosViewD/>} />
+
+        <Route path="Catalogos/Pasajeros" element={<Pasajeros />} />
+        <Route path="Catalogos/Pasajeros/:id" element={<PasajerosD/>} />
+        <Route path="Catalogos/view-pasajeros/:id" element={<PasajerosViewD/>} />
+        <Route path="Catalogos/Pasajeros-card" element={<ViewPasajerosCard/>}/>
+        
+        <Route path="configuration/users/view-profile/:id" element={<UserProfile />} />
+        <Route path="configuration/users/edit/:id" element={<EditarUsuario />} />
+        <Route path="comercial/reservas" element={<Reservas/>} />
+        <Route path="comercial/reservas/reservaD/:id" element={<ReservasD/>} />
         <Route path="configuration/destinos" element={<Destinos />} />
-        <Route
-          path="configuration/destinos/editar/:id"
-          element={<DestinoSettings />}
-        />
-        <Route path="configuration/destino/nuevo" element={<CreateDestino />} />
+
 
         <Route
           path="configuration/users/view-profile/:id"
@@ -679,8 +677,7 @@ const MetodikRoutes = () => {
         <Route path="comercial/reservas" element={<Reservas />} />
         <Route path="comercial/reservas/reservaD/:id" element={<ReservasD />} />
         <Route path="configuration/rutas" element={<Rutas />} />
-        {/* <Route path="configuration/rutas/nuevo" element={<CreateRutas />} />
-        <Route path="configuration/rutas/edit/:id" element={<EditRutas />} /> */}
+          
         <Route path="configuration/choferes" element={<Choferes />} />
         <Route
           path="configuration/choferes/view-profile/:id"
@@ -693,6 +690,11 @@ const MetodikRoutes = () => {
         <Route path="configuration/choferes/nuevo" element={<EditarChofer />} />
 
         <Route path="configuration/Profiles" element={<Profiles />} />
+        <Route path="Explorador/ExploradorRutas" element={<ExploradorRutas />} />
+        <Route path="Explorador/ExploradorRutas/:id" element={<ExploradorRutasD/>} />
+        <Route path="Explorador/PaqueteriaRecepcion" element={<ExploradorPaqueteriaRecepcion/>} />
+        <Route path="Explorador/PaqueteriaEntrega" element={<PaqueteriaEntrega/>} />
+        <Route path="comercial/reservas/reservaD/pasajerosD/:id" element={<PasajeroD/>} />
         <Route
           path="Explorador/ExploradorRutas"
           element={<ExploradorRutas />}
@@ -782,6 +784,7 @@ const MetodikRoutes = () => {
           path="catalogo/choferes/actChoferD/:id"
           element={<EditarChofer />}
         />
+        <Route path="Logistica/PreciosRutas" element={<RutasPrecios />} />
       </Route>
 
       {/* //--- MainLayout end  */}
