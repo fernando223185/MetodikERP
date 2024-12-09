@@ -11,6 +11,7 @@ import AdvanceTablePagination from 'components/common/advance-table/AdvanceTable
 import { useBreakpoints } from 'hooks/useBreakpoints';
 import Flex from 'components/common/Flex';
 import Avatar from 'components/common/Avatar';
+import { useNavigate } from "react-router-dom";
 import PaqueteriaRHeader from "./PaqueteriaRHeader";
 import PaqueteriaRFilterForm from "../form/PaqueteriaRFilterForm";
 
@@ -94,6 +95,7 @@ function TablePaqueteriaR({paqueteriaR, cliente, destino, movimiento, usuarios, 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const{breakpoints} = useBreakpoints();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if(paqueteriaR && paqueteriaR.status === 200 && paqueteriaR.data.length > 0)
@@ -118,6 +120,10 @@ function TablePaqueteriaR({paqueteriaR, cliente, destino, movimiento, usuarios, 
             });
         }
     },[paqueteriaR])
+
+    const handleRowClick = (id) => {
+        navigate(`/Explorador/PaqueteriaRecepcion`);
+    };
 
     return(
         <Row className="gx-3">
@@ -147,6 +153,7 @@ function TablePaqueteriaR({paqueteriaR, cliente, destino, movimiento, usuarios, 
                     table
                     headerClassName="bg-body-tertiary align-middle"
                     rowClassName="align-middle white-space-nowrap"
+                    onRowClick={(id) => handleRowClick(id)} 
                     tableProps={{
                     bordered: false,
                     className: 'fs--1 mb-0 overflow-hidden'
