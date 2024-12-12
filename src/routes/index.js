@@ -259,6 +259,10 @@ import RutaEditD from 'components/Catalogos/Rutas/pages/editRuta/RutaEditD';
 
 import RutasPrecios from "components/logistica/preciosRutas/index";
 
+
+import Modulos from 'components/configurador/modulos';
+import ModulosD from 'components/configurador/modulos/pages/ModulosD';
+
 const MetodikRoutes = () => {
   return (
     <Routes>
@@ -785,7 +789,13 @@ const MetodikRoutes = () => {
           element={<EditarChofer />}
         />
         <Route path="Logistica/PreciosRutas" element={<RutasPrecios />} />
+
+        {/* Configurador Modulos */}
+        <Route path="Configuracion/modulos" element={<Modulos />} />
+        <Route path='Configuracion/modulos/:id' element={<ModulosD />} />
       </Route>
+
+        
 
       {/* //--- MainLayout end  */}
 
