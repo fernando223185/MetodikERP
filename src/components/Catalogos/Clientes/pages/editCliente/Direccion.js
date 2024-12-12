@@ -5,8 +5,21 @@ import Select from 'react-select';
 import IconButton from 'components/common/IconButton';
 import { faSave } from '@fortawesome/free-solid-svg-icons';
 
-const Direccion = ({formik}) => {
+const Direccion = ({formik, pais}) => {
     const { values, errors, touched, handleChange, handleSubmit, getFieldProps, setValues } = formik;
+    const [ selectedPais, setSelectedPais ] = useState([]);
+
+    useEffect(() => {
+        if (pais.length > 0) {
+            const currentPais = pais.find(item => item.Valor === values.Pais.toString());
+            setSelectedPais(currentPais ? { value: currentPais.Valor, label: currentPais.Dato } : null );
+        }
+    }, [pais, values]);
+
+    const handlePaisChange = (selectedOption)  => {
+        setSelectedPais(selectedOption);
+        setValues({ ...values, Pais: selectedOption ? selectedOption.value : null });
+    }
 
     return (
         <Card>
@@ -135,13 +148,15 @@ const Direccion = ({formik}) => {
                     </Form.Group>
                     <Form.Group as={Col} lg={6} controlId="Pais">
                     <Form.Label>Pais</Form.Label>
-                    <Form.Control
-                        type="text"
-                        placeholder="Pais"
-                        name="Pais"
-                        value={values.Pais}
-                        {...getFieldProps('Pais')}
-                        isInvalid={!!errors.profile?.Pais && touched.Pais}
+                    <Select
+                        classNamePrefix='react-select'
+                        name='Pais'
+                        options={pais.map(item => ({
+                            value: item.Valor,
+                            label: item.Dato
+                        }))}
+                        value={selectedPais}
+                        onChange={handlePaisChange}
                     />
                     <Form.Control.Feedback type="invalid">
                         {errors.Pais}

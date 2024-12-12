@@ -5,8 +5,21 @@ import Select from 'react-select';
 import IconButton from 'components/common/IconButton';
 import { faSave } from '@fortawesome/free-solid-svg-icons';
 
-const DatosPersonales = ({formik}) => {
+const DatosPersonales = ({formik, sexo}) => {
     const { values, errors, touched, handleChange, handleSubmit, getFieldProps, setValues } = formik;
+    const [ selectedSexo, setSelectedSexo ] = useState([]);
+    
+    useEffect(() => {
+        if (sexo.length > 0) {
+            const currentSexo = sexo.find(item => item.Valor === values.Sexo.toString());
+            setSelectedSexo(currentSexo ? { value: currentSexo.Valor, label: currentSexo.Dato } : null);
+        }
+    }, [sexo, values])
+
+    const handleSexoChange = (selectedOption) => {
+        setSelectedSexo(selectedOption);
+        setValues({ ...values, Sexo: selectedOption ? selectedOption.value : null });
+    }
 
     return (
         <Card>
@@ -75,13 +88,16 @@ const DatosPersonales = ({formik}) => {
                 <Row>
                     <Form.Group as={Col} lg={6} controlId="Sexo">
                     <Form.Label>Sexo</Form.Label>
-                    <Form.Control
-                        type="text"
-                        placeholder="Sexo"
-                        name="Sexo"
-                        value={values.Sexo}
-                        {...getFieldProps('Sexo')}
-                        isInvalid={!!errors.profile?.Sexo && touched.Sexo}
+                    <Select 
+                        classNamePrefix='react-select'
+                        name='Sexo'
+                        options={sexo.map(item => ({
+                            value: item.Valor,
+                            label: item.Dato
+                        }))}
+                        value={selectedSexo}
+                        onChange={handleSexoChange}
+                        placeholder="Seleccione..."
                     />
                     <Form.Control.Feedback type="invalid">
                         {errors.Sexo}

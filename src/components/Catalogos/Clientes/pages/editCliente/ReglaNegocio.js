@@ -5,8 +5,40 @@ import Select from 'react-select';
 import IconButton from 'components/common/IconButton';
 import { faSave } from '@fortawesome/free-solid-svg-icons';
 
-const ReglaNegocio = ({formik}) => {
+const ReglaNegocio = ({formik, condicion, bloquearM, sucursal}) => {
     const { values, errors, touched, handleChange, handleSubmit, getFieldProps, setValues } = formik;
+    const [ selectedCondicion, setSelectedCondicion ] = useState([]);
+    const [ selectedBloquearM, setSelectedBloquearM ] = useState([]);
+    const [ selectedSucursal, setSelectedSucursal ] = useState([]);
+
+    useEffect(() => {
+        if (condicion.length > 0) {
+            const currentCondicion = condicion.find(item => item.Valor === values.CreditoCondiciones.toString());
+            setSelectedCondicion(currentCondicion ? { value: currentCondicion.Valor, label: currentCondicion.Dato } : null);
+        }
+        if (bloquearM.length > 0) {
+            const currentBloquearM = bloquearM.find(item => item.Valor === values.BloquearMorosos.toString());
+            setSelectedBloquearM(currentBloquearM ? { value: currentBloquearM.Valor, label: currentBloquearM.Dato } : null );
+        }
+        if (sucursal.length > 0) {
+            const currentSucursal = sucursal.find(item => item.Valor === values.SucursalEmpresa.toString());
+            setSelectedSucursal(currentSucursal ? { value: currentSucursal.Valor , label: currentSucursal.Dato } : null );
+        }
+    }, [condicion, bloquearM, sucursal, values]);
+
+    const handleCondicionChange = (selectedOption) => {
+        setSelectedCondicion(selectedOption);
+        setValues({ ...values, CreditoCondiciones: selectedOption ? selectedOption.value : null });
+    }
+    const handleBloquearMChange = (selectedOption) => {
+        setSelectedBloquearM(selectedOption);
+        setValues({ ...values, BloquearMorosos: selectedOption ? selectedOption.value : null });
+    }
+    const handleSucursalChange = (selectedOption) => {
+        setSelectedSucursal(selectedOption);
+        setValues({ ...values, SucursalEmpresa: selectedOption ? selectedOption.value : null });
+    }
+
 
     return (
         <Card>
@@ -30,13 +62,15 @@ const ReglaNegocio = ({formik}) => {
                     </Form.Group>
                     <Form.Group as={Col} lg={6} controlId="CreditoCondiciones">
                     <Form.Label>Condiciones</Form.Label>
-                    <Form.Control
-                        type="text"
-                        placeholder="Condiciones"
-                        name="CreditoCondiciones"
-                        value={values.CreditoCondiciones}
-                        {...getFieldProps('CreditoCondiciones')}
-                        isInvalid={!!errors.profile?.CreditoCondiciones && touched.CreditoCondiciones}
+                    <Select
+                        classNamePrefix='react-select'
+                        name='CreditoCondiciones'
+                        options={condicion.map(item => ({
+                            value: item.Valor,
+                            label: item.Dato
+                        }))}
+                        value={selectedCondicion}
+                        onChange={handleCondicionChange}
                     />
                     <Form.Control.Feedback type="invalid">
                         {errors.CreditoCondiciones}
@@ -46,13 +80,15 @@ const ReglaNegocio = ({formik}) => {
                 <Row>
                     <Form.Group as={Col} lg={6} controlId="BloquearMorosos">
                     <Form.Label>Bloquear Morosos</Form.Label>
-                    <Form.Control
-                        type="text"
-                        placeholder="Bloquear Morosos"
-                        name="BloquearMorosos"
-                        value={values.BloquearMorosos}
-                        {...getFieldProps('BloquearMorosos')}
-                        isInvalid={!!errors.profile?.BloquearMorosos && touched.BloquearMorosos}
+                    <Select
+                        classNamePrefix='react-select'
+                        name='BloquearMorosos'
+                        options={bloquearM.map(item => ({
+                            value: item.Valor,
+                            label: item.Dato
+                        }))}
+                        value={selectedBloquearM}
+                        onChange={handleBloquearMChange}
                     />
                     <Form.Control.Feedback type="invalid">
                         {errors.BloquearMorosos}
@@ -76,13 +112,15 @@ const ReglaNegocio = ({formik}) => {
                 <Row>
                     <Form.Group as={Col} lg={6} controlId="SucursalEmpresa">
                     <Form.Label>Sucursal</Form.Label>
-                    <Form.Control
-                        type="text"
-                        placeholder="Sucursal"
-                        name="SucursalEmpresa"
-                        value={values.SucursalEmpresa}
-                        {...getFieldProps('SucursalEmpresa')}
-                        isInvalid={!!errors.profile?.SucursalEmpresa && touched.SucursalEmpresa}
+                    <Select
+                        classNamePrefix='react-select'
+                        name='SucursalEmpresa'
+                        options={sucursal.map(item => ({
+                            value: item.Valor,
+                            label: item.Dato
+                        }))}
+                        value={selectedSucursal}
+                        onChange={handleSucursalChange}
                     />
                     <Form.Control.Feedback type="invalid">
                         {errors.SucursalEmpresa}
