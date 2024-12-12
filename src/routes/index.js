@@ -198,7 +198,6 @@ import InputMaskExample from 'components/doc-components/InputMaskExample';
 import RangeSlider from 'components/doc-components/RangeSlider';
 
 /* IMPORTS FOR THE NEW APP */
-import Users from '../components/Usuarios/Index'
 import Empresas from 'components/empresas';
 import EmpresasSettings from 'components/empresas/Profile/EmpresaSettings';
 import CreateEmpresa from 'components/empresas/Profile/CreateEmpresa';
@@ -221,7 +220,7 @@ import PasajerosViewD from 'components/Pasajeros/pages/PasajerosViewD';
 import ViewPasajerosCard from 'components/Pasajeros/sections/ViewPasajerosCard';
 
 import UserProfile from '../components/Usuarios/pages/viewUser/Profile'
-import EditarUsuario from '../components/Usuarios/pages/editUser/EditarUsuario'
+
 import Reservas from '../components/comercial/reservas/Index'
 import ReservasD from '../components/comercial/reservas/pages/ReservasD'
 import Rutas from 'components/Catalogos/Rutas/Index'
@@ -254,7 +253,10 @@ import EditarChofer from 'components/Catalogos/Choferes/pages/editChofer/EditarC
 import RutaD from 'components/Catalogos/Rutas/pages/previewRuta/RutaD';
 import RutaEditD from 'components/Catalogos/Rutas/pages/editRuta/RutaEditD';
 import RutasPrecios from "components/logistica/preciosRutas/index";
-
+import Usuarios from 'components/Catalogos/Usuarios/index';
+//import EditarUsuario from 'components/Usuarios/pages/editUser/EditarUsuario';
+import EditarUsuario from 'components/Catalogos/Usuarios/pages/editUsuario/EditarUsuario';
+import UsuarioProfile from 'components/Catalogos/Usuarios/pages/viewUsuario/UsuarioProfile';
 
 const MetodikRoutes = () => {
   return (
@@ -625,7 +627,6 @@ const MetodikRoutes = () => {
         <Route path="documentation/design-file" element={<DesignFile />} />
         <Route path="changelog" element={<Changelog />} />
         {/*ROUTES FOR THE NEW APP METODIK*/}
-        <Route path="configuration/users" element={<Users />} />
         <Route path="configuration/empresas" element={<Empresas />} />
         <Route
           path="configuration/empresas/editar/:id"
@@ -776,6 +777,11 @@ const MetodikRoutes = () => {
           element={<EditarChofer />}
         />
         <Route path="Logistica/PreciosRutas" element={<RutasPrecios />} />
+
+        {/* Catalogo Usuarios */}
+        <Route path="catalogo/usuarios" element={<Usuarios />} />
+        <Route path="catalogo/usuarios/actUsuarios/:id" element={<EditarUsuario />} />
+        <Route path="catalogo/usuarios/view-usuario/:id" element={<UsuarioProfile />} />
       </Route>
 
       {/* //--- MainLayout end  */}

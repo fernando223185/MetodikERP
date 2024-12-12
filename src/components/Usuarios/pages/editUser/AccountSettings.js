@@ -1,44 +1,50 @@
 import FalconCardHeader from 'components/common/FalconCardHeader';
 import TooltipBadge from 'components/common/TooltipBadge';
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, Form } from 'react-bootstrap';
 
-const AccountSettings = () => {
+const AccountSettings = ({ formik }) => {
+  const { values, setValues } = formik;
 
-  return (
+  const handleMultiempresaChange = (value) => {
+    setValues({ ...values, MultiEmpresa: parseInt(value) }); // Update Multiempresa while preserving other values
+  };
+
+  return (  
     <Card className="mb-3">
-      <FalconCardHeader title="Configuracion de usuario" />
-      <Card.Body className="bg-body-tertiary">
+      <div className='d-flex justify-content-start align-items-center'>
         <div>
-          <h6 className="fw-bold">
-            MultiEmpresa
-            <TooltipBadge
-              tooltip="Only The group of selected people can see your profile"
-              icon="question-circle"
-            />
-          </h6>
-          <div className="ps-2 mb-2">
-            <Form.Check
-              type="radio"
-              id="profile-everyone"
-              label="Activo"
-              className="form-label-nogutter"
-              value="true" 
-              name="Activo"
-              //onChange={handleChange}
-              //checked={formData.viewProfile === 'everyone'}
-            />
-            <Form.Check
-              type="radio"
-              id="profile-followers"
-              label="Inactivo"
-              className="form-label-nogutter"
-              value="false"
-              name="Inactivo"
-              //onChange={}
-              //checked={}
-            />
-          </div>
+          <FalconCardHeader title="Multiempresa"/>
+        </div>
+        <div>
+          <TooltipBadge
+            tooltip="Activar si un usuario pertenece a más de una empresa"
+            icon="question-circle"
+          />
+        </div>
+      </div>
+      <Card.Body className="bg-body-tertiary">
+        <div className="ps-2 mb-2">
+          <Form.Check
+            type="radio"
+            id="profile-activo"
+            label="Activo"
+            className="form-label-nogutter"
+            value="1" // Value matches `Multiempresa` for "Activo"
+            name="multiEmpresa"
+            onChange={() => handleMultiempresaChange(1)} // Set Multiempresa to 0
+            checked={values.MultiEmpresa === 1} // Mark checked when value is 0
+          />
+          <Form.Check
+            type="radio"
+            id="profile-inactivo"
+            label="Inactivo"
+            className="form-label-nogutter"
+            value="0" // Value matches `Multiempresa` for "Inactivo"
+            name="Multiempresa"
+            onChange={() => handleMultiempresaChange(0)} // Set Multiempresa to 1
+            checked={values.MultiEmpresa === 0} // Mark checked when value is 1
+          />
         </div>
       </Card.Body>
     </Card>

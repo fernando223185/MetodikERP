@@ -21,19 +21,46 @@ export const arrayReducer = (state, action) => {
         return [payload, ...state];
       }
       return [...state, payload];
+
     case 'REMOVE':
       if (id !== 0 && !id) {
         return state;
       }
       return state.filter(item => item.id !== id);
       
-    case 'EDIT':
-      if(payload.MensajeID){
+      case 'UPDATE':
+        if (!id) {
+          return state;
+        }
         const status = readMessageAsync(payload);
-        console.log(status)
-        return state.map(item => (item.id === id ? payload : item)); 
-      }
-      
+        const updatedUser = state.map(user => {
+          if(user.id === id){
+            console.log(user);
+            return {
+              ...user,
+              read: true
+            }
+          }
+          return user;
+        });
+        return updatedUser;
+      case 'UPDATE_MESSAGE':
+        if (!id) {
+          return state;
+        }
+        const updatedMessage = state.map(user => {
+          if(user.id === id){
+            console.log(user);
+            return {
+              ...user,
+              message: payload.message,
+              messageID: payload.messageID,
+              read: false 
+            }
+          }
+          return user;
+        }) 
+        return updatedMessage;
 
     case 'SORT':
       if (!sortBy || !order) {
@@ -42,93 +69,117 @@ export const arrayReducer = (state, action) => {
       return orderBy(state, sortBy, order);
       
     case 'ADD_MANY':
-  if (!Array.isArray(payload)) {
-    console.error('Payload is not an array:', payload);
-    return state;
-  }
-
-  // Agrupar y transformar mensajes por UsuarioID
-  const groupedMessages = payload.reduce((acc, msg) => {
-    const dateObj = new Date(msg.FechaEnvio);
-    const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    const day = dayNames[dateObj.getUTCDay()];
-    const hour = dateObj.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true
-    });
-    const formattedDate = dateObj.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric"
-    });
-
-    const messageObj = {
-      senderUserId: msg.Remitente === 'agente' ? 3 : 1,
-      message: msg.Mensaje,
-      time: {
-        day: day,
-        hour: hour,
-        date: formattedDate
-      }
-       
-    };
-
-    // Check if we already have messages for this user
-    if (!acc[msg.UsuarioID]) {
-      acc[msg.UsuarioID] = { id: msg.UsuarioID, content: [] };
-    }
-
-    // Push the new message to the user's content array
-    acc[msg.UsuarioID].content.push(messageObj);
-
-    return acc;
-
-  }, {});
-
-  // Update the state with new messages, concatenating if they exist
-  return state.map(user => {
-    if (groupedMessages[user.id]) {
-      // Concatenate new messages with existing content for this user
-      return {
-        ...user,
-        content: [...user.content, ...groupedMessages[user.id].content]
-      };
-    }
-    return user;
-  }).concat(
-    // Add new users if they are not already in the state
-    Object.values(groupedMessages).filter(user => 
-      !state.some(existingUser => existingUser.id === user.id)
-    )
-  );
-
-
-    case 'ADD_THREADS':
       if (!Array.isArray(payload)) {
         console.error('Payload is not an array:', payload);
         return state;
       }
-      // Filtrar para evitar duplicados de `id`
-      const newThreads = payload.filter(newThread => 
-        !state.some(existingThread => existingThread.id === newThread.id)
-      );
-      return [...state, ...newThreads];
+      // Agrupar y transformar mensajes por UsuarioID
+      const groupedMessages = payload.reduce((acc, msg) => {
+           // Split the SQL date format into parts
+      const [dayName, day, month, year, time] = msg.FechaEnvio.split(' '); // Split by space
+      const [hour, minute] = time.split(':'); // Split time into hours and minutes
+      const hourInt = parseInt(hour, 10);
+      const isPM = hourInt >= 12;
+      const dayNamesMap = {
+        Mon: 'Lun',
+        Tue: 'Mar',
+        Wed: 'Mié',
+        Thu: 'Jue',
+        Fri: 'Vie',
+        Sat: 'Sáb',
+        Sun: 'Dom'
+      };
+      const spanishDayName = dayNamesMap[dayName.replace(',', '')] || dayName;
+      
+
+      // Format the hour in 12-hour format with AM/PM
+      const formattedHour = `${(hourInt % 12 || 12)}:${minute} ${isPM ? 'PM' : 'AM'}`;
+      
+        const messageObj = {
+          senderUserId: msg.Remitente === 'agente' ? 3 : 1,
+          message: msg.Mensaje,
+          time: {
+            day: day,
+            hour: formattedHour,
+            date: `${spanishDayName}, ${day} ${month} ${year}`
+          }
+          
+        };
         
-    case 'UPDATE_THREAD_FROM_WEBHOOK':
-      const { UsuarioID, Mensaje, MensajeID } = action.payload;
-     
-    return state.map((thread) => {
-      if (thread.id === UsuarioID) {
+        console.log(messageObj);
+        // Check if we already have messages for this user
+        if (!acc[msg.UsuarioID]) {
+          acc[msg.UsuarioID] = { id: msg.UsuarioID, content: [] };
+        }
+
+        // Push the new message to the user's content array
+        acc[msg.UsuarioID].content.push(messageObj);
+
+        return acc;
+
+      }, {});
+
+      console.log(groupedMessages);
+    // Update the state with new messages, concatenating if they exist
+    return state.map(user => {
+      if (groupedMessages[user.id]) {
+        // Concatenate new messages with existing content for this user
         return {
-          ...thread,
-          message: Mensaje, // Update the last message
-          messageId : MensajeID,
-          read: false, // Mark as unread
+          ...user,
+          content: [...user.content, ...groupedMessages[user.id].content]
         };
       }
-      return thread;
-    });
+      console.log(user);
+      return user;
+    }).concat(
+      // Add new users if they are not already in the state
+      Object.values(groupedMessages).filter(user => 
+        !state.some(existingUser => existingUser.id === user.id)
+      )
+    );
+
+    case 'ADD_USERS': {
+      if (!Array.isArray(payload)) {
+        console.error('Payload for ADD_USERS must be an array of users');
+        return state;
+      }
+    
+      // Add the new users to the state
+      const groupedUsers = payload.map(user => {
+        const [dayName, day, month, year, time] = user.time.split(' '); // Split by space
+        const [hour, minute] = time.split(':'); // Split time into hours and minutes
+        const hourInt = parseInt(hour, 10);
+        const isPM = hourInt >= 12;
+      
+        const dayNamesMap = {
+          Mon: 'Lun',
+          Tue: 'Mar',
+          Wed: 'Mié',
+          Thu: 'Jue',
+          Fri: 'Vie',
+          Sat: 'Sáb',
+          Sun: 'Dom'
+        };
+      
+        const spanishDayName = dayNamesMap[dayName.replace(',', '')] || dayName;
+      
+        return {
+          ...user,
+          time: {
+            day: spanishDayName,
+            hour: `${hourInt % 12 || 12}:${minute} ${isPM ? 'PM' : 'AM'}`,
+            date: `${spanishDayName}, ${day} ${month} ${year}`
+          }
+        };
+      });
+      return [...state, ...groupedUsers];
+    }
+    
+
+  
+
+        
+    
 
     default:
       return state;

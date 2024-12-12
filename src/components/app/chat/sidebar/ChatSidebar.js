@@ -10,19 +10,9 @@ import Loading from 'widgets/Loading';
 
 
 const ChatSidebar = ({ hideSidebar }) => {
-  const { threads,setUsers, setCurrentThread,threadsDispatch,users } = useContext(ChatContext);
+  const { users } = useContext(ChatContext);
 
   const [isLoading, setIsLoading ] = useState(false);
-
-  const fetchUsersAndThreads = async () => {
-    setIsLoading(true)
-    try{
-      await fetchUsersAndThreads(setUsers, setCurrentThread, threadsDispatch);
-    } catch (error){
-      console.log(error)
-    }
-    setIsLoading(false)
-   } 
 
 
    if(isLoading){
@@ -36,8 +26,8 @@ const ChatSidebar = ({ hideSidebar }) => {
       <div className="contacts-list">
         <SimpleBarReact style={{ height: '100%', minWidth: '65px' }}>
           <Nav className="border-0">
-            {threads.map((thread) => (
-              <ChatThread thread={thread} key={thread.id} />
+            {users.map((user) => (
+              <ChatThread user={user} key={user.id} />
             ))}
           </Nav>
         </SimpleBarReact>
