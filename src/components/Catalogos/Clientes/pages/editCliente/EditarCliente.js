@@ -39,17 +39,17 @@ const getInitialValues = (cliente) => {
         Colonia: "",
         Poblacion: "",
         Estado: "",
-        Pais: "",
+        Pais: "", //drop
         RFC: "",
         CURP: "",
         Telefonos: "",
-        Sexo: "", // drop
+        Sexo: "", // drop R
         Email: "",
         FechaNacimiento: "",
         usoCFDI: "", //drop
         FormaPago: 1, //drop
         MetodoPago: 1, //drop
-        RegimenFiscal: "", //drop
+        RegimenFiscal: "", //drop R
         CreditoLimite: 0.00,
         CreditoCondiciones: "", //drop
         BloquearMorosos: "", //drop
@@ -83,6 +83,14 @@ const EditarCliente = () => {
     const { getFiltroCatalogo, isLoading: isLoadingFiltro } = useGetFiltroCatalogo();
     const [ estatus, setEstatus ] = useState([]);
     const [ sucursal, setSucursal ] = useState([]);
+    const [ regimenFiscal, setRegimenFiscal ] = useState([]);
+    const [ sexo, setSexo ] = useState([]);
+    const [ formaPago, setFormaPago ] = useState([]);
+    const [ cfdi, setCfdi ] = useState([]);
+    const [ metodoPago, setMetodoPago ] = useState([]);
+    const [ pais, setPais ] = useState([]);
+    const [ condicion, setCondicion ] = useState([]);
+    const [ bloquearM, setBloquearM ] = useState([]);
     const navigate = useNavigate();
 
     const formik = useFormik({
@@ -135,9 +143,57 @@ const EditarCliente = () => {
             const result = await getFiltroCatalogo(data);
             setSucursal(result);
         };
+        const fecthRegimenFiscal = async () => {
+            const data = { Tipo: 'RegimenFiscal', PersonaID: 1, Modulo: "Choferes" };
+            const result = await getFiltroCatalogo(data);
+            setRegimenFiscal(result);
+        }
+        const fetchSexo = async () => {
+            const data = { Tipo: "Sexo", PersonaID: 1, Modulo: "Choferes" };
+            const result = await getFiltroCatalogo(data);
+            setSexo(result);
+        }
+        const fecthFormaPago = async () => {
+            const data = { Tipo: "FormaPago", PersonaID: 1, Modulo: "Choferes" };
+            const result = await getFiltroCatalogo(data);
+            setFormaPago(result);
+        }
+        const fetchCfdi = async () => {
+            const data = { Tipo: "CFDI", PersonaID: 1, Modulo: "Choferes" };
+            const result = await getFiltroCatalogo(data);
+            setCfdi(result);
+        }
+        const fetchMetodoPago = async () => {
+            const data = { Tipo: "MetodoPago", PersonaID: 1, Modulo: "Choferes" };
+            const result = await getFiltroCatalogo(data);
+            setMetodoPago(result);
+        }
+        const fetchPais = async () => {
+            const data = { Tipo: "Pais", PersonaID: 1, Modulo: "Choferes" };
+            const result = await getFiltroCatalogo(data);
+            setPais(result);
+        }
+        const fetchCondicion = async () => {
+            const data = { Tipo: "Condicion", PersonaID: 1, Modulo: "Choferes" };
+            const result = await getFiltroCatalogo(data);
+            setCondicion(result);
+        }
+        const fetchBloquearM = async () => {
+            const data = { Tipo: "BloquearMor", PersonaID: 1, Modulo: "Choferes" };
+            const result = await getFiltroCatalogo(data);
+            setBloquearM(result)
+        }
 
         fetchEstatus();
         fetchSucursal();
+        fecthRegimenFiscal();
+        fetchSexo();
+        fecthFormaPago();
+        fetchCfdi();
+        fetchMetodoPago();
+        fetchPais();
+        fetchCondicion();
+        fetchBloquearM();
     }, []);
 
     if (isLoading) {
@@ -172,21 +228,30 @@ const EditarCliente = () => {
                         <Col lg={12}>
                             <Direccion 
                                 formik={formik}
+                                pais={pais}
                             />
                         </Col>
                         <Col lg={12}>
                             <DatosPersonales 
                                 formik={formik}
+                                sexo={sexo}
                             />
                         </Col>
                         <Col lg={12}>
                             <Facturacion 
                                 formik={formik}
+                                regimen={regimenFiscal}
+                                formaPago={formaPago}
+                                metodoPago={metodoPago}
+                                cfdi={cfdi}
                             />
                         </Col>
                         <Col lg={12}>
                             <ReglaNegocio 
                                 formik={formik}
+                                condicion={condicion}
+                                bloquearM={bloquearM}
+                                sucursal={sucursal}
                             />
                         </Col>
                     </Row>

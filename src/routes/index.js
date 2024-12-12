@@ -248,6 +248,8 @@ import ExploradorParadasRutas from "components/Exploradores/Rutas/pages/ParadasR
 import ExploradorPasajerosRutas from "components/Exploradores/Rutas/pages/PasajerosRuta";
 import EquiposViewD from 'components/Catalogos/Equipos/pages/EquiposViewD';
 import Clientes from 'components/Catalogos/Clientes/Index';
+import ClienteProfile from 'components/Catalogos/Clientes/pages/viewCliente/Profile';
+import EditarCliente from 'components/Catalogos/Clientes/pages/editCliente/EditarCliente';
 import EquiposD from 'components/Catalogos/Equipos/pages/EquiposD';
 import Choferes from 'components/Catalogos/Choferes/Index';
 import ChoferProfile from 'components/Catalogos/Choferes/pages/viewChofer/Profile';
@@ -257,10 +259,9 @@ import RutaEditD from 'components/Catalogos/Rutas/pages/editRuta/RutaEditD';
 
 import RutasPrecios from "components/logistica/preciosRutas/index";
 
+
 import Modulos from 'components/configurador/modulos';
 import ModulosD from 'components/configurador/modulos/pages/ModulosD';
-
-
 
 const MetodikRoutes = () => {
   return (
