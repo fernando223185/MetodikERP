@@ -4,23 +4,12 @@ import React, { useEffect, useState } from "react";
 import {
   Col,
   Row,
-  Spinner,
   Card,
   Offcanvas,
   Form,
-  Button,
 } from "react-bootstrap";
-import SubtleBadge from "components/common/SubtleBadge";
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import classNames from "classnames";
 import {
-  faPaperPlane,
-  faCheck,
-  faStream,
-  faPen,
-  faBan,
-  faSpinner,
   faSave,
 } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -31,7 +20,6 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import PreciosRutasHeader from "./PreciosRutasHeader";
 import AdvanceTablePagination from "components/common/advance-table/AdvanceTablePagination";
-import PropTypes from "prop-types";
 import { useBreakpoints } from "hooks/useBreakpoints";
 import PreciosRutasFilterForm from "../sections/PreciosRutasFiilterForm";
 import Flex from "components/common/Flex";
@@ -67,6 +55,7 @@ function TablePreciosRutas({
         item.id === id ? { ...item, [field]: value } : item
       )
     );
+    
   };
 
   const handleButtonClick = async (row) => {
@@ -75,7 +64,9 @@ function TablePreciosRutas({
       PrecioAdulto: row.adulto === "" ? 0 : row.adulto,
       PrecioInfantil: row.infantil === "" ? 0 : row.infantil,
       PrecioInapam: row.inapam === "" ? 0 : row.inapam,
-      PrecioRedondo: row.redondo === "" ? 0 : row.redondo,
+      PrecioRedondo: row.redondoadulto === "" ? 0 : row.redondoadulto,
+      PrecioRedondoInfantil: row.redondoniño === "" ? 0 : row.redondoniño,
+      PrecioRedondoInapam: row.redondoinapam === "" ? 0 : row.redondoinapam,
     };
 
     console.log(data);
@@ -98,7 +89,9 @@ function TablePreciosRutas({
         adulto: u.PrecioAdulto || "",
         infantil: u.PrecioInfantil || "",
         inapam: u.PrecioInapam || "",
-        redondo: u.PrecioRedondo || "",
+        redondoadulto: u.PrecioRedondo || "",
+        redondoniño: u.PrecioRedondoInfantil || "",
+        redondoinapam: u.PrecioRedondoInapam || "",
         ulimocambio: u.UltimoCambio,
         id: u.ID,
       }));
@@ -135,7 +128,6 @@ function TablePreciosRutas({
     //navigate(/logistica/rutas/view-rutas/${id});
   };
 
-  // Definir `columns` después de las funciones
   const columns = [
     {
       accessor: "acciones",
@@ -151,7 +143,7 @@ function TablePreciosRutas({
           icon={faSave}
           transform="shrink-3"
           iconAlign="middle"
-          onClick={() => handleButtonClick(rowData.row.original)} // Pasa la fila completa a la función
+          onClick={() => handleButtonClick(rowData.row.original)}
         >
           <span className="d-none d-sm-inline-block d-xl-none d-xxl-inline-block ms-1">
             Guardar
@@ -208,9 +200,9 @@ function TablePreciosRutas({
           }
           className="w-100"
           style={{
-            minWidth: "100px", // ancho mínimo para que el valor se vea
-            padding: "8px 12px", // padding interno para el input
-            textAlign: "righ", // opcional: centra el texto en el input
+            minWidth: "100px", 
+            padding: "8px 12px",
+            textAlign: "righ",
           }}
           onClick={(e) => e.stopPropagation()}
         />
@@ -236,9 +228,9 @@ function TablePreciosRutas({
           }
           className="w-100"
           style={{
-            minWidth: "100px", // ancho mínimo para que el valor se vea
-            padding: "8px 12px", // padding interno para el input
-            textAlign: "righ", // opcional: centra el texto en el input
+            minWidth: "100px", 
+            padding: "8px 12px", 
+            textAlign: "righ",
           }}
         />
       ),
@@ -259,16 +251,16 @@ function TablePreciosRutas({
           }
           className="w-100"
           style={{
-            minWidth: "100px", // ancho mínimo para que el valor se vea
-            padding: "8px 12px", // padding interno para el input
-            textAlign: "righ", // opcional: centra el texto en el input
+            minWidth: "100px",
+            padding: "8px 12px",
+            textAlign: "righ",
           }}
         />
       ),
     },
     {
-      accessor: "redondo",
-      Header: "(REDONDO)",
+      accessor: "redondoadulto",
+      Header: "(REDONDOADULTO)",
       headerProps: { className: "text-1300" },
       cellProps: {
         className: "py-1 pe-6",
@@ -276,18 +268,72 @@ function TablePreciosRutas({
       Cell: (rowData) => (
         <Form.Control
           type="number"
-          value={rowData.row.original.redondo}
+          value={rowData.row.original.redondoadulto}
           onChange={(e) =>
             handleInputChange(
               rowData.row.original.id,
-              "redondo",
+              "redondoadulto",
               e.target.value
             )
           }
           className="w-100"
           style={{
-            minWidth: "100px", // ancho mínimo para que el valor se vea
-            padding: "8px 12px", // padding interno para el input
+            minWidth: "100px",
+            padding: "8px 12px",
+            textAlign: "righ",
+          }}
+        />
+      ),
+    },
+    {
+      accessor: "redondoniño",
+      Header: "(REDONDONIÑO)",
+      headerProps: { className: "text-1300" },
+      cellProps: {
+        className: "py-1 pe-6",
+      },
+      Cell: (rowData) => (
+        <Form.Control
+          type="number"
+          value={rowData.row.original.redondoniño}
+          onChange={(e) =>
+            handleInputChange(
+              rowData.row.original.id,
+              "redondoniño",
+              e.target.value
+            )
+          }
+          className="w-100"
+          style={{
+            minWidth: "100px",
+            padding: "8px 12px",
+            textAlign: "righ",
+          }}
+        />
+      ),
+    },
+    {
+      accessor: "redondoinapam",
+      Header: "(REDONDOINAPAM)",
+      headerProps: { className: "text-1300" },
+      cellProps: {
+        className: "py-1 pe-6",
+      },
+      Cell: (rowData) => (
+        <Form.Control
+          type="number"
+          value={rowData.row.original.redondoinapam}
+          onChange={(e) =>
+            handleInputChange(
+              rowData.row.original.id,
+              "redondoinapam",
+              e.target.value
+            )
+          }
+          className="w-100"
+          style={{
+            minWidth: "100px",
+            padding: "8px 12px",
             textAlign: "righ", // opcional: centra el texto en el input
           }}
         />
