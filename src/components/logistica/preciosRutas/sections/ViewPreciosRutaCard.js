@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import { CardLayout } from "components/dashboards/support-desk/unsolved-tickets/TicketsLayout";
-import { tickets } from "data/dashboard/support-desk";
 import { useBreakpoints } from "hooks/useBreakpoints";
 import useBulkSelect from "hooks/useBulkSelect";
 import usePagination from "hooks/usePagination";
@@ -48,7 +47,7 @@ const ViewPreciosRutasCard = ({
     nextPage,
     prevPage,
     goToPage,
-  } = usePagination(primaryReservas, 7);
+  } = usePagination(primaryReservas, 7)
 
   const handleReservaSearch = (text) => {
     console.log("allReservas", allReservas);
@@ -167,12 +166,12 @@ const ViewPreciosRutasCard = ({
               {paginationArray
                 .filter(
                   (page) =>
-                    page === 1 || // Mostrar siempre la primera página
-                    page === allReservas || // Mostrar siempre la última página
-                    Math.abs(page - currentPage) <= 2 // Mostrar las 2 páginas antes y después de la actual
+                    page === 1 ||
+                    page === allReservas || 
+                    Math.abs(page - currentPage) <= 2
                 )
                 .map((page, index, arr) => {
-                  const isEllipsis = index > 0 && page - arr[index - 1] > 1; // Detectar saltos para mostrar puntos suspensivos
+                  const isEllipsis = index > 0 && page - arr[index - 1] > 1;
                   return (
                     <React.Fragment key={page}>
                       {isEllipsis && (
@@ -186,7 +185,7 @@ const ViewPreciosRutasCard = ({
                         <Button
                           size="sm"
                           variant="falcon-default"
-                          className="page mx-1" // Ajuste para espaciado entre botones
+                          className="page mx-1"
                           onClick={() => goToPage(page)}
                         >
                           {page}

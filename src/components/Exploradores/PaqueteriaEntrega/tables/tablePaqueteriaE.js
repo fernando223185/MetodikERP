@@ -10,6 +10,7 @@ import { faPaperPlane, faCheck, faBan } from '@fortawesome/free-solid-svg-icons'
 import AdvanceTablePagination from 'components/common/advance-table/AdvanceTablePagination';
 import { useBreakpoints } from 'hooks/useBreakpoints';
 import Flex from 'components/common/Flex';
+import { useNavigate } from "react-router-dom";
 import Avatar from 'components/common/Avatar';
 import PaqueteriaEHeader from "./PaqueteriaEHeader";
 import PaqueteriaEFilterForm from "../form/PaqueteriaEFilterForm";
@@ -84,6 +85,8 @@ function TablePaqueteriaE({paqueteriaE, cliente, destino, movimiento, usuarios, 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const{breakpoints} = useBreakpoints();
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         if(paqueteriaE && paqueteriaE.status === 200 && paqueteriaE.data.length > 0)
@@ -106,6 +109,10 @@ function TablePaqueteriaE({paqueteriaE, cliente, destino, movimiento, usuarios, 
             });
         }
     },[paqueteriaE])
+
+    const handleRowClick = (id) => {
+        navigate(`/Explorador/PaqueteriaEntrega`);
+    };
 
     return(
         <Row className="gx-3">
@@ -135,6 +142,7 @@ function TablePaqueteriaE({paqueteriaE, cliente, destino, movimiento, usuarios, 
                     table
                     headerClassName="bg-body-tertiary align-middle"
                     rowClassName="align-middle white-space-nowrap"
+                    onRowClick={(id) => handleRowClick(id)}
                     tableProps={{
                     bordered: false,
                     className: 'fs--1 mb-0 overflow-hidden'

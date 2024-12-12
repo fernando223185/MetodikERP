@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import React from "react";
+import PropTypes from "prop-types";
+import classNames from "classnames";
 
 const Flex = ({
   justifyContent,
@@ -9,7 +9,7 @@ const Flex = ({
   inline,
   wrap,
   className,
-  tag: Tag = 'div',
+  tag: Tag = "div",
   children,
   breakpoint,
   direction,
@@ -19,13 +19,13 @@ const Flex = ({
     <Tag
       className={classNames(
         {
-          [`d-${breakpoint ? breakpoint + '-' : ''}flex`]: !inline,
-          [`d-${breakpoint ? breakpoint + '-' : ''}inline-flex`]: inline,
+          [`d-${breakpoint ? breakpoint + "-" : ""}flex`]: !inline,
+          [`d-${breakpoint ? breakpoint + "-" : ""}inline-flex`]: inline,
           [`flex-${direction}`]: direction,
           [`justify-content-${justifyContent}`]: justifyContent,
           [`align-items-${alignItems}`]: alignItems,
           [`align-content-${alignContent}`]: alignContent,
-          [`flex-${wrap}`]: wrap
+          [`flex-${wrap}`]: wrap,
         },
         className
       )}
@@ -46,7 +46,7 @@ Flex.propTypes = {
   className: PropTypes.string,
   tag: PropTypes.string,
   breakpoint: PropTypes.string,
-  direction: PropTypes.string
+  direction: PropTypes.string,
 };
 
 export default Flex;
