@@ -1,90 +1,62 @@
-import React from 'react';
-import WeeklySales from './WeeklySales';
-import { Row, Col } from 'react-bootstrap';
-import {
-  marketShare,
-  totalOrder,
-  totalSales,
-  weeklySalesData,
-  weather,
-  products,
-  storageStatus,
-  files,
-  users,
-  topProducts,
-  runningProjects
-} from 'data/dashboard/default';
-
-import TotalOrder from './TotalOrder';
-import MarketShare from './MarketShare';
-import TotalSales from './TotalSales';
-import RunningProjects from './RunningProjects';
-import StorageStatus from './StorageStatus';
-import SpaceWarning from './SpaceWarning';
-import BestSellingProducts from './BestSellingProducts';
-import SharedFiles from './SharedFiles';
-import ActiveUsers from './ActiveUsers';
-import BandwidthSaved from './BandwidthSaved';
-import TopProducts from './TopProducts';
-import Weather from './Weather';
+import React, { useState, useEffect } from "react";
+import CustomCard from "../quickaccess/CustomCard";
+import {useAccesosRapidos} from "../../../hooks/Catalogos/Perfiles/usePerfiles";
 
 const Dashboard = () => {
+  // Obtener datos del usuario desde localStorage
+  const user = JSON.parse(localStorage.getItem("user")) || {};
+  const userName = user?.Nombres || "Usuario";
+  const companyName = user?.EmpresaNombre || "Empresa";
+  const { accesosRapidos, routes, isLoading } = useAccesosRapidos();
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const PersonaID = user && user.ID ? user.ID : null;
+    accesosRapidos(PersonaID);
+  }, []);
+
+  const cards = [
+    {
+      title: "Vista 1",
+      icon: "faCoffee",
+      subtitle: "Previsualización 1",
+      navigateTo: "Explorador/PaqueteriaEntrega",
+    },
+    {
+      title: "Vista 2",
+      icon: "faAppleAlt",
+      subtitle: "Previsualización 2",
+      navigateTo: "/comercial/paqueteria",
+    },
+    {
+      title: "Vista 3",
+      icon: "faCar",
+      subtitle: "Previsualización 3",
+      navigateTo: "/logistica/rutas",
+    },
+  ];
+
   return (
-    <>
-      <Row className="g-3 mb-3">
-        <Col md={6} xxl={3}>
-          <WeeklySales data={weeklySalesData} />
-        </Col>
-        <Col md={6} xxl={3}>
-          <TotalOrder data={totalOrder} />
-        </Col>
-        <Col md={6} xxl={3}>
-          <MarketShare data={marketShare} radius={['100%', '87%']} />
-        </Col>
-        <Col md={6} xxl={3}>
-          <Weather data={weather} />
-        </Col>
-      </Row>
+    <div className="container">
+      {/* Título de bienvenida */}
+      <div className="text-center my-4">
+        <h1 className="fw-bold">Bienvenido a Metodik, {userName}!</h1>
+        <h3 className="text-muted">{companyName}</h3>
+      </div>
 
-      <Row className="g-3 mb-3">
-        <Col lg={6}>
-          <RunningProjects data={runningProjects} />
-        </Col>
-        <Col lg={6}>
-          <TotalSales data={totalSales} />
-        </Col>
-      </Row>
-
-      <Row className="g-3 mb-3">
-        <Col lg={6} xl={7} xxl={8}>
-          <StorageStatus className="h-lg-100" data={storageStatus} />
-        </Col>
-        <Col lg={6} xl={5} xxl={4}>
-          <SpaceWarning />
-        </Col>
-      </Row>
-
-      <Row className="g-3 mb-3">
-        <Col lg={7} xl={8}>
-          <BestSellingProducts products={products} />
-        </Col>
-        <Col lg={5} xl={4}>
-          <SharedFiles files={files} className="h-lg-100" />
-        </Col>
-      </Row>
-
-      <Row className="g-3">
-        <Col sm={6} xxl={3}>
-          <ActiveUsers className="h-100" users={users} />
-        </Col>
-        <Col sm={6} xxl={3} className="order-xxl-1">
-          <BandwidthSaved />
-        </Col>
-        <Col xxl={6}>
-          <TopProducts data={topProducts} className="h-100" />
-        </Col>
-      </Row>
-    </>
+      {/* Tarjetas */}
+      <div className="d-flex flex-wrap justify-content-center">
+        {routes.map((card, index) => (
+          <CustomCard
+            key={index}
+            title={card.title}
+            icon={card.icon}
+            subtitle={card.subtitle}
+            navigateTo={card.navigateTo} // Ruta de previsualización y redirección
+          />
+        ))}
+      </div>
+    </div>
   );
 };
 
