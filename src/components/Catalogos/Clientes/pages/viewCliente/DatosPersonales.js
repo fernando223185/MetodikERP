@@ -35,7 +35,7 @@ const DatosPersonales = ({ cliente }) => {
                 </Row>
                 <Row>
                     <Col md={6}>
-                        <p><strong>Sexo:</strong> {cliente.Sexo}</p>
+                        <p><strong>Sexo:</strong> {cliente.SexoText}</p>
                     </Col>
                     <Col md={6}>
                         <p><strong>Correo Electronico:</strong> {cliente.Email}</p>

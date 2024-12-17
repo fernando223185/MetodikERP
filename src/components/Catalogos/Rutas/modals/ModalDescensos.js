@@ -21,15 +21,6 @@ const ModalDescensos = ({ show, handleClose, formik, destinos }) => {
         console.log(values.DestinoDID)
     };
 
-    // const handleSave = () => {
-    //     handleSubmit();
-
-    //     setTimeout(() => {
-    //         resetForm();
-    //         setSelectedDestino(null);
-    //     }, 200);
-    // };
-
     return (
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
@@ -37,7 +28,7 @@ const ModalDescensos = ({ show, handleClose, formik, destinos }) => {
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
-                    <Form.Group controlId="rutaID">
+                    {/* <Form.Group controlId="rutaID">
                         <Form.Label>RutaID</Form.Label>
                         <Form.Control
                             type="number"
@@ -48,7 +39,7 @@ const ModalDescensos = ({ show, handleClose, formik, destinos }) => {
                             disabled
                             required
                         />
-                    </Form.Group>
+                    </Form.Group> */}
 
                     <Form.Group>
                         <Form.Label>Origen</Form.Label>
@@ -88,7 +79,7 @@ const ModalDescensos = ({ show, handleClose, formik, destinos }) => {
                         />
                     </Form.Group>
 
-                    <Form.Group controlId="precioNino">
+                    {/* <Form.Group controlId="precioNino">
                         <Form.Label>Precio Niño</Form.Label>
                         <Form.Control
                             type="number"
@@ -122,7 +113,7 @@ const ModalDescensos = ({ show, handleClose, formik, destinos }) => {
                             onBlur={handleBlur}
                             required
                         />
-                    </Form.Group>
+                    </Form.Group> */}
 
                     <div className="d-flex justify-content-end mt-3">
                         <IconButton

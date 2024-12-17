@@ -26,10 +26,26 @@ export async function getClienteIDAsync({id = 0}) {
 
 export async function newActClienteAsync({data}) {
     try {
-        const response = await axios.post(`${endpoints.key}/Clientes`, data)
+        const response = await axios.post(`${endpoints.key}/Clientes/actCliente`, data)
         return response
     } catch (error) {
-        console.error("Error makin cliente", error);
+        console.error("Error making cliente", error);
         return error;
+    }
+}
+
+export async function getPaisEstadoAsync(CodigoPostal) {
+    try {
+        const response = await axios.post(
+            `${endpoints.key}/Clientes/getPaisEstado`,
+            { CodigoPostal },
+            {
+                headers: { 'Content-Type': 'application/json' }
+            }
+        );
+        return response.data[0];
+    } catch (error) {
+        console.error("Error fetching pais/estado", error);
+        throw error;
     }
 }

@@ -45,6 +45,14 @@ const columns = [
         }
     },
     {
+        accessor: 'Cliente',
+        Header: 'Cliente',
+        headerProps: { className: 'text-900' },
+        cellProps: {
+            className: 'py-2 pe-4'
+        }
+    },
+    {
         accessor: 'Telefonos',
         Header: 'Telefonos',
         headerProps: { className: 'text-900' },
@@ -55,6 +63,22 @@ const columns = [
     {
         accessor: 'Direccion',
         Header: 'Direccion',
+        headerProps: { className: 'text-900' },
+        cellProps: {
+            className: 'py-2 pe-4'
+        }
+    },
+    {
+        accessor: 'RFC',
+        Header: 'RFC',
+        headerProps: { className: 'text-900' },
+        cellProps: {
+            className: 'py-2 pe-4'
+        }
+    },
+    {
+        accessor: 'RegimenFiscal',
+        Header: 'Regimen Fiscal',
         headerProps: { className: 'text-900' },
         cellProps: {
             className: 'py-2 pe-4'
@@ -105,6 +129,9 @@ function TableClientes({clientes, layout, estatus, empresa, setFilter, filter}) 
                         />
                     </SubtleBadge>
                 ),
+                Cliente: u.Cliente,
+                RFC: u.RFC,
+                RegimenFiscal: u.RegimenFiscal,
                 Empresa: u.EmpresaID,
                 id: u.ID,
                 Telefonos: u.Telefonos,

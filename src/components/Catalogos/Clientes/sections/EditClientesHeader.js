@@ -11,7 +11,10 @@ const EditClientesHeader = () => {
             <Card.Body>
             <Row className="justify-content-between align-items-center">
                 <Col md>
-                <h5 className="mb-2 mb-md-0">Editar Cliente</h5>
+                {false ? 
+                    <h5 className="mb-2 mb-md-0">Nuevo Cliente</h5> :
+                    <h5 className="mb-2 mb-md-0">Editar Cliente</h5>
+                }
                 </Col>
                 <Col xs="auto">
                     <RegresarButton />

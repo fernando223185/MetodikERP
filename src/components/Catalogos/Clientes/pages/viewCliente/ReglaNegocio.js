@@ -15,15 +15,15 @@ const ReglaNegocio = ({ cliente }) => {
             <Card.Body className='text-1000'>
                 <Row>
                     <Col md={6}>
-                        <p><strong>Limite de credito:</strong> {cliente.CreditoLimite}</p>
+                        <p><strong>Limite de credito:</strong> {cliente.LimiteCredito}</p>
                     </Col>
                     <Col md={6}>
-                        <p><strong>Condicion:</strong> {cliente.CreditoCondiciones}</p>
+                        <p><strong>Condicion:</strong> {cliente.CreditoCondicionesText}</p>
                     </Col>
                 </Row>
                 <Row>
                     <Col md={6}>
-                        <p><strong>Bloquear Morosos:</strong> {cliente.BloquearMorosos}</p>
+                        <p><strong>Bloquear Morosos:</strong> {cliente.BloquearMorososText}</p>
                     </Col>
                     <Col md={6}>
                         <p><strong>Descuento:</strong> {cliente.Descuento}</p>
@@ -31,7 +31,7 @@ const ReglaNegocio = ({ cliente }) => {
                 </Row>
                 <Row>
                     <Col md={6}>
-                        <p><strong>Sucursal:</strong> {cliente.SucursalEmpresa}</p>
+                        <p><strong>Sucursal:</strong> {cliente.SucursalEmpresaText}</p>
                     </Col>
                 </Row>
             </Card.Body>

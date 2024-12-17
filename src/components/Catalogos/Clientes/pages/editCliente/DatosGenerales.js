@@ -28,7 +28,7 @@ const DatosGenerales = ({formik, estatus}) => {
             <Card.Body>
                 <Row className="mb-3 g-3">
                     <Form.Group as={Col} lg={6} controlId="Cliente">
-                    <Form.Label>Cliente</Form.Label>
+                    <Form.Label>Cliente<span style={{ color: "red" }}>*</span></Form.Label>
                     <Form.Control
                         type="text"
                         placeholder="Cliente"
@@ -42,7 +42,7 @@ const DatosGenerales = ({formik, estatus}) => {
                     </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group as={Col} lg={6} controlId="EstatusID">
-                    <Form.Label className="mb-1 mt-2 fs--1">Estatus</Form.Label>
+                    <Form.Label className="mb-1 mt-2 fs--1">Estatus<span style={{ color: "red" }}>*</span></Form.Label>
                     <Select
                         classNamePrefix="react-select"
                         name="EstatusID"
@@ -61,7 +61,7 @@ const DatosGenerales = ({formik, estatus}) => {
                 </Row>
                 <Row>
                     <Form.Group as={Col} lg={6} controlId="Nombre">
-                    <Form.Label>Nombre</Form.Label>
+                    <Form.Label>Nombre<span style={{ color: "red" }}>*</span></Form.Label>
                     <Form.Control
                         type="text"
                         placeholder="Nombre"
