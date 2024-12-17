@@ -39,7 +39,7 @@ export const CardUsuariosLayout = ({ data, isSelectedItem, toggleSelectedItem })
               </Link>
               <div className="ms-1 ms-sm-3">
                 <p className="fw-semi-bold mb-3 mb-sm-2">
-                  <Link to={`/catalogo/usuarios/view-profile/${chofer.ID}`}>{chofer.Nombre}</Link>
+                  <Link to={`/catalogo/usuarios/view-usuario/${chofer.ID}`}>{chofer.Nombre}</Link>
                 </p>
                 <Row className="align-items-center gx-0 gy-2">
                   <Col xs="auto" className="me-2">
@@ -49,15 +49,15 @@ export const CardUsuariosLayout = ({ data, isSelectedItem, toggleSelectedItem })
                         className="text-800 d-flex align-items-center gap-1"
                       >
                         <FontAwesomeIcon icon={faWarehouse} transform="shrink-3 up-1" />
-                        <span>{chofer.Sucursal}</span>
+                        <span>{chofer.Nombre}</span>
                       </Link>
                     </h6>
                   </Col>
-                  <Col xs="auto" className="lh-1 me-3">
-                      {chofer.Estatus}
-                  </Col>
                   <Col xs="auto">
-                    <h6 className="mb-0 text-500">{chofer.Vehiculo}</h6>
+                    <h6 className="mb-0 text-500 me-3 ">{chofer.Correo}</h6>
+                  </Col>
+                  <Col xs="auto" className="lh-1 ">
+                      {chofer.Estatus}
                   </Col>
                 </Row>
               </div>

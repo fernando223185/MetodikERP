@@ -10,12 +10,12 @@ import { Button, Card, Col, Offcanvas, Row } from 'react-bootstrap';
 import SubtleBadge from 'components/common/SubtleBadge';
 import { faPaperPlane, faCheck, faStream, faPen, faBan, faSpinner } from '@fortawesome/free-solid-svg-icons'; 
 import AllUsuariosHeader from '../sections/AllUsuariosHeader';
-import { active } from 'd3';
 import UsuariosFilterForm from './UsuariosFilterForm';
 import  {CardUsuariosLayout} from './CardUsuariosLayout';
 
-const ViewChoferesCard = ({choferes, estatus, empresa, sucursal, layout, setFilter, }) => {
-    console.log(choferes);
+
+const ViewChoferesCard = ({users, estatus, empresa, sucursal, layout, setFilter, }) => {
+
     const [show, setShow] = useState(false);
     const { breakpoints } = useBreakpoints();
     const [ result, setResult ] = useState([]);
@@ -23,10 +23,10 @@ const ViewChoferesCard = ({choferes, estatus, empresa, sucursal, layout, setFilt
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const choferesIds = choferes.map(chofer => chofer.id);
-    const { selectedItems, isSelectedItem, toggleSelectedItem } = useBulkSelect(choferesIds);
-    const [allChoferes] = useState(choferes.slice(0, 21));
-    const [ primaryChoferes, setPrimaryChoferes ] = useState(allChoferes);
+    const usersIds = users.map(user => user.ID);
+    const { selectedItems, isSelectedItem, toggleSelectedItem } = useBulkSelect(usersIds);
+    const [allUsers] = useState(users.slice(0, 21));
+    const [ primaryUsers, setPrimaryUsers ] = useState(allUsers);
     const {
         paginationState: {
             data,
@@ -38,16 +38,15 @@ const ViewChoferesCard = ({choferes, estatus, empresa, sucursal, layout, setFilt
         nextPage,
         prevPage,
         goToPage,
-    } = usePagination(primaryChoferes, 7);
+    } = usePagination(primaryUsers, 7);
 
-    const handleChoferesSearch = text => {
-        const filteredChoferes = allChoferes.filter(
-            chofer =>
-                chofer.Nombre.toLowerCase().includes(text.toLowerCase()) ||
-                chofer.Sucursal.toLowerCase().includes(text.toLowerCase()) ||
-                chofer.Vehiculo.toLowerCase().includes(text.toLowerCase())
+    const handleUsuariosSearch = text => {
+        const filteredChoferes = allUsers.filter(
+            user =>
+                user.Nombre.toLowerCase().includes(text.toLowerCase()) ||
+                user.Sucursal.toLowerCase().includes(text.toLowerCase()) 
         );
-        setPrimaryChoferes(filteredChoferes);
+        setPrimaryUsers(filteredChoferes);
     }
 
     useEffect(() => {
@@ -59,26 +58,24 @@ const ViewChoferesCard = ({choferes, estatus, empresa, sucursal, layout, setFilt
                     size: 'xl',
                     round: 'circle'
                 },
-                Sucursal: `${u.Sucursal}`,
-                Vehiculo: `${u.Vehiculo}`,
+                Correo: `${u.Correo}`,
                 Estatus: (
                     <SubtleBadge pill
                     bg={classNames({
-                        success: u.Estatus === 'ALTA',
-                        danger: u.Estatus === 'BAJA'
+                        success: u.EstatusID === 1,
+                        danger: u.EstatusID === 2
                     })}
                     className='fs--2'
                     >
-                    {u.Estatus}
+                    {u.EstatusID === 1 ? 'ALTA' : 'BAJA'}
                     <FontAwesomeIcon 
-                        icon={getStatusIcon(u.Estatus)}
+                        icon={getStatusIcon(u.EstatusID === 1 ? 'ALTA' : 'BAJA')}
                         transform="shrink-2"
                         className='ms-1'
                     />
                     </SubtleBadge>
                 ),
                 ID: u.ID,
-                EmpresaID: u.EmpresaID
             }));
             setResult(prevResult => {
                 if (JSON.stringify(prevResult) !== JSON.stringify(transformedData)) {
@@ -109,7 +106,7 @@ const ViewChoferesCard = ({choferes, estatus, empresa, sucursal, layout, setFilt
                             layout={layout}
                             handleShow={handleShow}
                             selectedItems={selectedItems}
-                            handleTicketsSearch={handleChoferesSearch}
+                            handleTicketsSearch={handleUsuariosSearch}
                         />
                     </Card.Header>
                     <Card.Body className='bg-body-tertiary'>
