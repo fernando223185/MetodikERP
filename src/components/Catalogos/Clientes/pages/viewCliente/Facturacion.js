@@ -15,18 +15,18 @@ const Facturacion = ({ cliente }) => {
             <Card.Body className='text-1000'>
                 <Row>
                     <Col md={6}>
-                        <p><strong>Uso CFDI:</strong> {cliente.usoCFDI}</p>
+                        <p><strong>Uso CFDI:</strong> {cliente.usoCFDIText}</p>
                     </Col>
                     <Col md={6}>
-                        <p><strong>Forma de Pago:</strong> {cliente.FormaPago}</p>
+                        <p><strong>Forma de Pago:</strong> {cliente.FormaPagoText}</p>
                     </Col>
                 </Row>
                 <Row>
                     <Col md={6}>
-                        <p><strong>Metodo de Pago:</strong> {cliente.MetodoPago}</p>
+                        <p><strong>Metodo de Pago:</strong> {cliente.MetodoPagoText}</p>
                     </Col>
                     <Col md={6}>
-                        <p><strong>Regimen Fiscal:</strong> {cliente.RegimenFiscal}</p>
+                        <p><strong>Regimen Fiscal:</strong> {cliente.RegimenFiscalText}</p>
                     </Col>
                 </Row>
             </Card.Body>

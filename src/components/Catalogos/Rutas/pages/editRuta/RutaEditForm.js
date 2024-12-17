@@ -4,7 +4,7 @@ import { faSave } from '@fortawesome/free-solid-svg-icons';
 import Select from 'react-select';
 import IconButton from 'components/common/IconButton';
 
-const RutaEditForm = ({formik, estatus, sucursales, destinos}) => {
+const RutaEditForm = ({formik, estatus, sucursales, destinos, justNewRuta}) => {
     const { values, errors, touched, handleChange, hanldeSubmit, getFieldProps, setValues } = formik;
     const [ selectedEstatus, setSelectedEstatus ] = useState([]);
     const [ selectedSucursal, setSelectedSucursal ] = useState([]);
@@ -268,6 +268,7 @@ const RutaEditForm = ({formik, estatus, sucursales, destinos}) => {
                         icon={faSave}
                         className="mb-2 mb-sm-0 me-2 d-flex align-items-center"
                         onClick={handleSave}
+                        disabled={justNewRuta}
                     >
                         Guardar
                     </IconButton>

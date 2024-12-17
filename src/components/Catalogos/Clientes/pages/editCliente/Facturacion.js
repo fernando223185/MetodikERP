@@ -38,7 +38,7 @@ const Facturacion = ({formik, cfdi, metodoPago, regimen, formaPago}) => {
     }
     const handleFormaPagoChange = (selectedOption) => {
         setSelectedFormaPago(selectedOption);
-        setValues({ ...values, usoCFDI: selectedOption ? selectedOption.value : null});
+        setValues({ ...values, FormaPago: selectedOption ? selectedOption.value : null});
     }
     const handleCfdiChange = (selectedOption) => {
         setSelectedCfdi(selectedOption);

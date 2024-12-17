@@ -8,10 +8,10 @@ import IconButton from 'components/common/IconButton';
 import SubtleBadge from 'components/common/SubtleBadge';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
-import { faCheck, faBan, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faBan, faPaperPlane, faUpload } from '@fortawesome/free-solid-svg-icons';
 
 
-const Banner = ({ chofer }) => {
+const Banner = ({ chofer, formik}) => {
     const getStatusIcon = (estatus) => {
         switch(estatus) {
             case 'ALTA':
@@ -46,6 +46,39 @@ const Banner = ({ chofer }) => {
                                 className='ms-1'
                             />
                         </SubtleBadge>
+                        <div className="d-flex mt-3">
+                            <IconButton
+                                variant="falcon-primary"
+                                size="sm"
+                                icon={faUpload}
+                                className="me-2"
+                                onClick={() => document.getElementById('upload-profile').click()}
+                            >
+                                Subir Foto de Perfil
+                            </IconButton>
+                            <input
+                                type="file"
+                                id="upload-profile"
+                                accept="image/*"
+                                style={{ display: 'none' }}
+                                onChange={(event) => formik.setFieldValue('profileImage', event.target.files[0])}
+                            />
+                            <IconButton
+                                variant="falcon-primary"
+                                size="sm"
+                                icon={faUpload}
+                                onClick={() => document.getElementById('upload-banner').click()}
+                            >
+                                Subir Foto del Banner
+                            </IconButton>
+                            <input
+                                type="file"
+                                id="upload-banner"
+                                accept="image/*"
+                                style={{ display: 'none' }}
+                                onChange={(event) => formik.setFieldValue('bannerImage', event.target.files[0])}
+                            />
+                        </div>
                     <div className="border-dashed border-bottom my-4 d-lg-none" />
                     </Col>
                 </Row>

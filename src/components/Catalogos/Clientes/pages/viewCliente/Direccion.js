@@ -36,7 +36,7 @@ const Direccion = ({ cliente }) => {
                 </Row>
                 <Row>
                     <Col md={6}>
-                        <p><strong>Colonia:</strong> {cliente.Colonia}</p>
+                        <p><strong>Colonia:</strong> {cliente.ColoniaText}</p>
                     </Col>
                     <Col md={6}>
                         <p><strong>Poblacion:</strong> {cliente.Poblacion}</p>
@@ -44,10 +44,10 @@ const Direccion = ({ cliente }) => {
                 </Row>
                 <Row>
                     <Col md={6}>
-                        <p><strong>Estado:</strong> {cliente.Estado}</p>
+                        <p><strong>Estado:</strong> {cliente.EstadoText}</p>
                     </Col>
                     <Col md={6}>
-                        <p><strong>Pais:</strong> {cliente.Pais}</p>
+                        <p><strong>Pais:</strong> {cliente.PaisText}</p>
                     </Col>
                 </Row>
             </Card.Body>

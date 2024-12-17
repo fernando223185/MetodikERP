@@ -84,23 +84,5 @@ export const descensosColumns = [
         Header: "Kilometros",
         headerProps: { className: "text-900 text-center" },
         cellProps: { className: "text-center" }
-    },
-    {
-        accessor: "PrecioNino",
-        Header: "Precio Niño",
-        headerProps: { className: "text-900 text-center" },
-        cellProps: { className: "text-center" }
-    },
-    {
-        accessor: "PrecioAdulto",
-        Header: "Precio Adulto",
-        headerProps: { className: "text-900 text-center" },
-        cellProps: { className: "text-center" }
-    },
-    {
-        accessor: "PrecioInapam",
-        Header: "Precion Inapam",
-        headerProps: { className: "text-900 text-center" },
-        cellProps: { className: "text-center" }
-    },
+    }
 ];

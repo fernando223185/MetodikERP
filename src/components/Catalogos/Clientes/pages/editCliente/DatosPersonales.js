@@ -27,7 +27,7 @@ const DatosPersonales = ({formik, sexo}) => {
             <Card.Body>
                 <Row className="mb-3 g-3">
                     <Form.Group as={Col} lg={6} controlId="RFC">
-                    <Form.Label>RFC</Form.Label>
+                    <Form.Label>RFC<span style={{ color: "red" }}>*</span></Form.Label>
                     <Form.Control
                         type="text"
                         placeholder="RFC"
@@ -41,7 +41,7 @@ const DatosPersonales = ({formik, sexo}) => {
                     </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group as={Col} lg={6} controlId="CURP">
-                    <Form.Label>CURP</Form.Label>
+                    <Form.Label>CURP<span style={{ color: "red" }}>*</span></Form.Label>
                     <Form.Control
                         type="text"
                         placeholder="CURP"

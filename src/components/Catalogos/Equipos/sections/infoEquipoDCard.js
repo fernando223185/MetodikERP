@@ -151,7 +151,7 @@ const InfoEquipoDCard = ({ formik, estatus, integrantes }) => {
                 </Col>
                 </Row>
                 <hr style={{ margin: '10px 0' }} className="mt-4" />
-                <div className="d-flex justify-content-start mt-2">
+                <div className="d-flex justify-content-end mt-2">
                     <IconButton
                         variant="falcon-primary"
                         size="sm"

@@ -38,7 +38,7 @@ const getInitialValues = (cliente) => {
         Delegacion: "",
         Colonia: "",
         Poblacion: "",
-        Estado: "",
+        Estado: "", //drop
         Pais: "", //drop
         RFC: "",
         CURP: "",
@@ -91,6 +91,7 @@ const EditarCliente = () => {
     const [ pais, setPais ] = useState([]);
     const [ condicion, setCondicion ] = useState([]);
     const [ bloquearM, setBloquearM ] = useState([]);
+    const [ estados, setEstados ] = useState([]);
     const navigate = useNavigate();
 
     const formik = useFormik({
@@ -109,6 +110,8 @@ const EditarCliente = () => {
     useEffect(() => {
         if (id != null && id > 0) {
             getClienteID({ id });
+        }
+        if (id) {
         }
     }, [id]);
 
@@ -183,6 +186,11 @@ const EditarCliente = () => {
             const result = await getFiltroCatalogo(data);
             setBloquearM(result)
         }
+        const fetchEstados = async () => {
+            const data = { Tipo: "Estados", PersonaID: 1, Modulo: "Choferes" };
+            const result = await getFiltroCatalogo(data);
+            setEstados(result);
+        }
 
         fetchEstatus();
         fetchSucursal();
@@ -194,6 +202,7 @@ const EditarCliente = () => {
         fetchPais();
         fetchCondicion();
         fetchBloquearM();
+        fetchEstados();
     }, []);
 
     if (isLoading) {
@@ -229,6 +238,7 @@ const EditarCliente = () => {
                             <Direccion 
                                 formik={formik}
                                 pais={pais}
+                                estados={estados}
                             />
                         </Col>
                         <Col lg={12}>

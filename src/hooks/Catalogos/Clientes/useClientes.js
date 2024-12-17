@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { getClientesAsync, getClienteIDAsync, newActClienteAsync } from 'api/catalogo/clientes/clientes';
+import { getClientesAsync, getClienteIDAsync, newActClienteAsync, getPaisEstadoAsync } from 'api/catalogo/clientes/clientes';
 
 export const useGetClientes= () => {
     const [clientes, setClientes] = useState([]);
@@ -54,14 +54,39 @@ export const useGetClienteID = () => {
 
 export const useActCliente = () => {
     const [ result, setResult ] = useState([]);
-    const [ isLoading, setIsLoading ] = useState([]);
+    const [ isLoading, setIsLoading ] = useState(false);
 
-    const actCliente = useCallback(async ({data}) => {
+    const actClienteD = useCallback(async ({data}) => {
         setIsLoading(true);
         const result = await newActClienteAsync({data});
         setResult(result);
         setIsLoading(false);
     }, []);
 
-    return { actCliente, result, isLoading }
+    return { actClienteD, result, isLoading }
 }
+
+export const useGetPaisEstado = () => {
+    const [result, setResult] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    const getPaisEstado = useCallback(async (CodigoPostal) => {
+        if (isLoading) return;
+
+        setIsLoading(true);
+        setError(null);
+
+        try {
+            const result = await getPaisEstadoAsync(CodigoPostal);
+            setResult(result);
+        } catch (error) {
+            console.error("Error fetching pais/estado", error);
+            setError("An error occurred");
+        } finally {
+            setIsLoading(false);
+        }
+    }, [isLoading]);
+
+    return { getPaisEstado, result, isLoading, error };
+};
