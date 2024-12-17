@@ -24,8 +24,8 @@ const ChatContentHeader = ({ setHideSidebar, currentUser}) => {
             <h5 className="mb-0 text-truncate fs-0">{currentUser.wa_id}</h5>
             <div className="fs--2 text-400">
               {currentUser.status === 'status-online'
-                ? 'Active on  chat'
-                : 'Active 7h ago'}
+                ? 'Activo'
+                : 'Inactivo'}
             </div>
           </div>
         </Col>

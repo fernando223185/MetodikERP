@@ -6,14 +6,11 @@ import Avatar from 'components/common/Avatar';
 import profileImage from 'assets/img/team/avatar.png';
 import Flex from 'components/common/Flex';
 import classNames from 'classnames';
-import users from 'data/people';
 import FalconLightBox from 'components/common/FalconLightBox';
 import FalconLightBoxGallery from 'components/common/FalconLightBoxGallery';
 import ChatMessageOptions from './ChatMessageOptions';
 
 const Message = ({ message, senderUserId, status, time, isGroup }) => {
-  const user = users.find(({ id }) => id === senderUserId);
-  const name = user?.name.split(' ')[0];
   const isLeft = senderUserId !== 3;
 
   return (
@@ -112,7 +109,7 @@ const Message = ({ message, senderUserId, status, time, isGroup }) => {
             })}
           >
             {isLeft && isGroup && (
-              <span className="font-weight-semi-bold me-2">{name}</span>
+              <span className="font-weight-semi-bold me-2"></span>
             )}
             {time.hour}
             {!isLeft && !!message && !!status && (

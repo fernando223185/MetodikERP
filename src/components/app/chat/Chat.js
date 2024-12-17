@@ -101,18 +101,15 @@ const ChatTab = () => {
           type: 'UPDATE_MESSAGE',
           id: newMessage[0].UsuarioID,
           payload: {
-            message: newMessage[0].Mensaje,
+            message: newMessage[0].UltimoMensaje,
             messageID: newMessage[0].UltimoMensajeID,
           }
         })
-        // actualizar el estado de los mensajes
         messagesDispatch({
-          type: 'ADD_MANY',
-          payload: newMessage
+          type: 'RECIEVE_MESSAGE',
+          payload: newMessage[0]
         })
       }
-
-
       console.log('Messages',messages);
     })
 

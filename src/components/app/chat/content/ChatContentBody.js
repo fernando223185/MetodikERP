@@ -21,6 +21,7 @@ const ChatContentBody = ({ currentUser }) => {
 
   // Find the messages for the current thread
   const arrayMessages = messages.find(({ id }) => id === currentUser.id);
+  console.log(arrayMessages)
   const { content = [] } = arrayMessages || {};
 
   // Scroll to the bottom of the chat when messages are loaded or updated
