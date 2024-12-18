@@ -10,7 +10,7 @@ import { useGetPasajerosIDOption } from 'hooks/Catalogos/Pasajeros/usePasajeros'
 import { useActPasajero } from 'hooks/Catalogos/Pasajeros/usePasajeros';
 import IconButton from 'components/common/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faSave } from '@fortawesome/free-solid-svg-icons';
 import { actPasajerosAsync } from 'api/catalogo/Pasajeros/pasajeros';
 import { useNavigate } from 'react-router-dom';
 
@@ -94,18 +94,31 @@ const FormPasajerosD = ({ pasajeroID, isLoading, estatus }) => {
 
     const { getFieldProps } = formik;
 
-    const handleSave = async() =>{
-      try{
+    const handleSave = async () => {
+        if (!formik.isValid || formik.values.nombre === '' || formik.values.curp === '' || formik.values.telefono === '') {
+            toast.error('Por favor completa los campos obligatorios.', {
+            theme: 'colored',
+            position: 'top-right',
+            });
+            return;
+        }
         
-        actPasajerosAsync({data : formik.values});
-        console.log("estos son los dats que se van a mandar 2", formik.values);
-        toast.success('Pasajero guardado correctamente');
-        navigate('/Catalogos/Pasajeros/')
-      } catch (error) {
-        toast.error('Error al guardar el pasajero');
-        console.error("error al guardar los datos ", error);
-      }
-    }
+        try {
+            await actPasajerosAsync({ data: formik.values });
+            console.log("Datos enviados al store: ", formik.values);
+            toast.success('Pasajero guardado exitosamente', {
+            theme: 'colored',
+            position: 'top-right',
+            });
+            navigate('/Catalogos/Pasajeros/');
+        } catch (error) {
+            toast.error('Error al guardar el Destino', {
+            theme: 'colored',
+            position: 'top-right',
+            });
+            console.error("Error al guardar los datos: ", error);
+        }
+    };
 
     return (
         <FormikProvider value={formik}>
@@ -222,7 +235,7 @@ const FormPasajerosD = ({ pasajeroID, isLoading, estatus }) => {
                             title="Guardar"
                             onClick={handleSave}
                           >
-                            <FontAwesomeIcon icon={faPlay} className="me-1" /> Guardar
+                            <FontAwesomeIcon icon={faSave} className="me-1" /> Guardar
                           </IconButton>
                         </div>
                     </Card.Body>

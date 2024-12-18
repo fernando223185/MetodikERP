@@ -45,7 +45,7 @@ const DestinosFilterForm = ({estatus, setFilter, filter}) => {
           <Form>
             <div className='mb-2 mt-n2'>
                 <Form.Group>
-                <Form.Label className="mb-1 mt-2 fs--1">Estatus</Form.Label>
+                <Form.Label className="mb-1 mt-2 ">Estatus</Form.Label>
                 <Select
                 classNamePrefix="react-select"
                 options={estatus.map(item => ({

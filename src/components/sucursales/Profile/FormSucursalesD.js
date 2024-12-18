@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { useGetSucursalIDOption, useActSucursal } from 'hooks/Catalogos/Sucursales/useSucursal';
 import IconButton from 'components/common/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faSave } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { actSucursalAsync } from 'api/catalogo/sucursales/sucursales';
 
@@ -125,16 +125,34 @@ const navigate = useNavigate();
     const {getFieldProps} = formik;
 
     const handleSave = async () => {
-        try{
-            actSucursalAsync({data: formik.values});
-            console.log("datos enviados al store: ",formik.values);
-            toast.success('Sucursal guardada exitosamente');
-            navigate('/configuration/Sucursales/');
-        }catch(error) {
-            toast.error('Error al guardar la sucursal');
-            console.error("error al guardar los datos ", error);
+        if (!formik.isValid || formik.values.Nombre === '' || formik.values.Prefijo === '' || 
+            formik.values.Direccion === '' || formik.values.Delegacion === ''
+            || formik.values.Colonia === '' || formik.values.Poblacion === ''
+            || formik.values.Pais === '' || formik.values.Estado === ''
+            || formik.values.CodigoPostal === '' || formik.values.Telefonos === '') {
+            toast.error('Por favor completa los campos obligatorios', {
+            theme: 'colored',
+            position: 'top-right',
+            });
+            return;
         }
-    }
+        
+        try {
+            await actSucursalAsync({ data: formik.values });
+            console.log("Datos enviados al store: ", formik.values);
+            toast.success('Sucursal guardada exitosamente', {
+            theme: 'colored',
+            position: 'top-right',
+            });
+            navigate('/configuration/sucursales/');
+        } catch (error) {
+            toast.error('Error al guardar el Destino', {
+            theme: 'colored',
+            position: 'top-right',
+            });
+            console.error("Error al guardar los datos: ", error);
+        }
+    };
 
     return(
         <FormikProvider value={formik}>
@@ -386,7 +404,7 @@ const navigate = useNavigate();
                             title="Guardar"
                             onClick={handleSave}
                           >
-                            <FontAwesomeIcon icon={faPlay} className="me-1" /> Guardar
+                            <FontAwesomeIcon icon={faSave} className="me-1" /> Guardar
                           </IconButton>
                         </div>
                     </Card.Body>

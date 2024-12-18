@@ -22,55 +22,69 @@ const columns = [
       Header: 'Nombre',
       headerProps: { className: 'ps-2 text-900', style: { height: '46px' } },
       cellProps: {
-          className: 'py-2 white-space-nowrap pe-3 pe-xxl-4 ps-2'
+        className: 'py-2 white-space-nowrap pe-3 pe-xxl-4 ps-2'
       },
       Cell: rowData => {
-        const { nombre, avatar } = rowData.row.original;
-        return (
+          const { nombre, avatar } = rowData.row.original;
+          return (
             <Flex alignItems="center" className="position-relative py-1">
-            {avatar && avatar.img ? (
+              {avatar && avatar.img ? (
                 <Avatar src={avatar.img} size="xl" className="me-2" />
-            ) : (
+              ) : (
                 <Avatar size="xl" name={avatar ? avatar.name : nombre} className="me-2" />
-            )}
-            <h6 className="mb-0">
-                <Link
-                to="#"
-                className="stretched-link text-900"
-                onClick={(e) => e.stopPropagation()}
-                >
-                    {nombre}
-                </Link>
-            </h6>
+              )}
+              <h6 className="mb-0">
+                  <Link
+                  to="#"
+                  className="stretched-link text-900"
+                  onClick={(e) => e.stopPropagation()}
+                  >
+                      {nombre}
+                  </Link>
+              </h6>
             </Flex>
-        );
+          );
       }
     },
     {
-        accessor: 'ciudad',
-        Header: 'Ubicacion',
-        headerProps: { className: 'text-900' }
+      accessor: 'ciudad',
+      Header: 'Ubicacion',
+      headerProps: { className: 'text-900' },
+      cellProps: {
+          className: 'py-2 pe-4'
+      }
     },
     {
-        accessor:'descripcion',
-        Header: 'Descripcion',
-        headerProps: { className: 'text-900' }
+      accessor: 'descripcion',
+      Header: 'Descripcion',
+      headerProps: { className: 'text-900' },
+      cellProps: {
+          className: 'py-2 pe-4'
+      }
     },
     {
-        accessor: 'empresa',
-        Header: 'Empresa',
-        headerProps: { className: 'text-900' }
+      accessor: 'empresa',
+      Header: 'Empresa',
+      headerProps: { className: 'text-900' },
+      cellProps: {
+          className: 'py-2 pe-4'
+      }
     },
     {
         accessor: "fechaemision",
         Header: "Fecha de Registro",
         headerProps: { className: "text-900" },
+        cellProps: {
+          className: 'py-2 pe-4'
+        }
     },
     {
       accessor: 'estatus',
       Header: 'Estatus',
       headerProps: { className: 'text-900' },
-      cellProps: { className: 'text-center' }
+      cellProps: {
+        className: 'py-2 pe-4'
+      }
     },
 ];
 
@@ -143,6 +157,7 @@ function TableDestinos({ destinos, estatus, layout, setFilter, filter }) {
   };
 
   if (isLoading) {
+    window.location.reload();
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', height: '100vh', marginTop: '100px' }}>
         <Spinner animation="border" role="status">
@@ -153,62 +168,62 @@ function TableDestinos({ destinos, estatus, layout, setFilter, filter }) {
   }
 
 
-  return(
+  return (
     <Row className="gx-3">
-      <Col>
-        <AdvanceTableWrapper
-        columns={columns}
-        data={result}
-        selection
-        selectionColumnWidth={52}
-        sortable
-        pagination
-        perPage={10}
-        rowCount={result.length}
-        >
-          <Card>
-            <Card.Header className="border-bottom border-200 px-0">
-              <DestinosHeader
-                table
-                layout={layout}
-                handleShow={handleShow}
-                filter={filter}
-                setFilter={setFilter}
-              />
-            </Card.Header>
-            <Card.Body className="p-0">
-              <TableRowClick
-                table
-                headerClassName="bg-body-tertiary align-middle"
-                rowClassName="align-middle white-space-nowrap"
-                onRowClick={(id) => handleRowClick(id)} 
-                tableProps={{
-                bordered: false,
-                className: 'fs--1 mb-0 overflow-hidden'
-                }}
-              />
-            </Card.Body>
-            <Card.Footer>
-              <AdvanceTablePagination table />
-            </Card.Footer>
-          </Card>
-        </AdvanceTableWrapper>
-      </Col>
-      <Col xxl={2} xl={3}>
-      <Offcanvas
+        <Col>
+            <AdvanceTableWrapper
+            columns={columns}
+            data={result}
+            selection
+            selectionColumnWidth={52}
+            sortable
+            pagination
+            perPage={10}
+            rowCount={result.length}
+            >
+            <Card>
+                <Card.Header className="border-bottom border-200 px-0">
+                <DestinosHeader
+                    table
+                    layout={layout}
+                    handleShow={handleShow}
+                    filter={filter}
+                    setFilter={setFilter}
+                />
+                </Card.Header>
+                <Card.Body className="p-0">
+                <TableRowClick
+                    table
+                    headerClassName="bg-body-tertiary align-middle"
+                    rowClassName="align-middle white-space-nowrap"
+                    onRowClick={(id) => handleRowClick(id)} 
+                    tableProps={{
+                    bordered: false,
+                    className: 'fs--1 mb-0 overflow-hidden'
+                    }}
+                />
+                </Card.Body>
+                <Card.Footer>
+                <AdvanceTablePagination table />
+                </Card.Footer>
+            </Card>
+            </AdvanceTableWrapper>
+        </Col>
+          <Offcanvas
           show={show}
           onHide={handleClose}
           placement="end"
           className="dark__bg-card-dark"
       >
           <Offcanvas.Header closeButton className="bg-body-tertiary">
-          <h6 className="fs-0 mb-0 fw-semi-bold">Filtros</h6>
+              <h6 className="fs-0 mb-0 fw-semi-bold">Filtros</h6>
           </Offcanvas.Header>
-          <DestinosFilterForm  estatus={estatus} setFilter={setFilter} filter={filter} />
+          <DestinosFilterForm estatus={estatus} setFilter={setFilter} filter={filter} />
       </Offcanvas>
-      </Col>
     </Row>
   );
 }
+
+
 
 export default TableDestinos;

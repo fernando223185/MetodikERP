@@ -67,7 +67,7 @@ const columns =[
     },
 ]
 
-function TableModulos({modulos,iconos,layout,setFilter,filter}) {
+function TableModulos({modulos,layout,setFilter,filter}) {
 
   const [result, setResult] = useState([]);
   const [formtoShow, setFormToShow] = useState('');
@@ -155,7 +155,6 @@ function TableModulos({modulos,iconos,layout,setFilter,filter}) {
           </Card>
         </AdvanceTableWrapper>
       </Col>
-      <Col xxl={2} xl={3}>
       <Offcanvas
           show={show}
           onHide={handleClose}
@@ -167,7 +166,6 @@ function TableModulos({modulos,iconos,layout,setFilter,filter}) {
           </Offcanvas.Header>
           <ModulosFilterForm setFilter={setFilter} filter={filter} />
       </Offcanvas>
-      </Col>
     </Row>
   );
 }

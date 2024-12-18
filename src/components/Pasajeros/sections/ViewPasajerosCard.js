@@ -152,7 +152,6 @@ const ViewPasajerosCard = ({pasajeros, estatus, layout, setFilter}) => {
           </Card.Footer>
         </Card>
       </Col>
-      <Col xxl={2} xl={3}>
             <Offcanvas
                 show={show}
                 onHide={handleClose}
@@ -164,7 +163,6 @@ const ViewPasajerosCard = ({pasajeros, estatus, layout, setFilter}) => {
                 </Offcanvas.Header>
                 <PasajerosFilterForm  estatus={estatus} setFilter={setFilter} />
             </Offcanvas>
-        </Col>
     </Row>
   );
 };

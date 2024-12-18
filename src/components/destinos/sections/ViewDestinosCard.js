@@ -151,19 +151,17 @@ const ViewDestinosCard = ({ destinos, estatus, layout, setFilter }) => {
             </Card.Footer>
             </Card>
         </Col>
-        <Col xxl={2} xl={3}>
-                <Offcanvas
-                    show={show}
-                    onHide={handleClose}
-                    placement="end"
-                    className="dark__bg-card-dark"
-                >
-                    <Offcanvas.Header closeButton className="bg-body-tertiary">
-                    <h6 className="fs-0 mb-0 fw-semi-bold">Filtros</h6>
-                    </Offcanvas.Header>
-                    <DestinosFilterForm  estatus={estatus} setFilter={setFilter} />
-                </Offcanvas>
-            </Col>
+        <Offcanvas
+            show={show}
+            onHide={handleClose}
+            placement="end"
+            className="dark__bg-card-dark"
+        >
+            <Offcanvas.Header closeButton className="bg-body-tertiary">
+            <h6 className="fs-0 mb-0 fw-semi-bold">Filtros</h6>
+            </Offcanvas.Header>
+            <DestinosFilterForm  estatus={estatus} setFilter={setFilter} />
+        </Offcanvas>           
         </Row>
     );
 };

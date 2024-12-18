@@ -151,7 +151,18 @@ function TablePasajeros({pasajeros, estatus, layout, setFilter, filter }) {
 
     const handleRowClick = (id) => {
         navigate(`/Catalogos/view-pasajeros/${id}`);
-      };
+    };
+
+    if (isLoading) {
+        window.location.reload();
+        return (
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', height: '100vh', marginTop: '100px' }}>
+            <Spinner animation="border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          </div>
+        );
+    }
 
     return(
         <Row className="gx-3">
@@ -193,7 +204,6 @@ function TablePasajeros({pasajeros, estatus, layout, setFilter, filter }) {
                 </Card>
                 </AdvanceTableWrapper>
             </Col>
-            <Col xxl={2} xl={3}>
             <Offcanvas
                 show={show}
                 onHide={handleClose}
@@ -205,7 +215,6 @@ function TablePasajeros({pasajeros, estatus, layout, setFilter, filter }) {
                 </Offcanvas.Header>
                 <PasajerosFilterForm  estatus={estatus} setFilter={setFilter} filter={filter} />
             </Offcanvas>
-            </Col>
         </Row>
     )
 

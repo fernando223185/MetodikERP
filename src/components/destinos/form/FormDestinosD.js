@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { useGetDestinoIDOption, useActDestino } from 'hooks/Catalogos/Destinos/useDestino';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay } from '@fortawesome/free-solid-svg-icons';
+import {  faSave } from '@fortawesome/free-solid-svg-icons';
 import IconButton from 'components/common/IconButton';
 import { useNavigate } from 'react-router-dom';
 import { actDestinoAsync } from 'api/catalogo/destinos/destinos';
@@ -93,16 +93,30 @@ const FormDestinosD = ({ destinoID, isLoading, estatus}) => {
     const {getFieldProps} = formik;
 
     const handleSave = async () => {
-      try{
-        actDestinoAsync({data: formik.values});
-        console.log("datos enviados al store: ",formik.values);
-        toast.success('Destino guardado exitosamente');
-        navigate('/configuration/Destinos/');
-      }catch(error) {
-        toast.error('Error al guardar el Destino');
-        console.error("error al guardar los datos ", error);
-      }
-    }
+        if (!formik.isValid || formik.values.Nombre === '' || formik.values.Ciudad === '' || formik.values.Pais === '') {
+          toast.error('Por favor completa los campos obligatorios: Nombre, Ciudad y País', {
+            theme: 'colored',
+            position: 'top-right',
+          });
+          return;
+        }
+      
+        try {
+          await actDestinoAsync({ data: formik.values });
+          console.log("Datos enviados al store: ", formik.values);
+          toast.success('Destino guardado exitosamente', {
+            theme: 'colored',
+            position: 'top-right',
+          });
+          navigate('/configuration/Destinos/');
+        } catch (error) {
+          toast.error('Error al guardar el Destino', {
+            theme: 'colored',
+            position: 'top-right',
+          });
+          console.error("Error al guardar los datos: ", error);
+        }
+    };
 
     return(
         <FormikProvider value={formik}>
@@ -224,7 +238,7 @@ const FormDestinosD = ({ destinoID, isLoading, estatus}) => {
                     title="Guardar"
                     onClick={handleSave}
                     >
-                    <FontAwesomeIcon icon={faPlay} className="me-1" /> Guardar
+                    <FontAwesomeIcon icon={faSave} className="me-1" /> Guardar
                     </IconButton>
                 </div>
               </Card.Body>
