@@ -52,6 +52,9 @@ export const SucursalesCardLayout = ({data, isSelectedItem, toggleSelectedItem})
                             <Col xs="auto" className="lh-1 me-3">
                                 {sucursal.CodigoPostal}
                             </Col>
+                            <Col xs="auto" className="lh-1 me-3">
+                                {sucursal.estatus}
+                            </Col>
                             <Col xs="auto">
                                 <h6 className='mb-0 text-500'>{sucursal.FechaEmision}</h6>
                             </Col>

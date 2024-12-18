@@ -33,3 +33,13 @@ export async function getModuloIDAsync({id=0}){
         return error;
     }
 }
+
+export async function elimModuloAsync({id=0}){
+    try{
+        const response = await axios.get(`${endpoints.key}/elimModulo?ID=${id}`)
+        console.log(response)
+        return response
+    } catch(error){
+        return error;
+    }
+}

@@ -150,7 +150,6 @@ const ViewSucursalesCard = ({ sucursales, estatus, layout, setFilter}) => {
           </Card.Footer>
         </Card>
       </Col>
-      <Col xxl={2} xl={3}>
             <Offcanvas
                 show={show}
                 onHide={handleClose}
@@ -162,7 +161,6 @@ const ViewSucursalesCard = ({ sucursales, estatus, layout, setFilter}) => {
                 </Offcanvas.Header>
                 <SucursalesFilterForm  estatus={estatus} setFilter={setFilter} />
             </Offcanvas>
-        </Col>
     </Row>
   );
 }

@@ -9,7 +9,8 @@ import {
     faUsers,
     faUserSecret,
     faBox,
-    faIdCard
+    faIdCard,
+    faSave
   } from "@fortawesome/free-solid-svg-icons";
 import { Card, Form, Row, Col, InputGroup } from 'react-bootstrap';
 import Select from 'react-select';
@@ -19,7 +20,6 @@ import { toast } from 'react-toastify';
 import { useGetModuloIDOption, useActModulo } from 'hooks/Configurador/useModulo';
 import IconButton from 'components/common/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { actModuloAsync } from 'api/Configurador/Modulos/Modulos';
 import * as iconMap from "@fortawesome/free-solid-svg-icons";
@@ -37,6 +37,7 @@ const getInitialValues = (moduloID) => {
         NombreMenu:'',
         Icono:'',
         NombreArchivo:'',
+        TipoMenu:'',
     };
 
     if (moduloID) {
@@ -50,6 +51,7 @@ const getInitialValues = (moduloID) => {
             NombreMenu: moduloID.NombreMenu || '',
             Icono: String(moduloID.Icono || ''),
             NombreArchivo: moduloID.NombreArchivo || '',
+            TipoMenu: moduloID.TipoMenu || '',
         }
     }
     return initialForm;
@@ -63,13 +65,10 @@ const validationSchema = Yup.object().shape({
 });
 
 
-const FormModuloD = ({moduloID, isLoading, iconos,menus}) => {
+const FormModuloD = ({moduloID, isLoading, iconos,menus,tipo}) => {
     const { actModulo, error } = useActModulo();
     const {getModuloID, moduloIdOption, isLoading: isLoadingID} = useGetModuloIDOption();
     const navigate = useNavigate();
-
-    console.log(moduloID);
-
 
     const formik = useFormik({
         initialValues: getInitialValues(moduloID),
@@ -87,6 +86,7 @@ const FormModuloD = ({moduloID, isLoading, iconos,menus}) => {
                     NombreMenu: values.NombreMenu,
                     Icono: values.Icono.toString(),
                     NombreArchivo: values.NombreArchivo,
+                    TipoMenu: values.TipoMenu,
                 };
                 actModulo({data});
             } catch (error) {
@@ -128,7 +128,6 @@ const FormModuloD = ({moduloID, isLoading, iconos,menus}) => {
             console.error("error al guardar los datos ", error);
         }
     }
-
 
     return(
         <FormikProvider value={formik}>
@@ -226,9 +225,9 @@ const FormModuloD = ({moduloID, isLoading, iconos,menus}) => {
                                 </Form.Group>
                             </Col>
                         </Row>
-                        {formik.values.Tipo === 'Catalogo' || formik.values.Tipo === 'Modulo' ? (
                         <Row className='mt-3'>
-                            <Col md={12}>
+                            {formik.values.Tipo === 'Catalogo' || formik.values.Tipo === 'Modulo' ? (
+                            <Col md={6}>
                                 <Form.Group controlId="formRuta">
                                     <Form.Label>Ruta</Form.Label>
                                     <InputGroup>
@@ -244,8 +243,26 @@ const FormModuloD = ({moduloID, isLoading, iconos,menus}) => {
                                     </InputGroup>
                                 </Form.Group>
                             </Col>
+                            ) : null}
+                            <Col md={6}>
+                                <Form.Group>
+                                    <Form.Label>Tipo Menu</Form.Label>
+                                    <Select
+                                        classNamePrefix="react-select"
+                                        options={tipo.map(item => ({
+                                            value: item.Valor,
+                                            label: item.Dato,
+                                        }))}
+                                        onChange={option => formik.setFieldValue('TipoMenu',option.value)}
+                                        isLoading={isLoading}
+                                        value={getOptionByValue(tipo,formik.values.TipoMenu)}
+                                    />
+                                    {formik.touched.TipoMenu && formik.errors.TipoMenu && (
+                                        <div className="text-danger">{formik.errors.TipoMenu}</div>
+                                    )}
+                                </Form.Group>
+                            </Col>
                         </Row>
-                        ) : null}
                         {formik.values.Tipo === 'Modulo' ? (
                         <Row className="mt-3">
                             <Col md={12}>
@@ -277,7 +294,7 @@ const FormModuloD = ({moduloID, isLoading, iconos,menus}) => {
                             title="Guardar"
                             onClick={handleSave}
                           >
-                            <FontAwesomeIcon icon={faPlay} className="me-1" /> Guardar
+                            <FontAwesomeIcon icon={faSave} className="me-1" /> Guardar
                           </IconButton>
                         </div>
                     </Card.Body>

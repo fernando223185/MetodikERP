@@ -166,7 +166,6 @@ function TablePaqueteriaR({paqueteriaR, cliente, destino, movimiento, usuarios, 
               </Card>
             </AdvanceTableWrapper>
           </Col>
-          <Col >
             <Offcanvas
                 show={show}
                 onHide={handleClose}
@@ -178,7 +177,6 @@ function TablePaqueteriaR({paqueteriaR, cliente, destino, movimiento, usuarios, 
                 </Offcanvas.Header>
                 <PaqueteriaRFilterForm cliente={cliente} destino={destino} movimiento={movimiento} usuarios={usuarios} setFilter={setFilter} filter={filter} />
             </Offcanvas>
-          </Col>
         </Row>
     );
 }

@@ -149,7 +149,6 @@ const ViewVehiculosCard = ({ vehiculos, estatus, layout, setFilter, tipovehiculo
           </Card.Footer>
         </Card>
       </Col>
-      <Col xxl={2} xl={3}>
             <Offcanvas
                 show={show}
                 onHide={handleClose}
@@ -161,7 +160,6 @@ const ViewVehiculosCard = ({ vehiculos, estatus, layout, setFilter, tipovehiculo
                 </Offcanvas.Header>
                 <VehiculosFilterForm  estatus={estatus} setFilter={setFilter} />
             </Offcanvas>
-        </Col>
     </Row>
   );
 };

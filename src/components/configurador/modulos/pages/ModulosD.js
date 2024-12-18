@@ -1,14 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { Col, Row, Container, Card, Spinner} from "react-bootstrap";
 import { useParams, Link } from "react-router-dom";
-import { useGetModuloID } from "hooks/Configurador/useModulo";
+import { useGetModuloID,useElimModulo } from "hooks/Configurador/useModulo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {  faReply } from "@fortawesome/free-solid-svg-icons";
+import {  faReply, faBan } from "@fortawesome/free-solid-svg-icons";
 import IconButton from "components/common/IconButton";
 import { useGetFiltroModulo } from "hooks/useFiltros";
 import FormModuloD from "../Profile/FormModuloD";
+import { toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 
 const ModulosDHeader = () => {
+    const { id } = useParams();
+    const {elimModuloID, elimModulo, isLoading, error} = useElimModulo();
+    const navigate = useNavigate();
+    
+
+    const ElimModulo = async() => {
+     try{
+      elimModuloID({id})
+      console.log("id enviado:",id);
+      toast.success('Modulo Cancelado Correctamente');
+      navigate('/configuracion/modulos/');
+      } catch(error){
+      toast.error('Error al cancelar el Modulo');
+      console.error("error al cancelar el Modulo ", error);
+      }
+    }
+
     return (
       <Container fluid className="py-3 px-4 border-bottom mb-4">
         <Row className="align-items-center">
@@ -23,6 +42,15 @@ const ModulosDHeader = () => {
                   <FontAwesomeIcon icon={faReply} className="me-1" /> Regresar
                 </IconButton>
               </Link>
+              <IconButton
+                variant="falcon-danger"
+                size="sm"
+                className="mb-2 mb-sm-0 d-flex align-items-center" 
+                title="Cancelar"
+                onClick={ElimModulo}
+            >
+                <FontAwesomeIcon icon={faBan} className="me-1" /> Cancelar
+            </IconButton>
             </div>
           </Col>
         </Row>
@@ -39,6 +67,7 @@ const ModulosD = () => {
     const {getFiltroModulo,isLoading:isLoadingFiltro} = useGetFiltroModulo();
     const [iconos,setIconos] = useState([])
     const [menus, setMenus] = useState([])
+    const [tipoMenu, setTipoMenu] = useState([])
     const [showFormMov, setFormMov] = useState(false)
 
     useEffect(() => {
@@ -63,6 +92,13 @@ const ModulosD = () => {
               setMenus(result);
         }
 
+        const fetchTipoMenu = async () => {
+          const data = {Tipo: 'Tipov2', PersonaID: 1, Modulo:'Modulo'};
+              const result = await getFiltroModulo(data);
+              setTipoMenu(result);
+        }
+
+        fetchTipoMenu();
         fetchMenus();
         fetchIconos();
     },[]);
@@ -91,6 +127,7 @@ const ModulosD = () => {
                       setHasFetched={setHasFetched} 
                       iconos={iconos}
                       menus={menus}
+                      tipo={tipoMenu}
                       />
                   </Col>
                 </Card.Body>

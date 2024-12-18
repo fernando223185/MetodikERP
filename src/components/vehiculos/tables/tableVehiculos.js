@@ -208,7 +208,6 @@ function TableVehiculos({vehiculos, estatus, tipovehiculo,layout,setFilter,filte
           </Card>
         </AdvanceTableWrapper>
       </Col>
-      <Col xxl={2} xl={3}>
       <Offcanvas
           show={show}
           onHide={handleClose}
@@ -220,7 +219,6 @@ function TableVehiculos({vehiculos, estatus, tipovehiculo,layout,setFilter,filte
           </Offcanvas.Header>
           <VehiculosFilterForm  estatus={estatus} setFilter={setFilter} filter={filter} />
       </Offcanvas>
-      </Col>
     </Row>
   );
 }

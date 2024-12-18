@@ -124,7 +124,6 @@ const ViewPaqueteriaRCard = ({ paqueteriaR, cliente, destino, movimiento, usuari
             </Card.Footer>
             </Card>
         </Col>
-        <Col xxl={2} xl={3}>
                 <Offcanvas
                     show={show}
                     onHide={handleClose}
@@ -136,7 +135,6 @@ const ViewPaqueteriaRCard = ({ paqueteriaR, cliente, destino, movimiento, usuari
                     </Offcanvas.Header>
                     <PaqueteriaRFilterForm  cliente={cliente} destino={destino} movimiento={movimiento} setFilter={setFilter} />
                 </Offcanvas>
-            </Col>
         </Row>
     );
 };

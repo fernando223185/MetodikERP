@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { useGetVehiculoIDOption, useActVehiculo } from 'hooks/Catalogos/Vehiculos/useVehiculo';
 import IconButton from 'components/common/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faSave } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { actVehiculoAync } from 'api/catalogo/vehiculos/vehiculos';
 
@@ -108,16 +108,32 @@ const FormVehiculosD = ({ vehiculoID, isLoading, estatus, tipovehiculo}) => {
     const {getFieldProps} = formik;
 
     const handleSave = async () => {
-      try{
-        actVehiculoAync({data: formik.values});
-        console.log("datos enviados al store: ",formik.values);
-        toast.success('Vehiculo guardado exitosamente');
-        navigate('/Catalogos/vehiculos/');
-      }catch(error) {
-        toast.error('Error al guardar el vehiculo');
-        console.error("error al guardar los datos ", error);
-      }
-    }
+        if (!formik.isValid || formik.values.Vehiculo === '' || formik.values.TipoVehiculo === '0' 
+            || formik.values.Placas === '' || formik.values.Descripcion === '' || formik.values.Peso === ''
+            || formik.values.serie === '' || formik.values.Marca === '' || formik.values.NoEco === '') {
+            toast.error('Por favor completa los campos obligatorios', {
+            theme: 'colored',
+            position: 'top-right',
+            });
+            return;
+        }
+        
+        try {
+            await actVehiculoAync({ data: formik.values });
+            console.log("Datos enviados al store: ", formik.values);
+            toast.success('Vehculo guardado exitosamente', {
+            theme: 'colored',
+            position: 'top-right',
+            });
+            navigate('/Catalogos/Vehiculos/');
+        } catch (error) {
+            toast.error('Error al guardar el Destino', {
+            theme: 'colored',
+            position: 'top-right',
+            });
+            console.error("Error al guardar los datos: ", error);
+        }
+    };
 
     return(
         <FormikProvider value={formik}>
@@ -309,7 +325,7 @@ const FormVehiculosD = ({ vehiculoID, isLoading, estatus, tipovehiculo}) => {
                             title="Guardar"
                             onClick={handleSave}
                           >
-                            <FontAwesomeIcon icon={faPlay} className="me-1" /> Guardar
+                            <FontAwesomeIcon icon={faSave} className="me-1" /> Guardar
                           </IconButton>
                         </div>
                     </Card.Body>

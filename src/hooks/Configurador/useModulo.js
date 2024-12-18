@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { getModulosAsync, actModuloAsync, getModuloIDAsync } from 'api/Configurador/Modulos/Modulos';
+import { getModulosAsync, actModuloAsync, getModuloIDAsync,elimModuloAsync, subirArchivosAsync} from 'api/Configurador/Modulos/Modulos';
 
 export const useGetModulos = () => {
     const [modulos, setModulos] = useState([]);
@@ -13,11 +13,7 @@ export const useGetModulos = () => {
 
         try{
             const result = await getModulosAsync({data});
-            if(result.status === 200){
-                setModulos(result);
-            } else {
-                setError('Failed to fetch modulos');
-            }
+            setModulos(result);
         } catch(error) {
             setError('An error occurred while fetching modulos');
         } finally{
@@ -86,4 +82,26 @@ export const useGetModuloIDOption = () => {
     }, [isLoading]);
 
     return { getModuloID, moduloIdOption, isLoading, error };
+}
+
+export const useElimModulo = () => {
+    const [elimModulo, setElimModulo] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    const elimModuloID = useCallback(async({id}) => {
+        if(isLoading) return;
+        setIsLoading(true);
+        setError(null);
+        try {
+            const result = await elimModuloAsync({id});
+            setElimModulo(result);
+        } catch(error) {
+            setError("An error occurred while deleting modulo");
+        } finally {
+            setIsLoading(false);
+        }
+    },[isLoading])
+
+    return { elimModuloID, elimModulo, isLoading, error };
 }

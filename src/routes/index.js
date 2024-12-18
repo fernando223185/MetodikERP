@@ -261,10 +261,24 @@ import RutasPrecios from "components/logistica/preciosRutas/index";
 
 import Modulos from 'components/configurador/modulos';
 import ModulosD from 'components/configurador/modulos/pages/ModulosD';
+
+import Conceptos from 'components/Catalogos/Concepto/Index';
+import ConceptoViewD from 'components/Catalogos/Concepto/pages/ConceptoViewD';
+import ConceptoD from 'components/Catalogos/Concepto/pages/ConceptoD';
+import Areas from 'components/Catalogos/Areas';
+import AreasD from 'components/Catalogos/Areas/Pages/AreasD';
+import AreasViewD from 'components/Catalogos/Areas/Pages/AreasViewD';
+import Tickets from 'components/HelpDesk/Tickets';
+import TicketsViewD from 'components/HelpDesk/Tickets/pages/TicketsViewD';
+import TicketsNew from 'components/HelpDesk/Tickets/pages/TicketsNew';
+import TicketsD from 'components/HelpDesk/Tickets/pages/TicketsD';
+
+
 import Usuarios from 'components/Catalogos/Usuarios/index';
 //import EditarUsuario from 'components/Usuarios/pages/editUser/EditarUsuario';
 import EditarUsuario from 'components/Catalogos/Usuarios/pages/editUsuario/EditarUsuario';
 import UsuarioProfile from 'components/Catalogos/Usuarios/pages/viewUsuario/UsuarioProfile';
+
 
 const MetodikRoutes = () => {
   return (
@@ -796,10 +810,28 @@ const MetodikRoutes = () => {
         <Route path="Configuracion/modulos" element={<Modulos />} />
         <Route path='Configuracion/modulos/:id' element={<ModulosD />} />
 
+
+        {/* Catalogos Concepto */}
+        <Route path="Catalogos/concepto" element={<Conceptos />} />
+        <Route path="Catalogos/view-concepto/:id" element={<ConceptoViewD />} />
+        <Route path="Catalogos/concepto/:id" element={<ConceptoD />} />
+
+        {/* Catalogos Areas */}
+        <Route path="Catalogos/areas" element={<Areas />} />
+        <Route path="Catalogos/areas/:id" element={<AreasD />} />
+        <Route path="Catalogos/view-areas/:id" element={<AreasViewD/>} />
+
+        {/* Modulo Tickets */}
+        <Route path="HelpDesk/tickets" element={<Tickets />} />
+        <Route path="HelpDesk/new-ticket" element={<TicketsNew />} />
+        <Route path="HelpDesk/view-ticket/:id" element={<TicketsViewD />} />
+        <Route path="HelpDesk/ticket/:id" element={<TicketsD />} />
+
         {/* Catalogo Usuarios */}
         <Route path="catalogo/usuarios" element={<Usuarios />} />
         <Route path="catalogo/usuarios/actUsuarios/:id" element={<EditarUsuario />} />
         <Route path="catalogo/usuarios/view-usuario/:id" element={<UsuarioProfile />} />
+
       </Route>
 
         
