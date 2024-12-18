@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Col, Row, Container, Card, Spinner } from "react-bootstrap";
+import { Col, Row, Container, Spinner } from "react-bootstrap";
 import TablePreciosRutas from "./tables/tablePreciosRutas";
-import LmsStats from "components/dashboards/lms/lms-stats/LmsStatItem";
 import { useGetIndicadores } from "../../../hooks/useIndicadores";
 import { useGetPreciosRuta } from "../../../hooks/Logistica/PreciosRutas/usePreciosRutas";
 import { useGetFiltroModulo } from "../../../hooks/useFiltros";
@@ -57,8 +56,6 @@ const Rutas = () => {
 
     getPreciosRuta({ data });
   }, [filter]);
-
-
 
   useEffect(() => {
     const fetchMovimientos = async () => {

@@ -5,13 +5,16 @@ import React from "react";
 import RegresarButton from "./RegresarButton";
 
 
-const EditChoferesHeader = () => {
+const EditChoferesHeader = ({newChofer}) => {
     return (
         <Card className="mb-3">
             <Card.Body>
             <Row className="justify-content-between align-items-center">
                 <Col md>
-                <h5 className="mb-2 mb-md-0">Editar Chofer</h5>
+                { newChofer ? 
+                    <h5 className="mb-2 mb-md-0">Nuevo Chofer</h5> :
+                    <h5 className="mb-2 mb-md-0">Editar Chofer</h5>
+                }
                 </Col>
                 <Col xs="auto">
                     <RegresarButton />

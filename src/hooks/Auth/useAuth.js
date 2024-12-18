@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
 
       setUser(response.data.user_data);
       
-      navigate('/comercial/reservas'); 
+      navigate('/'); 
   
       return null; 
     } catch (error) {

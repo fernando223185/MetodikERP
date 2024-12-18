@@ -5,11 +5,17 @@ const WebpackRTLPlugin = require('@automattic/webpack-rtl-plugin');
 const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
 
 module.exports = {
+
+  watchOptions: {
+    ignored: /node_modules/,
+  },
+
   mode: 'development',
   entry: {
     theme: './src/assets/scss/theme.scss',
     user: './src/assets/scss/user.scss'
   },
+  
   output: {
     path: path.resolve(__dirname, 'public/css')
   },
@@ -22,7 +28,9 @@ module.exports = {
     new CleanWebpackPlugin()
   ],
   devtool: 'source-map',
+  
   module: {
+    
     rules: [
       {
         test: /\.(sass|scss)$/,

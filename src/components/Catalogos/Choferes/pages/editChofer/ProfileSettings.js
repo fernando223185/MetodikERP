@@ -13,7 +13,6 @@ const ProfileSettings = ({formik, sucursal, estatus, empresa, vehiculo}) => {
     const [selectedVehiculo, setSelectedVehiculo] = useState(null);
 
     useEffect(() => {
-        // Configurar valores iniciales en los dropdowns usando los valores actuales del usuario
         if (estatus.length > 0) {
             const currentEstatus = estatus.find(item => item.Valor === values.EstatusID.toString());
             setSelectedEstatus(currentEstatus ? { value: currentEstatus.Valor, label: currentEstatus.Dato } : null);

@@ -195,11 +195,6 @@ const RutaD = () => {
                             <th className="text-white border-0 text-center">
                             Kilometros
                             </th>
-                            <th className="text-white border-0 text-center">
-                            Precio Niño
-                            </th>
-                            <th className="text-white border-0 text-end">Precio Adulto</th>
-                            <th className="text-white border-0 text-end">Precio Inapam</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -209,9 +204,6 @@ const RutaD = () => {
                                         <h6 className="mb-0 text-nowrap">{item.Descenso}</h6>
                                     </td>
                                     <td className="align-middle text-center">{item.Kms}</td>
-                                    <td className="align-middle text-center">{item.PrecioNino}</td>
-                                    <td className="align-middle text-end">{item.PrecioAdulto}</td>
-                                    <td className="align-middle text-end">{item.PrecioInapam}</td>
                                 </tr>
                             ))}
                         </tbody>

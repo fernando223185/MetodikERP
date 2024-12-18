@@ -4,10 +4,11 @@ export const endpoints = {
     key: '/Catalogos/Usuarios'
 };
 
-export async function getUsersAsync({data}){
+export async function getUsuariosAsync(data){
     try{
-        const response = await axios.get(`${endpoints.key}/usuarios?EmpresaID=${data.EmpresaID}&EstatusID=${data.EstatusID}`)
-        return response
+        console.log(data)
+        const response = await axios.post(`${endpoints.key}/verUsuarios`, data)
+        return response.data
     }catch(error){
         return error;
     }
@@ -23,9 +24,10 @@ export async function ActUsersAsync({data}){
     }
 }
 
-export async function getUsersByIdAsync({id = 0}){
+export async function getUsersByIdAsync({id}){
     try{
-        const response = await axios.get(`${endpoints.key}/verUsuarioID?ID=${id}` )
+        console.log(id)
+        const response = await axios.get(`${endpoints.key}/verUsuariosPorID?id=${id}`)
         console.log(response)
         return response.data[0]
     }catch(error){

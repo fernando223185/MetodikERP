@@ -54,14 +54,19 @@ export const useGetRutaID = () => {
 };
 
 export const useActRuta = () => {
-    const [ result, setResult ] = useState([]);
-    const [ isLoading, setIsLoading ] = useState(false);
+    const [result, setResult] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     const actRuta = useCallback(async ({ data }) => {
         setIsLoading(true);
-        const result = await actRutaAsync({ data });
-        setResult(result);
-        setIsLoading(false)
+        try {
+            const result = await actRutaAsync({ data });
+            setResult(result);
+        } catch (error) {
+            console.error("Error al guardar la ruta:", error);
+        } finally {
+            setIsLoading(false);
+        }
     }, []);
 
     return { actRuta, result, isLoading };

@@ -3,25 +3,25 @@ import PropTypes from 'prop-types';
 import ChatContentBodyIntro from './ChatContentBodyIntro';
 import Message from './Message';
 import SimpleBarReact from 'simplebar-react';
-import ThreadInfo from './ThreadInfo';
-import { fetchMessages } from '../data/fetchData';
 import { ChatContext } from 'context/Context';
 import Loading from 'widgets/Loading';
 
-const ChatContentBody = ({ thread }) => {
+const ChatContentBody = ({ currentUser }) => {
+  console.log(currentUser)
   let lastDate = null;
   const messagesEndRef = useRef();
 
-  const { getUser, messages, scrollToBottom, setScrollToBottom, messagesDispatch,currentThread } = useContext(ChatContext);
-  const user = getUser(thread);
+  const { messages, scrollToBottom, setScrollToBottom, } = useContext(ChatContext);
+  console.log(messages)
+  const user = currentUser;
 
   const [isLoading, setIsLoading] = useState(false);
 
   
 
   // Find the messages for the current thread
-  const threadMessages = messages.find(({ id }) => id === thread.id);
-  const { content = [] } = threadMessages || {};
+  const arrayMessages = messages.find(({ id }) => id === currentUser.id);
+  const { content = [] } = arrayMessages || {};
 
   // Scroll to the bottom of the chat when messages are loaded or updated
   useEffect(() => {
@@ -43,22 +43,20 @@ const ChatContentBody = ({ thread }) => {
   }, [scrollToBottom]);
 
   if(isLoading){
-    return <Loading></Loading>
+    return <Loading/>
   }
   
   return (
     <div className="chat-content-body" style={{ display: 'inherit' }}>
-      <ThreadInfo thread={thread} isOpenThreadInfo={true} />
       <SimpleBarReact style={{ height: '100%' }}>
         <div className="chat-content-scroll-area">
-          <ChatContentBodyIntro user={user} />
           {isLoading ? (
             <div>Loading messages...</div>
           ) : (
             content.map(({ message, time, senderUserId, status }, index) => (
               <div key={index}>
                 {lastDate !== time.date && (
-                  <div className="text-center fs--2 text-500">{`${time.date}, ${time.hour}`}</div>
+                  <div className="text-center fs--2 pt-1 text-500">{`${time.date}, ${time.hour}`}</div>
                 )}
                 {(() => {
                   lastDate = time.date;
@@ -68,7 +66,6 @@ const ChatContentBody = ({ thread }) => {
                   senderUserId={senderUserId}
                   time={time}
                   status={status}
-                  isGroup={thread.type === 'group'}
                 />
               </div>
             ))

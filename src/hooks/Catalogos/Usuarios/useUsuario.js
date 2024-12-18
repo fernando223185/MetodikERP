@@ -1,15 +1,14 @@
 import { useCallback, useState } from 'react';
-import { getUsersAsync, ActUsersAsync, getUsersByIdAsync } from 'api/catalogo/usuarios/usuarios';
+import { getUsuariosAsync, ActUsersAsync, getUsersByIdAsync } from 'api/catalogo/usuarios/usuarios';
 
 
 export const useGetUsers = () => {
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
   
-    const getUsers = useCallback(async ({ data }) => {
+    const getUsers = useCallback(async (data) => {
       setIsLoading(true);
-      const result = await getUsersAsync({ data });
-  
+      const result = await getUsuariosAsync(data);
       setUsers(result);
       setIsLoading(false);
     }, []);
@@ -35,17 +34,17 @@ export const useActUsers = () => {
 };
 
 export const useGetUserById = () => {
-    const [userId, setUsers] = useState({});
+    const [user, setUser] = useState({});
     const [isLoading, setIsLoading] = useState(false);
   
     const getUserById = useCallback(async ({ id }) => {
       setIsLoading(true);
       const result = await getUsersByIdAsync({ id });
         console.log("result", result)
-      setUsers(result);
+      setUser(result);
       setIsLoading(false);
     }, []);
   
-    return { getUserById, userId, isLoading, setIsLoading };
+    return { getUserById, user, isLoading, setIsLoading };
 };
 
