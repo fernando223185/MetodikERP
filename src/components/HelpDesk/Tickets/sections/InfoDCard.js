@@ -244,14 +244,6 @@ const InfoDCard = ({ ticketID, isLoading, estatus, areas, conceptos, prioridad }
                                     ) : (
                                         <div className="d-flex align-items-center">
                                             <span className="me-3">{formik.values.RutaArchivo}</span>
-                                            <Button
-                                                variant="danger"
-                                                onClick={() => {
-                                                    formik.setFieldValue('RutaArchivo', null);
-                                                }}
-                                            >
-                                                Quitar archivo
-                                            </Button>
                                         </div>
                                     )}
                                     <Form.Control.Feedback type="invalid">
@@ -267,19 +259,43 @@ const InfoDCard = ({ ticketID, isLoading, estatus, areas, conceptos, prioridad }
                             <Row className="mt-3">
                                 <Col md={12}>
                                     <Form.Group controlId="formPreview">
-                                        <Form.Label>Preview de la Imagen</Form.Label>
+                                        <Form.Label>Archivo</Form.Label>
                                         <div className="d-flex justify-content-center">
-                                            <img
-                                                src={`http://localhost:5001/Archivos/${formik.values.RutaArchivo}`}
-                                                alt="Preview"
-                                                style={{
-                                                    maxWidth: '100%',
-                                                    maxHeight: '200px',
-                                                    borderRadius: '10px',
-                                                    border: '1px solid #ddd',
-                                                    objectFit: 'contain',
-                                                }}
-                                            />
+                                            {!formik.values.RutaArchivo.endsWith('.png') ? (
+                                                <a
+                                                    href={`http://localhost:5001/Archivos/${formik.values.RutaArchivo}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="btn btn-primary"
+                                                    style={{
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                        gap: '0.5rem',
+                                                    }}
+                                                >
+                                                    <i className="fas fa-file"></i>
+                                                    Ver Adjunto
+                                                </a>
+                                            ) : (
+                                                <a
+                                                    href={`http://localhost:5001/Archivos/${formik.values.RutaArchivo}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    <img
+                                                        src={`http://localhost:5001/Archivos/${formik.values.RutaArchivo}`}
+                                                        alt="Preview"
+                                                        style={{
+                                                            maxWidth: '100%',
+                                                            maxHeight: '200px',
+                                                            borderRadius: '10px',
+                                                            border: '1px solid #ddd',
+                                                            objectFit: 'contain',
+                                                        }}
+                                                    />
+                                                </a>
+                                            )}
                                         </div>
                                     </Form.Group>
                                 </Col>
