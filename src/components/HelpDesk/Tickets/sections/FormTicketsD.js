@@ -45,7 +45,6 @@ const getInitialValues = (ticketID) => {
 const validationSchema = Yup.object().shape({
     Nombre: Yup.string().required('Nombre es requerido'),
     Descripcion: Yup.string().required('Descripción es requerida'),
-    RutaArchivo: Yup.mixed().nullable().required('Archivo es requerido'),
 });
 
 const FormTicketsD = ({ ticketID, isLoading, estatus, areas, conceptos, prioridad }) => {
@@ -111,6 +110,7 @@ const FormTicketsD = ({ ticketID, isLoading, estatus, areas, conceptos, priorida
             // Asegurarse de que se llama al envío del formulario después de actualizar RutaArchivo
             setTimeout(() => {
                 formik.handleSubmit();
+                navigate('/HelpDesk/tickets');
             }, 0);
         } catch (error) {
             toast.error('Error al guardar el formulario');
