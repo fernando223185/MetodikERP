@@ -22,19 +22,9 @@ import IconButton from 'components/common/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import { actModuloAsync } from 'api/Configurador/Modulos/Modulos';
+import * as iconMap from "@fortawesome/free-solid-svg-icons";
 
-const iconMap = {
-    faUser,
-    faBook,
-    faTruck,
-    faRoute,
-    faSearchLocation,
-    faStore,
-    faUsers,
-    faUserSecret,
-    faBox,
-    faIdCard
-};
+
 
 const getInitialValues = (moduloID) => {
     const initialForm = {
@@ -183,7 +173,7 @@ const FormModuloD = ({moduloID, isLoading, iconos,menus,tipo}) => {
                                         {formik.values.Icono ? (
                                             <FontAwesomeIcon 
                                                 icon={iconMap[formik.values.Icono]}  
-                                                size="2x" // Ajusta el tamaño del icono aquí
+                                                size="1x" // Ajusta el tamaño del icono aquí
                                             />
                                         ) : (
                                             <p>No icono seleccionado</p> // Mensaje por defecto si no se selecciona un icono

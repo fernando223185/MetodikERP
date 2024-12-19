@@ -67,3 +67,28 @@ export async function getMenusAccesoAsync(ID) {
     return error;
   }
 }
+
+export async function actModulosFavoritosAsync({ data }) {
+  try {
+    const response = await axios.post(
+      `${endpoints.key}/actModuloFavorito`,
+      data
+    );
+    console.log(response);
+    return response;
+  } catch (error) {
+    return error;
+  }
+}
+
+
+export async function getAccesosRapidosAsync(PersonaID) {
+  try {
+    const response = await axios.get(
+      `${endpoints.key}/verModulosFavoritos?PersonaID=${PersonaID}`
+    );
+    return response;
+  } catch (error) {
+    return error;
+  }
+}

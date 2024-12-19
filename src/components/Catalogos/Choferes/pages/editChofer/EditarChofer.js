@@ -17,6 +17,7 @@ import ProfileSettings from './ProfileSettings';
 import { useGetFiltroCatalogo } from 'hooks/useFiltros';
 import { useNavigate } from 'react-router-dom';
 import EditChoferesHeader from '../../sections/EditChoferesHeader';
+import Banner from '../viewChofer/Banner';
 
 const getInitialValues = (chofer) => {
     const ChoferForm = {
@@ -27,7 +28,9 @@ const getInitialValues = (chofer) => {
         Nombre: '',
         ProveedorID: 0,
         Observaciones: '',
-        VehiculoID: 0
+        VehiculoID: 0,
+        avatar: '',
+        coverSrc: '',
     }
 
     if (chofer) {
@@ -38,6 +41,8 @@ const getInitialValues = (chofer) => {
 
 const validationSchema = Yup.object().shape({
     Nombre: Yup.string().required('Required'),
+    avatar: Yup.string().required('Avatar is required'),
+    coverSrc: Yup.string().required('Cover image is required')
 })
 
 const EditarChofer = () => {
@@ -49,6 +54,7 @@ const EditarChofer = () => {
     const [ sucursal, setSucursal ] = useState([]);
     const [ vehiculo, setVehiculo ] = useState([]);
     const [ empresa, setEmpresa ] = useState([]);
+    const [ newChofer, setNewChofer ] = useState(true);
     const navigate = useNavigate();
 
     const formik = useFormik({
@@ -67,6 +73,7 @@ const EditarChofer = () => {
     useEffect(() => {
         if (id != null && id > 0) {
             getChoferID({ id });
+            setNewChofer(false);
         }
     }, [id]);
 
@@ -130,14 +137,8 @@ const EditarChofer = () => {
 
     return(
         <>
-            <EditChoferesHeader />
-            <ProfileBanner>
-                <ProfileBanner.Header
-                    coverSrc={coverSrc}
-                    avatar={avatar}
-                    className='mb-8'
-                />
-            </ProfileBanner>
+            <EditChoferesHeader newChofer={newChofer} />
+            <Banner chofer={chofer} formik={formik} />
             <FormikProvider value={formik}>
                 <form onSubmit={formik.handleSubmit}>
                     <Row className='g-3'>

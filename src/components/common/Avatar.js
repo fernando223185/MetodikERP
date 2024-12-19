@@ -4,6 +4,7 @@ import { isIterableArray } from 'helpers/utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Flex from './Flex';
 import classNames from 'classnames';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
 const Avatar = ({
   size,
@@ -52,7 +53,7 @@ const Avatar = ({
     if (icon) {
       return (
         <Flex className={`avatar-name ${mediaClasses}`}>
-          <FontAwesomeIcon icon={icon} />
+          <FontAwesomeIcon icon={faEdit} />
         </Flex>
       );
     }

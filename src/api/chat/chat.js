@@ -34,6 +34,7 @@ export async function sendMessageAsync(data){
 export async function readMessageAsync(data){
     try{
         const response = await axios.post('marcarComoLeido',data)
+        console.log(response)
         return response.data 
     } catch(error){
         console.error('Error sending message: ', error);

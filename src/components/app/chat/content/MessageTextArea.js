@@ -10,7 +10,6 @@ import { useAppContext } from 'Main';
 import { sendMessageAsync } from 'api/chat/chat';
 import { fetchMessages } from '../data/fetchData';
 
-
 const formatDate = date => {
   const options = {
     weekday: 'short',
@@ -38,13 +37,14 @@ const MessageTextArea = () => {
     messagesDispatch,
     messages,
     threadsDispatch,
-    currentThread,
+    currentUser,
     setScrollToBottom,
     isOpenThreadInfo,
     getUser
   } = useContext(ChatContext);
 
 
+  console.log(currentUser);
 
   const [previewEmoji, setPreviewEmoji] = useState(false);
   const [message, setMessage] = useState('');
@@ -61,13 +61,10 @@ const MessageTextArea = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    
-  
-    const status = await sendMessageAsync({ recipient_WAID: currentThread.wa_id ,text: message });
-    fetchMessages(messagesDispatch, currentThread);
-    console.log(status); 
-    
     setMessage('');
+    const status = await sendMessageAsync({ recipient_WAID: currentUser.wa_id ,text: message });
+    fetchMessages(messagesDispatch,currentUser);
+    console.log(status);
   }
 
   //   const date = new Date();
@@ -115,8 +112,14 @@ const MessageTextArea = () => {
         minRows={1}
         maxRows={6}
         value={message}
-        placeholder="Type your message"
+        placeholder="Inscribe un mensaje..."
         onChange={({ target }) => setMessage(target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault(); // Prevents newline insertion
+            handleSubmit(e);
+          }
+        }}
         className="form-control outline-none resize-none rounded-0 border-0 emojiarea-editor"
       />
 
@@ -128,33 +131,11 @@ const MessageTextArea = () => {
       </Form.Group>
 
       <Button
-        variant="link"
-        className="emoji-icon "
-        onClick={() => setPreviewEmoji(!previewEmoji)}
-      >
-        <FontAwesomeIcon
-          icon={['far', 'laugh-beam']}
-          onClick={() => setPreviewEmoji(!previewEmoji)}
-        />
-      </Button>
-
-      {previewEmoji && (
-        <div className="chat-emoji-picker" dir="ltr">
-          <Picker
-            set="google"
-            onEmojiSelect={addEmoji}
-            theme={isDark ? 'dark' : 'light'}
-            previewPosition="none"
-            skinTonePosition="none"
-          />
-        </div>
-      )}
-
-      <Button
-        variant="send"
+        variant="falcon-primary"
         size="sm"
-        className={classNames('shadow-none', {
-          'text-primary': message.length > 0
+        className={classNames('shadow-none',  {
+          'text-primary ': message.length > 0,
+
         })}
         type="submit"
       >

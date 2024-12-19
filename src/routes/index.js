@@ -198,7 +198,6 @@ import InputMaskExample from 'components/doc-components/InputMaskExample';
 import RangeSlider from 'components/doc-components/RangeSlider';
 
 /* IMPORTS FOR THE NEW APP */
-import Users from '../components/Usuarios/Index'
 import Empresas from 'components/empresas';
 import EmpresasSettings from 'components/empresas/Profile/EmpresaSettings';
 import CreateEmpresa from 'components/empresas/Profile/CreateEmpresa';
@@ -221,7 +220,7 @@ import PasajerosViewD from 'components/Pasajeros/pages/PasajerosViewD';
 import ViewPasajerosCard from 'components/Pasajeros/sections/ViewPasajerosCard';
 
 import UserProfile from '../components/Usuarios/pages/viewUser/Profile'
-import EditarUsuario from '../components/Usuarios/pages/editUser/EditarUsuario'
+
 import Reservas from '../components/comercial/reservas/Index'
 import ReservasD from '../components/comercial/reservas/pages/ReservasD'
 import Rutas from 'components/Catalogos/Rutas/Index'
@@ -247,16 +246,22 @@ import SucursalesD from 'components/sucursales/pages/SucursalesD';
 import ExploradorParadasRutas from "components/Exploradores/Rutas/pages/ParadasRuta";
 import ExploradorPasajerosRutas from "components/Exploradores/Rutas/pages/PasajerosRuta";
 import EquiposViewD from 'components/Catalogos/Equipos/pages/EquiposViewD';
+import Clientes from 'components/Catalogos/Clientes/Index';
+import ClienteProfile from 'components/Catalogos/Clientes/pages/viewCliente/Profile';
+import EditarCliente from 'components/Catalogos/Clientes/pages/editCliente/EditarCliente';
 import EquiposD from 'components/Catalogos/Equipos/pages/EquiposD';
 import Choferes from 'components/Catalogos/Choferes/Index';
 import ChoferProfile from 'components/Catalogos/Choferes/pages/viewChofer/Profile';
 import EditarChofer from 'components/Catalogos/Choferes/pages/editChofer/EditarChofer';
 import RutaD from 'components/Catalogos/Rutas/pages/previewRuta/RutaD';
 import RutaEditD from 'components/Catalogos/Rutas/pages/editRuta/RutaEditD';
+
 import RutasPrecios from "components/logistica/preciosRutas/index";
+
 
 import Modulos from 'components/configurador/modulos';
 import ModulosD from 'components/configurador/modulos/pages/ModulosD';
+
 import Conceptos from 'components/Catalogos/Concepto/Index';
 import ConceptoViewD from 'components/Catalogos/Concepto/pages/ConceptoViewD';
 import ConceptoD from 'components/Catalogos/Concepto/pages/ConceptoD';
@@ -267,6 +272,12 @@ import Tickets from 'components/HelpDesk/Tickets';
 import TicketsViewD from 'components/HelpDesk/Tickets/pages/TicketsViewD';
 import TicketsNew from 'components/HelpDesk/Tickets/pages/TicketsNew';
 import TicketsD from 'components/HelpDesk/Tickets/pages/TicketsD';
+
+
+import Usuarios from 'components/Catalogos/Usuarios/index';
+//import EditarUsuario from 'components/Usuarios/pages/editUser/EditarUsuario';
+import EditarUsuario from 'components/Catalogos/Usuarios/pages/editUsuario/EditarUsuario';
+import UsuarioProfile from 'components/Catalogos/Usuarios/pages/viewUsuario/UsuarioProfile';
 
 
 const MetodikRoutes = () => {
@@ -638,7 +649,6 @@ const MetodikRoutes = () => {
         <Route path="documentation/design-file" element={<DesignFile />} />
         <Route path="changelog" element={<Changelog />} />
         {/*ROUTES FOR THE NEW APP METODIK*/}
-        <Route path="configuration/users" element={<Users />} />
         <Route path="configuration/empresas" element={<Empresas />} />
         <Route
           path="configuration/empresas/editar/:id"
@@ -687,6 +697,7 @@ const MetodikRoutes = () => {
         <Route path="comercial/reservas" element={<Reservas />} />
         <Route path="comercial/reservas/reservaD/:id" element={<ReservasD />} />
         <Route path="configuration/rutas" element={<Rutas />} />
+          
         <Route path="configuration/choferes" element={<Choferes />} />
         <Route
           path="configuration/choferes/view-profile/:id"
@@ -780,6 +791,11 @@ const MetodikRoutes = () => {
         <Route path="catalogo/rutas/view-ruta/:id" element={<RutaD />} />
         <Route path="catalogo/rutas/actRutaD/:id" element={<RutaEditD />} />
 
+        {/* Catalogo Clientes */}
+        <Route path="catalogo/clientes" element={<Clientes />} />
+        <Route path="catalogo/clientes/view-profile/:id" element={<ClienteProfile />} />
+        <Route path="catalogo/clientes/actCliente/:id" element={<EditarCliente />} />
+
         <Route
           path="catalogo/choferes/view-profile/:id"
           element={<ChoferProfile />}
@@ -793,6 +809,7 @@ const MetodikRoutes = () => {
         {/* Configurador Modulos */}
         <Route path="Configuracion/modulos" element={<Modulos />} />
         <Route path='Configuracion/modulos/:id' element={<ModulosD />} />
+
 
         {/* Catalogos Concepto */}
         <Route path="Catalogos/concepto" element={<Conceptos />} />
@@ -809,6 +826,12 @@ const MetodikRoutes = () => {
         <Route path="HelpDesk/new-ticket" element={<TicketsNew />} />
         <Route path="HelpDesk/view-ticket/:id" element={<TicketsViewD />} />
         <Route path="HelpDesk/ticket/:id" element={<TicketsD />} />
+
+        {/* Catalogo Usuarios */}
+        <Route path="catalogo/usuarios" element={<Usuarios />} />
+        <Route path="catalogo/usuarios/actUsuarios/:id" element={<EditarUsuario />} />
+        <Route path="catalogo/usuarios/view-usuario/:id" element={<UsuarioProfile />} />
+
       </Route>
 
         

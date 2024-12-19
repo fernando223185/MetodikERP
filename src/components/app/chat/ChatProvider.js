@@ -9,35 +9,46 @@ import { arrayReducer } from 'reducers/arrayReducer';
 const ChatProvider = ({ children }) => {
   // initializacion de variables globales
   const [messages, messagesDispatch] = useReducer(arrayReducer, []);
-  const [threads, threadsDispatch] = useReducer(arrayReducer, []);
-  const [users, setUsers] = useState([]);
-  const [currentThread, setCurrentThread] = useState(null);
+  const [users, userDispatch] = useReducer(arrayReducer,[]);
+
+  const [currentUser, setCurrentUser] = useState(null);
+
   const [textAreaInitialHeight, setTextAreaInitialHeight] = useState(32);
   // use state booleanos
-  const [isOpenThreadInfo, setIsOpenThreadInfo] = useState(false);
+  const [isOpenUserInfo, setIsOpenUserInfo] = useState(false);
   const [scrollToBottom, setScrollToBottom] = useState(true);
 
   // Funcion 
-  const getUser = thread => {
-    let user = {};
-    user = users.find(({ id }) => id === thread.userId);
-    return user;
+  const getMessages = user => {
+    if (!user || !user.id) {
+      console.error('Invalid user object:', user);
+      return [];
+    }
+    
+    const userMessagesObject = messages.find(({ id }) => id === user.id);
+
+    
+    return userMessagesObject ? userMessagesObject.content : [];
+
   };
 
   const value = {
     users,
-    setUsers,
-    threads, 
-    getUser,
+    userDispatch,
+
+    getMessages,
     messages,
-    threadsDispatch,
     messagesDispatch,
+
     textAreaInitialHeight,
     setTextAreaInitialHeight,
-    isOpenThreadInfo,
-    setIsOpenThreadInfo,
-    currentThread,
-    setCurrentThread,
+
+    isOpenUserInfo,
+    setIsOpenUserInfo,
+
+    currentUser,
+    setCurrentUser,
+
     scrollToBottom,
     setScrollToBottom
   };

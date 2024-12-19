@@ -80,7 +80,7 @@ export const appRoutes =
               {
                 name: "Usuarios",
                 icon: faUser,
-                to: "/configuration/users",
+                to: "catalogo/usuarios",
                 active: true,
               },
               {

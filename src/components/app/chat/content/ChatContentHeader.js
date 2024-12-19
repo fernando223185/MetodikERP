@@ -5,12 +5,10 @@ import { Button, Col, Row, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import Flex from 'components/common/Flex';
 import { ChatContext } from 'context/Context';
 
-const ChatContentHeader = ({ thread, setHideSidebar }) => {
+const ChatContentHeader = ({ setHideSidebar, currentUser}) => {
 
-  const { getUser, isOpenThreadInfo, setIsOpenThreadInfo } =
-    useContext(ChatContext);
-  const user = getUser(thread);
-  
+  console.log(currentUser)
+  const { isOpenUserInfo, setIsOpenUserInfo } = useContext(ChatContext);
   
   return (  
     <div className="chat-content-header">
@@ -23,9 +21,9 @@ const ChatContentHeader = ({ thread, setHideSidebar }) => {
             <FontAwesomeIcon icon="chevron-left" />
           </div>
           <div className="min-w-0">
-            <h5 className="mb-0 text-truncate fs-0">{user.wa_id}</h5>
+            <h5 className="mb-0 text-truncate fs-0">{currentUser.wa_id}</h5>
             <div className="fs--2 text-400">
-              {user.status === 'status-online'
+              {currentUser.status === 'status-online'
                 ? 'Active on  chat'
                 : 'Active 7h ago'}
             </div>
@@ -43,7 +41,7 @@ const ChatContentHeader = ({ thread, setHideSidebar }) => {
             <Button
               variant="falcon-primary"
               size="sm"
-              onClick={() => setIsOpenThreadInfo(!isOpenThreadInfo)}
+              onClick={() => setIsOpenUserInfo(!isOpenUserInfo)}
             >
               <FontAwesomeIcon icon="info" />
             </Button>

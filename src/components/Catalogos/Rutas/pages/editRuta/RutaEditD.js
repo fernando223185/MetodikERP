@@ -41,9 +41,9 @@ const getDescensosValues = (id) => {
         DestinoID: 0,
         Tiempo: 0,
         Kilometros: 0,
-        PrecioNino: 0,
-        PrecioAdulto: 0,
-        PrecioInapam: 0
+        // PrecioNino: 0,
+        // PrecioAdulto: 0,
+        // PrecioInapam: 0
     }
     return initialForm;
 }
@@ -52,14 +52,17 @@ const validationSchema = Yup.object().shape({
     Ruta: Yup.string().required("Nombre de ruta es obligatorio"),
 });
 
-const RutaHeader = () => {
+const RutaHeader = ({isNewRuta}) => {
     return (
         <>
             <Container fluid className="py-3 px-4 border-bottom mb-4">
                 <Row className="align-items-center">
                 <Col md={8}>
                     <h2 className="mb-0">Ruta Detalle</h2>
-                    <span className="text-muted">Editar Ruta</span>
+                    {!isNewRuta ?
+                        <span className="text-muted">Editar Ruta</span> :
+                        <span className="text-muted">Nueva Ruta</span>
+                    }
                 </Col>
                     <Col md={4} className="text-end">
                     <div className="d-flex justify-content-end align-items-center mt-4">
@@ -93,6 +96,8 @@ const RutaEditD = () => {
     const [ destinos, setDestinos ] = useState([]);
     const [ updateList, setUpdateList ] = useState(false);
     const [ descensos, setDescensos ] = useState([]);
+    const [ isNewRuta, setIsNewRuta ] = useState(true);
+    const [ justNewRuta, setJustNewRuta ] = useState(false);
     const navigate = useNavigate();
 
     const handleDeleteDescenso = (RenglonID, RutaID) => {
@@ -145,11 +150,18 @@ const RutaEditD = () => {
         validationSchema,
         enableReinitialize: true,
         onSubmit: async (values) => {
-            actRuta({data: values});
-
-            setTimeout(() => {
-                navigate("/catalogo/rutas");
-            }, 600);
+            try {
+                await actRuta({ data: values });
+            } catch (e) {
+                console.error("Error al guardar la ruta: ", e);
+                toast.error("Ocurrió un error al guardar la ruta.");
+            } finally {
+                setTimeout(() => {
+                    
+                }, 1200)
+                setIsNewRuta(false);
+                setJustNewRuta(true);
+            }
         },
     });
 
@@ -165,6 +177,7 @@ const RutaEditD = () => {
     useEffect(() => {
         if (id != null && id > 0) {
             getRutaID({id});
+            setIsNewRuta(false);
         }
     }, [id]);
 
@@ -178,13 +191,18 @@ const RutaEditD = () => {
     useEffect(() => {
         if (result && Object.keys(result).length === 0) {
           } else if (result && result.status === 200) {
-              toast.success(`${result.data[0].Mensaje}`, {
-                  theme: 'colored',
-              });
+                toast.success(`${result.data[0].Mensaje}`, {
+                    theme: 'colored',
+                });
+                const NuevoID = result?.data?.[0]?.ID;
+                if (NuevoID) {
+                    toast.success('Ruta guardada exitosamentes.');
+                    navigate(`/catalogo/rutas/actRutaD/${NuevoID}`);
+                }
           } else if (result) {
-              toast.error(`Error al crear el equipo`, {
-                  theme: 'colored',
-              });
+                toast.error(`Error al crear el equipo`, {
+                    theme: 'colored',
+                });
           }
     }, [result]);
 
@@ -258,7 +276,7 @@ const RutaEditD = () => {
 
     return (
         <>
-            <RutaHeader/>
+            <RutaHeader isNewRuta={isNewRuta}/>
             <Row className='g-3 mb-3'>
                 <Col lg={12}>
                     <Card style={{ backgroundColor: 'transparent', border: 'none' }}>
@@ -271,13 +289,17 @@ const RutaEditD = () => {
                                             estatus={estatus}
                                             sucursales={sucursales}
                                             destinos={destinos}
+                                            justNewRuta={justNewRuta}
                                         />
                                     </form>
                                 </FormikProvider>
                                 <FormikProvider value={formikDescensos}>
-                                    <form onSubmit={formikDescensos.handleSubmit}>
-                                        <TableEditDescensos formik={formikDescensos} descensos={descensos} setUpdateList={setUpdateList} destinos={destinos}/>
-                                    </form>
+                                    {!isNewRuta ? 
+                                        <form onSubmit={formikDescensos.handleSubmit}>
+                                            <TableEditDescensos formik={formikDescensos} descensos={descensos} setUpdateList={setUpdateList} destinos={destinos}/>
+                                        </form> :
+                                        null
+                                    }
                                 </FormikProvider>
                             </Row>
                         </Card.Body>

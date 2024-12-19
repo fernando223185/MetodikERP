@@ -6,6 +6,8 @@ import {
   getModulosAccesoAsync,
   actModulosAccesoAsync,
   getMenusAccesoAsync,
+  actModulosFavoritosAsync,
+  getAccesosRapidosAsync,
 } from "api/catalogo/perfiles/perfiles";
 
 export const useGetProfiles = () => {
@@ -121,4 +123,36 @@ export const useCrearMenus = () => {
   }, []);
 
   return { crearmenus, routes, isLoading, setIsLoading };
+};
+
+export const useActModulosFavortitos = () => {
+  const [response, setModules] = useState([]);
+  const [isLoadingAcc, setIsLoading] = useState(false);
+  const actModulosFavoritos = useCallback(async ({ data }) => {
+    setIsLoading(true);
+    try {
+      const result = await actModulosFavoritosAsync({ data });
+      setModules(result);
+    } catch (error) {
+      console.error("Error fetching:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  return { actModulosFavoritos, response, isLoadingAcc };
+};
+
+export const useAccesosRapidos = () => {
+  const [routes, setRoutes] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const accesosRapidos = useCallback(async (PersonaID) => {
+    setIsLoading(true);
+    const result = await getAccesosRapidosAsync(PersonaID);
+    setRoutes(result.data);
+    setIsLoading(false);
+  }, []);
+
+  return { accesosRapidos, routes, isLoading, setIsLoading };
 };
