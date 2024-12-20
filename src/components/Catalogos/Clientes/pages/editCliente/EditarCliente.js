@@ -13,7 +13,6 @@ import { toast } from 'react-toastify';
 import { useActCliente, useGetClienteID } from 'hooks/Catalogos/Clientes/useClientes';
 import ProfileBanner from 'components/Usuarios/ProfileBanner';
 import IconButton from 'components/common/IconButton';
-// import ProfileSettings from './ProfileSettings';
 import { useGetFiltroCatalogo } from 'hooks/useFiltros';
 import { useNavigate } from 'react-router-dom';
 import EditClientesHeader from '../../sections/EditClientesHeader';
@@ -22,6 +21,7 @@ import Direccion from './Direccion';
 import DatosPersonales from './DatosPersonales';
 import Facturacion from './Facturacion';
 import ReglaNegocio from './ReglaNegocio';
+import Banner from '../viewCliente/Banner';
 
 const getInitialValues = (cliente) => {
     const clienteForm = {
@@ -63,7 +63,9 @@ const getInitialValues = (cliente) => {
         CreditoConLimite: false,
         CreditoConDias: false,
         CreditoConCondiciones: false,
-        EmpresaID: 1
+        EmpresaID: 1,
+        RutaImagenPerfil: cliente?.RutaImagenPerfil || "",
+        RutaImagenBanner: cliente?.RutaImagenBanner || "",
       };
 
     if (cliente) {
@@ -99,11 +101,12 @@ const EditarCliente = () => {
         validationSchema,
         enableReinitialize: true,
         onSubmit: async (values) => {
-            actClienteD({data: values});
-
+            console.log('Valores enviados:', values); // Debug para verificar los datos
+            actClienteD({ data: values });
+        
             setTimeout(() => {
                 navigate("/catalogo/clientes");
-            }, 600)
+            }, 600);
         },
     });
 
@@ -218,13 +221,22 @@ const EditarCliente = () => {
     return(
         <>
             <EditClientesHeader />
-            <ProfileBanner>
-                <ProfileBanner.Header
-                    coverSrc={coverSrc}
-                    avatar={avatar}
-                    className='mb-8'
-                />
-            </ProfileBanner>
+            <Banner 
+                cliente={{
+                    ...formik.values,
+                    RutaImagenPerfil: cliente.RutaImagenPerfil, // Ya debe ser una URL completa
+                    RutaImagenBanner: cliente.RutaImagenBanner,
+                }} 
+                isEditable={true} 
+                onBannerUpload={(ruta) => {
+                    formik.setFieldValue('RutaImagenBanner', ruta);
+                    console.log('RutaImagenBanner actualizada:', ruta); // Debug para confirmar la actualización
+                }} 
+                onProfileUpload={(ruta) => {
+                    formik.setFieldValue('RutaImagenPerfil', ruta);
+                    console.log('RutaImagenPerfil actualizada:', ruta); // Debug para confirmar la actualización
+                }} 
+            />
             <FormikProvider value={formik}>
                 <form onSubmit={formik.handleSubmit}>
                     <Row className='g-3 mb-3'>

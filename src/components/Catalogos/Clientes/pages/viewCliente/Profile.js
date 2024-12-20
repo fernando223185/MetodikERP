@@ -11,6 +11,7 @@ import Direccion from './Direccion';
 import DatosPersonales from './DatosPersonales';
 import Facturacion from './Facturacion';
 import ReglaNegocio from './ReglaNegocio';
+import Banner from './Banner';
 
 const ClienteProfile = () => {
     const { id } = useParams();
@@ -35,7 +36,7 @@ const ClienteProfile = () => {
     return (
         <>
             <PreviewClientesHeader cliente={cliente}/>
-            <ProfileBanner cliente={cliente}/>
+            <Banner cliente={cliente} isEditable={false}/>
             <Row className='g-3 mb-3'>
                 <Col lg={8}>
                     <ProfileIntro cliente={cliente} />
