@@ -35,7 +35,7 @@ const getInitialValues = (user) => {
         Usuario: '',
         Correo:'',
         PerfilID: 1,
-        EmpresasIDs: "",
+        Empresas: "",
     };
     return user ? _.merge({}, usuarioForm, user) : usuarioForm;
 };

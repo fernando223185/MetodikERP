@@ -103,7 +103,7 @@ const Usuarios = () => {
             <Row className='g-3 mb-3'>
                 <Col lg={12}>
                     {formview === 'view-card' ? (
-                        <ViewCards choferes={users} estatus={estatus} sucursal={sucursal} empresa={empresa} layout={formview} setFilter={setFilter} />
+                        <ViewCards users={users} estatus={estatus} sucursal={sucursal} empresa={empresa} layout={formview} setFilter={setFilter} />
                     ) : (
                         <TableUsuarios users={users} estatus={estatus} sucursal={sucursal} empresa={empresa} layout={formview} show={show} setShow={setShow} filter={filter} setFilter={setFilter} />
                     )}

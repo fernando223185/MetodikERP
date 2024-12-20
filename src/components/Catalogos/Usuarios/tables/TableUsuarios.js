@@ -16,14 +16,15 @@ import UsuariosFilterForm from '../sections/UsuariosFilterForm';
 
 const columns = [
     {
-        accessor: 'Usuario',
-        Header: 'Usuario',
+        accessor: 'Nombre',
+        Header: 'Nombre',
         headerProps: { className: 'ps-2 text-900', style: { height: '46px' } },
         cellProps: {
             className: 'py-2 white-space-nowrap pe-3 pe-xxl-4 ps-2'
         },
         Cell: rowData => {
             const { Nombre, avatar } = rowData.row.original;
+            console.log("rowData", rowData.row.original);
             return (
               <Flex alignItems="center" className="position-relative py-1">
                 {avatar && avatar.img ? (
@@ -33,7 +34,7 @@ const columns = [
                 )}
                 <h6 className="mb-0">
                     <Link
-                    to="#"
+                    to={`/catalogo/usuarios/view-usuario/${rowData.row.original.id}`}
                     className="stretched-link text-900"
                     onClick={(e) => e.stopPropagation()}
                     >
@@ -45,8 +46,8 @@ const columns = [
         }
     },
     {
-        accessor: 'Nombre',
-        Header: 'Nombre',
+        accessor: 'Usuario',
+        Header: 'Usuario',
         headerProps: { className: 'text-900' },
         cellProps: {
             className: 'py-2 pe-4'

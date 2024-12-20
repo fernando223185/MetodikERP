@@ -55,6 +55,7 @@ export const arrayReducer = (state, action) => {
               ...user,
               message: payload.message,
               messageID: payload.messageID,
+              FechaEnvio: payload.FechaEnvio,
               read: false 
             }
           }
@@ -73,10 +74,12 @@ export const arrayReducer = (state, action) => {
         console.error('Payload is not an array:', payload);
         return state;
       }
+      
+      console.log(payload);
       // Agrupar y transformar mensajes por UsuarioID
       const groupedMessages = payload.reduce((acc, msg) => {
            // Split the SQL date format into parts
-      const [dayName, day, month, year, time] = msg.FechaEnvio.split(' '); // Split by space
+      const [dayName, year, day, month, time] = msg.FechaEnvio.split(' '); // Split by space
       const [hour, minute] = time.split(':'); // Split time into hours and minutes
       const hourInt = parseInt(hour, 10);
       const isPM = hourInt >= 12;
@@ -89,9 +92,9 @@ export const arrayReducer = (state, action) => {
         Sat: 'Sáb',
         Sun: 'Dom'
       };
-      const spanishDayName = dayNamesMap[dayName.replace(',', '')] || dayName;
-      
 
+      const spanishDayName = dayNamesMap[dayName.replace(',', '')] || dayName;
+    
       // Format the hour in 12-hour format with AM/PM
       const formattedHour = `${(hourInt % 12 || 12)}:${minute} ${isPM ? 'PM' : 'AM'}`;
       
@@ -174,11 +177,51 @@ export const arrayReducer = (state, action) => {
       });
       return [...state, ...groupedUsers];
     }
+    case 'RECIEVE_MESSAGE': {
+      if (!payload) {
+        return state;
+      }
+      
+      const [dayName, year, day, month, time] = payload.FechaEnvio.split(' '); // Split by space
+      const [hour, minute] = time.split(':'); // Split time into hours and minutes
+      const hourInt = parseInt(hour, 10);
+      const isPM = hourInt >= 12;
+      const dayNamesMap = {
+        Mon: 'Lun',
+        Tue: 'Mar',
+        Wed: 'Mié',
+        Thu: 'Jue',
+        Fri: 'Vie',
+        Sat: 'Sáb',
+        Sun: 'Dom'
+      };
+
+      const spanishDayName = dayNamesMap[dayName.replace(',', '')] || dayName;
     
+      // Format the hour in 12-hour format with AM/PM
+      const formattedHour = `${(hourInt % 12 || 12)}:${minute} ${isPM ? 'PM' : 'AM'}`;
+      
+      const messageObj = {
+        senderUserId: payload.Remitente === 'agente' ? 3 : 1,
+        message: payload.UltimoMensaje,
+        time: {
+          day: spanishDayName,
+          hour: formattedHour,
+          date: `${spanishDayName}, ${day} ${month} ${year}`
+        }
+      };
+      
+      return state.map(user => {
+        if (user.id === payload.UsuarioID) {
+          return {
+            ...user,
+            content: [...user.content, messageObj]
+          };
+        }
+        return user;  
+      });
+    }
 
-  
-
-        
     
 
     default:

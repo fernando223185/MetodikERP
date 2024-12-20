@@ -1,6 +1,6 @@
 import FalconCardHeader from 'components/common/FalconCardHeader';
 import TooltipBadge from 'components/common/TooltipBadge';
-import React from 'react';
+import React, {useState} from 'react';
 import { Card, Form } from 'react-bootstrap';
 
 const AccountSettings = ({ formik }) => {
@@ -33,7 +33,7 @@ const AccountSettings = ({ formik }) => {
             value="1" // Value matches `Multiempresa` for "Activo"
             name="multiEmpresa"
             onChange={() => handleMultiempresaChange(1)} // Set Multiempresa to 0
-            checked={values.MultiEmpresa === 1} // Mark checked when value is 0
+            checked={values.MultiEmpresa == 1} // Mark checked when value is 0
           />
           <Form.Check
             type="radio"
@@ -43,7 +43,7 @@ const AccountSettings = ({ formik }) => {
             value="0" // Value matches `Multiempresa` for "Inactivo"
             name="Multiempresa"
             onChange={() => handleMultiempresaChange(0)} // Set Multiempresa to 1
-            checked={values.MultiEmpresa === 0} // Mark checked when value is 1
+            checked={values.MultiEmpresa == 0} // Mark checked when value is 1
           />
         </div>
       </Card.Body>

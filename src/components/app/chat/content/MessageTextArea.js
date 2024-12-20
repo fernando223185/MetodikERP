@@ -123,12 +123,12 @@ const MessageTextArea = () => {
         className="form-control outline-none resize-none rounded-0 border-0 emojiarea-editor"
       />
 
-      <Form.Group controlId="chatFileUpload">
+      {/* <Form.Group controlId="chatFileUpload">
         <Form.Label className="chat-file-upload cursor-pointer">
           <FontAwesomeIcon icon="paperclip" />
         </Form.Label>
         <Form.Control type="file" className="d-none" />
-      </Form.Group>
+      </Form.Group> */}
 
       <Button
         variant="falcon-primary"
@@ -139,7 +139,7 @@ const MessageTextArea = () => {
         })}
         type="submit"
       >
-        Send
+        Enviar
       </Button>
     </Form>
   );

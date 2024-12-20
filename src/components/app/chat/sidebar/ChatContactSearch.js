@@ -7,7 +7,7 @@ const ChatContactsSearch = () => (
     <Form.Group className="mb-0 position-relative d-md-none d-lg-block w-100 h-100">
       <Form.Control
         className="chat-contacts-search border-0 h-100"
-        placeholder="Search contacts ..."
+        placeholder="Buscar contacto"
         size="sm"
       />
       <FontAwesomeIcon icon="search" className="contacts-search-icon" />

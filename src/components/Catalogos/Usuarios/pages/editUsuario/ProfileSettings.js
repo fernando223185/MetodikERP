@@ -9,7 +9,7 @@ import {useParams} from 'react-router-dom';
 
 const ProfileSettings = ({formik, sucursal, estatus, empresa, perfil}) => {
 
-    console.log(empresa);
+    console.log(empresa,sucursal);
     console.log(formik.values);
     const { id } = useParams();
     const { values, errors, touched, getFieldProps, setValues } = formik;
@@ -19,11 +19,19 @@ const ProfileSettings = ({formik, sucursal, estatus, empresa, perfil}) => {
     const [selectedPerfil, setSelectedPerfil] = useState(null);
     const [selectedEmpresas, setSelectedEmpresas] = useState([]);
     const [showPassword, setShowPassword] = useState(false); 
-    const [showMultiEmpresa, setShowMultiEmpresa] = useState(values?.MultiEmpresa == 1 ? true : false);
+    const [showMultiEmpresa, setShowMultiEmpresa] = useState(false);
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
       };
+
+    useEffect(() => {
+        if(values.MultiEmpresa == 1){
+            setShowMultiEmpresa(true);
+        } else if(values.MultiEmpresa == 0){
+            setShowMultiEmpresa(false);
+        }
+    }, [values.MultiEmpresa]);
 
     useEffect(() => {
         // Configurar valores iniciales en los dropdowns usando los valores actuales del usuario
@@ -33,12 +41,13 @@ const ProfileSettings = ({formik, sucursal, estatus, empresa, perfil}) => {
         }
 
         if (empresa.length > 0) {
-            const currentEmpresa = empresa.find(item => item.Valor === values.EmpresaID?.toString());
+            const currentEmpresa = empresa.find(item => item.Dato === values.Empresa);
             setSelectedEmpresa(currentEmpresa ? { value: currentEmpresa.Valor, label: currentEmpresa.Dato } : null);
         }
 
         if (sucursal.length > 0) {
-            const currentSucursal = sucursal.find(item => item.Valor === values.SucursalID?.toString());
+            const currentSucursal = sucursal.find(item => item.Dato === values.Sucursal);
+            console.log(currentSucursal);
             setSelectedSucursal(currentSucursal ? { value: currentSucursal.Valor, label: currentSucursal.Dato } : null);
         }
 
@@ -54,7 +63,7 @@ const ProfileSettings = ({formik, sucursal, estatus, empresa, perfil}) => {
     useEffect(() => {
         if (values.MultiEmpresa == 1 && empresa.length > 0) {
           const currentEmpresas =
-            values.EmpresasIDs?.split(',').map((id) => {
+            values.Empresas?.split(',').map((id) => {
               const matchedEmpresa = empresa.find((e) => e.Valor === id);
               return matchedEmpresa
                 ? { value: matchedEmpresa.Valor, label: matchedEmpresa.Dato }
@@ -64,7 +73,7 @@ const ProfileSettings = ({formik, sucursal, estatus, empresa, perfil}) => {
         } else {
           setSelectedEmpresas([]);
         }
-      }, [empresa, values.EmpresasIDs, values.MultiEmpresa]);
+      }, [empresa, values.EmpresasIDs, values.MultiEmpresa,showMultiEmpresa]);
       
     const handleEstatusChange = (selectedOption) => {
         setSelectedEstatus(selectedOption);
@@ -73,12 +82,16 @@ const ProfileSettings = ({formik, sucursal, estatus, empresa, perfil}) => {
 
     const handleEmpresaChange = (selectedOption) => {
         setSelectedEmpresa(selectedOption);
-        setValues({ ...values, EmpresaID: selectedOption ? selectedOption.value : null });
+        setValues({ ...values, 
+            Empresa: selectedOption ? selectedOption.label : null,
+            EmpresaID: selectedOption ? selectedOption.value : null });
     };
 
     const handleSucursalChange = (selectedOption) => {
         setSelectedSucursal(selectedOption);
-        setValues({ ...values, SucursalID: selectedOption ? selectedOption.value : null });
+        setValues({ ...values,
+            Sucursal: selectedOption ? selectedOption.label : null,
+            SucursalID: selectedOption ? selectedOption.value : null });
     };
 
     const handlePerfilChange = (selectedOption) => {
@@ -88,10 +101,10 @@ const ProfileSettings = ({formik, sucursal, estatus, empresa, perfil}) => {
 
     const handleEmpresasChange = (selectedOption) => {
         console.log(selectedOption);
-        setSelectedEmpresas(selectedOption || []); // Ensure it is an array
+        setSelectedEmpresas(selectedOption); // Ensure it is an array
         setValues({
           ...values,
-          EmpresasID: selectedOption
+          Empresas: selectedOption
             ? selectedOption.map((item) => item.value).join(',')
             : null,
         });
@@ -112,7 +125,7 @@ const ProfileSettings = ({formik, sucursal, estatus, empresa, perfil}) => {
             EstatusID: selectedEstatus ? selectedEstatus.value : null,
             SucursalID: selectedSucursal ? selectedSucursal.value : null,
             PerfilID: selectedPerfil ? selectedPerfil.value : null,
-            EmpresasIDs: selectedEmpresas ? selectedEmpresas.map(item => item.value).join(',') : null
+            Empresas: selectedEmpresas ? selectedEmpresas.map(item => item.value).join(',') : null
         });
 
         console.log(values);
@@ -123,6 +136,23 @@ const ProfileSettings = ({formik, sucursal, estatus, empresa, perfil}) => {
             <FalconCardHeader title='Informacion general' />
             <Card.Body>
                 <Row className="mb-3 g-3">
+                <Form.Group as={Col} lg={6} controlId="EstatusID">
+                    <Form.Label>Estatus</Form.Label>
+                    <Select
+                        classNamePrefix="react-select"
+                        name="EstatusID"
+                        options={estatus.map(item => ({
+                            value: item.Valor,
+                            label: item.Dato
+                        }))}
+                        value={selectedEstatus}
+                        onChange={handleEstatusChange}
+                        placeholder="Seleccione una empresa"
+                    />
+                    <Form.Control.Feedback type="invalid">
+                        {errors.EstatusID}
+                    </Form.Control.Feedback>
+                    </Form.Group>
                     <Form.Group as={Col} lg={6} controlId="Usuario">
                     <Form.Label>Usuario</Form.Label>
                     <Form.Control
@@ -137,20 +167,7 @@ const ProfileSettings = ({formik, sucursal, estatus, empresa, perfil}) => {
                         {errors.Nombre}
                     </Form.Control.Feedback>
                     </Form.Group>
-                    <Form.Group as={Col} lg={6} controlId="Correo">
-                    <Form.Label>Correo</Form.Label>
-                    <Form.Control
-                        type="text"
-                        placeholder="Correo"
-                        name="Correo"
-                        value={values.Correo}
-                        {...getFieldProps('Correo')}
-                        isInvalid={!!errors.profile?.Nombre && touched.Nombre}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                        {errors.Correo}
-                    </Form.Control.Feedback>
-                    </Form.Group>
+                
                 </Row>
                 <Row className="mb-3 g-3">
                     <Form.Group as={Col} lg={6} controlId="Contra" style={{ position: 'relative' , cursor:'pointer'}}>
@@ -248,8 +265,6 @@ const ProfileSettings = ({formik, sucursal, estatus, empresa, perfil}) => {
                         {errors.Nombre}
                     </Form.Control.Feedback>
                     </Form.Group>
-                </Row>
-                <Row className='mb-3 g-3'>
                     <Form.Group as={Col} lg={6} controlId="ApellidoMaterno">
                     <Form.Label>Apellido Materno</Form.Label>
                     <Form.Control
@@ -264,21 +279,18 @@ const ProfileSettings = ({formik, sucursal, estatus, empresa, perfil}) => {
                         {errors.Nombre}
                     </Form.Control.Feedback>
                     </Form.Group>
-                    <Form.Group as={Col} lg={6} controlId="EstatusID">
-                    <Form.Label>Estatus</Form.Label>
-                    <Select
-                        classNamePrefix="react-select"
-                        name="EstatusID"
-                        options={estatus.map(item => ({
-                            value: item.Valor,
-                            label: item.Dato
-                        }))}
-                        value={selectedEstatus}
-                        onChange={handleEstatusChange}
-                        placeholder="Seleccione una empresa"
+                    <Form.Group as={Col} lg={6} controlId="Correo">
+                    <Form.Label>Correo</Form.Label>
+                    <Form.Control
+                        type="text"
+                        placeholder="Correo"
+                        name="Correo"
+                        value={values.Correo}
+                        {...getFieldProps('Correo')}
+                        isInvalid={!!errors.profile?.Nombre && touched.Nombre}
                     />
                     <Form.Control.Feedback type="invalid">
-                        {errors.EstatusID}
+                        {errors.Correo}
                     </Form.Control.Feedback>
                     </Form.Group>
                 </Row>
