@@ -68,88 +68,92 @@ PrioritySelect.propTypes = {
   
 const columns = [
   {
-    accessor: 'User',
-    Header: 'Usuario',
-    headerProps: { className: 'ps-2 text-900', style: { height: '46px' } },
+    accessor: "User",
+    Header: "Usuario",
+    headerProps: { className: "ps-2 text-900", style: { height: "46px" } },
     cellProps: {
-      className: 'py-2 white-space-nowrap pe-3 pe-xxl-4 ps-2'
+      className: "py-2 white-space-nowrap pe-3 pe-xxl-4 ps-2",
     },
-    Cell: rowData => {
-        const { User, avatar } = rowData.row.original;
-        return (
-          <Flex alignItems="center" className="position-relative py-1">
-            {avatar && avatar.img ? (
-              <Avatar src={avatar.img} size="xl" className="me-2" />
-            ) : (
-              <Avatar size="xl" name={avatar ? avatar.name : User} className="me-2" />
-            )}
-            <h6 className="mb-0">
-                <Link
-                to="#"
-                className="stretched-link text-900"
-                onClick={(e) => e.stopPropagation()}
-                >
-                    {User}
-                </Link>
-            </h6>
-          </Flex>
-        );
-    }
-  },
-  {
-    accessor: 'Mov',
-    Header: 'Movimiento',
-    headerProps: { className: 'text-900' },
-    cellProps: {
-        className: 'py-2 pe-4'
-    }
-  },
-  {
-    accessor: 'CreatedAt',
-    Header: 'Fecha Emision',
-    headerProps: { className: 'text-900' },
-    cellProps: {
-        className: 'py-2 pe-4'
-    }
-  },
-  {
-    accessor: 'referencia',
-    Header: 'Referencia',
-    headerProps: { className: 'text-900' },
-    cellProps: {
-        className: 'py-2 pe-4'
-    }
-  },
-  {
-    accessor: 'observaciones',
-    Header: 'Observaciones',
-    headerProps: { className: 'text-900' },
-    cellProps: {
-        className: 'py-2 pe-4'
-    }
-  },
-  {
-    accessor: 'importe',
-    Header: 'Importe total',
-    headerProps: { className: 'text-900' },
-    cellProps: {
-        className: 'py-2 pe-4'
-    }
-  },
-  {
-    accessor: 'estatus',
-    Header: 'Estatus',
-    headerProps: { className: 'text-900' },
-    cellProps: { className: 'text-center py-2 pe-4' }
-  },
-  {
-    accessor: 'priority',
-    Header: 'Situacion',
-    headerProps: { className: 'text-900' },
-    cellProps: {
-      className: 'pe-4'
+    Cell: (rowData) => {
+      const { User, avatar } = rowData.row.original;
+      return (
+        <Flex alignItems="center" className="position-relative py-1">
+          {avatar && avatar.img ? (
+            <Avatar src={avatar.img} size="xl" className="me-2" />
+          ) : (
+            <Avatar
+              size="xl"
+              name={avatar ? avatar.name : User}
+              className="me-2"
+            />
+          )}
+          <h6 className="mb-0">
+            <Link
+              to="#"
+              className="stretched-link text-900"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {User}
+            </Link>
+          </h6>
+        </Flex>
+      );
     },
-    Cell: rowData => {
+  },
+  {
+    accessor: "Mov",
+    Header: "Movimiento",
+    headerProps: { className: "text-900" },
+    cellProps: {
+      className: "py-2 pe-4",
+    },
+  },
+  {
+    accessor: "CreatedAt",
+    Header: "Fecha Emision",
+    headerProps: { className: "text-900" },
+    cellProps: {
+      className: "py-2 pe-4",
+    },
+  },
+  {
+    accessor: "referencia",
+    Header: "Referencia",
+    headerProps: { className: "text-900" },
+    cellProps: {
+      className: "py-2 pe-4",
+    },
+  },
+  {
+    accessor: "observaciones",
+    Header: "Observaciones",
+    headerProps: { className: "text-900" },
+    cellProps: {
+      className: "py-2 pe-4",
+    },
+  },
+  {
+    accessor: "importe",
+    Header: "Importe total",
+    headerProps: { className: "text-900" },
+    cellProps: {
+      className: "py-2 pe-4",
+    },
+  },
+  {
+    accessor: "estatus",
+    Header: "Estatus",
+    headerProps: { className: "text-900" },
+    cellProps: { className: "text-center py-2 pe-4" },
+  },
+  {
+    accessor: "priority",
+    Header: "Situacion",
+    headerProps: { className: "text-900" },
+    cellProps: {
+      className: "pe-4",
+    },
+    Cell: (rowData) => {
       const { priority } = rowData.row.original;
       return (
         <PrioritySelect
@@ -158,9 +162,24 @@ const columns = [
           data={priority.data}
         />
       );
-    }
+    },
   },
-  
+  {
+    accessor: "ruta",
+    Header: "Ruta",
+    headerProps: { className: "text-900" },
+    cellProps: {
+      className: "py-2 pe-4",
+    },
+  },
+  {
+    accessor: "ruta",
+    Header: "Ruta",
+    headerProps: { className: "text-900" },
+    cellProps: {
+      className: "py-2 pe-4",
+    },
+  },
 ];
 
 function TableReservasV2({reservas, movimientos, estatus, layout, setFilter, situaciones, usuarios, filter }) {

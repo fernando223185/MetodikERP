@@ -39,7 +39,6 @@ const PaqueteriaHeader = ({setHasFetched, estatus}) => {
       ID: id,
       UsuarioID: user.ID
     }
-    
     await cancelarPaqueteria({ data })
   }
 
@@ -159,43 +158,46 @@ const PaqueteriaHeader = ({setHasFetched, estatus}) => {
                   <FontAwesomeIcon icon={faReply} className="me-1" /> Regresar
                 </IconButton>
               </Link>
-                {isLoading || isLoadingCancel ? (
-                  <Spinner animation="border" role="status" className="me-1">
-                    <span className="visually-hidden">Loading...</span>
-                  </Spinner>
-                ) : (
-                  <>
-                    <IconButton
-                        variant="falcon-default"
-                        size="sm"
-                        className="mb-2 mb-sm-0 me-2 d-flex align-items-center"
-                        title="Cambiar situación"
-                        onClick={handleSituacionClick}
-                    >
-                        <FontAwesomeIcon icon={faStar} className="me-1" /> Situación
-                    </IconButton>
+              {isLoading ||
+              isLoadingCancel ||
+              isLoadingSit ||
+              isLoadingFiltro ? (
+                <Spinner animation="border" role="status" className="me-1">
+                  <span className="visually-hidden">Loading...</span>
+                </Spinner>
+              ) : (
+                <>
+                  <IconButton
+                    variant="falcon-default"
+                    size="sm"
+                    className="mb-2 mb-sm-0 me-2 d-flex align-items-center"
+                    title="Cambiar situación"
+                    onClick={handleSituacionClick}
+                  >
+                    <FontAwesomeIcon icon={faStar} className="me-1" /> Situación
+                  </IconButton>
 
-                    <IconButton
-                        variant="falcon-primary"
-                        size="sm"
-                        className="mb-2 mb-sm-0 me-2 d-flex align-items-center" 
-                        title="Afectar"
-                        onClick={handlePlayClick}
-                    >
-                        <FontAwesomeIcon icon={faPlay} className="me-1" /> Afectar
-                    </IconButton>
+                  <IconButton
+                    variant="falcon-primary"
+                    size="sm"
+                    className="mb-2 mb-sm-0 me-2 d-flex align-items-center"
+                    title="Afectar"
+                    onClick={handlePlayClick}
+                  >
+                    <FontAwesomeIcon icon={faPlay} className="me-1" /> Afectar
+                  </IconButton>
 
-                    <IconButton
-                        variant="falcon-danger"
-                        size="sm"
-                        className="mb-2 mb-sm-0 d-flex align-items-center" 
-                        title="Cancelar"
-                        onClick={handleCancel}
-                    >
-                        <FontAwesomeIcon icon={faBan} className="me-1" /> Cancelar
-                    </IconButton>
-                    </>
-                )}
+                  <IconButton
+                    variant="falcon-danger"
+                    size="sm"
+                    className="mb-2 mb-sm-0 d-flex align-items-center"
+                    title="Cancelar"
+                    onClick={handleCancel}
+                  >
+                    <FontAwesomeIcon icon={faBan} className="me-1" /> Cancelar
+                  </IconButton>
+                </>
+              )}
             </div>
           </Col>
         </Row>
@@ -221,7 +223,7 @@ const PaqueteriaHeader = ({setHasFetched, estatus}) => {
                     value: item.Valor,
                     label: item.Dato,
                   }))}
-                  onChange={(option) => setSelectedSituacion(option.value)} 
+                  onChange={(option) => setSelectedSituacion(option.value)}
                   isLoading={isLoading}
                 />
               </Form.Group>
@@ -233,9 +235,12 @@ const PaqueteriaHeader = ({setHasFetched, estatus}) => {
             className="btn btn-outline-secondary rounded-pill me-1 mb-1 btn-sm"
             onClick={handleModalCloseSituacion}
           >
-            <FontAwesomeIcon icon={faChevronLeft}/>
+            <FontAwesomeIcon icon={faChevronLeft} />
           </button>
-          <button onClick={handleModalSaveSituacion} className="btn btn-outline-primary rounded-pill btn-sm">
+          <button
+            onClick={handleModalSaveSituacion}
+            className="btn btn-outline-primary rounded-pill btn-sm"
+          >
             <FontAwesomeIcon icon={faSave} />
           </button>
         </Modal.Footer>
@@ -314,9 +319,17 @@ const PaqueteriaD = () => {
       }, 2000)
   }, [id, updateList])
 
-  if (isLoading) {
+  if (isLoading || isLoadingArt || isLoadingD) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', height: '100vh', marginTop: '100px' }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "flex-start",
+          height: "100vh",
+          marginTop: "100px",
+        }}
+      >
         <Spinner animation="border" role="status">
           <span className="visually-hidden">Loading...</span>
         </Spinner>

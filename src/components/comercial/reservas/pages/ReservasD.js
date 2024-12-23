@@ -193,157 +193,163 @@ const ReservasHeader = ({setHasFetched, estatus, showFormMov}) => {
   }, [resultAfect])
 
     return (
-    <>
-      <Container fluid className="py-3 px-4 border-bottom mb-4">
-        <Row className="align-items-center">
-          <Col md={8}>
-            <h2 className="mb-0">Reservas Detalle</h2>
-            <span className="text-muted">Detalle del Movimiento</span>
-          </Col>
+      <>
+        <Container fluid className="py-3 px-4 border-bottom mb-4">
+          <Row className="align-items-center">
+            <Col md={8}>
+              <h2 className="mb-0">Reservas Detalle</h2>
+              <span className="text-muted">Detalle del Movimiento</span>
+            </Col>
             <Col md={4} className="text-end">
-            <div className="d-flex justify-content-end align-items-center mt-4">
-              <Link to={`/comercial/reservas`}>
-                <IconButton
-                  variant="falcon-default"
-                  size="sm"
-                  className="mb-2 mb-sm-0 me-2 d-flex align-items-center"
-                  title="Regresar"
-                >
-                  <FontAwesomeIcon icon={faReply} className="me-1" /> Regresar
-                </IconButton>
-              </Link>
-                {isLoading || isLoadingAfec ? (
+              <div className="d-flex justify-content-end align-items-center mt-4">
+                <Link to={`/comercial/reservas`}>
+                  <IconButton
+                    variant="falcon-default"
+                    size="sm"
+                    className="mb-2 mb-sm-0 me-2 d-flex align-items-center"
+                    title="Regresar"
+                  >
+                    <FontAwesomeIcon icon={faReply} className="me-1" /> Regresar
+                  </IconButton>
+                </Link>
+                {isLoading || isLoadingAfec || isLoadingPago || isLoadingSit ? (
                   <Spinner animation="border" role="status" className="me-1">
                     <span className="visually-hidden">Loading...</span>
                   </Spinner>
                 ) : (
                   <>
-
                     <IconButton
-                        variant="falcon-default"
-                        size="sm"
-                        className="mb-2 mb-sm-0 me-2 d-flex align-items-center"
-                        title="Cambiar situación"
-                        onClick={handleSituacionClick}
+                      variant="falcon-default"
+                      size="sm"
+                      className="mb-2 mb-sm-0 me-2 d-flex align-items-center"
+                      title="Cambiar situación"
+                      onClick={handleSituacionClick}
                     >
-                        <FontAwesomeIcon icon={faStar} className="me-1" /> Situación
+                      <FontAwesomeIcon icon={faStar} className="me-1" />{" "}
+                      Situación
                     </IconButton>
 
                     <IconButton
-                        variant="falcon-primary"
-                        size="sm"
-                        className="mb-2 mb-sm-0 me-2 d-flex align-items-center" 
-                        title="Afectar"
-                        onClick={handlePlayClick}
+                      variant="falcon-primary"
+                      size="sm"
+                      className="mb-2 mb-sm-0 me-2 d-flex align-items-center"
+                      title="Afectar"
+                      onClick={handlePlayClick}
                     >
-                        <FontAwesomeIcon icon={faPlay} className="me-1" /> Afectar
+                      <FontAwesomeIcon icon={faPlay} className="me-1" /> Afectar
                     </IconButton>
 
                     <IconButton
-                        variant="falcon-danger"
-                        size="sm"
-                        className="mb-2 mb-sm-0 d-flex align-items-center" 
-                        title="Cancelar"
-                        onClick={handleCancel}
+                      variant="falcon-danger"
+                      size="sm"
+                      className="mb-2 mb-sm-0 d-flex align-items-center"
+                      title="Cancelar"
+                      onClick={handleCancel}
                     >
-                        <FontAwesomeIcon icon={faBan} className="me-1" /> Cancelar
+                      <FontAwesomeIcon icon={faBan} className="me-1" /> Cancelar
                     </IconButton>
                   </>
                 )}
               </div>
             </Col>
-        </Row>
-      </Container>
+          </Row>
+        </Container>
 
-      <Modal show={showModal} onHide={handleModalClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Formas de Pago</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-          {isLoadingFiltro ? (
-            <div className="d-flex justify-content-center">
-              <Spinner animation="border" role="status">
-                <span className="visually-hidden">Cargando...</span>
-              </Spinner>
-            </div>
-          ) : (
-            <Form>
-              <Form.Group>
-                <Form.Label>Seleccione una forma de pago</Form.Label>
-                <Select
-                  classNamePrefix="react-select"
-                  options={formasPago.map((item) => ({
-                    value: item.Valor,
-                    label: item.Dato,
-                  }))}
-                  onChange={(option) => setSelectedFormaPago(option.value)} 
-                  isLoading={isLoading}
-                />
-              </Form.Group>
-              <Form.Group>
-                <Form.Label>Referencia</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={referencia}
-                  onChange={(e) => setReferencia(e.target.value)} 
-                />
-              </Form.Group>
-            </Form>
-          )}
-        </Modal.Body>
-      <Modal.Footer>
-        <button
-            className="btn btn-outline-secondary rounded-pill me-1 mb-1 btn-sm"
-            onClick={handleModalClose}
-        >
-            <FontAwesomeIcon icon={faChevronLeft}/>
-        </button>
-        <button onClick={handleModalSave} className="btn btn-outline-primary rounded-pill btn-sm">
-          <FontAwesomeIcon icon={faSave} />
-        </button>
-      </Modal.Footer>
-      </Modal>
-      <Modal show={showModalSituacion} onHide={handleModalCloseSituacion}>
-        <Modal.Header closeButton>
-          <Modal.Title>Cambiar Situación</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {isLoadingFiltro ? (
-            <div className="d-flex justify-content-center">
-              <Spinner animation="border" role="status">
-                <span className="visually-hidden">Cargando...</span>
-              </Spinner>
-            </div>
-          ) : (
-            <Form>
-              <Form.Group>
-                <Form.Label>Seleccione una situación</Form.Label>
-                <Select
-                  classNamePrefix="react-select"
-                  options={situaciones.map((item) => ({
-                    value: item.Valor,
-                    label: item.Dato,
-                  }))}
-                  onChange={(option) => setSelectedSituacion(option.value)} 
-                  isLoading={isLoading}
-                />
-              </Form.Group>
-            </Form>
-          )}
-        </Modal.Body>
-        <Modal.Footer>
-          <button
-            className="btn btn-outline-secondary rounded-pill me-1 mb-1 btn-sm"
-            onClick={handleModalCloseSituacion}
-          >
-            <FontAwesomeIcon icon={faChevronLeft}/>
-          </button>
-          <button onClick={handleModalSaveSituacion} className="btn btn-outline-primary rounded-pill btn-sm">
-            <FontAwesomeIcon icon={faSave} />
-          </button>
-        </Modal.Footer>
-      </Modal>
-    </>
+        <Modal show={showModal} onHide={handleModalClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Formas de Pago</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {isLoadingFiltro ? (
+              <div className="d-flex justify-content-center">
+                <Spinner animation="border" role="status">
+                  <span className="visually-hidden">Cargando...</span>
+                </Spinner>
+              </div>
+            ) : (
+              <Form>
+                <Form.Group>
+                  <Form.Label>Seleccione una forma de pago</Form.Label>
+                  <Select
+                    classNamePrefix="react-select"
+                    options={formasPago.map((item) => ({
+                      value: item.Valor,
+                      label: item.Dato,
+                    }))}
+                    onChange={(option) => setSelectedFormaPago(option.value)}
+                    isLoading={isLoading}
+                  />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>Referencia</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={referencia}
+                    onChange={(e) => setReferencia(e.target.value)}
+                  />
+                </Form.Group>
+              </Form>
+            )}
+          </Modal.Body>
+          <Modal.Footer>
+            <button
+              className="btn btn-outline-secondary rounded-pill me-1 mb-1 btn-sm"
+              onClick={handleModalClose}
+            >
+              <FontAwesomeIcon icon={faChevronLeft} />
+            </button>
+            <button
+              onClick={handleModalSave}
+              className="btn btn-outline-primary rounded-pill btn-sm"
+            >
+              <FontAwesomeIcon icon={faSave} />
+            </button>
+          </Modal.Footer>
+        </Modal>
+        <Modal show={showModalSituacion} onHide={handleModalCloseSituacion}>
+          <Modal.Header closeButton>
+            <Modal.Title>Cambiar Situación</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {isLoadingFiltro ? (
+              <div className="d-flex justify-content-center">
+                <Spinner animation="border" role="status">
+                  <span className="visually-hidden">Cargando...</span>
+                </Spinner>
+              </div>
+            ) : (
+              <Form>
+                <Form.Group>
+                  <Form.Label>Seleccione una situación</Form.Label>
+                  <Select
+                    classNamePrefix="react-select"
+                    options={situaciones.map((item) => ({
+                      value: item.Valor,
+                      label: item.Dato,
+                    }))}
+                    onChange={(option) => setSelectedSituacion(option.value)}
+                    isLoading={isLoading}
+                  />
+                </Form.Group>
+              </Form>
+            )}
+          </Modal.Body>
+          <Modal.Footer>
+            <button
+              className="btn btn-outline-secondary rounded-pill me-1 mb-1 btn-sm"
+              onClick={handleModalCloseSituacion}
+            >
+              <FontAwesomeIcon icon={faChevronLeft} />
+            </button>
+            <button
+              onClick={handleModalSaveSituacion}
+              className="btn btn-outline-primary rounded-pill btn-sm"
+            >
+              <FontAwesomeIcon icon={faSave} />
+            </button>
+          </Modal.Footer>
+        </Modal>
+      </>
     );
 };
 
