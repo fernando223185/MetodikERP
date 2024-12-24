@@ -173,8 +173,16 @@ const columns = [
     },
   },
   {
-    accessor: "ruta",
-    Header: "Ruta",
+    accessor: "pasajero",
+    Header: "Pasajero",
+    headerProps: { className: "text-900" },
+    cellProps: {
+      className: "py-2 pe-4",
+    },
+  },
+  {
+    accessor: "asiento",
+    Header: "Asiento",
     headerProps: { className: "text-900" },
     cellProps: {
       className: "py-2 pe-4",
@@ -197,25 +205,26 @@ function TableReservasV2({reservas, movimientos, estatus, layout, setFilter, sit
   useEffect(() => {
     if (reservas && reservas.status === 200 && reservas.data.length > 0) 
     {
-      const transformedData = reservas.data.map(u => ({
+      const transformedData = reservas.data.map((u) => ({
         User: u.Usuario,
         avatar: {
-            name: u.Usuario,
-            size: 'xl',
-            round: 'circle'
+          name: u.Usuario,
+          size: "xl",
+          round: "circle",
         },
         Mov: `${u.Movimiento}`,
         CreatedAt: u.FechaEmision,
         estatus: (
-          <SubtleBadge pill           
+          <SubtleBadge
+            pill
             bg={classNames({
-            success:  u.Estatus === 'CONCLUIDO',
-            primary:  u.Estatus  === 'SINAFECTAR',
-            warning: u.Estatus  === 'PENDIENTE',
-            secondary: u.Estatus === 'BORRADOR',
-            danger: u.Estatus === 'CANCELADO'
-          })} 
-          className="fs--2" 
+              success: u.Estatus === "CONCLUIDO",
+              primary: u.Estatus === "SINAFECTAR",
+              warning: u.Estatus === "PENDIENTE",
+              secondary: u.Estatus === "BORRADOR",
+              danger: u.Estatus === "CANCELADO",
+            })}
+            className="fs--2"
           >
             {u.Estatus}
             <FontAwesomeIcon
@@ -223,18 +232,20 @@ function TableReservasV2({reservas, movimientos, estatus, layout, setFilter, sit
               transform="shrink-2"
               className="ms-1"
             />
-
           </SubtleBadge>
         ),
         referencia: u.Referencia,
         observaciones: u.Observaciones,
         importe: u.ImporteTotal,
         priority: {
-            title: u.Situacion,
-            color: '#'+u.Color,
-            data: u.PorcentajeSituacion
+          title: u.Situacion,
+          color: "#" + u.Color,
+          data: u.PorcentajeSituacion,
         },
-        id: u.ID
+        id: u.ID,
+        ruta: u.Ruta,
+        pasajero: u.Pasajero,
+        asiento: u.Asiento,
       }));
       setResult(prevResult => {
         if (JSON.stringify(prevResult) !== JSON.stringify(transformedData)) {

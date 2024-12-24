@@ -13,6 +13,7 @@ import InfoCard from "../sections/InfoCard";
 import InfoDCard from "../sections/InfoDCard";
 import DetalleRutasCard from "../sections/DetalleRutasCard";
 import RutasDisponibles from "../sections/RutasDisponibles";
+import GastosRuta from "../sections/GastosRuta";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -37,6 +38,7 @@ import {
   useCopiarRuta,
   useElimiarRuta,
   useCancelarRuta,
+  useGastosRutaAsync,
 } from /*, useCancelarReserva, useAfectarReserva, useAgregarFormaPago*/ "../../../../hooks/Logistica/Ruta/useRutaD";
 import { useParams } from "react-router-dom";
 import { useGetFiltroModulo } from "../../../../hooks/useFiltros";
@@ -299,35 +301,32 @@ const RutasHeader = ({ setHasFetched, estatus, showFormMov }) => {
     }
   }, [resultEliminar]);
 
-    useEffect(() => {
-      if (resultCancelar && Object.keys(resultCancelar).length === 0) {
-        console.log("result es un array vacío:", resultCancelar);
-      } else if (resultCancelar && resultCancelar.status === 200) {
-        toast[resultCancelar.data[0].Tipo](
-          `${resultCancelar.data[0].Mensaje}`,
-          {
-            theme: "colored",
-            position: resultCancelar.data[0].Posicion,
-            icon:
-              resultCancelar.data[0].Tipo === "success" ? (
-                <FontAwesomeIcon icon={faCheckCircle} />
-              ) : resultCancelar.data[0].Tipo === "error" ? (
-                <FontAwesomeIcon icon={faExclamationTriangle} />
-              ) : (
-                <FontAwesomeIcon icon={faInfoCircle} />
-              ),
-          }
-        );
-        setTimeout(() => {
-          setHasFetched((prev) => !prev);
-        }, 1000);
-      } else if (resultCancelar) {
-        toast.error(`Error al guardar`, {
-          theme: "colored",
-          position: "top-right",
-        });
-      }
-    }, [resultCancelar]);
+  useEffect(() => {
+    if (resultCancelar && Object.keys(resultCancelar).length === 0) {
+      console.log("result es un array vacío:", resultCancelar);
+    } else if (resultCancelar && resultCancelar.status === 200) {
+      toast[resultCancelar.data[0].Tipo](`${resultCancelar.data[0].Mensaje}`, {
+        theme: "colored",
+        position: resultCancelar.data[0].Posicion,
+        icon:
+          resultCancelar.data[0].Tipo === "success" ? (
+            <FontAwesomeIcon icon={faCheckCircle} />
+          ) : resultCancelar.data[0].Tipo === "error" ? (
+            <FontAwesomeIcon icon={faExclamationTriangle} />
+          ) : (
+            <FontAwesomeIcon icon={faInfoCircle} />
+          ),
+      });
+      setTimeout(() => {
+        setHasFetched((prev) => !prev);
+      }, 1000);
+    } else if (resultCancelar) {
+      toast.error(`Error al guardar`, {
+        theme: "colored",
+        position: "top-right",
+      });
+    }
+  }, [resultCancelar]);
 
   /*
   useEffect(() => {
@@ -543,6 +542,13 @@ const RutasD = () => {
   } = useGetRutaDisp();
   //const { getRutaVuelta, rutaVuelta, isLoading: isLoadingRutasV } = useGetRutaVuelta();
   const { getRutaD, rutaD, isLoading: isLoadingD } = useGetRutaD();
+
+  const {
+    VerGastosRuta,
+    result: gastosRuta,
+    isLoading: isLoadingGastos,
+  } = useGastosRutaAsync();
+
   const [showDateRegreso, setShowDateRegreso] = useState(true);
   const [showFormMov, setFormMov] = useState(false);
 
@@ -561,6 +567,13 @@ const RutasD = () => {
     };
     fetchRutaD();
   }, [id, updateList]);
+
+  useEffect(() => {
+    const fetchGastosruta = async () => {
+      await VerGastosRuta({ id });
+    };
+    fetchGastosruta();
+  }, [id]);
 
   useEffect(() => {
     const fetchFiltros = async () => {
@@ -664,6 +677,14 @@ const RutasD = () => {
                 <Col>
                   <DetalleRutasCard
                     rutaD={rutaD}
+                    setUpdateList={setUpdateList}
+                  />
+                </Col>
+              </Row>
+              <Row className="mt-4">
+                <Col>
+                  <GastosRuta
+                    gastosRuta={gastosRuta}
                     setUpdateList={setUpdateList}
                   />
                 </Col>

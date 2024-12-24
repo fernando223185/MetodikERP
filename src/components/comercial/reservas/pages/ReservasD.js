@@ -547,6 +547,22 @@ const ReservasD = () => {
                       )}
                     </Col>
                   </Row>
+                  <Row>
+                    <Col>
+                      {isLoadingEquipaje  ? (
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                          <Spinner animation="border" role="status">
+                            <span className="visually-hidden">Cargando...</span>
+                          </Spinner>
+                        </div>
+                      ) : (
+                        <DetalleCard 
+                          equipajeD={equipajeD}
+                          setUpdateList={setUpdateList}
+                        />
+                      )}
+                    </Col>
+                  </Row>
                 </>
               )}
             </Card.Body>
