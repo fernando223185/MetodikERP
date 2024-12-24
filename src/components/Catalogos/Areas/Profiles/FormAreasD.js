@@ -10,7 +10,6 @@ import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { useGetAreaIDOption, useActAreas } from 'hooks/Catalogos/Areas/useAreas';
 import { actAreaAsync } from 'api/catalogo/areas/areas';
-import Areas from '..';
 
 const getInitialValues = (areaID) => {
 

@@ -12,19 +12,19 @@ import AdvanceTablePagination from 'components/common/advance-table/AdvanceTable
 import { useBreakpoints } from 'hooks/useBreakpoints';
 import Flex from 'components/common/Flex';
 import Avatar from 'components/common/Avatar';
-import { useActAreas } from "hooks/Catalogos/Areas/useAreas";
-import AreasHeader from "../Profiles/AreasHeader";
-import AreasFilterForm from "../Profiles/AreasFilterForm";
+import { useActDepartamentos } from "hooks/Catalogos/Departamentos/useDepartamentos";
+import AllDepartamentosHeader from "../Profiles/AllDepartamentosHeader";
+import DepartamentosFilterForm from "../Profiles/DepartamentosFilterForm";
 
-const columns = [
+const columns = [ 
     {
-      accessor: 'nombre',
-      Header: 'Nombre',
-      headerProps: { className: 'ps-2 text-900', style: { height: '46px' } },
-      cellProps: {
-          className: 'py-2 white-space-nowrap pe-3 pe-xxl-4 ps-2'
-      },
-      Cell: rowData => {
+        accessor: 'nombre',
+        Header: 'Nombre',
+        headerProps: { className: 'ps-2 text-900', style: { height: '46px' } },
+        cellProps: {
+            className: 'py-2 white-space-nowrap pe-3 pe-xxl-4 ps-2'
+        },
+        Cell: rowData => {
         const { nombre, avatar } = rowData.row.original;
         return (
             <Flex alignItems="center" className="position-relative py-1">
@@ -44,27 +44,26 @@ const columns = [
             </h6>
             </Flex>
         );
-      }
+        }
     },
     {
-      accessor: 'descripcion',
-      Header: 'Descripcion',
-      headerProps: { className: 'text-900' }
+        accessor: 'empresa',
+        Header: 'Empresa',
+        headerProps: { className: 'text-900' }
     },
     {
-      accessor: 'fechaemision',
-      Header: 'Fecha De Registro',
-      headerProps: { className: 'text-900' }
+        accessor: 'fechaemision',
+        Header: 'Fecha De Registro',
+        headerProps: { className: 'text-900' }
     },
     {
-      accessor: 'estatus',
-      Header: 'Estatus',
-      headerProps: { className: 'text-900' }
+        accessor: 'estatus',
+        Header: 'Estatus',
+        headerProps: { className: 'text-900' }
     }
 ];
 
-function TableAreas ({ areas, estatus, layout, setFilter, filter}) {
-
+function TableDepartamentos({departamentos, estatus, layout, setFilter, filter}) {
     const [result, setResult] = useState([]);
     const [formtoShow, setFormToShow] = useState('');
     const [show, setShow] = useState(false);
@@ -72,33 +71,32 @@ function TableAreas ({ areas, estatus, layout, setFilter, filter}) {
     const handleShow = () => setShow(true);
     const navigate = useNavigate();
     const{breakpoints} = useBreakpoints();
-    const {actArea, result:response, isLoading} = useActAreas();
+    const {actDepartamento, result:response, isLoading} = useActDepartamentos();
 
-    useEffect(() =>{
-
-        if (areas && areas.status === 200 && areas.data.length > 0) {
-            const transformedData = areas.data.map(u => ({
+    useEffect(() => {
+        if(departamentos && departamentos.status === 200 && departamentos.data.length > 0) {
+            const transformedData = departamentos.data.map(u => ({
                 estatus: (
                     <SubtleBadge pill
                     bg={classNames({
-                      success: u.Estatus === "ALTA",
-                      danger: u.Estatus === "BAJA"
+                        success: u.Estatus === "ALTA",
+                        danger: u.Estatus === "BAJA"
                     })}
                     className="fs--2"
                     >
-                      {u.Estatus}
-                      <FontAwesomeIcon
-                      icon={getStatusIcon(u.Estatus)}
-                      transform="shrink-2"
-                      className="ms-1"
-                      />
-          
+                        {u.Estatus}
+                        <FontAwesomeIcon
+                        icon={getStatusIcon(u.Estatus)}
+                        transform="shrink-2"
+                        className="ms-1"
+                        />
+            
                     </SubtleBadge>
                 ),
-                id:u.ID,
-                nombre:u.Nombre,
-                descripcion: u.Descripcion,
-                fechaemision: u.FechaEmision
+                id: u.ID,
+                nombre: u.Nombre,
+                fechaemision: u.FechaEmision,
+                empresa: u.Empresa,
             }));
             setResult(prevResult => {
                 if(JSON.stringify(prevResult)!== JSON.stringify(transformedData)) {
@@ -107,34 +105,35 @@ function TableAreas ({ areas, estatus, layout, setFilter, filter}) {
                 return prevResult;
             });
         }
-    },[areas]);
+    },[departamentos])
 
     const getStatusIcon = (estatus) => {
         switch (estatus) {
-          case 'ALTA':
+            case 'ALTA':
             return faCheck;
-          case 'BAJA':
+            case 'BAJA':
             return faBan;
-          default:
+            default:
             return faPaperPlane;
         }
-      };
-    
-      const handleRowClick = (id) => {
-        navigate(`/Catalogos/view-areas/${id}`);
-      };
-    
-      if (isLoading) {
-        return (
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', height: '100vh', marginTop: '100px' }}>
-            <Spinner animation="border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </Spinner>
-          </div>
-        );
-      }
+    };
 
-      return(
+    const handleRowClick = (id) => {
+        navigate(`/catalogo/view-departamento/${id}`);
+    };
+
+    if (isLoading) {
+        return (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', height: '100vh', marginTop: '100px' }}>
+            <Spinner animation="border" role="status">
+                <span className="visually-hidden">Loading...</span>
+            </Spinner>
+            </div>
+        );
+    }
+
+
+    return(
         <Row className="gx-3">
           <Col>
             <AdvanceTableWrapper
@@ -149,7 +148,7 @@ function TableAreas ({ areas, estatus, layout, setFilter, filter}) {
             >
               <Card>
                 <Card.Header className="border-bottom border-200 px-0">
-                  <AreasHeader
+                  <AllDepartamentosHeader
                     table
                     layout={layout}
                     handleShow={handleShow}
@@ -184,10 +183,10 @@ function TableAreas ({ areas, estatus, layout, setFilter, filter}) {
               <Offcanvas.Header closeButton className="bg-body-tertiary">
               <h6 className="fs-0 mb-0 fw-semi-bold">Filtros</h6>
               </Offcanvas.Header>
-              <AreasFilterForm  estatus={estatus} setFilter={setFilter} filter={filter} />
+              <DepartamentosFilterForm  estatus={estatus} setFilter={setFilter} filter={filter} />
           </Offcanvas>
         </Row>
     );
 }
 
-export default TableAreas;
+export default TableDepartamentos;
