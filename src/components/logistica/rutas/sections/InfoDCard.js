@@ -23,6 +23,7 @@ import { toast } from "react-toastify";
 import moment from "moment";
 import { useAvanzaRuta } from "../../../../hooks/Logistica/Ruta/useRutaD";
 import IconButton from "components/common/IconButton";
+import ModalAgregarGasto from "../modal/ModalAgregarGasto"; // Ruta al componente del modal
 
 const getInitialValues = (rutaId) => {
   const initialForm = {
@@ -86,6 +87,11 @@ const InfoDCard = ({
   } = useAvanzaRuta();
   const [date, setDate] = useState(null);
 
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
   const formik = useFormik({
     initialValues: {
       ...getInitialValues(rutaId),
@@ -112,7 +118,7 @@ const InfoDCard = ({
           EquipoID: values.equipo,
           GenerarAutomatico: values.generarAutomatico,
         };
-        console.log(data)
+        console.log(data);
         avanzarRuta({ data });
       } catch (error) {
         toast.error("Error al enviar el formulario", {
@@ -383,15 +389,33 @@ const InfoDCard = ({
                   <span className="visually-hidden">Loading...</span>
                 </Spinner>
               ) : (
-                <IconButton
-                  variant="falcon-default"
-                  size="sm"
-                  icon="search"
-                  className="mb-2 mb-sm-0"
-                  type="submit"
-                >
-                  Buscar
-                </IconButton>
+                <>
+                  <IconButton
+                    variant="falcon-default"
+                    size="sm"
+                    icon="search"
+                    className="mb-2 mb-sm-0 me-2" // Agregar margen derecho
+                    type="submit"
+                  >
+                    Buscar
+                  </IconButton>
+                  <IconButton
+                    variant="falcon-default"
+                    size="sm"
+                    icon="filter"
+                    className="mb-2 mb-sm-0"
+                    type="button"
+                    onClick={handleShowModal} // Mostrar el modal al hacer clic
+                  >
+                    Agregar Gasto
+                  </IconButton>
+
+                  {/* Modal gestionado fuera */}
+                  <ModalAgregarGasto
+                    show={showModal}
+                    handleClose={handleCloseModal}
+                  />
+                </>
               )}
             </div>
           </Card.Body>

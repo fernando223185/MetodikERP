@@ -12,6 +12,8 @@ import {
   copiarRutaAsync,
   EliminarRutaAsync,
   cancelarRutaAsync,
+  actGastoRutaAsync,
+  getGastosRutaAsync
 } from "api/logistica/ruta/rutas";
 
 export const useGetRutaID = () => {
@@ -201,6 +203,7 @@ export const useCambiarSituaciones = () => {
   
     return { cambiarSituaciones, result, isLoading };
 }
+
 export const useCancelarRuta = () => {
   const [result, setResult] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -213,6 +216,34 @@ export const useCancelarRuta = () => {
   }, []);
 
   return { cancelarRuta, result, isLoading };
+};
+
+export const useActGastoRuta = () => {
+  const [result, setResult] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+
+  const ActGastoRuta = useCallback(async ({ data }) => {
+    setIsLoading(true);
+    const result = await actGastoRutaAsync({ data });
+    setResult(result);
+    setIsLoading(false);
+  }, []);
+
+  return { ActGastoRuta, result, isLoading };
+};
+
+export const useGastosRutaAsync = () => {
+  const [result, setResult] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+
+  const VerGastosRuta = useCallback(async (ID) => {
+    setIsLoading(true);
+    const result = await getGastosRutaAsync(ID);
+    setResult(result);
+    setIsLoading(false);
+  }, []);
+
+  return { VerGastosRuta, result, isLoading };
 };
 /*
 

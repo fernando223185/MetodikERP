@@ -263,3 +263,27 @@ export async function verPDFAsync({ data }){
         return error;
     }
 }
+
+export async function actGastoRutaAsync({ data }) {
+  try {
+    const response = await axios.post(
+      `${endpoints.key}/actGastoRuta`,
+      data
+    );
+    return response;
+  } catch (error) {
+    console.error("Error fetching paqueteria:", error);
+    return error;
+  }
+}
+
+
+export async function getGastosRutaAsync({id}) {
+  try {
+    const response = await axios.get(`${endpoints.key}/VerGastosRuta?ID=${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching paqueteria:", error);
+    return error;
+  }
+}
