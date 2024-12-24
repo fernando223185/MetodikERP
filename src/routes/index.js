@@ -278,6 +278,11 @@ import Usuarios from 'components/Catalogos/Usuarios/index';
 //import EditarUsuario from 'components/Usuarios/pages/editUser/EditarUsuario';
 import EditarUsuario from 'components/Catalogos/Usuarios/pages/editUsuario/EditarUsuario';
 import UsuarioProfile from 'components/Catalogos/Usuarios/pages/viewUsuario/UsuarioProfile';
+import Departamentos from 'components/Catalogos/Departamentos';
+import DepartamentosD from 'components/Catalogos/Departamentos/Pages/DepartamentosD';
+import DepartamentosViewD from 'components/Catalogos/Departamentos/Pages/DepartamentosViewD';
+import Proyectos from 'components/Catalogos/Proyectos';
+import ProyectosD from 'components/Catalogos/Proyectos/pages/ProyectosD';
 
 
 const MetodikRoutes = () => {
@@ -831,6 +836,16 @@ const MetodikRoutes = () => {
         <Route path="catalogo/usuarios" element={<Usuarios />} />
         <Route path="catalogo/usuarios/actUsuarios/:id" element={<EditarUsuario />} />
         <Route path="catalogo/usuarios/view-usuario/:id" element={<UsuarioProfile />} />
+
+        {/* Catalogo Departamentos */}
+        <Route path="catalogo/departamentos" element={<Departamentos />} />
+        <Route path="catalogo/departamentos/:id" element={<DepartamentosD />} />
+        <Route path="catalogo/view-departamento/:id" element={<DepartamentosViewD />} />
+
+        {/* Catalogo Proyectos */}
+        <Route path="catalogos/proyectos" element={<Proyectos />} />
+        <Route path="catalogos/proyectos/:id" element={<ProyectosD />} />
+        
 
       </Route>
 
